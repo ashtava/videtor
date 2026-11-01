@@ -52,7 +52,12 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
      ad, maybe a celebrity/fashion BTS bucket split off for Guru.
 4. **A Premiere check** of `out/guru-25s-brief/guru-25s-brief-sfx.xml`: do the SFX levels and `#` in file
    paths come through?
-5. **Claude Desktop:** the user has the MCP snippet for `videtor.mcp_server`. Claude doesn't install it.
+5. **Claude Desktop** was installed by the user on 2026-11-01, who said they set up the MCP and made a workflow.
+   - At Desktop's 13:43 start its config had no `mcpServers`, and its log said "no stdio servers
+     connected", so Videtor isn't loaded in Desktop yet.
+   - The user has the snippet. Claude doesn't edit that config.
+   - Where the workflow lives and what it does: asked, not yet known.
+   - The server itself starts fine the way Desktop launches it (stdio, cwd `/`, Homebrew on PATH; 10 tools).
 6. **GitHub visibility:** `github.com/ashtava/videtor` is public (checked 2026-11-01).
    - It holds the user's Premiere XMLs (`.xml-exports/`) and footage indexes (`kb/footage/`) with client file
      names and paths, and the auto-push publishes every change.
@@ -146,6 +151,15 @@ Not built; the source is in brackets.
   [B5]
 - Resolve import hasn't been checked (Phase 2). Resolve 19.1.4 Studio has external scripting for later.
 - Offline steps 1-3 (above).
+- **The MCP server lags the CLI** (found 2026-11-01). `mcp_server.cut` and `apply_look` are Round 4 copies of
+  the CLI code.
+  - Missing: SFX placement, steadying, byte levelling, the bucket keeper, taste corrections, `sfx_skip`,
+    beds, flash frames, the cut and match sheets.
+  - A medley `music` list fails: its `_music_for` only reads a single track.
+  - `apply_look` takes runner-up numbers only; no `id=<take>` or `other:k`.
+  - No tools for `prep`, `orient`, `cut-interview`, `cut-mv`, transcription, or cinematic music ranking.
+  - Fix: have the MCP tools call the CLI's functions (one code path), and add `prep` as a background job
+    with a status tool.
 - Regression check: re-cut past projects after each change, and compare picks.
 
 ## Drives
