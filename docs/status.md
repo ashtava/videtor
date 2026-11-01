@@ -10,8 +10,10 @@ footage the tool had never seen followed:
 - blind tests 2, 4 and 5: waiting for the user's verdict.
 
 The user also has an open question: how much of the work Claude does, and whether to take it offline. The
-proposal is below, and the user hasn't answered it yet. All 266 tests pass. Nothing is committed, by the user's
-choice.
+proposal is below, and the user hasn't answered it yet. All 266 tests pass.
+
+The repo has been on GitHub since 2026-11-01 (`ashtava/videtor`, `main`, public). Every Claude turn's
+changes are committed and pushed by a Stop hook; `out/` and `cache/` stay local.
 
 ## Deliveries
 
@@ -51,6 +53,10 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
 4. **A Premiere check** of `out/guru-25s-brief/guru-25s-brief-sfx.xml`: do the SFX levels and `#` in file
    paths come through?
 5. **Claude Desktop:** the user has the MCP snippet for `videtor.mcp_server`. Claude doesn't install it.
+6. **GitHub visibility:** `github.com/ashtava/videtor` is public (checked 2026-11-01).
+   - It holds the user's Premiere XMLs (`.xml-exports/`) and footage indexes (`kb/footage/`) with client file
+     names and paths, and the auto-push publishes every change.
+   - Raised with the user, who decides whether to make it private.
 
 ## The offline proposal (2026-11-01, not yet approved)
 
@@ -84,8 +90,13 @@ A middle ground: Claude sees text only (the brief, local captions, numbers), and
 
 ## Working agreements
 
-- **Local only.** Never commit or push. The repo has `.git` with no commits; the user said "Ignore Committing.
-  We are going to keep this local only."
+- **GitHub, with auto-push.** Until 2026-11-01 the rule was "Ignore Committing. We are going to keep this
+  local only." On 2026-11-01 the user put the repo on GitHub and asked: "push to github and create a push
+  everytime a change happens".
+  - `scripts/hooks/autopush.sh` runs as a Stop hook (`.claude/settings.local.json`).
+  - The repo is public, so tracked files must not carry private people's names or client-confidential
+    details; those go in `out/`.
+  - Never rewrite pushed history.
 - **Ask before installing** anything, including model downloads.
 - **Footage privacy.** Claude may see stills and contact sheets (allowed 2026-10-29); say when you look.
   Video never leaves the Mac. No client footage goes to any cloud service.

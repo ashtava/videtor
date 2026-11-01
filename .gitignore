@@ -23,3 +23,6 @@ media/
 .DS_Store
 .idea/
 .vscode/
+
+# Claude Code personal settings (the auto-push hook lives here)
+.claude/settings.local.json

@@ -1,0 +1,88 @@
+# Videtor: notes for agents
+
+Videtor is a local tool that cuts Premiere Pro timelines (FCP7 xmeml) from a folder of raw footage and a written
+brief, in the user's own style, learned from their past Premiere edits. DaVinci Resolve comes later. The user,
+Paritosh, is a video editor in India (IST): brand/social reels, events, interviews, music videos, sports
+promos.
+
+## Read before working
+
+1. `docs/status.md`: where every project stands, what the user owes us and what we owe them, the working
+   agreements, the backlog. **Update it after every delivery, verdict or build.**
+2. `docs/architecture.md`: the modules, files and formats, and the verified Premiere and footage facts. Don't
+   re-derive those.
+3. `README.md`: commands. `scripts/README.md`: helpers beside the CLI.
+4. For a brief: the `/cut-from-brief` skill (`.claude/skills/cut-from-brief/SKILL.md`). Then the bucket's
+   card `kb/buckets/<bucket>.md` and `kb/notes.md`.
+5. For a past project: `out/<name>/report.md` (what was delivered, how to rebuild it, the verdict).
+
+## The user's rules
+
+- **GitHub, with auto-push** (the user's instruction, 2026-11-01).
+  - The repo is `git@github.com:ashtava/videtor.git`, branch `main`. It is **public**.
+  - A Stop hook (`scripts/hooks/autopush.sh`, set up in `.claude/settings.local.json`) commits and pushes
+    every change at the end of each Claude turn.
+  - `out/` and `cache/` are gitignored and stay local. So keep people's names, client details, sheets
+    and footage stills there, never in tracked files.
+  - Never rewrite pushed history. The hook skips a merge or rebase in progress and refuses leftover
+    conflict markers.
+- **Ask before any install,** including model downloads.
+- **Footage stays on the Mac.** Claude may look at stills and contact sheets (allowed 2026-10-29); say when
+  you do. Never send footage to a cloud service.
+- **Blind tests stay blind:** in a project folder, don't open the user's own edit (`pf/`, `render/`, exported
+  `.mp4`s, their music, `untitled folder`) until they give it. The per-project lists are in `docs/status.md`.
+- **Premiere** (prpr bridge, `.mcp.json`):
+  - Say so before reading it live; the user may be working in another project.
+  - Use read-only scripts.
+  - Never bulk-insert effects: it crashed Premiere 26.0.2 twice. `videtor finish` prints manual steps unless
+    `--force-bridge`.
+- **Never edit the Claude Desktop config;** give the snippet.
+- **Say plainly when a drive is safe to unplug.**
+- **No code changes during a delivery.** Cut with what exists, and list the gaps in `docs/status.md` (the user
+  asked on 2026-11-01 why the code kept changing with every project). Build between projects. The exception
+  is a brief that explicitly needs a feature; then say so.
+- **After a delivery,** write `out/<name>/report.md`: the report as sent, the rebuild commands with every
+  `look` swap and note, and the verdict when it comes. Update `docs/status.md` too.
+
+## Environment
+
+```sh
+cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
+.venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
+.venv/bin/python -m unittest discover -s tests                   # 266 tests, about 15 s, no drive needed
+```
+
+- **Machine:** M2 Pro, 16 GB, macOS 26.3.1. Premiere Pro 26.0.2 (UXP), Resolve 19.1.4 Studio.
+- **Footage** is on external drives under `/Volumes` (the map is in `docs/status.md`):
+  - `prep` and the steadying pass in `cut` need the drive connected;
+  - the XML needs it to play;
+  - `cut` and `look` otherwise run from `cache/`.
+- **Slow decode:** Sony XAVC 4:2:2 10-bit decodes in software (about real time per worker), so a big shoot's
+  `prep` takes 30-60 min. Run it in the background and read stills meanwhile (`scripts/stills_sheets.py`).
+
+## Layout
+
+```
+src/videtor/  cli.py · mcp_server.py · kb/ (past edits, read-back) · analyze/ (per clip, per second)
+              plan/ (shot map → picks; moves, music, SFX, steadying, interview, music video) · export/ (xmeml writer)
+kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ ...
+.xml-exports/ the user's Premiere exports: the knowledge base's source
+cache/        derived data, about 5 GB (footage maps took hours with the drives connected: don't delete)
+out/<name>/   one folder per cut: brief.md, shotmap.json, picks.json, <name>.xml, sheets, report.md, work/
+scripts/      helpers and archived experiments (not imported by the CLI)
+docs/         status.md · architecture.md · architecture.html (the original 10-29 design page)
+```
+
+`cache/` and `out/` are gitignored.
+
+## Conventions
+
+- **Plain JSON files, no database.** xmeml is read with the stdlib (`kb/xmeml.py`) and written by our own
+  writer (`export/xmeml_writer.py`). Not OTIO's `fcp_xml` adapter: it fails on 100 fps media.
+- **Determinism:** Claude writes the shot map (or `aroll.json`/`mv.json`); everything after it is
+  deterministic code. A re-cut drops `look` swaps, so apply them again.
+- **Tests:** `unittest` with synthetic fixtures. Every module opens with a docstring saying what it is for, in
+  plain words. Match the surrounding code: compact Python, few comments, the same naming.
+- **Writing to the user:** short and plain. Lead with the XML path and how to import it (File ▸ Import, drive
+  connected). Then the cut section by section, the second-look changes, and the judgment calls. Report test
+  results and anything unverified honestly.

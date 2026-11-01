@@ -7,8 +7,12 @@ description: Cut a Premiere Pro timeline from a written brief with Videtor (fold
 
 You turn the user's brief into a shot map; Videtor does the rest on their Mac. Work in
 `~/workspace/videtor` with `.venv/bin/videtor` (prefix `export PATH=/opt/homebrew/bin:$PATH`).
-The repo is local only: never commit. The user allowed Claude to see frames of their footage
-(2026-10-29) for the overview and the second look; still say when you are looking.
+The repo is on GitHub (`ashtava/videtor`, public as of 2026-11-01). A Stop hook commits and pushes
+every change at the end of each turn, except `out/` and `cache/`, which are gitignored. So keep a
+project's specifics there: people's names, client details, sheets. The user allowed Claude to see frames
+of their footage (2026-10-29) for the overview and the second look; still say when you are looking.
+**Don't change Videtor's code during a delivery.** Cut with what exists, and list the gaps in
+`docs/status.md`. Build between projects, unless the brief explicitly needs a feature; then say so.
 
 Inputs: the brief (text) and either a footage folder (`/Volumes/<drive>/<folder>`) or the
 key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
@@ -26,11 +30,17 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
      prints that the drive can be unplugged, tell the user. The shot-map key is
      `<name>::footage`.
    - Indexed project without a map: `.venv/bin/python -m videtor.analyze.footmap <mount> --key KEY`.
+   - Another shoot left on the same card (other dates in the file names, another event in the stills):
+     mark those files `"excluded": true` in `kb/footage/<name>.json`, and they stay out of every pool. If
+     prep is decoding them, stop it and run it again (Alpha Summit: the 22 May clips).
+   - Sony XAVC 4:2:2 10-bit has no hardware decode, so a big shoot's map takes 30-60 min. Run prep in the
+     background.
 3. **Read the overview**: `overview.md` (takes, cameras, frame rates, how much is portrait or
    landscape, faces, hands, camera moves, setups) and every `overview-*.jpg` (one still per take,
    grouped by setup). Note the looks, locations, products and people the brief can draw on.
-   On a large shoot, also sheet every take's middle still (`cache/frames/<fid>_1.jpg`) as soon as
-   prep's stills step ends: you can read the material and draft the shot map while the map builds.
+   On a large shoot, also sheet every take's middle still as soon as prep's stills step ends
+   (`.venv/bin/python scripts/stills_sheets.py <name> out/<name>/work/stills`). You can read the material
+   and draft the shot map while the map builds.
    Check orientation by eye: detection reads faces, so a sideways camera that shot only bottles,
    products or hands stays as shot (`prep` prints a "check" line for a camera whose few faces said
    "turned"). Lettering, horizons and standing people tell you; fix a camera or a take with
@@ -40,10 +50,18 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    <seconds> --reveal-at <seconds>`. Choose the track and in-point so a lift (drop) lands on the
    reveal; a beat is 60/BPM seconds. Count the beats per section with the track's beat grid
    (`cache/beats/<track>.beats.json`).
+   **No music given** ("use your own music"): pick from the user's library (`~/Downloads/Music`). For a
+   cinematic or emotional piece, `.venv/bin/python scripts/cinematic_rank.py ~/Downloads/Music
+   out/<name>/work/music-features.json` gives a shortlist. Choose on the per-5 s loudness arc: a quiet
+   open, a lift, a climax, an outro. You can't hear the tracks, so say the track was chosen by measurement,
+   and don't claim more than the numbers show. A medley of one track's intro, climax and outro covers a
+   60 s film (`out/engagement/`).
 5. **Search** for every kind of shot the brief asks for: `videtor search - "<description>" --key
    KEY` (the drive argument may be `-` for a prepared folder). Rephrase until the top hits are
    what you mean; CLIP reads concrete nouns (rings, chains, buttons, sunglasses, a man in a white
-   jacket) far better than qualities (premium, confident).
+   jacket) far better than qualities (premium, confident). To run many searches at once with a sheet
+   of the hits: `.venv/bin/python scripts/search_sheet.py <queries.json> out/<name>/work/search-1.jpg
+   --key KEY [--landscape]`.
    For an event or party reel, read the `[event]` rules in `kb/notes.md` and `kb/profile/event.json`
    before planning: the user's own Diwali edit (`.xml-exports/Diwali Party.xml`) is people first
    (faces to camera, poses, hugs; no crowd wides), uses the photo wall with the event's sign as the
@@ -99,7 +117,10 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    edit to compare with.
 10. **Report** the XML path (Premiere: File ▸ Import; the drive must be connected to play), the
     track and in-point, the cut section by section, what the second look changed and why, and the
-    judgment calls you made on the brief. Alternates sit on V2-V3.
+    judgment calls you made on the brief. Alternates sit on V2-V3. Save the same report as
+    `out/<name>/report.md` (examples in `out/engagement/`, `out/alpha-summit/`). Include the commands
+    that rebuild the cut: prep, cut, and `look` with every swap and its note. Then update
+    `docs/status.md` (the delivery row, what you're waiting on, any gaps you noted).
 11. **After the user fixes the cut**, read it back: `.venv/bin/python -m videtor.kb.readback
     out/<name>/picks.json --live` (or `--xml <export>`); the labels land in `kb/feedback/`.
 
@@ -117,8 +138,8 @@ Steps 1-3 as above; then, instead of a shot map:
    (`videtor.analyze.speech.transcribe`) for where vocals start and a new voice enters ("Uh, yeah, okay").
 3. **Who sings when**: build sheets of every take's stills with its synced song span (`out/<name>/takes-*.jpg`);
    coverage tells (a performer's takes start rolling just before his part). Confirm by eye with lip strips:
-   8 face-cropped frames 0.12 s apart at chosen song times (`ffmpeg -ss <take time> -vf fps=25/3`); open and
-   changing mouth shapes = rapping. Roaming group takes: a frame every few seconds shows whom the camera follows.
+   8 face-cropped frames 0.12 s apart at chosen song times (`scripts/lips.py <name> "cache/sync/<song>.json"
+   out/<name>/lips C1518@95.2 ...`); open and changing mouth shapes = rapping. Roaming group takes: a frame every few seconds shows whom the camera follows.
 4. **Write `out/<name>/mv.json`** (schema in `src/videtor/plan/musicvideo.py`; example `out/check-hai/mv.json`):
    per take `who` (A, B, both, `singer` for a take that follows whoever sings, none) and `look` (location +
    outfit), `skip` for unusable takes, `avoid` ranges (crew hands), sections on the bars with `beats`,

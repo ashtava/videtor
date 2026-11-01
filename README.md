@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Videtor
 
 Point it at a folder of raw footage. It indexes and analyzes every clip, consults a
@@ -7,26 +6,42 @@ bed, and writes a timeline that opens in Premiere Pro or DaVinci Resolve. You fi
 the edit in the NLE; when you re-export the finished sequence, the knowledge base
 learns from what you changed.
 
-Design outline, GitHub survey and phased plan: `docs/architecture.html`.
+Docs:
+- `docs/status.md`: where every project stands, and what's pending.
+- `docs/architecture.md`: how it works, as built, with the verified Premiere and footage facts.
+- `CLAUDE.md`: notes for agents working in this repo.
+- `docs/architecture.html`: the original design outline, GitHub survey and phased plan (2026-10-29).
 
 ## Layout
 
 ```
 src/videtor/
   cli.py            videtor <command>
-  kb/xmeml.py       reads Premiere "Final Cut Pro XML" exports (stdlib only)
-  kb/metrics.py     style signals from one sequence, nested sequences opened up
-  kb/profile.py     rolls sequences up into one profile per edit type
-  kb/footage.py     indexes the raw footage an edit was cut from: used vs. unused
+  mcp_server.py     the brief-to-cut steps as MCP tools (Claude Desktop, Claude Code)
+  kb/               past edits: xmeml reader (stdlib only), metrics, profiles per bucket, footage index
+                    (used vs unused), selects, SFX habits, edit breakdowns, read-back of a fixed cut;
+                    js/ holds the Premiere bridge scripts
+  analyze/          per clip and per second: frames, audio, motion, faces, CLIP tags, footage map,
+                    orientation, beats, speech (local Whisper), lip-sync audio sync
+  plan/             shot map, filler, keeper, taste, editing moves, music, SFX, steadying, interview,
+                    music video, second look, sheets, overview, timeline build; planner v0 and benchmark
+  export/           Premiere xmeml writer
 kb/
   projects/         one JSON per ingested sequence
-  profile/          one JSON per edit type (brand-social.json, sports-promo.json, ...)
-  footage/          one index + summary per drive (ffprobe metadata, used ranges)
-  manifest.json     edit type per sequence; extra footage folders per sequence
-  notes.md          rules in prose that the planner reads verbatim
-cache/frames/       sampled frames per clip (gitignored; 3 per clip + 1 per used range)
-docs/               architecture page
-tests/              unittest suite with a synthetic xmeml fixture
+  profile/          one JSON per bucket (edit type): brand-social, sports-promo, event
+  footage/          footage indexes: one per drive (past edits) and one per prepared folder
+  keeper/ buckets/  what each bucket's edits keep; the cards Claude reads before planning
+  briefs/ marks/ feedback/   briefs for past edits, Source Monitor marks, read-back labels
+  manifest.json     bucket per sequence; extra footage folders per sequence
+  notes.md          rules in prose, per bucket
+  sfx.json          your sound design habits
+.xml-exports/       your Premiere exports, the knowledge base's source
+cache/              derived data (gitignored): frames, footage maps, analysis, beats, sync audio,
+                    transcripts, steadying measures, models
+out/<name>/         one folder per cut (gitignored): brief, shot map, picks, sheets, XML, report.md
+scripts/            helpers beside the CLI and archived experiments (scripts/README.md)
+docs/               status, architecture, the original design page
+tests/              unittest suite with synthetic fixtures
 ```
 
 ## Setup
@@ -236,6 +251,13 @@ landscape takes in a vertical piece are cropped around the face in the chosen wi
 (Basic Motion centre: offset ÷ 3840 and ÷ 2160 on a 1080×1920 sequence, verified
 against Premiere's own stored positions).
 
+Helpers for reading a big shoot sit in `scripts/`:
+- `stills_sheets.py` sheets every take's middle still while the footage map builds;
+- `search_sheet.py` runs several searches at once and sheets the hits;
+- `cinematic_rank.py` shortlists a music library for a cinematic piece when the brief leaves the music to
+  Claude;
+- `transcribe_bytes.py` transcribes an interview camera for people bytes.
+
 `videtor.mcp_server` exposes the same steps as MCP tools (projects, music, search, shot
 map check, cut, second look, score, read-back) for Claude Desktop and Claude Code; the
 repo's `.mcp.json` registers it next to `prpr`.
@@ -248,7 +270,3 @@ uv run python -m unittest discover -s tests -v
 
 The parser and metrics use only the standard library, so the tests also run on the
 system Python: `PYTHONPATH=src python3 -m unittest discover -s tests`.
-=======
-# videtor
-video editing timeline creation pipeline for premiere
->>>>>>> c024b03e4a022cec54d3f86faf7a94ae65c47911

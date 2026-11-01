@@ -27,6 +27,14 @@ is wiped on reboot.
 | `premiere/project_marks.js` | Read-only. Lists every clip in the open Premiere project: bin, path, colour label, markers, Source Monitor in/out marks | `prpr exec scripts/premiere/project_marks.js`. Produced `kb/marks/guru.json` |
 | `premiere/motion_probe.js` | Read-only. Reads Motion Position/Scale/Rotation of named clips on the active sequence (edit `want`) | Checking Basic Motion conventions against Premiere's stored values |
 
+`hooks/autopush.sh` is the Claude Code Stop hook. It is set up in `.claude/settings.local.json`, which is
+gitignored.
+- At the end of every Claude turn it commits whatever changed and pushes it to `origin`.
+- It skips merges and rebases in progress, refuses leftover conflict markers and anything that looks like
+  a secret, and leaves out files over 50 MB.
+- It prints one line when it acts.
+- Test it by hand with `echo '{}' | scripts/hooks/autopush.sh`. Turn it off in `/hooks`.
+
 The Premiere scripts go over the prpr bridge. Run them only when the user has said Premiere is free: a read
 once picked up whichever project they had open. Never bulk-write effects over the bridge, because it crashed
 Premiere twice on 2026-10-30.
