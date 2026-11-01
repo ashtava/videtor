@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Videtor
 
 Point it at a folder of raw footage. It indexes and analyzes every clip, consults a
@@ -247,3 +248,7 @@ uv run python -m unittest discover -s tests -v
 
 The parser and metrics use only the standard library, so the tests also run on the
 system Python: `PYTHONPATH=src python3 -m unittest discover -s tests`.
+=======
+# videtor
+video editing timeline creation pipeline for premiere
+>>>>>>> c024b03e4a022cec54d3f86faf7a94ae65c47911
