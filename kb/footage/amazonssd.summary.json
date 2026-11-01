@@ -1,0 +1,393 @@
+{
+  "Gujarat Giants.xml::Sequence 01": {
+    "roots": [
+      "/Volumes/AMAZONSSD/WPL Gujarat Giants/04-01-2026/RAW_Rushesh",
+      "/Volumes/AMAZONSSD/WPL Gujarat Giants"
+    ],
+    "files": {
+      "used": 17,
+      "unused": 449,
+      "renders": 14,
+      "duplicates": 0,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 698.5,
+      "unused_files": 21038.0,
+      "selected": 135.8
+    },
+    "select_ratio": 0.194,
+    "unused_kinds": {
+      "image": 5,
+      "video": 235,
+      "audio": 209
+    },
+    "formats": {
+      "3840x2160 @50.0 h264": 129,
+      "3840x2160 @25.0 h264": 114,
+      "1080x1920 @23.976 h264": 10,
+      "3840x2160 @100.0 h264": 5,
+      "1080x1920 @23.976 prores": 3,
+      "1080x1920 @30.0 prores": 1
+    },
+    "matched_by_basename": 0,
+    "folders": {
+      "WPL Gujarat Giants": {
+        "used": 4,
+        "unused": 0
+      },
+      "WPL Gujarat Giants/04-01-2026/RAW_Rushesh/BTS": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/RAW_Rushesh/BTS/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 117
+      },
+      "WPL Gujarat Giants/04-01-2026/RAW_Rushesh/cam a": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/RAW_Rushesh/cam a/card 1/M4ROOT/CLIP": {
+        "used": 10,
+        "unused": 51
+      },
+      "WPL Gujarat Giants/04-01-2026/RAW_Rushesh/cam b": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/RAW_Rushesh/cam b/card 1/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 39
+      },
+      "WPL Gujarat Giants/04-01-2026/RAW_Rushesh/cam c": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/RAW_Rushesh/cam c/card 1/M4ROOT/CLIP": {
+        "used": 3,
+        "unused": 28
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0001": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0002": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0003": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0004": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0005": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0006": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0007": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0008": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0009": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0010": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0011": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0012": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0013": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0014": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0015": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0016": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0017": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0018": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0019": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0020": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0021": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0022": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0023": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0024": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0025": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0026": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0027": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0028": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0029": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0030": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0031": {
+        "used": 0,
+        "unused": 2
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0032": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0033": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0034": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0035": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0036": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0037": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0038": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0039": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0040": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0041": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0042": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0043": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0044": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0045": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0046": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0047": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0048": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0049": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0050": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0051": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0052": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0053": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0054": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0055": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0056": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0057": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0058": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0059": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0060": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0061": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0062": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0063": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0064": {
+        "used": 0,
+        "unused": 3
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0065": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0066": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0067": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0068": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0069": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0070": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0071": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0072": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0073": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0074": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0075": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0076": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0077": {
+        "used": 0,
+        "unused": 4
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0078": {
+        "used": 0,
+        "unused": 1
+      },
+      "WPL Gujarat Giants/04-01-2026/Sound/FOLDER01/ZOOM0079": {
+        "used": 0,
+        "unused": 1
+      }
+    }
+  }
+}

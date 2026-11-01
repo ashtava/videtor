@@ -1,0 +1,157 @@
+{
+  "Coca cola.xml::Sequence 01": {
+    "roots": [
+      "/Volumes/Paritosh_4/Copied_Khanna Fish",
+      "/Volumes/Paritosh_4/coca cola"
+    ],
+    "files": {
+      "used": 48,
+      "unused": 829,
+      "renders": 36,
+      "duplicates": 57,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 1890.8,
+      "unused_files": 19206.0,
+      "selected": 242.1
+    },
+    "select_ratio": 0.128,
+    "unused_kinds": {
+      "image": 23,
+      "video": 707,
+      "audio": 99
+    },
+    "formats": {
+      "3840x2160 @50.0 h264": 658,
+      "3840x2160 @25.0 h264": 83,
+      "2160x3840 @23.976 h264": 12,
+      "2160x3840 @25.0 h264": 11,
+      "3840x2160 @29.97 h264": 3,
+      "2160x3840 @25.0 prores": 2
+    },
+    "matched_by_basename": 0,
+    "folders": {
+      "Copied_Khanna Fish": {
+        "used": 48,
+        "unused": 3
+      },
+      "coca cola/Brother Dhaba AD": {
+        "used": 0,
+        "unused": 4
+      },
+      "coca cola/DAY-03. 27-12-2025/CAM-A/CARD-01": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-03. 27-12-2025/CAM-A/CARD-01/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 110
+      },
+      "coca cola/DAY-03. 27-12-2025/CAM-B/CARD-01": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-03. 27-12-2025/CAM-B/CARD-01/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 119
+      },
+      "coca cola/DAY-03. 27-12-2025/CAM-C/CARD-01": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-03. 27-12-2025/CAM-C/CARD-01/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 10
+      },
+      "coca cola/DAY-03. 27-12-2025/INSTA 360": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-03. 27-12-2025/SOUND": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-03. 27-12-2025/SOUND/25Y12M27": {
+        "used": 0,
+        "unused": 35
+      },
+      "coca cola/DAY-04. 28-12-2025": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-04. 28-12-2025/CAM-A/CARD-01": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-04. 28-12-2025/CAM-A/CARD-01/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 52
+      },
+      "coca cola/DAY-04. 28-12-2025/CAM-B/CARD-01": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-04. 28-12-2025/CAM-B/CARD-01/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 45
+      },
+      "coca cola/DAY-04. 28-12-2025/CAM-C/CARD-01": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-04. 28-12-2025/CAM-C/CARD-01/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 28
+      },
+      "coca cola/DAY-04. 28-12-2025/SOUND": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-04. 28-12-2025/SOUND/25Y12M27": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/DAY-04. 28-12-2025/SOUND/25Y12M28": {
+        "used": 0,
+        "unused": 41
+      },
+      "coca cola/Day 1": {
+        "used": 0,
+        "unused": 2
+      },
+      "coca cola/Day 1/CAM A": {
+        "used": 0,
+        "unused": 77
+      },
+      "coca cola/Day 1/CAM B": {
+        "used": 0,
+        "unused": 201
+      },
+      "coca cola/Day 1/CAM C": {
+        "used": 0,
+        "unused": 52
+      },
+      "coca cola/OSMO ": {
+        "used": 0,
+        "unused": 1
+      },
+      "coca cola/OSMO /DCIM/DJI_001": {
+        "used": 0,
+        "unused": 3
+      },
+      "coca cola/extras": {
+        "used": 0,
+        "unused": 29
+      },
+      "coca cola/extras/untitled folder 2": {
+        "used": 0,
+        "unused": 2
+      },
+      "coca cola/music": {
+        "used": 0,
+        "unused": 4
+      }
+    }
+  }
+}

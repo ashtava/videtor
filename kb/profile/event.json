@@ -1,0 +1,80 @@
+{
+  "type": "event",
+  "learned_from": 1,
+  "sequences": [
+    "Diwali Party.xml::Sequence 01"
+  ],
+  "fps": 25.0,
+  "frame_size": [
+    1080,
+    1920
+  ],
+  "orientation": "vertical",
+  "duration_s": {
+    "count": 1,
+    "median": 45.72,
+    "mean": 45.72,
+    "p10": 45.72,
+    "p90": 45.72
+  },
+  "tracks": {
+    "video": 9,
+    "audio": 18
+  },
+  "shot_length_s": {
+    "count": 128,
+    "median": 0.32,
+    "mean": 0.425,
+    "p10": 0.108,
+    "p90": 0.88
+  },
+  "cuts_per_min": 178.48,
+  "layers": {
+    "median": 1,
+    "p90": 2
+  },
+  "broll_length_s": 0.32,
+  "transitions": {
+    "share_of_edits": 0.0,
+    "by_name": {},
+    "frames": null
+  },
+  "audio_transitions": {
+    "share_of_audio_clips": 0.408,
+    "by_name": {
+      "Cross Fade (+3dB)": 0.85,
+      "Cross Fade ( 0dB)": 0.15
+    },
+    "frames": 37.5
+  },
+  "speed_changes": {
+    "share": 0.398,
+    "ramp_share": 0.0
+  },
+  "adjustment_layers_per_min": 47.24,
+  "adjustment_effects": {
+    "Flash 2": 29
+  },
+  "effects_seen": {},
+  "audio_effects_seen": {
+    "Low Pass Filter": 4
+  },
+  "luts_seen": {},
+  "audio_db": {
+    "camera": null,
+    "bed": -6.5,
+    "sfx": 0.0
+  },
+  "audio_db_adjusted": {
+    "camera": null,
+    "bed": -6.5,
+    "sfx": 4.0
+  },
+  "audio_level_touched_share": 0.55,
+  "audio_tracks_by_role": {
+    "sfx": 12,
+    "bed": 4,
+    "empty": 2
+  },
+  "first_title_s": null
+}

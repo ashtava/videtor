@@ -1,0 +1,30 @@
+{
+  "Coca cola.xml::Sequence 01": {
+    "n": {
+      "used": 45,
+      "unused": 707
+    },
+    "used": {
+      "duration_s": 16.32,
+      "fps": 50.0,
+      "height": 2160,
+      "sharpness": 34.247,
+      "brightness": 98.171,
+      "contrast": 29.149,
+      "colorfulness": 12.839,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    },
+    "unused": {
+      "duration_s": 10.56,
+      "fps": 50.0,
+      "height": 2160,
+      "sharpness": 28.559,
+      "brightness": 100.107,
+      "contrast": 28.543,
+      "colorfulness": 13.237,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    }
+  }
+}

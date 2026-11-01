@@ -1,0 +1,655 @@
+{
+  "name": "Sequence 01",
+  "id": "sequence-1",
+  "role": "main",
+  "source_xml": ".xml-exports/Adidas.xml",
+  "key": "Adidas.xml::Sequence 01",
+  "fps": 25.0,
+  "frame_size": [
+    1080,
+    1920
+  ],
+  "orientation": "vertical",
+  "duration_s": 45.88,
+  "tracks": {
+    "video": 16,
+    "audio": 19
+  },
+  "nested": {
+    "clips": 1,
+    "expanded": 1
+  },
+  "primary_video_track": "V1",
+  "shot_length_s": {
+    "count": 48,
+    "median": 1.34,
+    "mean": 1.482,
+    "p10": 0.04,
+    "p90": 2.88
+  },
+  "shot_lengths_s": [
+    0.96,
+    2.32,
+    1.36,
+    2.24,
+    1.6,
+    4.72,
+    1.76,
+    3.8,
+    4.48,
+    1.88,
+    3.44,
+    2.64,
+    5.32,
+    0.76,
+    1.12,
+    1.0,
+    2.52,
+    2.24,
+    1.32,
+    0.6,
+    0.96,
+    1.48,
+    1.8,
+    1.96,
+    0.96,
+    1.12,
+    2.04,
+    1.52,
+    0.8,
+    1.52,
+    1.6,
+    1.76,
+    1.08,
+    0.68,
+    1.84,
+    1.96,
+    0.04,
+    0.76,
+    0.04,
+    0.04,
+    0.04,
+    0.04,
+    0.04,
+    0.04,
+    0.04,
+    0.04,
+    0.04,
+    0.84
+  ],
+  "primary_shot_length_s": {
+    "count": 13,
+    "median": 2.32,
+    "mean": 2.809,
+    "p10": 1.408,
+    "p90": 4.672
+  },
+  "cuts_s": [
+    0.84,
+    1.6,
+    2.92,
+    3.72,
+    4.32,
+    5.44,
+    5.48,
+    6.4,
+    6.44,
+    7.92,
+    8.72,
+    8.88,
+    10.08,
+    10.84,
+    12.32,
+    13.92,
+    13.96,
+    16.8,
+    16.84,
+    18.64,
+    19.4,
+    20.36,
+    20.4,
+    22.24,
+    24.2,
+    24.76,
+    26.52,
+    26.56,
+    27.28,
+    27.48,
+    28.68,
+    29.24,
+    30.56,
+    32.76,
+    32.8,
+    34.0,
+    34.76,
+    35.12,
+    35.84,
+    35.88,
+    36.64,
+    36.68,
+    38.68,
+    40.12,
+    41.64,
+    42.4,
+    43.08,
+    43.96,
+    44.0
+  ],
+  "cuts_per_min": 64.08,
+  "layers": {
+    "median": 1,
+    "p90": 2,
+    "max": 4
+  },
+  "broll": {
+    "count": 35,
+    "length_s": {
+      "count": 35,
+      "median": 0.96,
+      "mean": 0.99,
+      "p10": 0.04,
+      "p90": 1.96
+    },
+    "tracks": [
+      "V2",
+      "V3",
+      "V4",
+      "V5",
+      "V6",
+      "V9"
+    ]
+  },
+  "transitions": {
+    "count": 0,
+    "share_of_edits": 0.0,
+    "by_name": {},
+    "frames": null
+  },
+  "audio_transitions": {
+    "count": 28,
+    "share_of_audio_clips": 0.326,
+    "by_name": {
+      "Cross Fade (+3dB)": 26,
+      "Cross Fade ( 0dB)": 2
+    },
+    "frames": {
+      "count": 28,
+      "median": 24.5,
+      "mean": 25.571,
+      "p10": 10.0,
+      "p90": 42.0
+    }
+  },
+  "effects_seen": {},
+  "audio_effects_seen": {
+    "Low Pass Filter": 14
+  },
+  "speed_changes": {
+    "share": 0.0,
+    "ramp_share": 0.0,
+    "values": []
+  },
+  "graphics": {
+    "adjustment": 20,
+    "adjustment_per_min": 26.16,
+    "adjustment_effects": {},
+    "graphic": 19,
+    "matte": 1,
+    "first_title_s": 0.88
+  },
+  "labels": {
+    "video": {
+      "Iris": 52,
+      "Lavender": 2,
+      "Forest": 2
+    },
+    "audio": {
+      "Caribbean": 60,
+      "Iris": 68
+    }
+  },
+  "luts_seen": {},
+  "audio_tracks": [
+    {
+      "track": "A1",
+      "clips": 4,
+      "covered_s": 18.36,
+      "role": "sfx",
+      "level_db": {
+        "count": 4,
+        "median": 11.0,
+        "mean": 11.0,
+        "p10": 11.0,
+        "p90": 11.0
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": 11.0,
+        "mean": 11.0,
+        "p10": 11.0,
+        "p90": 11.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "Audio-esv2-50p-bg-10p-music-10p.mp3"
+      ]
+    },
+    {
+      "track": "A2",
+      "clips": 4,
+      "covered_s": 18.36,
+      "role": "sfx",
+      "level_db": {
+        "count": 4,
+        "median": 11.0,
+        "mean": 11.0,
+        "p10": 11.0,
+        "p90": 11.0
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": 11.0,
+        "mean": 11.0,
+        "p10": 11.0,
+        "p90": 11.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "Audio-esv2-50p-bg-10p-music-10p.mp3"
+      ]
+    },
+    {
+      "track": "A3",
+      "clips": 13,
+      "covered_s": 36.44,
+      "role": "camera",
+      "level_db": {
+        "count": 13,
+        "median": 1.0,
+        "mean": 4.385,
+        "p10": 0.0,
+        "p90": 11.0
+      },
+      "level_db_adjusted": {
+        "count": 7,
+        "median": 11.0,
+        "mean": 8.143,
+        "p10": 1.0,
+        "p90": 11.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "Sequence 02-esv2-50p-bg-10p-music-10p.mp3",
+        "VK0042.MP4"
+      ]
+    },
+    {
+      "track": "A4",
+      "clips": 13,
+      "covered_s": 36.44,
+      "role": "camera",
+      "level_db": {
+        "count": 13,
+        "median": 1.0,
+        "mean": 4.385,
+        "p10": 0.0,
+        "p90": 11.0
+      },
+      "level_db_adjusted": {
+        "count": 7,
+        "median": 11.0,
+        "mean": 8.143,
+        "p10": 1.0,
+        "p90": 11.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "Sequence 02-esv2-50p-bg-10p-music-10p.mp3",
+        "VK0042.MP4"
+      ]
+    },
+    {
+      "track": "A5",
+      "clips": 7,
+      "covered_s": 23.52,
+      "role": "bed",
+      "level_db": {
+        "count": 7,
+        "median": 0.0,
+        "mean": 2.286,
+        "p10": 0.0,
+        "p90": 6.4
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 16.0,
+        "mean": 16.0,
+        "p10": 16.0,
+        "p90": 16.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "Sequence 02-esv2-50p-bg-10p-music-10p.mp3",
+        "VK0042.MP4"
+      ]
+    },
+    {
+      "track": "A6",
+      "clips": 7,
+      "covered_s": 23.52,
+      "role": "bed",
+      "level_db": {
+        "count": 7,
+        "median": 0.0,
+        "mean": 2.286,
+        "p10": 0.0,
+        "p90": 6.4
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 16.0,
+        "mean": 16.0,
+        "p10": 16.0,
+        "p90": 16.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "Sequence 02-esv2-50p-bg-10p-music-10p.mp3",
+        "VK0042.MP4"
+      ]
+    },
+    {
+      "track": "A7",
+      "clips": 9,
+      "covered_s": 22.8,
+      "role": "sfx",
+      "level_db": {
+        "count": 9,
+        "median": 0.0,
+        "mean": 3.667,
+        "p10": 0.0,
+        "p90": 11.0
+      },
+      "level_db_adjusted": {
+        "count": 3,
+        "median": 11.0,
+        "mean": 11.0,
+        "p10": 11.0,
+        "p90": 11.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "C9950.MP4",
+        "Sequence 02-esv2-50p-bg-10p-music-10p.mp3",
+        "VK0042.MP4"
+      ]
+    },
+    {
+      "track": "A8",
+      "clips": 9,
+      "covered_s": 22.8,
+      "role": "sfx",
+      "level_db": {
+        "count": 9,
+        "median": 0.0,
+        "mean": 3.667,
+        "p10": 0.0,
+        "p90": 11.0
+      },
+      "level_db_adjusted": {
+        "count": 3,
+        "median": 11.0,
+        "mean": 11.0,
+        "p10": 11.0,
+        "p90": 11.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "C9950.MP4",
+        "Sequence 02-esv2-50p-bg-10p-music-10p.mp3",
+        "VK0042.MP4"
+      ]
+    },
+    {
+      "track": "A9",
+      "clips": 2,
+      "covered_s": 4.48,
+      "role": "camera",
+      "level_db": {
+        "count": 2,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "C9953.MP4",
+        "CAM A0082.MP4"
+      ]
+    },
+    {
+      "track": "A10",
+      "clips": 2,
+      "covered_s": 4.48,
+      "role": "camera",
+      "level_db": {
+        "count": 2,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "C9953.MP4",
+        "CAM A0082.MP4"
+      ]
+    },
+    {
+      "track": "A11",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 1,
+      "sources": []
+    },
+    {
+      "track": "A12",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 1,
+      "sources": []
+    },
+    {
+      "track": "A13",
+      "clips": 7,
+      "covered_s": 45.84,
+      "role": "bed",
+      "level_db": {
+        "count": 7,
+        "median": 0.0,
+        "mean": -0.714,
+        "p10": -2.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -5.0,
+        "mean": -5.0,
+        "p10": -5.0,
+        "p90": -5.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {
+        "Low Pass Filter": 7
+      },
+      "transitions": 4,
+      "sources": [
+        "ES_Other Than That - The New Fools.mp3"
+      ]
+    },
+    {
+      "track": "A14",
+      "clips": 7,
+      "covered_s": 45.84,
+      "role": "bed",
+      "level_db": {
+        "count": 7,
+        "median": 0.0,
+        "mean": -0.714,
+        "p10": -2.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -5.0,
+        "mean": -5.0,
+        "p10": -5.0,
+        "p90": -5.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {
+        "Low Pass Filter": 7
+      },
+      "transitions": 4,
+      "sources": [
+        "ES_Other Than That - The New Fools.mp3"
+      ]
+    },
+    {
+      "track": "A15",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A16",
+      "clips": 1,
+      "covered_s": 45.84,
+      "role": "bed",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "Coach Reel Final 1 (1).mp4"
+      ]
+    },
+    {
+      "track": "A17",
+      "clips": 1,
+      "covered_s": 45.84,
+      "role": "bed",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "Coach Reel Final 1 (1).mp4"
+      ]
+    },
+    {
+      "track": "A18",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A19",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    }
+  ],
+  "markers": 0,
+  "sources": [
+    "/Users/paritoshsrivastava/Downloads/Audio-esv2-50p-bg-10p-music-10p.mp3",
+    "/Users/paritoshsrivastava/Downloads/Coach Reel Final 1 (1).mp4",
+    "/Users/paritoshsrivastava/Downloads/ES_Other Than That - The New Fools.mp3",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQMvW_bZ15ggDvKDkGuL00vpThn_-iSozNlXApRF91vPukMoqUmk1-sZ7O8e50pJpS1kqigk1p0aagKpTId1nC8JT-7qI9Ls5gun9d0.mp4",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQOuV3PDe64LgsSckUnqG03v-b69eP8TYs_Pjxtr9EeqIeSdsFAZrm47QCvq0Upq108aoz381QN8p4UHoyL7PWbbimdVNfwp7pZ0uLY.mp4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Anurag/Card 2/CLIP/C9949.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Anurag/Card 2/CLIP/C9950.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Anurag/Card 2/CLIP/C9951.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Anurag/Card 2/CLIP/C9952.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Anurag/Card 2/CLIP/C9953.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Anurag/Card 2/CLIP/C9957.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Anurag/Card 2/CLIP/C9960.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Sam/Card 1/CLIP/CAM A0074.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Sam/Card 1/CLIP/CAM A0075.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Sam/Card 1/CLIP/CAM A0077.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Sam/Card 1/CLIP/CAM A0082.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/VIper/M4ROOT/CLIP/CAM A0110.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/VIper/M4ROOT/CLIP/CAM A0111.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/VIper/M4ROOT/CLIP/CAM A0112.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Vaibhav/CLIP/VK0042.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Vedant/CLIP/J0332.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Vedant/CLIP/J0336.MP4",
+    "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI/Vedant/CLIP/J0341.MP4",
+    "/Volumes/Macintosh HD/Users/paritoshsrivastava/Downloads/Sequence 02-esv2-50p-bg-10p-music-10p.mp3"
+  ]
+}

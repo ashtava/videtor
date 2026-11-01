@@ -1,0 +1,720 @@
+<title>Videtor Architecture</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: one reading column (~68ch) for prose; diagram, tables and code may widen to 1040px inside their own scroll containers. */
+  :root {
+    --bg: #f3f4f7;
+    --surface: #ffffff;
+    --surface-2: #e9ebf0;
+    --fg: #1a1e25;
+    --muted: #596270;
+    --line: #d7dbe2;
+    --line-strong: #8c95a3;
+    --accent: #0b7a85;
+    --accent-ink: #ffffff;
+    --accent-soft: #d8eff1;
+    --font-display: "Barlow Semi Condensed", "Avenir Next Condensed", "Arial Narrow", sans-serif;
+    --font-body: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171c; --surface: #1c2027; --surface-2: #242932; --fg: #e5e8ed; --muted: #9aa3b1;
+      --line: #2e343e; --line-strong: #5d6675; --accent: #45bcc6; --accent-ink: #0d1a1c; --accent-soft: #15353a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171c; --surface: #1c2027; --surface-2: #242932; --fg: #e5e8ed; --muted: #9aa3b1;
+    --line: #2e343e; --line-strong: #5d6675; --accent: #45bcc6; --accent-ink: #0d1a1c; --accent-soft: #15353a;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: var(--font-body); font-size: 17px; line-height: 1.55;
+    padding-block: 32px 72px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 56px; }
+  .prose { max-width: 68ch; }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.1; margin: 0; }
+  h1 { font-size: clamp(40px, 6vw, 60px); font-weight: 700; letter-spacing: -0.01em; }
+  h2 { font-size: 30px; font-weight: 600; }
+  h3 { font-size: 21px; font-weight: 600; margin-top: 8px; }
+  p { margin: 0; }
+  section { display: grid; gap: 18px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .lede { font-size: 20px; color: var(--muted); max-width: 60ch; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  header { display: grid; gap: 14px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .meta b { color: var(--fg); font-weight: 500; }
+
+  /* code & terminal */
+  pre { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px;
+        font-family: var(--font-mono); font-size: 13px; line-height: 1.6; overflow-x: auto; }
+  pre .c { color: var(--muted); }
+  pre .p { color: var(--accent); }
+  code { font-family: var(--font-mono); font-size: 0.9em; background: var(--surface-2); padding: 1px 5px; border-radius: 3px; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* diagram */
+  figure { margin: 0; display: grid; gap: 12px; }
+  .figwrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px 12px; }
+  .arch { display: block; min-width: 760px; width: 100%; height: auto; color: var(--fg); font-family: var(--font-body); }
+  .arch .node { fill: var(--surface); stroke: var(--line-strong); stroke-width: 1.2; }
+  .arch .node.accent { stroke: var(--accent); stroke-width: 1.8; fill: var(--accent-soft); }
+  .arch .node.nle { fill: var(--surface-2); }
+  .arch .t { font-size: 12.5px; font-weight: 600; fill: currentColor; text-anchor: middle; }
+  .arch .s { font-size: 10.5px; fill: var(--muted); text-anchor: middle; }
+  .arch .l { font-size: 10.5px; fill: var(--muted); text-anchor: middle; }
+  .arch .l.start { text-anchor: start; }
+  .arch .l.end { text-anchor: end; }
+  .arch .node.opt { stroke-dasharray: 4 4; }
+  .stack { display: grid; gap: 10px; min-width: 0; align-content: start; }
+  .arch .note { font-size: 10px; fill: var(--muted); text-anchor: middle; font-style: italic; }
+  .arch .lane { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; fill: var(--muted); }
+  .arch .e { stroke: currentColor; stroke-width: 1.2; fill: none; }
+  .arch .e.a { stroke: var(--accent); stroke-width: 1.8; }
+  .arch .e.d { stroke-dasharray: 4 4; }
+  .arch .mk { fill: currentColor; }
+  .arch .mk-a { fill: var(--accent); }
+  figcaption { font-size: 15px; color: var(--muted); max-width: 72ch; }
+
+  /* tables */
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 640px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  th { font-family: var(--font-display); font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--surface-2); }
+  tr:last-child td { border-bottom: 0; }
+  td.group { background: var(--surface-2); font-family: var(--font-display); font-weight: 600; font-size: 15px; letter-spacing: 0.02em; }
+  .mono { font-family: var(--font-mono); font-size: 13px; }
+  .tag { display: inline-block; font-family: var(--font-mono); font-size: 11.5px; padding: 1px 7px; border-radius: 3px; border: 1px solid var(--line-strong); color: var(--fg); white-space: nowrap; }
+  .tag.adopt { border-color: var(--accent); background: var(--accent-soft); }
+  .tag.borrow { border-style: dashed; }
+  td small, .small { font-size: 13px; color: var(--muted); }
+
+  /* phases */
+  .phases { display: grid; gap: 14px; }
+  .phase { display: grid; grid-template-columns: 140px 1fr; gap: 8px 24px; padding: 18px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+  .phase .when { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .phase .when b { display: block; font-family: var(--font-display); font-size: 20px; color: var(--fg); font-weight: 600; letter-spacing: 0; margin-bottom: 4px; }
+  .phase .body { display: grid; gap: 8px; min-width: 0; }
+  .phase ul { margin: 0; padding-left: 18px; }
+  .phase .done { font-size: 15px; padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 4px 4px 0; }
+  @media (max-width: 640px) { .phase { grid-template-columns: 1fr; } }
+
+  /* lists */
+  ul.plain { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+  ol.q { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
+  ol.q li b { font-weight: 600; }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; display: grid; gap: 10px; min-width: 0; }
+  .card h3 { margin: 0; }
+  .consent { border-left: 3px solid var(--accent); padding-left: 16px; }
+  footer { border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--muted); }
+  footer ul { margin: 8px 0 0; padding-left: 18px; columns: 2; column-gap: 32px; }
+  footer li { break-inside: avoid; margin-bottom: 4px; }
+  @media (max-width: 700px) { footer ul { columns: 1; } }
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Design outline · Draft 0.2 · 29 Oct 2026</div>
+  <h1>Videtor Architecture</h1>
+  <p class="lede">A local tool that takes a folder of raw footage, consults a knowledge base built from your past Premiere Pro edits, and hands back a timeline that opens in Premiere Pro or DaVinci Resolve with the rough cut and sound bed already in place.</p>
+  <div class="meta">
+    <span>Owner <b>Paritosh</b></span>
+    <span>Scope <b>MVP: knowledge base + first timeline</b></span>
+    <span>Status <b>knowledge base in two edit types · all 7 drives captured · first loop closed in Premiere · Round 3 done · Round 4 (cut from a brief) built and approved on Guru · standardised · ready for a blind test</b></span>
+  </div>
+</header>
+
+<section>
+  <h2>What it does, in one pass</h2>
+  <p class="prose">You point it at a folder. It indexes and analyzes every clip, reads your style profile, plans an edit, and writes a timeline file you import into your NLE. You finish the edit as you normally would. When you export that finished sequence back out, the tool compares it with what it proposed and updates the profile. The NLE stays the place where editing happens; the tool only prepares the timeline and learns from what you change.</p>
+<pre><code><span class="p">$</span> videtor kb ingest ~/Exports/*.xml            <span class="c"># build the knowledge base from past edits</span>
+<span class="p">$</span> videtor ingest ~/Footage/2026-10-shoot       <span class="c"># index the raw folder (ffprobe, hashes, grouping)</span>
+<span class="p">$</span> videtor analyze                              <span class="c"># shots · transcript · silence · beats · loudness</span>
+<span class="p">$</span> videtor plan --type brand-film --brief "90s teaser" <span class="c"># that type's profile + brief → OTIO timeline</span>
+<span class="p">$</span> videtor export --to premiere                 <span class="c"># out/teaser.xml → File ▸ Import in Premiere</span>
+<span class="p">$</span> videtor kb learn ~/Exports/teaser-final.xml  <span class="c"># diff your finished cut vs. the proposal → profile</span></code></pre>
+</section>
+
+<section>
+  <h2>Architecture</h2>
+  <figure>
+    <div class="figwrap">
+    <svg class="arch" viewBox="0 0 1150 450" role="img" aria-label="Pipeline: raw media flows through ingest, analyze, plan and export into Premiere Pro or DaVinci Resolve. A knowledge base built from past Premiere XML exports feeds the planner, along with an edit brief and a music and SFX library. A dashed feedback loop carries the finished, re-exported edit back into the knowledge base.">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mk"/></marker>
+        <marker id="arr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mk-a"/></marker>
+      </defs>
+
+      <!-- lane labels -->
+      <text x="40" y="44" class="lane">KNOWLEDGE BASE</text>
+      <text x="40" y="204" class="lane">EDIT PIPELINE</text>
+      <text x="40" y="348" class="lane">PLANNER INPUTS</text>
+
+      <!-- feedback loop: Premiere -> past edits -->
+      <polyline class="e d" points="1070,190 1070,26 190,26 190,54" marker-end="url(#arr)"/>
+      <text x="630" y="20" class="l">finished edit, re-exported as XML → profile learns from the diff</text>
+
+      <!-- knowledge base lane -->
+      <rect class="node" x="40" y="56" width="190" height="56" rx="4"/>
+      <text x="135" y="78" class="t">Past edits</text>
+      <text x="135" y="96" class="s">Premiere XML exports (xmeml)</text>
+
+      <line class="e" x1="230" y1="84" x2="330" y2="84" marker-end="url(#arr)"/>
+      <text x="280" y="76" class="l">reads</text>
+
+      <rect class="node" x="330" y="56" width="190" height="56" rx="4"/>
+      <text x="425" y="78" class="t">Style miner</text>
+      <text x="425" y="96" class="s">OTIO parse → cut &amp; audio metrics</text>
+
+      <line class="e" x1="520" y1="84" x2="630" y2="84" marker-end="url(#arr)"/>
+      <text x="575" y="76" class="l">writes</text>
+
+      <rect class="node accent" x="630" y="56" width="150" height="56" rx="4"/>
+      <text x="705" y="78" class="t">Style profile</text>
+      <text x="705" y="96" class="s">the knowledge base</text>
+
+      <line class="e a" x1="705" y1="112" x2="705" y2="214" marker-end="url(#arr-a)"/>
+      <text x="713" y="168" class="l start">consults</text>
+
+      <!-- edit pipeline lane -->
+      <rect class="node" x="40" y="216" width="130" height="56" rx="4"/>
+      <text x="105" y="238" class="t">Raw media</text>
+      <text x="105" y="256" class="s">folder or link</text>
+
+      <line class="e" x1="170" y1="244" x2="220" y2="244" marker-end="url(#arr)"/>
+      <text x="195" y="236" class="l">scan</text>
+
+      <rect class="node" x="220" y="216" width="140" height="56" rx="4"/>
+      <text x="290" y="238" class="t">Ingest</text>
+      <text x="290" y="256" class="s">ffprobe · hash · group</text>
+
+      <line class="e" x1="360" y1="244" x2="410" y2="244" marker-end="url(#arr)"/>
+      <text x="385" y="236" class="l">clips</text>
+
+      <rect class="node" x="410" y="216" width="170" height="56" rx="4"/>
+      <text x="495" y="238" class="t">Analyze</text>
+      <text x="495" y="256" class="s">shots · speech · silence · beats</text>
+      <text x="495" y="292" class="note">cached as JSON per clip, reused across runs</text>
+
+      <line class="e" x1="580" y1="244" x2="630" y2="244" marker-end="url(#arr)"/>
+      <text x="605" y="236" class="l">features</text>
+
+      <rect class="node" x="630" y="216" width="150" height="56" rx="4"/>
+      <text x="705" y="238" class="t">Plan</text>
+      <text x="705" y="256" class="s">rules now, LLM later → OTIO</text>
+
+      <line class="e" x1="780" y1="244" x2="830" y2="244" marker-end="url(#arr)"/>
+      <text x="805" y="236" class="l">timeline</text>
+
+      <rect class="node" x="830" y="216" width="130" height="56" rx="4"/>
+      <text x="895" y="238" class="t">Export</text>
+      <text x="895" y="256" class="s">FCP7 XML · .otio · EDL</text>
+      <text x="895" y="292" class="note">later: push live over MCP</text>
+
+      <line class="e" x1="960" y1="244" x2="1010" y2="212" marker-end="url(#arr)"/>
+      <line class="e" x1="960" y1="244" x2="1010" y2="276" marker-end="url(#arr)"/>
+      <text x="985" y="248" class="l">import</text>
+
+      <rect class="node nle" x="1010" y="190" width="120" height="44" rx="4"/>
+      <text x="1070" y="217" class="t">Premiere Pro</text>
+      <rect class="node nle" x="1010" y="254" width="120" height="44" rx="4"/>
+      <text x="1070" y="281" class="t">DaVinci Resolve</text>
+
+      <!-- planner inputs lane -->
+      <rect class="node" x="410" y="360" width="170" height="44" rx="4"/>
+      <text x="495" y="378" class="t">Edit brief</text>
+      <text x="495" y="394" class="s">what this video is for</text>
+      <polyline class="e" points="495,360 495,318 655,318 655,274" marker-end="url(#arr)"/>
+      <text x="575" y="310" class="l">intent</text>
+
+      <rect class="node" x="630" y="360" width="150" height="44" rx="4"/>
+      <text x="705" y="378" class="t">Music &amp; SFX</text>
+      <text x="705" y="394" class="s">your library</text>
+      <line class="e" x1="705" y1="360" x2="705" y2="274" marker-end="url(#arr)"/>
+      <text x="713" y="322" class="l start">beats · ducking</text>
+
+      <!-- legend -->
+      <line class="e a" x1="40" y1="432" x2="70" y2="432"/>
+      <text x="78" y="436" class="l start">style knowledge path</text>
+      <line class="e d" x1="210" y1="432" x2="240" y2="432"/>
+      <text x="248" y="436" class="l start">feedback loop</text>
+    </svg>
+    </div>
+    <figcaption>Six stages, one internal timeline model (OpenTimelineIO) from Plan onward. The accented path is what makes this your editor rather than a generic one: the style profile mined from past XML exports is consulted on every plan, and the dashed loop feeds your finished edits back in. Export writes the same xmeml that Premiere and Resolve both import; direct control of the running NLE is a later, optional step.</figcaption>
+  </figure>
+</section>
+
+<section id="brief">
+  <div class="eyebrow">Round 4 · designed 29 Oct</div>
+  <h2>Cutting from a brief</h2>
+  <p class="prose">You say what the piece is for before anything is cut. Claude turns that brief into a shot map: the sections of the piece and, for every slot, what the shot has to show. Videtor fills each slot with the best matching second of footage, ranked by your taste, and sends the cut to Premiere with two alternates per slot. When you fix the cut, Videtor reads your changes back over the bridge and the taste model learns from them. The pipeline above stays; the brief becomes its first input, and what you asked for replaces the planner’s guesses about what the piece needs.</p>
+  <figure>
+    <div class="figwrap">
+    <svg class="arch" viewBox="0 0 1150 580" role="img" aria-label="Cutting from a brief. You write a brief. Claude turns it into a shot map, using a text overview of the footage, and rewrites slots the footage cannot fill. Videtor, on your Mac, fills each slot from a per-second map of every take, ranked by a taste model, and cuts on the beat with alternates. You review and fix the cut in Premiere; your edit and source marks are read back over the bridge into the taste model. Only text crosses between Videtor and Claude; frames only if you opt in to a second look.">
+      <defs>
+        <marker id="brf-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mk"/></marker>
+      </defs>
+
+      <!-- lanes -->
+      <text x="40" y="30" class="lane">YOU</text>
+      <text x="40" y="134" class="lane">CLAUDE</text>
+      <text x="40" y="262" class="lane">VIDETOR · YOUR MAC</text>
+      <text x="40" y="446" class="lane">PREMIERE PRO</text>
+
+      <!-- privacy line -->
+      <line class="e a d" x1="20" y1="238" x2="1130" y2="238"/>
+      <text x="1130" y="254" class="l end">only text crosses this line · frames only if you opt in</text>
+
+      <!-- you -->
+      <rect class="node" x="40" y="40" width="180" height="52" rx="4"/>
+      <text x="130" y="62" class="t">Write the brief</text>
+      <text x="130" y="79" class="s">goal, beats, must-haves</text>
+
+      <rect class="node" x="330" y="40" width="190" height="52" rx="4"/>
+      <text x="425" y="62" class="t">Review the map</text>
+      <text x="425" y="79" class="s">edit slots, or skip</text>
+
+      <line class="e" x1="160" y1="92" x2="160" y2="144" marker-end="url(#brf-arr)"/>
+      <text x="168" y="122" class="l start">brief.md</text>
+
+      <line class="e" x1="290" y1="144" x2="352" y2="92" marker-start="url(#brf-arr)" marker-end="url(#brf-arr)"/>
+      <text x="360" y="124" class="l start">review · change</text>
+
+      <!-- claude -->
+      <rect class="node" x="100" y="144" width="200" height="52" rx="4"/>
+      <text x="200" y="166" class="t">Shot map</text>
+      <text x="200" y="183" class="s">brief + your style → slots</text>
+
+      <rect class="node opt" x="640" y="144" width="200" height="52" rx="4"/>
+      <text x="740" y="166" class="t">Second look</text>
+      <text x="740" y="183" class="s">opt-in: compares top picks</text>
+
+      <!-- videtor -->
+      <rect class="node" x="40" y="272" width="200" height="56" rx="4"/>
+      <text x="140" y="294" class="t">Footage map</text>
+      <text x="140" y="312" class="s">per second: faces, motion, words</text>
+      <text x="140" y="346" class="note">built once, drive connected</text>
+
+      <line class="e" x1="215" y1="272" x2="215" y2="196" marker-end="url(#brf-arr)"/>
+      <text x="207" y="222" class="l end">overview</text>
+
+      <polyline class="e" points="280,196 280,258 420,258 420,272" marker-end="url(#brf-arr)"/>
+      <text x="350" y="252" class="l">shotmap.json</text>
+
+      <polyline class="e d" points="540,272 540,176 300,176" marker-end="url(#brf-arr)"/>
+      <text x="420" y="170" class="l">thin slots: rewrite</text>
+
+      <rect class="node" x="380" y="272" width="200" height="56" rx="4"/>
+      <text x="480" y="294" class="t">Pick</text>
+      <text x="480" y="312" class="s">search → rank → assign</text>
+
+      <line class="e" x1="240" y1="300" x2="380" y2="300" marker-end="url(#brf-arr)"/>
+      <text x="310" y="292" class="l">candidates</text>
+
+      <rect class="node" x="680" y="272" width="180" height="56" rx="4"/>
+      <text x="770" y="294" class="t">Cut</text>
+      <text x="770" y="312" class="s">beats, in-points, alternates</text>
+
+      <line class="e" x1="580" y1="300" x2="680" y2="300" marker-end="url(#brf-arr)"/>
+      <text x="630" y="292" class="l">picks.json</text>
+
+      <line class="e d" x1="565" y1="272" x2="680" y2="196" marker-start="url(#brf-arr)" marker-end="url(#brf-arr)"/>
+      <text x="700" y="222" class="l start">top 3 per slot</text>
+
+      <rect class="node" x="380" y="360" width="200" height="52" rx="4"/>
+      <text x="480" y="382" class="t">Taste model</text>
+      <text x="480" y="399" class="s">past edits, marks, your fixes</text>
+
+      <line class="e" x1="480" y1="360" x2="480" y2="328" marker-end="url(#brf-arr)"/>
+      <text x="488" y="348" class="l start">your taste</text>
+
+      <line class="e" x1="770" y1="328" x2="770" y2="456" marker-end="url(#brf-arr)"/>
+      <text x="778" y="396" class="l start">Premiere XML</text>
+
+      <!-- premiere -->
+      <rect class="node nle" x="680" y="456" width="180" height="52" rx="4"/>
+      <text x="770" y="478" class="t">Review and fix</text>
+      <text x="770" y="495" class="s">alternates on V2–V3, off</text>
+
+      <rect class="node nle" x="920" y="456" width="190" height="52" rx="4"/>
+      <text x="1015" y="478" class="t">Read back</text>
+      <text x="1015" y="495" class="s">your edit + marks, via bridge</text>
+
+      <line class="e" x1="860" y1="482" x2="920" y2="482" marker-end="url(#brf-arr)"/>
+      <text x="890" y="474" class="l">your edit</text>
+
+      <polyline class="e d" points="1015,508 1015,540 480,540 480,412" marker-end="url(#brf-arr)"/>
+      <text x="750" y="534" class="l">swaps · slips · marks → labels</text>
+
+      <!-- legend -->
+      <line class="e d" x1="40" y1="566" x2="70" y2="566"/>
+      <text x="78" y="570" class="l start">loop or opt-in step</text>
+      <line class="e a d" x1="230" y1="566" x2="260" y2="566"/>
+      <text x="268" y="570" class="l start">privacy line</text>
+    </svg>
+    </div>
+    <figcaption>You and Claude work in words; Videtor works on the footage, on your Mac. Only text crosses the accent line: the brief, the shot map, an overview of the footage, tags, scores and transcripts. Frames cross only for the opt-in second look. The two dashed loops make it yours: slots the footage cannot fill go back to Claude for a rewrite, and your fixes in Premiere come back as the taste model’s training data.</figcaption>
+  </figure>
+
+  <div class="two">
+    <div class="stack">
+      <h3>The brief you write</h3>
+      <p class="small">Plain text in the project folder, five to ten lines. An example, not Guru’s real brief:</p>
+<pre><code>piece:  20 s teaser · 9:16 · Instagram
+type:   brand-social · music: track.wav · speech: none
+goal:   launch the new collection; intimate, premium
+beats:
+  hook     glimpses while she gets ready: makeup,
+           hands, fabric; face only half seen
+  reveal   her in the full outfit, camera easing out
+  product  details on the beat: embroidery, jewellery
+  story    candid moments, a laugh, a walk
+  end      hero pose to camera
+must:   one look to camera
+avoid:  crew in frame, phone screens
+like:   the pace of Vivo 2</code></pre>
+    </div>
+    <div class="stack">
+      <h3>The shot map Claude writes</h3>
+      <p class="small">JSON with a fixed schema, so everything after it runs without Claude. You can edit it before picking.</p>
+<pre><code>{ "length_s": 20, "type": "brand-social", "speech": "avoid",
+  "sections": [
+    { "name": "hook", "until_s": 4, "opening": "glimpse",
+      "slots": [
+        { "id": "hook-1", "role": "glimpse", "beats": 1,
+          "show": "makeup being applied, face partly in frame",
+          "scale": ["close"], "face": "partial" },
+        { "id": "hook-2", "role": "tease", "beats": 1,
+          "show": "hands fastening jewellery, close-up",
+          "scale": ["detail"], "hands": true } ] },
+    { "name": "reveal",
+      "slots": [
+        { "id": "reveal-1", "role": "reveal", "beats": 2,
+          "show": "the subject in the full outfit, camera easing out",
+          "scale": ["medium", "wide"], "face": "full" } ] } ],
+  "avoid": ["crew in frame", "phone screen"],
+  "repeat_take": false }</code></pre>
+    </div>
+  </div>
+
+  <p class="prose small">References belong in the brief too. The Guru project holds seven Instagram clips you saved as references, four of them marked. The <code>like:</code> line can point at clips like these or at a past piece, and Videtor measures their pace, shot sizes and opening the same way it measures your edits.</p>
+
+  <h3>Who does what</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Part</th><th>Does</th><th>Runs</th><th>Sees</th></tr></thead>
+    <tbody>
+      <tr><td>You</td><td>Write the brief, review the shot map if you want to, fix the cut in Premiere.</td><td>Claude Code or Claude Desktop, then Premiere</td><td>Everything</td></tr>
+      <tr><td>Claude</td><td>Turns the brief into a shot map from your style profile and an overview of the footage; rewrites slots the footage cannot fill; explains picks; on request, the second look.</td><td>Claude Code now, through a project skill and the <code>videtor</code> CLI; Claude Desktop next, through an MCP server</td><td>Text: brief, map, footage overview, tags, scores, transcripts. Frames only if you opt in.</td></tr>
+      <tr><td>Videtor</td><td>Footage map, search, ranking, filling the slots, beat-timed cuts, Premiere XML, reading back your edit, the taste model.</td><td>Your Mac, offline</td><td>The footage</td></tr>
+      <tr><td>Premiere and the bridge</td><td>Where you review and finish. The bridge (<code>prpr</code>) reads your sequences and Source Monitor marks; File ▸ Import still brings the cut in.</td><td>Your Mac</td><td>Your project</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>How a slot gets filled</h3>
+  <p class="prose">For each slot, Videtor searches the footage map for seconds whose picture matches the slot’s description (CLIP text-to-image search over the frames) and that pass its filters: shot scale, a face shown fully or in part, hands, a moving or still camera, speech. Every candidate gets one score from four parts: how well it matches; how its take compares with what you usually keep (sharpness, take length, resolution); how good the moment is within its take (focus on the subject, camera settled or mid-move, expression, distance from the start of the take); and what the taste model has learned from your fixes. Then all slots are filled together, so each take is used once and the strongest shots go where the brief needs them most. Each slot comes back with its pick, two alternates and the reasons.</p>
+  <p class="prose small">The CLIP model in use (ViT-B/32) recognises hands, makeup, fabric, crowds and products, and is weaker on qualities such as <em>confident</em> or <em>candid</em>. The benchmark below measures what that costs; a larger local model or the second look are the fixes.</p>
+
+  <h3>Why this fits what we measured</h3>
+  <ul class="plain prose">
+    <li><b>Your picks depend on the piece.</b> Guru and Vivo 2 kept the talking clips and Vivo 1 avoided them; only Guru opens on a hook; a ranker trained across the nine edits without the brief barely beats the hand rules.</li>
+    <li><b>Inside a take, one frame does not show why you chose a second.</b> In 182 takes you used, the frame from your moment is sharper than the take’s other sampled frames 48% of the time and has the bigger face 50% of the time, against 50% by chance. The slot says what the second must show, so the search can look for it.</li>
+    <li><b>You already shortlist moments.</b> In the Guru project, 66 of the 157 takes carry in/out marks from the Source Monitor, every one of the 43 takes in the edit among them, and 23 marked takes never made the final cut. The XML export does not carry those marks; the bridge read all of them in under five seconds.</li>
+    <li><b>The current picker finds takes and misses seconds.</b> Of the Guru teaser’s 24 shots, 14 come from takes you used and 16 from takes you marked, but only 2 land on a second you marked or used.</li>
+  </ul>
+
+  <h3>How we’ll know it works</h3>
+  <p class="prose">The design is tested on past pieces before any new footage. You write the brief for Guru the way you would have before cutting it, without listing the shots you used; then Vivo 1 and Vivo 2, which share the drive. Each brief runs through map, pick and cut and is scored against your real edit and your marks: the right take, the right second (inside a range you used or marked), and whether your shot is among the three Videtor offers for its slot. Today’s picker on the Guru teaser: 58% right take, 8% right second.</p>
+
+  <div class="consent">
+    <h3>Your call: frames to Claude</h3>
+    <p class="small">By default no frame leaves your Mac. Claude works from text, and the visual matching runs locally. The second look is opt-in per project: Claude sees small contact sheets of the top three picks per slot (about a hundred frames for a 20 s piece) and says which fits the brief best. It helps most where CLIP is weakest, and it sends client footage to Anthropic, so it stays off unless you switch it on for a project.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The knowledge base</h2>
+  <p class="prose">Premiere's <em>File ▸ Export ▸ Final Cut Pro XML</em> produces an xmeml file that contains far more than cut points: every clip's in/out and source, the track it sits on, transitions, audio level keyframes, speed changes, and the names of effects applied. Parsed into OpenTimelineIO, that is enough to compute a style profile without ever opening Premiere. The table lists what the miner extracts in Phase 1 and what the planner does with each signal.</p>
+  <p class="prose">Because you cut everything from interviews to sports promos, there is no single "your style". The profile is keyed by edit type: <code>kb/profile/talking-head.json</code>, <code>kb/profile/brand-film.json</code>, <code>kb/profile/sports-promo.json</code>, and so on. The miner assigns each past sequence a type from its own evidence (speech-to-music ratio, median shot length, share of cuts on the beat) and you correct it in a one-line manifest. The brief names the type for a new job, or the tool infers it from the footage and asks.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:24%">Signal</th><th style="width:36%">Where it comes from in the XML</th><th>What the planner uses it for</th></tr></thead>
+    <tbody>
+      <tr><td>Shot length distribution <span class="small">(median, p10, p90)</span></td><td><span class="mono">clipitem</span> in/out on every video track, per sequence</td><td>Pacing: how long a shot holds before the next cut</td></tr>
+      <tr><td>Cut rhythm vs. audio</td><td>Clip boundaries compared against beats in the sequence's music track and pauses in its dialogue</td><td>Whether to cut on the beat, on the breath, or neither</td></tr>
+      <tr><td>Track layout conventions</td><td>Track order and what lives on each: <span class="mono">V1</span> A-roll, <span class="mono">V2</span> B-roll, <span class="mono">V3</span> titles; <span class="mono">A1</span> dialogue, <span class="mono">A2</span> music, <span class="mono">A3</span> SFX</td><td>Builds the generated sequence in the same layout, so the timeline feels like yours when it opens</td></tr>
+      <tr><td>B-roll cadence</td><td>Gaps between <span class="mono">V2</span> inserts, their lengths, and how they overlap <span class="mono">V1</span></td><td>When to cover A-roll and for how long</td></tr>
+      <tr><td>Transitions</td><td><span class="mono">transitionitem</span> type, duration, position (head, tail, between)</td><td>Pick the transition you'd pick, or none; dissolve length in frames</td></tr>
+      <tr><td>Audio levels, fades and ducking</td><td><span class="mono">Gain(dB)</span> and <span class="mono">Audio Levels</span> effects per clip (with keyframes), plus audio <span class="mono">transitionitem</span>s: crossfade type and length</td><td>Gain staging per role (camera, bed, SFX), crossfade length, ducking depth under speech</td></tr>
+      <tr><td>Effects and speed</td><td><span class="mono">filter</span> effect names (Lumetri Color, Warp Stabilizer, …), <span class="mono">rate</span> changes</td><td>Phase 1 records names only; Phase 3 reapplies the common ones as placeholders</td></tr>
+      <tr><td>Titles and graphics</td><td><span class="mono">generatoritem</span> and graphic clips: first title time, lower-third timing</td><td>Timeline markers where a title would go</td></tr>
+      <tr><td>Sequence settings</td><td><span class="mono">sequence/rate</span>, <span class="mono">format</span>, audio sample rate</td><td>Generates a sequence that matches your defaults (fps, frame size)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="two">
+    <div class="card">
+      <h3>Stored as plain files</h3>
+      <p class="small">One JSON per past sequence under <code>kb/projects/</code>, rolled up per edit type into <code>kb/profile/&lt;type&gt;.json</code>, and a <code>kb/notes.md</code> where you write rules in prose ("never dissolve on interviews"). The planner reads all three; a future LLM backend gets the notes verbatim. An excerpt of <code>kb/profile/brand-social.json</code> as built today:</p>
+<pre><code>{
+  "type": "brand-social",
+  "learned_from": 7,
+  "fps": 25.0, "frame_size": [1080, 1920], "orientation": "vertical",
+  "shot_length_s": { "median": 0.878, "p10": 0.25, "p90": 2.417 },
+  "cuts_per_min": 64.08,
+  "layers": { "median": 1, "p90": 2 },
+  "transitions": { "share_of_edits": 0.0 },
+  "audio_transitions": { "share_of_audio_clips": 0.377, "frames": 24.0 },
+  "speed_changes": { "share": 0.308, "ramp_share": 0.0 },
+  "adjustment_layers_per_min": 20.15,
+  "adjustment_effects": { "Flash blur": 35, "Flash 2": 8 },
+  "audio_db_adjusted": { "camera": 3.0, "bed": -10.0, "sfx": -6.0 },
+  "first_title_s": 8.3
+}</code></pre>
+    </div>
+    <div class="card">
+      <h3>What the XML alone cannot teach</h3>
+      <p class="small">An export records what you <em>kept</em>. Learning what you <em>discard</em> (the weak takes, the flubbed lines) needs the raw footage alongside the XML. You have that for three or more past projects, so take-selection learning is in Phase 1: the miner analyzes the unused material the same way as the used, and the profile records what separates them (speech present, motion, sharpness, duration). The remaining projects can be XML-only.</p>
+      <p class="small">The feedback loop closes the same gap going forward: every finished edit you re-export is diffed against the proposal (clips you dropped, cuts you moved, levels you changed), and the deltas update the profile.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>First findings: ten exports, nine sequences</h2>
+  <p class="prose">The miner ran over the ten XML files in <code>.xml-exports/</code>. TPL.xml and leander.xml are the same sequence and were counted once; nested sequences are opened up into their shots. The manifest assigns two edit types, <code>brand-social</code> (7 sequences) and <code>sports-promo</code> (2), and each gets its own profile; the per-sequence rows are what those profiles are rolled up from.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Sequence</th><th>Format</th><th>Length</th><th>Shots</th><th>Median shot</th><th>p10–p90</th><th>Cuts/min</th><th>Speed-changed</th><th>Adj. layers</th><th>Audio fades</th></tr></thead>
+    <tbody>
+      <tr><td>Adidas · Sequence 01</td><td class="mono">1080×1920 @25</td><td>46 s</td><td>48</td><td>1.34 s</td><td>0.04–2.88</td><td>64</td><td>0%</td><td>20</td><td>28</td></tr>
+      <tr><td>Coca-Cola · Sequence 01</td><td class="mono">2160×3840 @23.976</td><td>101 s</td><td>130</td><td>1.00 s</td><td>0.25–2.01</td><td>69</td><td>31%</td><td>34</td><td>40</td></tr>
+      <tr><td>Gujarat Giants · Sequence 01</td><td class="mono">1080×1920 @23.976</td><td>244 s</td><td>171</td><td>1.21 s</td><td>0.46–2.84</td><td>34</td><td>8%</td><td>88</td><td>68</td></tr>
+      <tr><td>Guru · Sequence 01</td><td class="mono">1080×1920 @25</td><td>44 s</td><td>88</td><td>0.62 s</td><td>0.12–1.65</td><td>81</td><td>43%</td><td>26</td><td>34</td></tr>
+      <tr><td>JW · Sequence 01</td><td class="mono">1080×1920 @23.976</td><td>37 s</td><td>75</td><td>0.50 s</td><td>0.17–1.17</td><td>112</td><td>29%</td><td>27</td><td>12</td></tr>
+      <tr><td>TPL / leander · Leander Paes</td><td class="mono">1080×1920 @30</td><td>28 s</td><td>18</td><td>1.02 s</td><td>0.60–2.21</td><td>36</td><td>6%</td><td>1</td><td>4</td></tr>
+      <tr><td>Vivo 1 · Rohit saraf 2</td><td class="mono">1080×1920 @25</td><td>66 s</td><td>81</td><td>0.92 s</td><td>0.48–2.16</td><td>63</td><td>33%</td><td>0</td><td>43</td></tr>
+      <tr><td>Vivo 2 · ahsaas taruk</td><td class="mono">1080×1920 @25</td><td>66 s</td><td>69</td><td>1.08 s</td><td>0.47–2.34</td><td>60</td><td>17%</td><td>2</td><td>20</td></tr>
+      <tr><td>Zomato · Final seq</td><td class="mono">1920×1080 @25</td><td>86 s</td><td>91</td><td>1.12 s</td><td>0.60–3.12</td><td>57</td><td>35%</td><td>13</td><td>32</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="two">
+    <div class="card">
+      <h3>What the two profiles say</h3>
+      <ul class="plain small">
+        <li><b>brand-social</b> (7 sequences): vertical 1080×1920 at 25 fps, about 66 s long. Median shot 0.88 s (p10 0.25, p90 2.4), 64 cuts a minute, 31% of shots speed-changed, 20 adjustment layers a minute carrying “Flash blur” and “Flash 2”, Distort (and the odd Luma Key) as clip effects, Low Pass Filter on audio. First title at about 8 s.</li>
+        <li><b>sports-promo</b> (2 sequences): vertical at 23.976 fps, about 2¼ min long. Median shot 1.21 s, 35 cuts a minute, speed changes on 7% of shots, 12 adjustment layers a minute (Flash blur only), Gaussian Blur as the clip effect, footage stacked 1.5 layers deep at the median.</li>
+        <li>Common to both: no video transitions to speak of (0–0.6% of edits), audio crossfaded on 38–44% of clips at 24–25 frames, B-roll inserts about 1 s long, 10–11 video and 14–18 audio tracks.</li>
+        <li>Most audio clips are left at unity. Where a level is touched: music beds about −10 dB, SFX about −6 dB, camera audio pushed +3 dB (brand) to +6.5 dB (sports).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What the miner still misses</h3>
+      <ul class="plain small">
+        <li>Nested sequences are now opened up everywhere (pacing metrics and footage index): Guru’s 22 nests turn 54 shots into 88, Coca-Cola’s 22 turn 106 into 130, and the brand-social speed-change share rises from 17% to 31% because the ramped clips sit inside nests.</li>
+        <li>First footage index (Paritosh_1): Vivo 1 used 100 of 460 files in its folder and kept 25% of the duration of the clips it touched (2.5 h left unused); Vivo 2 used 66 of 340 and kept 11% (1.7 h unused); Guru used 43 of 157 and kept 5%. Gujarat Giants (sports-promo, AMAZONSSD) used 17 of 466 and kept 17% of the clips it touched, leaving a whole behind-the-scenes camera (117 clips) and the second camera (39 clips) out entirely. Zomato (AJAN SSD4) used 66 of 2,170 files and kept 1.4% of the 3.3 h of clips it touched, the most selective edit so far. JW (Extreme SSD) used 47 of 2,568 and kept 3.8%, drawing only on Day 2 of a two-day shoot. Coca-Cola (Paritosh_4) used 48 of 877 and kept 5.3% of the 31 min of clips it touched. That unused material is the training signal for take selection.</li>
+        <li>First used-vs-unused comparison from the sampled frames (<code>videtor kb selects</code>, 28 Oct): in all eight indexed edits the clips you used are sharper than the ones you left out (Laplacian variance 1.2× to 2.4× higher; Guru 89 vs 38, Vivo 1 53 vs 22, Adidas 106 vs 52), and in seven of eight they are longer takes (1.3× to 6.5×; Adidas picks 53 s takes from a pool whose median is 8 s). Brightness and contrast barely differ, so exposure is not how you choose. Frame rate shows a habit: 50 and 100 fps slow-motion material is mostly left unused in Vivo 2, Gujarat Giants and JW. These are the first candidate rules for take selection; motion, speech and shot scale come next.</li>
+        <li>Audio roles (camera, bed, SFX) are structural guesses until the analysis stage can listen.</li>
+        <li>Where cuts land relative to the beat needs the music files themselves; the exports point at the <code>/Volumes/Paritosh_3</code> drive.</li>
+        <li>No LUT or input-color metadata is present in these exports; log handling will come from the footage.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>GitHub survey</h2>
+  <p class="prose">What exists, what it is licensed under, and what we take from it. <span class="tag adopt">adopt</span> means a dependency we install; <span class="tag borrow">borrow</span> means we copy the design idea, not the code; <span class="tag">reference</span> means worth reading before building the related part. Star counts are as fetched today and approximate.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:26%">Project</th><th style="width:16%">License · size</th><th>What it does and what we take</th><th style="width:10%">Role</th></tr></thead>
+    <tbody>
+      <tr><td class="group" colspan="4">Timeline interchange</td></tr>
+      <tr><td><a href="https://github.com/AcademySoftwareFoundation/OpenTimelineIO">OpenTimelineIO</a> + <a href="https://pypi.org/project/otio-fcp-adapter">otio-fcp-adapter</a></td><td>Apache-2.0 · ASWF project, Python/C++</td><td>Industry-standard timeline data model. The <span class="mono">fcp_xml</span> adapter reads and writes FCP7 XML (xmeml), the format Premiere exports and both Premiere and Resolve import. Resolve also imports <span class="mono">.otio</span> directly; Premiere's native OTIO import/export is <a href="https://community.adobe.com/t5/premiere-pro-beta-discussions/now-in-beta-otio-import-and-export/m-p/14985932">in beta</a> with a known <span class="mono">file://</span> path quirk, so xmeml is our primary target. We use OTIO as the internal model from Plan onward and for parsing the knowledge base.</td><td><span class="tag adopt">adopt</span></td></tr>
+      <tr><td><a href="https://github.com/WyattBlue/auto-editor">auto-editor</a></td><td>Unlicense (public domain) · ~5.6k★ · now written in Nim</td><td>Silence/motion-based cutting with <span class="mono">--export premiere</span> and <span class="mono">--export resolve</span>. Years of bug reports against both NLEs' XML quirks are baked into its exporters: worth reading when ours misbehaves. Its edit model is also instructive: every moment gets a label (0 cut, 1 keep, N custom), labels map to actions (cut, speed, keep).</td><td><span class="tag borrow">borrow</span></td></tr>
+      <tr><td class="group" colspan="4">Controlling the running NLE (Phase 3, optional)</td></tr>
+      <tr><td><a href="https://pypi.org/project/prpr/">prpr</a> · <a href="https://github.com/morim3/mcp_adobe_premiere">mcp_adobe_premiere</a></td><td>PyPI / GitHub · needs Premiere 25.6+ (UXP), Python 3.10+</td><td>Python CLI, library and MCP server for Premiere Pro over a UXP plugin that must be loaded inside Premiere. Lets us push a timeline into the open project instead of going through File ▸ Import. Several similar servers exist (<a href="https://github.com/hetpatel-11/Adobe_Premiere_Pro_MCP">hetpatel-11</a>, <a href="https://github.com/Aodaruma/adobe-mcp-rs">adobe-mcp-rs</a>); all young.</td><td><span class="tag">reference</span></td></tr>
+      <tr><td><a href="https://github.com/samuelgursky/davinci-resolve-mcp">davinci-resolve-mcp</a> · <a href="https://github.com/pedrolabonia/pydavinci">pydavinci</a></td><td>MIT · ~1.4k★ · Resolve <b>Studio</b> 18.5+</td><td>MCP server over Resolve's official scripting API, with timeline tools. Two constraints: external scripting requires Resolve Studio (not the free edition), and Resolve's scripting module still imports <span class="mono">imp</span>, so it needs CPython 3.10 or 3.11. pydavinci is a typed wrapper looking for maintainers.</td><td><span class="tag">reference</span></td></tr>
+      <tr><td class="group" colspan="4">Media analysis</td></tr>
+      <tr><td><a href="https://github.com/Breakthrough/PySceneDetect">PySceneDetect</a></td><td>BSD-3</td><td>Shot-boundary detection inside each raw clip (content and threshold detectors). Gives us the candidate cut points that respect existing camera cuts.</td><td><span class="tag adopt">adopt</span></td></tr>
+      <tr><td><a href="https://github.com/m-bain/whisperX">WhisperX</a> / <a href="https://github.com/SYSTRAN/faster-whisper">faster-whisper</a></td><td>BSD-2 / MIT</td><td>Transcription with word-level timestamps; WhisperX adds forced alignment and speaker diarization. Word timings let the planner cut on sentence boundaries and drop filler. On Apple Silicon, <span class="mono">mlx-whisper</span> is the fast local alternative.</td><td><span class="tag adopt">adopt</span></td></tr>
+      <tr><td><a href="https://github.com/librosa/librosa">librosa</a> · <a href="https://github.com/csteinmetz1/pyloudnorm">pyloudnorm</a> · ffmpeg</td><td>ISC · MIT · LGPL/GPL build</td><td>Beat and onset tracking for the music track (librosa); ITU-R BS.1770 loudness measurement (pyloudnorm) so the music bed lands at the level your profile says; ffmpeg/ffprobe for probing, proxies, waveforms and <span class="mono">silencedetect</span>.</td><td><span class="tag adopt">adopt</span></td></tr>
+      <tr><td class="group" colspan="4">End-to-end LLM editors</td></tr>
+      <tr><td><a href="https://github.com/browser-use/video-use">browser-use/video-use</a></td><td>MIT · ~30k★ · Python + ffmpeg</td><td>"Edit videos with coding agents." Drop takes in a folder, chat, get <span class="mono">final.mp4</span>. Three ideas transfer directly: pack the word-level transcript of all takes into one ~12 KB text the LLM reads; have the LLM emit a format-neutral EDL rather than ffmpeg commands; render a filmstrip-plus-waveform PNG (<span class="mono">timeline_view</span>) only at ambiguous decision points, then self-check each cut boundary. It renders video only; we swap the renderer for an OTIO export.</td><td><span class="tag borrow">borrow</span></td></tr>
+      <tr><td><a href="https://github.com/FireRedTeam/FireRed-OpenStoryline">FireRed-OpenStoryline</a></td><td>Apache-2.0 · ~3.6k★ · Python 3.11, LangChain + MCP</td><td>Natural-language editing agent: clip segmentation and content understanding, storyline generation, BGM recommendation with beat-syncing, an ASR-based rough cut that strips filler and repeats. The most useful idea is its "Skill": a completed editing workflow saved and re-applied to new media, which is close to what our style profile wants to become. Renders video only.</td><td><span class="tag borrow">borrow</span></td></tr>
+      <tr><td><a href="https://github.com/barefootford/buttercut">buttercut</a></td><td>PolyForm Noncommercial 1.0 (outputs are free to use commercially; the tool is not)</td><td>Claude Code skills that organize footage into libraries, transcribe with WhisperX and build select/scene/rough cuts exported to Final Cut, Premiere and Resolve. Proof that one XML can be made to import into all three; the license rules out vendoring any code into an internal product, so this is reading only.</td><td><span class="tag">reference</span></td></tr>
+      <tr><td class="group" colspan="4">Research on learning editing style</td></tr>
+      <tr><td><a href="https://github.com/PardoAlejo/LearningToCut">Learning to Cut by Watching Movies</a> <span class="small">(ICCV 2021)</span></td><td>MIT · 52★ · pretrained weights</td><td>Contrastive model that scores how plausible a cut is between two shots, trained on 257k cuts from films. A candidate for ranking cut points once heuristics plateau (Phase 3). <a href="https://openaccess.thecvf.com/content/ICCV2021W/CVEU/papers/Huang_Learning_Where_To_Cut_From_Edited_Videos_ICCVW_2021_paper.pdf">Learning Where to Cut</a> (Adobe Research) is the same idea on 61k edited web videos, no code released.</td><td><span class="tag">reference</span></td></tr>
+      <tr><td><a href="https://www2.informatik.uni-hamburg.de/wtm/publications/2026/SLCWBW26/iui26_Shah-et-al.pdf">RankCut</a> <span class="small">(IUI 2026)</span> · <a href="https://arxiv.org/pdf/2507.02790">HIVE</a> <span class="small">(EMNLP 2025)</span></td><td>papers</td><td>RankCut, built as a Premiere integration, has the LLM <em>rank</em> transcript segments and then selects under a duration budget, assembling in source order. That is the planner formulation we will start with: rank, select to length, keep chronology. HIVE argues ASR-only planning misses visual narrative, which is why Analyze includes shot features from day one.</td><td><span class="tag borrow">borrow</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>Recommended stack</h2>
+  <div class="two">
+    <div class="card">
+      <h3>Dependencies we install</h3>
+      <ul class="plain small">
+        <li><b>Python 3.11</b> via <code>uv</code>. The Mac's system Python is 3.9, and Resolve's scripting module needs 3.10/3.11 if we ever go that route.</li>
+        <li><b>ffmpeg / ffprobe</b> via Homebrew (not installed yet).</li>
+        <li><b>opentimelineio</b> + <b>otio-fcp-adapter</b> for the timeline model and xmeml in/out.</li>
+        <li><b>scenedetect</b>, <b>faster-whisper</b> (or <b>mlx-whisper</b> on Apple Silicon), <b>librosa</b>, <b>pyloudnorm</b>.</li>
+        <li><b>pydantic</b> for the profile and EDL schemas, <b>typer</b> for the CLI.</li>
+        <li>No network calls in Phase 1. The planner sits behind one interface so a local model (via Ollama or MLX) or the <b>anthropic</b> SDK can be added in Phase 2 once you decide to explore API integration.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Designs we borrow, code we write</h3>
+      <ul class="plain small">
+        <li>Transcript packing and the EDL-as-intermediate from video-use.</li>
+        <li>Rank-then-select-to-duration planning from RankCut.</li>
+        <li>Saved, re-applicable editing recipes from OpenStoryline's Skills, as our <code>kb/notes.md</code> rules.</li>
+        <li>Label-to-action edit model and NLE XML quirks from auto-editor.</li>
+        <li>Everything is plain files in the repo: <code>kb/</code>, <code>cache/</code>, <code>out/</code>. No database until there is a reason.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Plan</h2>
+  <div class="phases">
+    <div class="phase">
+      <div class="when"><b>Phase 0</b>Foundations<br>~2 days</div>
+      <div class="body">
+        <ul>
+          <li>Create the <code>videtor</code> repo with the CLI skeleton; install the stack above.</li>
+          <li>Collect inputs: 5–20 Premiere XML exports, plus 2–3 projects where the raw footage still exists.</li>
+          <li>Round-trip test, run 28 Oct: OpenTimelineIO's <code>fcp_xml</code> adapter read and re-wrote 6 of the 10 exports; the other 4 (Adidas, Guru, JW, Zomato) fail on 100 fps slow-motion media, which OTIO's SMPTE timecode code does not support, and JW also carries a 119.88 fps clip. Decision: OTIO stays the internal timeline model and the <code>.otio</code> output for Resolve, but the Premiere XML is written by our own small xmeml writer (modeled on auto-editor's), which tolerates any media rate. Import check in Premiere 26.0.2 (Vivo 1 round-trip, 28 Oct): the sequence opens at 1080×1920 / 25 fps with all 11 video tracks and every video clip at its original position, media relinks from the original paths, the 36 mono audio tracks come back as 21 stereo tracks with the audio crossfades intact, and effect blocks (Time Remap, Gain) pass through verbatim. Two drifts: the adapter trims speed-remapped clips' out-points to the timeline length, so a 124.3% clip reads 121.4% after import, and clips sitting past the sequence's declared duration (a reference render on V3) extend the imported sequence. Lesson for the writer: a clip's speed is the Time Remap <code>speed</code> parameter, with in/out written to match it; the in/out frame ratio alone is misleading. <b>Own writer, first import (28 Oct):</b> <code>videtor.export.xmeml_writer</code> writes an OTIO timeline as xmeml modelled on Premiere’s exports (one <code>&lt;file&gt;</code> per media file, in/out at the file’s own rate, Time Remap for constant speed, camera audio as linked stereo clipitems). A six-clip test built from TPL footage imported into Premiere 26 with the right frame size and rate, media online, every in-point respected, the half-speed clip reading exactly 50%, and camera audio linked to picture (the context menu offers Unlink). The Premiere export path is proven; what remains is the planner that feeds it.</li>
+        </ul>
+        <div class="done">Done when a re-written xmeml opens in both NLEs with media relinked and the right frame rate. <b>Premiere: done 28 Oct</b> with our own writer; Resolve import still to check.</div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="when"><b>Phase 1</b>Knowledge base + first timeline (MVP)<br>~1–2 weeks</div>
+      <div class="body">
+        <ul>
+          <li><code>kb ingest</code>: parse every XML, assign each sequence an edit type, compute the signals in the table above, write <code>kb/profile/&lt;type&gt;.json</code>. For the projects with raw footage, analyze the unused clips too and record what separates kept from discarded.</li>
+          <li><code>ingest</code> + <code>analyze</code>: media index; shot boundaries, speech presence on every clip and word-level transcripts only where speech is found (decided 28 Oct: interviews and voxpops matter, most footage is music-led), silence, loudness, motion energy per shot (for sports and fast-paced work), shot scale, beats of any supplied music; results cached per clip. <b>Built 28 Oct:</b> <code>videtor analyze &lt;drive&gt;</code> runs three feature modules over a footage index and caches one JSON per clip in <code>cache/analysis/</code>: looks from the sampled frames (sharpness, exposure, colorfulness), audio (EBU R128 loudness, silence spans, speech presence by WebRTC VAD with a syllabic-modulation check so tones and music do not count as speech), and motion (frame-difference energy and in-clip cut detection from low-res hardware-decoded frames). Resumable; frame features run without the drive. Still to come: transcription of speech clips, shot scale, music beats.</li>
+          <li><code>sync</code>: audio cross-correlation aligns multicam angles and external-recorder audio to picture; clips covering the same moment are grouped so the planner chooses angles, not just clips. Log footage is normalized to Rec.709 before frame analysis.</li>
+          <li><code>plan</code> v0, rules only, parameterized by the edit type's profile: order clips by timecode or name, drop silence and dead air, snap cuts to shot boundaries, pace to the profile's median shot length, A-roll on V1, music on A2 at the profile's level with gain keyframes ducking under speech.</li>
+          <li><code>export --to premiere | otio</code>: built 28 Oct. <code>videtor plan</code> picks, cuts and orders shots from a footage pool (sharpness, take length, resolution, frame rate, motion; shot lengths drawn from the edit type’s own distribution; in-points from your habit), writes <code>plan.json</code> with a reason per shot plus the Premiere XML; <code>videtor kb benchmark</code> scores a plan against the real edit on clips, moments and pace.</li>
+        </ul>
+        <div class="done">Benchmark (decided 28 Oct): the first run re-cuts the Guru project from its raw folder on Paritosh_1 (157 clips, 27 min) and is scored against the real Guru edit: which clips it picked, where it cut, how the pacing compares. <b>v0 baseline, 28 Oct, frame features only:</b> 35 shots, 44.9 s; 20 of the 35 clips are ones you used (precision 57%, recall 47%, chance ~27%); under 1 s of planned footage falls inside the moments you used, so in-point choice is the first thing to learn; planned median shot 0.92 s against your 0.62 s. The footage indexes give one habit: across 564 used ranges in nine edits your in-point sits a median 38% into the take, a third within the first quarter and 15% in the last (an earlier reading of 23% came from a rate bug, below). The planner samples in-points from that distribution and keeps a slot inside one uncut run; clip precision holds at 54–57% over three seeds, while the moments score stays near 1–2%: which half-second of a 12 s take you pick will need content cues (motion peaks, faces, speech), the Phase 2 planner’s job. <b>v1 (29 Oct), with audio and motion analysed on the drive:</b> in Guru 70% of the clips you kept contain speech against 48% of the rest, and kept clips move slightly more; the planner now rewards speech and motion and cuts into speech clips a breath before the longest phrase. Clip precision rises to 54–63% (21 of 35 at seed 0), recall stays at 44–49%. <b>Rate convention, found 29 Oct when the first imported cut showed black frames:</b> Premiere counts a clipitem’s in/out at the clipitem’s <code>&lt;rate&gt;</code>, which is the sequence rate even for 50 or 100 fps media (only the <code>&lt;file&gt;</code> block carries the native rate). The writer had counted at the media rate, so 100 fps slots ran off the end of their files; the reader had the same bug, so used ranges for high-frame-rate clips were up to four times too early in 264 of the 406 used clips, and the moments score was measured against the wrong ranges. Both are fixed and every drive recomputed offline. <b>Verdict on the rebuilt v1 in Premiere (29 Oct):</b> every shot plays with picture; as a first assembly you would keep about a quarter to a half of the 35 shots. Your direction for the next planner: hook first, then product shots carried along with the story, cuts on the beat of the music; shoot order is not the structure of this kind of piece. <b>v2 and the 20 s fast cut (29 Oct):</b> librosa beat tracking on a stand-in song (Guru’s own track is gone from Downloads), strongest shot first, every cut on the grid, music on A2. Your verdict on v2 was “cuts feel off the beat”, and the one edit whose music is still reachable explains why: your 10 Vivo 2 cuts under that song land a median 0.14 s <em>before</em> the detected beat and never on it, so the planner now cuts 120 ms ahead of the beat, frame-exact from the beat time so rounding cannot drift. A learned reranker (logistic regression on pool-relative features, evaluated leave-one-project-out) is roughly on par with the hand rules: both clear chance on most edits, neither on the needle-in-haystack pools (TPL 14 used of 719, JW 46 of 2,334); it weights full resolution, speech and take length most. Stronger content features are the next lever. <b>Verdict on the 20 s fast cut (29 Oct):</b> plays, the cuts now feel on the beat, and you would keep more than half of its 26 shots as a starting point; the opener is not a hook you would use and the real hook was not in the cut, so the hook needs its own model rather than the top overall score. <b>Speech cuts both ways (29 Oct, audio and motion analysed for every Paritosh_1 clip):</b> Guru and Vivo 2 kept the talking clips (70% vs 48%, 60% vs 46% of the rest), Vivo 1, a music montage, avoided them (37% vs 67%) and kept the moving ones (motion 8.7 vs 5.9). One global speech weight collapses on Vivo 1, so <code>plan --speech favor|avoid|neutral</code> is now a brief-level switch; on Vivo 1 “avoid” lifts clip precision from 17% to 22%, still weak, because its kept clips are short VFX renders, the opposite of the longer-take habit everywhere else. Done when you import a generated timeline, it is laid out in your track convention, and you would keep at least half the cuts as a starting point.</div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="when"><b>Phase 2</b>Style-aware planner<br>~2 weeks</div>
+      <div class="body">
+        <ul>
+          <li>Planner v1 behind the same interface: packed transcript + shot list + profile + <code>kb/notes.md</code> + your brief → ranked segments → selection under a target duration → OTIO. Local model first; the Claude API as an opt-in backend once you want to explore it.</li>
+          <li>Structure before order (your brief, 29 Oct): open on the hook, carry product shots with the story, cut on the music’s beats. Needs the music track per project (beat tracking), a hook score (the strongest shot), and a product/story tag per clip (frames + speech). Beat-synced B-roll placement on V2; markers on A3 where SFX would go, with a one-line reason each.</li>
+          <li><code>kb learn</code>: diff your finished export against the proposal; fold the deltas into the profile.</li>
+        </ul>
+        <div class="done">Done when the second project needs noticeably fewer corrections than the first, measured by the diff.</div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="when"><b>Round 3</b>Content features, hook, structure<br>started 29 Oct</div>
+      <div class="body">
+        <p class="small">What the first loop showed: clip selection works on stats (sharpness, take length, resolution, speech per brief), pacing and beat-cutting work, and three things do not: which second of a take, which shot opens, and product vs story. All three need to know what is <em>in</em> the frame. Your definition of the hook sets the target: a tease of two or three shots in which the subject is only partly revealed (makeup being done, a half-visible figure, some blur allowed, close-ups of attire, apparel and hands), then the zoom-out that reveals the main subject.</p>
+        <ul>
+          <li><b>Faces, pose and shot scale</b> (<code>analyze/faces.py</code>): on the sampled frames already on disk for all 8,900 clips, detect faces and hands, measure the largest face as a share of the frame and whether it is cut by the frame edge, and classify each clip as detail (no face), close-up, medium or wide. MediaPipe (Apache-2.0), runs on the Mac without a drive.</li>
+          <li><b>Visual tags and embeddings</b> (<code>analyze/tags.py</code>): CLIP zero-shot tags from a vocabulary written for your work (hands close-up, makeup, apparel detail, footwear, product on table, person to camera, wide location, crowd, sports action, drink, food, screen graphic, out of focus) plus an image embedding per frame, so clips can be grouped by what they show and the most frequent person becomes the main subject. open_clip with torch on the M2 Pro: about 27,000 frames in minutes.</li>
+          <li><b>Hook and arc</b> (<code>plan/structure.py</code>): the tease-then-reveal opener from the features above, then story and product shots interleaved, product payoff last; a report of how each of the eight real edits actually opens (the shot-scale and tag sequence of its first five shots) to check the template against your own work; <code>kb benchmark</code> gains an opening score alongside clips, moments and pace.</li>
+          <li><b>Moments inside a take</b> (follow-up): denser frame sampling on used clips to learn where your in-points sit relative to motion peaks and face presence; the current 1–3% moments score is the number to move.</li>
+        </ul>
+        <p class="small">Run as three parallel agents with disjoint files (faces, tags, structure), integrated into <code>videtor analyze --features faces,tags</code> and the planner afterwards; the new features re-score the reranker and the Guru 20 s teaser gets a hooked opening for your next verdict. New dependencies to approve: <code>mediapipe</code>, <code>open_clip_torch</code> + <code>torch</code>.</p>
+        <p class="small"><b>Results, 29 Oct.</b> Faces (MediaPipe Tasks: full-range face detector and hand landmarker) and tags (CLIP ViT-B/32 on the Mac’s GPU, 26 tags, contrast-stretched because ungraded log footage reads as blur to CLIP) now cover every indexed clip, all computed from the sampled frames without a drive. Shot-scale thresholds were recalibrated on 3,804 face clips (close from 3.5% of the frame, medium from 0.8%), turning 137 close-ups into 621. <b>How your nine edits actually open:</b> only Guru follows the arc you described, and it starts on a face close-up: <em>glimpse of the subject → hands and apparel details → the zoom-out reveal</em>. Adidas, JW, Vivo 2 and both sports promos open straight on the subject, Zomato stays on product and hand details, Vivo 1 goes face, glimpse, detail, face. So the opening is a choice per piece: <code>plan --opening glimpse | tease | subject | top | none</code>, with glimpse as the default for your brief. On Guru the glimpse opening picks C3953 (face close-up) → M2U00414 (makeup, hands) → C3915 (hands, face cut by the frame) → C3881 (medium face): the first three are clips you used, and the arc scores 0.81 against your edit’s 0.59. The reranker with face and tag features gains a little where it already worked (Guru 42% → 46%, Vivo 2 26% → 28%, Zomato 18% → 20%) and nothing on the needle pools; its weights agree with your description (hands and blur for, crowds against), but with nine edits your selection is driven more by the brief than by a cross-project pattern.</p>
+        <div class="done">Done when the Guru teaser opens with a tease-then-reveal you would keep, the opening score agrees with how your real edits open, and the reranker beats the hand rules on the pools where both now fail. <b>Verdict 29 Oct:</b> a hook belongs in a piece when its brief asks for one, as Guru’s did. The reranker part is not met, and the teaser’s shots are not the best the footage holds: 14 of its 24 shots come from takes you used, but only 1 lands on the second you used.</div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="when"><b>Round 4</b>Cut from a brief<br>designed 29 Oct</div>
+      <div class="body">
+        <p class="small">Your direction, 29 Oct: say what the piece is for up front, let Claude map it, and have the tool find the best footage for each part. The design is in <a href="#brief">Cutting from a brief</a>. Each step below is usable on its own.</p>
+        <ul>
+          <li><b>Brief and shot map:</b> the brief template, the shot-map schema, <code>videtor overview</code> (what the footage holds, as text), and a project skill, <code>/cut-from-brief</code>, that runs the whole loop through the CLI. Works in Claude Code now, including the Code tab of the desktop app.</li>
+          <li><b>Footage map at the second level:</b> two small frames a second from every take; CLIP embeddings, faces and hands, camera and subject motion, focus on the subject; your Source Monitor marks read from the Premiere project. Guru, Vivo 1 and Vivo 2 first, while Paritosh_1 is connected.</li>
+          <li><b>Search, pick, cut:</b> <code>videtor search "hands fastening jewellery"</code> returns moments; <code>videtor pick shotmap.json</code> fills every slot at once with two alternates; the cut puts the picks on V1 and the alternates on V2–V3, switched off, so a swap is one click.</li>
+          <li><b>Benchmark:</b> your briefs for Guru, Vivo 1 and Vivo 2, scored against your edits and marks. Today’s picker: 58% right take, 8% right second.</li>
+          <li><b>Read back and learn:</b> after you fix a cut, the bridge reads the sequence, so no export is needed; each swap and slip becomes a labelled example for that slot’s role, and the taste model retrains.</li>
+          <li><b>Claude Desktop:</b> <code>videtor mcp</code> exposes the same steps as MCP tools.</li>
+          <li><b>Later:</b> transcripts (local Whisper) so a brief can quote a line and find the take it is spoken in; the opt-in second look; building the sequence in Premiere over the bridge instead of File ▸ Import.</li>
+        </ul>
+        <p class="small">New downloads to approve: MediaPipe’s face landmarker model (about 4 MB, Apache-2.0) for expressions, and the <code>mcp</code> Python package (MIT) for the Desktop step.</p>
+        <p class="small"><b>Built 29 Oct.</b> Footage map: the 157 Guru takes at two samples a second in six minutes (3,142 stills with CLIP embeddings, faces, hands, camera speed and shake, in-take jumps), sideways camcorder takes turned upright first. <code>videtor music</code> ranked the 91 tracks in <code>~/Downloads/music</code> and placed Burn4Me (129 BPM) so its lift lands on the reveal, 8.41 s in. <code>videtor cut</code> filled 31 slots from your brief. The second look (Claude reading contact sheets, with your consent) swapped 9 picks, mostly for crew in frame, and exposed three filler faults now fixed in code: landscape takes winning slots in a vertical frame, avoid terms too weak, and an empty frame matching “smoke under a spotlight”. Against your real edit and marks: 55% of picks are takes you used, 74% takes you marked, 23% land on a second you used or marked (the old teaser: 8%), and for 97% of slots the pick or one of its three runners-up is a take you used. Two reader and writer fixes along the way: Basic Motion (your 50% on rotated 4K, −90° and 188% on the camcorder; earlier cuts showed a 2× centre crop) and speed-stretched in/out under Time Remap (the used ranges of 129 clips were wrong). Read-back works live from Premiere and from XML; the MCP server wraps every step for Claude Desktop.</p>
+        <p class="small"><b>Standardised 29 Oct, after your verdict (“this is what I was looking for”).</b> <code>videtor prep &lt;folder&gt; --name &lt;name&gt;</code> takes footage no edit has touched: its own index, stills, orientation, the footage map and an overview (text plus one still per take, grouped into setups); a 14-take folder takes 23 s. Orientation comes from the pictures: faces that only appear once a still is turned, checked against their eye and mouth points and by CLIP. On Guru it found 16 of the 4K takes that were not upright (12 held vertical with no rotation metadata, 4 upside down) and matches your own rotation on 373 of the 374 takes your ten edits used; a sideways camera that filmed nothing with a face stays as shot and is fixed with <code>videtor orient</code> after reading the overview. Landscape takes in a vertical piece are cropped around the face, using Premiere’s centre convention verified against your project file (offset ÷ 3840 and ÷ 2160 on a 1080×1920 sequence). SFX follow your habits mined from the ten exports: risers crest just after the cut into the reveal, the impact hits on the drop, whooshes peak on section changes, shutter clicks land on flash frames, with your own snippets and levels. Read-back now aligns slots like a sequence alignment, so ripples read as moves, and refuses to save a read of the wrong sequence; <code>videtor kb learn</code> turns the fixes into weight corrections (<code>kb/taste.json</code>) for the next cut.</p>
+        <div class="done">Done when a brief written before cutting puts your shot among the three offered for most slots, and the cut needs fewer fixes than today’s picker. <b>Status 29 Oct:</b> the first part holds on Guru (97% of slots); the fix count comes from reading back your edit of this cut. New footage, a live project from Paritosh_2, comes after.</div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="when"><b>Phase 3</b>Deeper integration<br>as needed</div>
+      <div class="body">
+        <ul>
+          <li>Push timelines into the running NLE over MCP (Premiere UXP, Resolve Studio API) instead of File ▸ Import. Done 29 Oct: <code>prpr</code> 1.0.0 (MIT) with its headless UXP bridge is installed and connected to Premiere 26.0.2; <code>.mcp.json</code> registers it for this project. It reads projects, sequences and clips, imports media, appends clips, adds markers, diffs sequences and exports otio/fcpxml; it cannot import an XML, so planned cuts still go through File ▸ Import, while pushing a timeline directly over the bridge remains the Phase 3 route.</li>
+          <li>SFX auto-placement from your own library; Lumetri/LUT placeholders by effect name; title placeholders.</li>
+          <li>A learned cut scorer (Learning to Cut weights) if rule-based pacing plateaus.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Decisions and open questions</h2>
+  <h3>Decided 28 Oct</h3>
+  <ol class="q">
+    <li><b>Content:</b> everything from talking-head and vlogs to events, brand films, ads and fast-paced sports edits. Consequence: the knowledge base is keyed by edit type, and every planner rule takes the type's profile as its parameters.</li>
+    <li><b>Raw footage</b> is still on disk for three or more past projects. Consequence: learning take selection (what you discard) is in Phase 1, not deferred.</li>
+    <li><b>Premiere Pro first.</b> Export is tuned and verified against Premiere; Resolve import is checked at each milestone but not tuned until Phase 2.</li>
+    <li><b>Local only to start.</b> Phase 1 makes no network calls. The planner is one interface with a rule-based backend; a local model or the Claude API slots in behind it when you decide to explore API integration.</li>
+  </ol>
+  <ol class="q" start="5">
+    <li><b>Footage:</b> single camera and multicam, often several points of view shot on different cameras at different locations and focal lengths; log footage; a separate audio recorder. Consequences: a sync stage (audio waveform cross-correlation) aligns angles and external audio before anything is cut; Analyze records shot scale (wide, medium, close) so the planner can alternate sizes the way you do; log clips are normalized to Rec.709 before frame analysis so sharpness and exposure scores mean something.</li>
+    <li><b>Music and SFX:</b> one licensed track per project, plus a music library and an SFX library on disk. Consequences: the chosen track is beat-tracked and drives pacing for music-led types; the libraries are indexed by tempo and loudness so the planner can suggest alternatives; SFX go in as A3 markers in Phase 2 and as placed clips in Phase 3.</li>
+    <li><b>Machine:</b> Apple M2 Pro, 16 GB, macOS 26.3.1. Local Whisper via <code>mlx-whisper</code> (large-v3 fits); 7B-class local planner models are feasible later. <b>NLEs:</b> Premiere Pro 26.0.2 (UXP scripting available, so <code>prpr</code>-style control is possible in Phase 3) and DaVinci Resolve 19.1.4 Studio, so the scripting API is available for Phase 3.</li>
+    <li><b>Installs approved:</b> Homebrew ffmpeg, uv with Python 3.11, the Python packages, a git repository in <code>~/workspace/videtor</code>.</li>
+  </ol>
+  <h3>Still open</h3>
+  <ol class="q" start="9">
+    <li><b>Raw footage access:</b> the exports are in <code>.xml-exports/</code>; their media lives on external drives. Paritosh_1 (Guru, Vivo 1, Vivo 2) was indexed on 28 Oct: <code>videtor kb footage</code> probed 2,243 media files (Premiere render caches excluded), matched each edit's used clips (with the exact source ranges, nested sequences expanded) against everything else in the project folders, and <code>videtor kb frames</code> sampled three frames per clip plus one from the middle of each used range into <code>cache/frames/</code> (8,563 frames) so the drive can be unplugged. AMAZONSSD (Gujarat Giants) followed the same evening: the whole <code>WPL Gujarat Giants</code> folder is named as the project's footage in <code>kb/manifest.json</code>, 17 used against 449 unused files (5.8 h, including 90 min of four-track Zoom recorder WAVs the music-led edit never touched), 262 clips sampled. Camera thumbnail folders and render/export folders are kept out of the “unused” pool. AJAN SSD4 (Zomato, the “PackSwitch” campaign): a multi-shooter event with six operators’ folders, 2,301 media files indexed of which 123 are a Premiere consolidated copy, now recognised as duplicates by name and size and never counted twice; 66 used against 2,112 unused files (600 clips, 14.9 h, plus 1,500 stills). The drive also holds the <code>.prproj</code> itself under <code>pf/</code>, a richer knowledge-base source for later. Extreme SSD (JW, “Jonnie Walker × Lolla”): two shoot days with six operators, 2,674 files indexed, 47 used against 2,521 unused (2,288 clips, 9.8 h); the whole of Day 1 went unused, and the music track sits loose at the top of the drive, which the index now covers. AJAN SSD4 was unplugged mid-sampling, so 338 of its clips still need frames when it comes back (its index is complete). Paritosh_4 (Coca-Cola): the XML points at <code>Copied_Khanna Fish</code>, Premiere’s copy of the 48 used clips, while the shoot itself sits in <code>coca cola</code> (Day 1 with three cameras, Days 3–4 with two; Day 2 is not on this drive). The copies are transcodes with doubled extensions (<code>A_0008.MP4.mp4</code>), so the index now folds those names and matches copies to originals by name and duration: 57 duplicates flagged, 48 used against 829 unused files (5.3 h). The drive also holds a <code>Copied_Rigo</code> project with no export yet. Paritosh_3 (TPL / Leander Paes): three operators’ cards under <code>TPL/Videos</code>, 879 files indexed, 14 used against 842 unused (695 clips, 4.2 h, plus 147 stills); the drive also carries un-exported work (an <code>Engagement</code> shoot and a <code>Me</code> folder with Lego, Philips, Meta and ITC projects). Adidas (Adidas × NEXMAG, a BCCI shoot plus a second day you confirmed belongs to the same pool): 7,167 files, 16 used against 7,151 unused, of which 1,210 clips (31 h) and 5,800 stills; the edit kept 1.2% of the 45 min of clips it touched. The drive also holds <code>ALPHA SUMMIT</code> and <code>beauti verse</code>, two more un-exported projects. All seven drives are indexed and frame-complete, and Paritosh_1 also carries audio and motion analysis for all its 1,614 clips; no drive needs to stay connected.</li>
+    <li><b>Typical raw hours per project and formats</b> (H.264, ProRes, BRAW), which set the proxy and analysis time budgets.</li>
+  </ol>
+  <div class="consent">
+    <h3>Installs</h3>
+    <p class="small">Approved 28 Oct: Homebrew <code>ffmpeg</code>, <code>uv</code> with Python 3.11, the Python packages listed under Recommended stack, and a git repository in <code>~/workspace/videtor</code>. No API key is needed for Phase 1.</p>
+  </div>
+</section>
+
+<footer>
+  Sources consulted today (28 Oct 2026). Repository facts are as shown on each page at fetch time.
+  <ul>
+    <li><a href="https://github.com/AcademySoftwareFoundation/OpenTimelineIO">OpenTimelineIO</a> · <a href="https://pypi.org/project/otio-fcp-adapter">otio-fcp-adapter</a> · <a href="https://opentimelineio.readthedocs.io/en/v0.14/tutorials/adapters.html">OTIO adapters docs</a></li>
+    <li><a href="https://community.adobe.com/t5/premiere-pro-beta-discussions/now-in-beta-otio-import-and-export/m-p/14985932">Premiere Pro beta: OTIO import/export</a></li>
+    <li><a href="https://github.com/WyattBlue/auto-editor">auto-editor</a> · <a href="https://pypi.org/project/auto-editor/">auto-editor on PyPI</a></li>
+    <li><a href="https://pypi.org/project/prpr/">prpr</a> · <a href="https://github.com/morim3/mcp_adobe_premiere">mcp_adobe_premiere</a> · <a href="https://github.com/hetpatel-11/Adobe_Premiere_Pro_MCP">Adobe_Premiere_Pro_MCP</a> · <a href="https://github.com/Aodaruma/adobe-mcp-rs">adobe-mcp-rs</a></li>
+    <li><a href="https://github.com/samuelgursky/davinci-resolve-mcp">davinci-resolve-mcp</a> · <a href="https://github.com/tooflex/davinci-resolve-mcp">Tooflex/davinci-resolve-mcp</a> · <a href="https://github.com/pedrolabonia/pydavinci">pydavinci</a></li>
+    <li><a href="https://github.com/browser-use/video-use">browser-use/video-use</a> · <a href="https://github.com/FireRedTeam/FireRed-OpenStoryline">FireRed-OpenStoryline</a> · <a href="https://github.com/barefootford/buttercut">buttercut</a> · <a href="https://github.com/0xsline/OpenChatCut">OpenChatCut</a></li>
+    <li><a href="https://github.com/Breakthrough/PySceneDetect">PySceneDetect</a> · <a href="https://github.com/m-bain/whisperX">WhisperX</a> · <a href="https://github.com/csteinmetz1/pyloudnorm">pyloudnorm</a></li>
+    <li><a href="https://arxiv.org/pdf/2108.04294">Learning to Cut by Watching Movies</a> · <a href="https://github.com/PardoAlejo/LearningToCut">code</a> · <a href="https://openaccess.thecvf.com/content/ICCV2021W/CVEU/papers/Huang_Learning_Where_To_Cut_From_Edited_Videos_ICCVW_2021_paper.pdf">Learning Where to Cut</a></li>
+    <li><a href="https://www2.informatik.uni-hamburg.de/wtm/publications/2026/SLCWBW26/iui26_Shah-et-al.pdf">RankCut (IUI 2026)</a> · <a href="https://arxiv.org/pdf/2507.02790">HIVE (EMNLP 2025)</a></li>
+  </ul>
+</footer>
+
+</div>

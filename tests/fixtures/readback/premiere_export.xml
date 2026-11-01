@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xmeml>
+<!-- Premiere-style export of picks.json after an edit, with the quirks of real exports:
+     a centred dissolve between slots 1 and 2 (start/end -1, both clips' in/out covering the frames under it)
+     and an end-black fade on the added clip that runs a frame past its cut point, as in JW.xml (cutPointTicks
+     puts the cut at 160, not at the fade's end), a 100 fps file counted at the 25 fps clipitem rate, Time Remap
+     at 50% with in/out in speed-stretched frames, a folder name in NFD and upper case, a nest over slot 5,
+     an enabled alternate on a V3 whose track output is off, an adjustment layer and a text generator. -->
+<xmeml version="4">
+	<sequence id="sequence-1" explodedTracks="true">
+		<uuid>6a1c4d2e-0000-4000-8000-000000000001</uuid>
+		<duration>160</duration>
+		<rate>
+			<timebase>25</timebase>
+			<ntsc>FALSE</ntsc>
+		</rate>
+		<name>readback-fixture</name>
+		<media>
+			<video>
+				<format>
+					<samplecharacteristics>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<width>1080</width>
+						<height>1920</height>
+						<anamorphic>FALSE</anamorphic>
+						<pixelaspectratio>square</pixelaspectratio>
+						<fielddominance>none</fielddominance>
+					</samplecharacteristics>
+				</format>
+				<track>
+					<clipitem id="clipitem-1">
+						<masterclipid>masterclip-1</masterclipid>
+						<name>A001.MP4</name>
+						<enabled>TRUE</enabled>
+						<duration>300</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>0</start>
+						<end>-1</end>
+						<in>50</in>
+						<out>80</out>
+						<pproTicksIn>508032000000</pproTicksIn>
+						<pproTicksOut>812851200000</pproTicksOut>
+						<alphatype>none</alphatype>
+						<file id="file-1">
+							<name>A001.MP4</name>
+							<pathurl>file://localhost/Volumes/RAW/Day%201/A001.MP4</pathurl>
+							<rate>
+								<timebase>100</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<duration>1200</duration>
+							<media>
+								<video>
+									<samplecharacteristics>
+										<rate>
+											<timebase>100</timebase>
+											<ntsc>FALSE</ntsc>
+										</rate>
+										<width>3840</width>
+										<height>2160</height>
+									</samplecharacteristics>
+								</video>
+							</media>
+						</file>
+					</clipitem>
+					<transitionitem>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>20</start>
+						<end>30</end>
+						<alignment>center</alignment>
+						<cutPointTicks>50803200000</cutPointTicks>
+						<effect>
+							<name>Cross Dissolve</name>
+							<effectid>Cross Dissolve</effectid>
+							<effectcategory>Dissolve</effectcategory>
+							<effecttype>transition</effecttype>
+							<mediatype>video</mediatype>
+						</effect>
+					</transitionitem>
+					<clipitem id="clipitem-2">
+						<masterclipid>masterclip-2</masterclipid>
+						<name>A002.MP4</name>
+						<enabled>TRUE</enabled>
+						<duration>500</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>-1</start>
+						<end>50</end>
+						<in>20</in>
+						<out>50</out>
+						<alphatype>none</alphatype>
+						<file id="file-2">
+							<name>A002.MP4</name>
+							<pathurl>file://localhost/Volumes/RAW/Day%201/A002.MP4</pathurl>
+							<rate>
+								<timebase>25</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<duration>500</duration>
+						</file>
+					</clipitem>
+					<clipitem id="clipitem-3">
+						<masterclipid>masterclip-3</masterclipid>
+						<name>A003.MP4</name>
+						<enabled>TRUE</enabled>
+						<duration>500</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>50</start>
+						<end>75</end>
+						<in>0</in>
+						<out>25</out>
+						<alphatype>none</alphatype>
+						<file id="file-3">
+							<name>A003.MP4</name>
+							<pathurl>file://localhost/Volumes/RAW/Day%201/CAFE%CC%81/A003.MP4</pathurl>
+							<rate>
+								<timebase>25</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<duration>500</duration>
+						</file>
+					</clipitem>
+					<clipitem id="clipitem-4">
+						<masterclipid>masterclip-4</masterclipid>
+						<name>A004.MP4</name>
+						<enabled>TRUE</enabled>
+						<duration>500</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>75</start>
+						<end>100</end>
+						<in>125</in>
+						<out>150</out>
+						<alphatype>none</alphatype>
+						<file id="file-4">
+							<name>A004.MP4</name>
+							<pathurl>file://localhost/Volumes/RAW/Day%201/A004.MP4</pathurl>
+							<rate>
+								<timebase>25</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<duration>500</duration>
+						</file>
+					</clipitem>
+					<clipitem id="clipitem-5">
+						<masterclipid>masterclip-5</masterclipid>
+						<name>A005.MP4</name>
+						<enabled>TRUE</enabled>
+						<duration>500</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>100</start>
+						<end>125</end>
+						<in>10</in>
+						<out>35</out>
+						<alphatype>none</alphatype>
+						<file id="file-5">
+							<name>A005.MP4</name>
+							<pathurl>file://localhost/Volumes/RAW/Day%201/A005.MP4</pathurl>
+							<rate>
+								<timebase>25</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<duration>500</duration>
+						</file>
+					</clipitem>
+					<clipitem id="clipitem-6">
+						<masterclipid>masterclip-6</masterclipid>
+						<name>A006.MP4</name>
+						<enabled>TRUE</enabled>
+						<duration>600</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>125</start>
+						<end>150</end>
+						<in>150</in>
+						<out>175</out>
+						<pproTicksIn>762048000000</pproTicksIn>
+						<pproTicksOut>889056000000</pproTicksOut>
+						<alphatype>none</alphatype>
+						<file id="file-6">
+							<name>A006.MP4</name>
+							<pathurl>file://localhost/Volumes/RAW/Day%201/A006.MP4</pathurl>
+							<rate>
+								<timebase>100</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<duration>1200</duration>
+						</file>
+						<filter>
+							<effect>
+								<name>Time Remap</name>
+								<effectid>timeremap</effectid>
+								<effectcategory>motion</effectcategory>
+								<effecttype>motion</effecttype>
+								<mediatype>video</mediatype>
+								<parameter authoringApp="PremierePro">
+									<parameterid>variablespeed</parameterid>
+									<name>variablespeed</name>
+									<valuemin>0</valuemin>
+									<valuemax>1</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>speed</parameterid>
+									<name>speed</name>
+									<valuemin>-100000</valuemin>
+									<valuemax>100000</valuemax>
+									<value>50</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>reverse</parameterid>
+									<name>reverse</name>
+									<value>FALSE</value>
+								</parameter>
+							</effect>
+						</filter>
+					</clipitem>
+					<clipitem id="clipitem-7">
+						<masterclipid>masterclip-7</masterclipid>
+						<name>Z001.MP4</name>
+						<enabled>TRUE</enabled>
+						<duration>500</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>150</start>
+						<end>-1</end>
+						<in>0</in>
+						<out>10</out>
+						<alphatype>none</alphatype>
+						<file id="file-7">
+							<name>Z001.MP4</name>
+							<pathurl>file://localhost/Volumes/RAW/Day%202/Z001.MP4</pathurl>
+							<rate>
+								<timebase>25</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<duration>500</duration>
+						</file>
+					</clipitem>
+					<transitionitem>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>155</start>
+						<end>161</end>
+						<alignment>end-black</alignment>
+						<cutPointTicks>50803200000</cutPointTicks>
+						<effect>
+							<name>Cross Dissolve</name>
+							<effectid>Cross Dissolve</effectid>
+							<effectcategory>Dissolve</effectcategory>
+							<effecttype>transition</effecttype>
+							<mediatype>video</mediatype>
+						</effect>
+					</transitionitem>
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+				<track>
+					<clipitem id="clipitem-8">
+						<masterclipid>masterclip-8</masterclipid>
+						<name>B001.MP4</name>
+						<enabled>FALSE</enabled>
+						<duration>500</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>0</start>
+						<end>25</end>
+						<in>25</in>
+						<out>50</out>
+						<file id="file-8">
+							<name>B001.MP4</name>
+							<pathurl>file://localhost/Volumes/RAW/Day%201/B001.MP4</pathurl>
+							<rate>
+								<timebase>25</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<duration>500</duration>
+						</file>
+					</clipitem>
+					<clipitem id="clipitem-9">
+						<masterclipid>masterclip-9</masterclipid>
+						<name>B004.MP4</name>
+						<enabled>FALSE</enabled>
+						<duration>500</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>75</start>
+						<end>100</end>
+						<in>75</in>
+						<out>100</out>
+						<file id="file-9">
+							<name>B004.MP4</name>
+							<pathurl>file://localhost/Volumes/RAW/Day%201/B004.MP4</pathurl>
+							<rate>
+								<timebase>25</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<duration>500</duration>
+						</file>
+					</clipitem>
+					<clipitem id="clipitem-10">
+						<masterclipid>masterclip-10</masterclipid>
+						<name>Nested Sequence 01</name>
+						<enabled>TRUE</enabled>
+						<duration>25</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>100</start>
+						<end>125</end>
+						<in>0</in>
+						<out>25</out>
+						<sequence id="sequence-2">
+							<uuid>6a1c4d2e-0000-4000-8000-000000000002</uuid>
+							<duration>25</duration>
+							<rate>
+								<timebase>25</timebase>
+								<ntsc>FALSE</ntsc>
+							</rate>
+							<name>Nested Sequence 01</name>
+							<media>
+								<video>
+									<track>
+										<clipitem id="clipitem-20">
+											<masterclipid>masterclip-20</masterclipid>
+											<name>N001.MP4</name>
+											<enabled>TRUE</enabled>
+											<duration>500</duration>
+											<rate>
+												<timebase>25</timebase>
+												<ntsc>FALSE</ntsc>
+											</rate>
+											<start>0</start>
+											<end>25</end>
+											<in>50</in>
+											<out>75</out>
+											<file id="file-20">
+												<name>N001.MP4</name>
+												<pathurl>file://localhost/Volumes/RAW/Day%202/N001.MP4</pathurl>
+												<rate>
+													<timebase>25</timebase>
+													<ntsc>FALSE</ntsc>
+												</rate>
+												<duration>500</duration>
+											</file>
+										</clipitem>
+										<enabled>TRUE</enabled>
+										<locked>FALSE</locked>
+									</track>
+								</video>
+							</media>
+						</sequence>
+					</clipitem>
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+				<track>
+					<clipitem id="clipitem-11">
+						<masterclipid>masterclip-4</masterclipid>
+						<name>A004.MP4</name>
+						<enabled>TRUE</enabled>
+						<duration>500</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>75</start>
+						<end>100</end>
+						<in>225</in>
+						<out>250</out>
+						<file id="file-4"/>
+					</clipitem>
+					<enabled>FALSE</enabled>
+					<locked>FALSE</locked>
+				</track>
+				<track>
+					<clipitem id="clipitem-12">
+						<masterclipid>masterclip-12</masterclipid>
+						<name>Adjustment Layer</name>
+						<enabled>TRUE</enabled>
+						<duration>1080000</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>0</start>
+						<end>150</end>
+						<in>90000</in>
+						<out>90150</out>
+						<file id="file-12">
+							<name>Adjustment Layer</name>
+							<rate>
+								<timebase>30</timebase>
+								<ntsc>TRUE</ntsc>
+							</rate>
+							<media>
+								<video/>
+							</media>
+						</file>
+						<filter>
+							<effect>
+								<name>Lumetri Color</name>
+								<effectid>Lumetri</effectid>
+								<effectcategory>Color</effectcategory>
+							</effect>
+						</filter>
+					</clipitem>
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+				<track>
+					<generatoritem id="clipitem-14">
+						<name>Text</name>
+						<enabled>TRUE</enabled>
+						<duration>3000</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>25</start>
+						<end>50</end>
+						<in>0</in>
+						<out>25</out>
+						<effect>
+							<name>Text</name>
+							<effectid>Text</effectid>
+							<effectcategory>Text</effectcategory>
+							<effecttype>generator</effecttype>
+							<mediatype>video</mediatype>
+						</effect>
+					</generatoritem>
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+			</video>
+			<audio>
+				<numOutputChannels>2</numOutputChannels>
+				<track>
+					<clipitem id="clipitem-13" premiereChannelType="stereo">
+						<masterclipid>masterclip-13</masterclipid>
+						<name>track.wav</name>
+						<enabled>TRUE</enabled>
+						<duration>4500</duration>
+						<rate>
+							<timebase>25</timebase>
+							<ntsc>FALSE</ntsc>
+						</rate>
+						<start>0</start>
+						<end>150</end>
+						<in>300</in>
+						<out>450</out>
+						<file id="file-13">
+							<name>track.wav</name>
+							<pathurl>file://localhost/Volumes/RAW/music/track.wav</pathurl>
+						</file>
+					</clipitem>
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+			</audio>
+		</media>
+		<timecode>
+			<rate>
+				<timebase>25</timebase>
+				<ntsc>FALSE</ntsc>
+			</rate>
+			<string>00:00:00:00</string>
+			<frame>0</frame>
+			<displayformat>NDF</displayformat>
+		</timecode>
+	</sequence>
+</xmeml>

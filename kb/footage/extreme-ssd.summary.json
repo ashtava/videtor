@@ -1,0 +1,136 @@
+{
+  "JW.xml::Sequence 01": {
+    "roots": [
+      "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2",
+      "/Volumes/Extreme SSD/Jonnie walker X Lolla"
+    ],
+    "files": {
+      "used": 48,
+      "unused": 2520,
+      "renders": 2,
+      "duplicates": 103,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 1363.3,
+      "unused_files": 35336.3,
+      "selected": 144.0
+    },
+    "select_ratio": 0.106,
+    "unused_kinds": {
+      "video": 2287,
+      "image": 233
+    },
+    "formats": {
+      "3840x2160 @25.0 h264": 534,
+      "3840x2160 @59.94 h264": 432,
+      "3840x2160 @100.0 h264": 349,
+      "3840x2160 @50.0 hevc": 328,
+      "3840x2160 @50.0 h264": 222,
+      "3840x2160 @59.94 hevc": 188
+    },
+    "matched_by_basename": 0,
+    "folders": {
+      "/Volumes/Extreme SSD": {
+        "used": 2,
+        "unused": 0
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Aakosh/1": {
+        "used": 0,
+        "unused": 33
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Aakosh/2": {
+        "used": 0,
+        "unused": 65
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Aakosh/3": {
+        "used": 0,
+        "unused": 46
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Anurag": {
+        "used": 0,
+        "unused": 198
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Basim/1": {
+        "used": 0,
+        "unused": 33
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Basim/2/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 70
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Basim/3": {
+        "used": 0,
+        "unused": 6
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Basim/4": {
+        "used": 0,
+        "unused": 33
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Hridayesh/1": {
+        "used": 0,
+        "unused": 189
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/Jayant/1": {
+        "used": 0,
+        "unused": 58
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/PRASHANT /DCIM/100MSDCF": {
+        "used": 0,
+        "unused": 80
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/PRASHANT /M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 114
+      },
+      "Jonnie walker X Lolla/FTG/Day 1/YUG": {
+        "used": 0,
+        "unused": 188
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Akhosh": {
+        "used": 5,
+        "unused": 151
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Basim/1": {
+        "used": 11,
+        "unused": 157
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Basim/2": {
+        "used": 0,
+        "unused": 43
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1": {
+        "used": 13,
+        "unused": 158
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Internal/Anurag/1": {
+        "used": 1,
+        "unused": 86
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Internal/Joson (INT)": {
+        "used": 0,
+        "unused": 201
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Internal/Shoiabh": {
+        "used": 0,
+        "unused": 127
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Paritosh": {
+        "used": 5,
+        "unused": 44
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Pranshant/1": {
+        "used": 11,
+        "unused": 116
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/Pranshant/2": {
+        "used": 0,
+        "unused": 90
+      },
+      "Jonnie walker X Lolla/FTG/Day 2/YUG": {
+        "used": 0,
+        "unused": 234
+      }
+    }
+  }
+}

@@ -1,0 +1,788 @@
+{
+  "name": "ahsaas taruk",
+  "id": "sequence-10",
+  "role": "main",
+  "source_xml": ".xml-exports/Vivo 2.xml",
+  "key": "Vivo 2.xml::ahsaas taruk",
+  "fps": 25.0,
+  "frame_size": [
+    1080,
+    1920
+  ],
+  "orientation": "vertical",
+  "duration_s": 66.24,
+  "tracks": {
+    "video": 9,
+    "audio": 18
+  },
+  "nested": {
+    "clips": 0,
+    "expanded": 0
+  },
+  "primary_video_track": "V4",
+  "shot_length_s": {
+    "count": 69,
+    "median": 1.08,
+    "mean": 1.275,
+    "p10": 0.472,
+    "p90": 2.344
+  },
+  "shot_lengths_s": [
+    0.56,
+    0.76,
+    0.56,
+    0.56,
+    1.08,
+    1.4,
+    1.6,
+    0.44,
+    0.72,
+    0.44,
+    1.68,
+    1.92,
+    1.28,
+    4.0,
+    0.84,
+    1.08,
+    2.2,
+    0.52,
+    1.12,
+    0.96,
+    2.32,
+    0.56,
+    1.24,
+    0.84,
+    0.56,
+    0.56,
+    2.16,
+    1.6,
+    1.36,
+    2.6,
+    2.32,
+    0.52,
+    1.32,
+    1.08,
+    0.56,
+    0.84,
+    1.6,
+    0.52,
+    0.56,
+    0.48,
+    0.64,
+    1.08,
+    1.72,
+    1.68,
+    2.44,
+    0.56,
+    0.68,
+    0.28,
+    0.36,
+    0.32,
+    0.36,
+    1.08,
+    0.84,
+    0.64,
+    1.68,
+    3.96,
+    1.96,
+    2.76,
+    3.28,
+    2.6,
+    1.72,
+    0.44,
+    0.68,
+    1.36,
+    1.72,
+    1.56,
+    1.68,
+    0.56,
+    2.04
+  ],
+  "primary_shot_length_s": {
+    "count": 24,
+    "median": 0.96,
+    "mean": 1.342,
+    "p10": 0.36,
+    "p90": 2.712
+  },
+  "cuts_s": [
+    4.0,
+    4.56,
+    5.32,
+    6.16,
+    6.68,
+    7.24,
+    8.32,
+    8.76,
+    8.8,
+    9.44,
+    11.64,
+    12.72,
+    13.28,
+    13.8,
+    14.36,
+    15.48,
+    16.92,
+    17.8,
+    18.64,
+    19.16,
+    19.6,
+    19.68,
+    21.36,
+    23.56,
+    23.68,
+    26.0,
+    27.32,
+    27.36,
+    27.92,
+    29.0,
+    30.64,
+    31.2,
+    31.6,
+    31.88,
+    32.84,
+    33.12,
+    33.48,
+    33.8,
+    34.16,
+    35.24,
+    36.64,
+    37.28,
+    37.48,
+    38.12,
+    39.72,
+    40.16,
+    40.88,
+    41.44,
+    42.08,
+    42.52,
+    43.08,
+    44.76,
+    44.8,
+    48.76,
+    50.72,
+    50.92,
+    51.56,
+    53.16,
+    55.92,
+    57.52,
+    59.44,
+    60.8,
+    62.16,
+    63.44,
+    66.04,
+    67.6
+  ],
+  "cuts_per_min": 59.78,
+  "layers": {
+    "median": 1,
+    "p90": 2,
+    "max": 3
+  },
+  "broll": {
+    "count": 45,
+    "length_s": {
+      "count": 45,
+      "median": 1.08,
+      "mean": 1.24,
+      "p10": 0.536,
+      "p90": 2.184
+    },
+    "tracks": [
+      "V1",
+      "V2",
+      "V3",
+      "V5",
+      "V6"
+    ]
+  },
+  "transitions": {
+    "count": 0,
+    "share_of_edits": 0.0,
+    "by_name": {},
+    "frames": null
+  },
+  "audio_transitions": {
+    "count": 20,
+    "share_of_audio_clips": 0.351,
+    "by_name": {
+      "Cross Fade ( 0dB)": 6,
+      "Cross Fade (+3dB)": 14
+    },
+    "frames": {
+      "count": 20,
+      "median": 47.5,
+      "mean": 41.2,
+      "p10": 12.3,
+      "p90": 66.6
+    }
+  },
+  "effects_seen": {},
+  "audio_effects_seen": {},
+  "speed_changes": {
+    "share": 0.174,
+    "ramp_share": 0.0,
+    "values": [
+      1.21,
+      1.11,
+      1.11,
+      1.25,
+      1.5,
+      2.0,
+      1.25,
+      1.21,
+      1.25,
+      1.11,
+      1.11,
+      1.25
+    ]
+  },
+  "graphics": {
+    "adjustment": 2,
+    "adjustment_per_min": 1.81,
+    "adjustment_effects": {},
+    "graphic": 5,
+    "matte": 0,
+    "first_title_s": 18.64
+  },
+  "labels": {
+    "video": {
+      "Iris": 76,
+      "Lavender": 3
+    },
+    "audio": {
+      "Caribbean": 43,
+      "Iris": 16
+    }
+  },
+  "luts_seen": {},
+  "audio_tracks": [
+    {
+      "track": "A1",
+      "clips": 5,
+      "covered_s": 58.08,
+      "role": "bed",
+      "level_db": {
+        "count": 5,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 5,
+      "sources": [
+        "O Humdum Suniyo Re (Saathiya - 2002).wav"
+      ]
+    },
+    {
+      "track": "A2",
+      "clips": 5,
+      "covered_s": 58.08,
+      "role": "bed",
+      "level_db": {
+        "count": 5,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 5,
+      "sources": [
+        "O Humdum Suniyo Re (Saathiya - 2002).wav"
+      ]
+    },
+    {
+      "track": "A3",
+      "clips": 5,
+      "covered_s": 13.28,
+      "role": "camera",
+      "level_db": {
+        "count": 5,
+        "median": 5.0,
+        "mean": 11.2,
+        "p10": -5.4,
+        "p90": 32.0
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": 12.5,
+        "mean": 14.0,
+        "p10": -4.8,
+        "p90": 34.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "C020C099_260924EC_Proxy.mp4",
+        "C020C121_260924EY_Proxy.mp4",
+        "C020C148_260924RZ_Proxy.mp4",
+        "DSGNMorph_SLOW MOTION-Stem 01 Quick Stop_Ocular_Shift.wav",
+        "Whoosh 05.wav"
+      ]
+    },
+    {
+      "track": "A4",
+      "clips": 5,
+      "covered_s": 13.28,
+      "role": "camera",
+      "level_db": {
+        "count": 5,
+        "median": 5.0,
+        "mean": 11.2,
+        "p10": -5.4,
+        "p90": 32.0
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": 12.5,
+        "mean": 14.0,
+        "p10": -4.8,
+        "p90": 34.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "C020C099_260924EC_Proxy.mp4",
+        "C020C121_260924EY_Proxy.mp4",
+        "C020C148_260924RZ_Proxy.mp4",
+        "DSGNMorph_SLOW MOTION-Stem 01 Quick Stop_Ocular_Shift.wav",
+        "Whoosh 05.wav"
+      ]
+    },
+    {
+      "track": "A5",
+      "clips": 6,
+      "covered_s": 10.4,
+      "role": "sfx",
+      "level_db": {
+        "count": 6,
+        "median": 0.0,
+        "mean": 2.5,
+        "p10": 0.0,
+        "p90": 7.5
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 15.0,
+        "mean": 15.0,
+        "p10": 15.0,
+        "p90": 15.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "C020C116_260924OQ_Proxy.mp4",
+        "WhatsApp Audio 2026-10-02 at 17.44.32.mp3",
+        "WhatsApp Audio 2026-10-02 at 17.45.13.mp3",
+        "Whoosh 01.mp3",
+        "Whoosh 05.wav"
+      ]
+    },
+    {
+      "track": "A6",
+      "clips": 3,
+      "covered_s": 6.72,
+      "role": "sfx",
+      "level_db": {
+        "count": 3,
+        "median": 0.0,
+        "mean": 5.0,
+        "p10": 0.0,
+        "p90": 12.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 15.0,
+        "mean": 15.0,
+        "p10": 15.0,
+        "p90": 15.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "C020C116_260924OQ_Proxy.mp4",
+        "Whoosh 01.mp3",
+        "Whoosh 05.wav"
+      ]
+    },
+    {
+      "track": "A7",
+      "clips": 6,
+      "covered_s": 19.16,
+      "role": "camera",
+      "level_db": {
+        "count": 6,
+        "median": 5.0,
+        "mean": 2.5,
+        "p10": -10.5,
+        "p90": 13.0
+      },
+      "level_db_adjusted": {
+        "count": 5,
+        "median": 10.0,
+        "mean": 3.0,
+        "p10": -11.4,
+        "p90": 13.4
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "B_0044_Proxy.mp4",
+        "Build Mix 3.wav",
+        "C020C114_260924MZ_Proxy.mp4",
+        "C020C149_260924HF_Proxy.mp4",
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav"
+      ]
+    },
+    {
+      "track": "A8",
+      "clips": 6,
+      "covered_s": 19.16,
+      "role": "camera",
+      "level_db": {
+        "count": 6,
+        "median": 5.0,
+        "mean": 2.5,
+        "p10": -10.5,
+        "p90": 13.0
+      },
+      "level_db_adjusted": {
+        "count": 5,
+        "median": 10.0,
+        "mean": 3.0,
+        "p10": -11.4,
+        "p90": 13.4
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "B_0044_Proxy.mp4",
+        "Build Mix 3.wav",
+        "C020C114_260924MZ_Proxy.mp4",
+        "C020C149_260924HF_Proxy.mp4",
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav"
+      ]
+    },
+    {
+      "track": "A9",
+      "clips": 2,
+      "covered_s": 6.68,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -8.5,
+        "mean": -8.5,
+        "p10": -12.1,
+        "p90": -4.9
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -8.5,
+        "mean": -8.5,
+        "p10": -12.1,
+        "p90": -4.9
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav",
+        "FlyBy 13.wav"
+      ]
+    },
+    {
+      "track": "A10",
+      "clips": 2,
+      "covered_s": 6.68,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -8.5,
+        "mean": -8.5,
+        "p10": -12.1,
+        "p90": -4.9
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -8.5,
+        "mean": -8.5,
+        "p10": -12.1,
+        "p90": -4.9
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav",
+        "FlyBy 13.wav"
+      ]
+    },
+    {
+      "track": "A11",
+      "clips": 3,
+      "covered_s": 14.08,
+      "role": "sfx",
+      "level_db": {
+        "count": 3,
+        "median": 0.0,
+        "mean": -3.0,
+        "p10": -10.4,
+        "p90": 3.2
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -4.5,
+        "mean": -4.5,
+        "p10": -11.3,
+        "p90": 2.3
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "9x16.mp4",
+        "AMBForst_Birdsong, Surrounding, Dense, Wind High in Trees_Ocular Sounds_Forest_The Complete Ambiences Collection.wav",
+        "Whoosh 04.mp3"
+      ]
+    },
+    {
+      "track": "A12",
+      "clips": 3,
+      "covered_s": 14.08,
+      "role": "sfx",
+      "level_db": {
+        "count": 3,
+        "median": 0.0,
+        "mean": -3.0,
+        "p10": -10.4,
+        "p90": 3.2
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -4.5,
+        "mean": -4.5,
+        "p10": -11.3,
+        "p90": 2.3
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "9x16.mp4",
+        "AMBForst_Birdsong, Surrounding, Dense, Wind High in Trees_Ocular Sounds_Forest_The Complete Ambiences Collection.wav",
+        "Whoosh 04.mp3"
+      ]
+    },
+    {
+      "track": "A13",
+      "clips": 2,
+      "covered_s": 11.92,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -12.5,
+        "mean": -12.5,
+        "p10": -13.7,
+        "p90": -11.3
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -12.5,
+        "mean": -12.5,
+        "p10": -13.7,
+        "p90": -11.3
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "Build Mix 3.wav",
+        "DSGNMorph_SLOW MOTION-Stem 01 Quick Stop_Ocular_Shift.wav"
+      ]
+    },
+    {
+      "track": "A14",
+      "clips": 2,
+      "covered_s": 11.92,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -12.5,
+        "mean": -12.5,
+        "p10": -13.7,
+        "p90": -11.3
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -12.5,
+        "mean": -12.5,
+        "p10": -13.7,
+        "p90": -11.3
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "Build Mix 3.wav",
+        "DSGNMorph_SLOW MOTION-Stem 01 Quick Stop_Ocular_Shift.wav"
+      ]
+    },
+    {
+      "track": "A15",
+      "clips": 1,
+      "covered_s": 4.52,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -10.0,
+        "mean": -10.0,
+        "p10": -10.0,
+        "p90": -10.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -10.0,
+        "mean": -10.0,
+        "p10": -10.0,
+        "p90": -10.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "#Impacts ALL-IN-ONE.wav"
+      ]
+    },
+    {
+      "track": "A16",
+      "clips": 1,
+      "covered_s": 4.52,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -10.0,
+        "mean": -10.0,
+        "p10": -10.0,
+        "p90": -10.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -10.0,
+        "mean": -10.0,
+        "p10": -10.0,
+        "p90": -10.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "#Impacts ALL-IN-ONE.wav"
+      ]
+    },
+    {
+      "track": "A17",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A18",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    }
+  ],
+  "markers": 0,
+  "sources": [
+    "/Users/paritoshsrivastava/Downloads/OcularSounds \u2013 Full Access Bundle/OcularSounds \u2013 Full Access Bundle/Shift/Shift - Stems/Quick Stop/DSGNMorph_SLOW MOTION-Stem 01 Quick Stop_Ocular_Shift.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Bryan Delimata - Essential Sound Pack/Impacts_Hits/#Impacts ALL-IN-ONE.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Epic Hits Vol. 1/DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Forest/AMBForst_Birdsong, Surrounding, Dense, Wind High in Trees_Ocular Sounds_Forest_The Complete Ambiences Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Paramount Motion ULTIMATE Filmmaker Bundle/ODEON Sound Effects Update/ODEON Sound Effects/Build Mixer/Build Mix 3.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Paramount Motion ULTIMATE Filmmaker Bundle/ODEON Sound Effects Update/ODEON Sound Effects/FlyBy/FlyBy 13.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/whoosh-2022-03-31-08-31-57-utc/Whoosh 01.mp3",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/whoosh-2022-03-31-08-31-57-utc/Whoosh 04.mp3",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/whoosh-2022-03-31-08-31-57-utc/Whoosh 05.wav",
+    "/Users/paritoshsrivastava/Downloads/V80_Main KV_1080x1920pxls.png",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0044_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0050_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0051_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0053_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0060_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0061_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0067_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0068_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0073_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0075_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0079_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0081_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0083_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0086_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0087_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0088_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/B_0105_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C010_260924CS_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C012_260924AL_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C032_260924YN_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C073_260924LZ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C076_260924QH_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C077_260924JQ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C081_260924LY_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C082_260924QU_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C084_260924UM_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C089_260924YQ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C090_260924FG_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C093_260924ZK_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C095_260924XT_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C096_260924MA_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C099_260924EC_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C100_260924PJ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C101_260924QQ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C102_260924IZ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C103_260924LL_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C106_260924BA_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C107_260924HW_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C109_260924AY_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C111_260924GB_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C113_260924VA_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C114_260924MZ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C116_260924OQ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C118_260924JX_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C120_260924UJ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C121_260924EY_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C123_260924TD_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C124_260924XZ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C134_260924JE_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C147_260924RK_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C148_260924RZ_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik/C020C149_260924HF_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/O Humdum Suniyo Re (Saathiya - 2002).wav",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/WhatsApp Audio 2026-10-02 at 17.44.32.mp3",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/WhatsApp Audio 2026-10-02 at 17.45.13.mp3",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/9x16.mp4"
+  ]
+}

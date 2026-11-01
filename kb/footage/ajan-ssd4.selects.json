@@ -1,0 +1,30 @@
+{
+  "Zomato.xml::Final seq": {
+    "n": {
+      "used": 54,
+      "unused": 592
+    },
+    "used": {
+      "duration_s": 15.188,
+      "fps": 50.0,
+      "height": 2160.0,
+      "sharpness": 149.949,
+      "brightness": 97.698,
+      "contrast": 33.248,
+      "colorfulness": 14.506,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    },
+    "unused": {
+      "duration_s": 6.72,
+      "fps": 50.0,
+      "height": 2160.0,
+      "sharpness": 111.531,
+      "brightness": 97.369,
+      "contrast": 29.702,
+      "colorfulness": 15.737,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    }
+  }
+}

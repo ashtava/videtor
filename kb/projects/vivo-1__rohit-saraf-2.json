@@ -1,0 +1,1272 @@
+{
+  "name": "Rohit saraf 2",
+  "id": "sequence-1",
+  "role": "main",
+  "source_xml": ".xml-exports/Vivo 1.xml",
+  "key": "Vivo 1.xml::Rohit saraf 2",
+  "fps": 25.0,
+  "frame_size": [
+    1080,
+    1920
+  ],
+  "orientation": "vertical",
+  "duration_s": 65.76,
+  "tracks": {
+    "video": 11,
+    "audio": 36
+  },
+  "nested": {
+    "clips": 6,
+    "expanded": 6
+  },
+  "primary_video_track": "V1",
+  "shot_length_s": {
+    "count": 81,
+    "median": 0.92,
+    "mean": 1.133,
+    "p10": 0.48,
+    "p90": 2.16
+  },
+  "shot_lengths_s": [
+    2.92,
+    2.16,
+    0.96,
+    1.72,
+    0.76,
+    0.24,
+    1.0,
+    0.6,
+    0.24,
+    1.0,
+    0.68,
+    0.76,
+    1.44,
+    3.32,
+    0.68,
+    0.48,
+    1.16,
+    1.2,
+    0.36,
+    0.6,
+    1.52,
+    1.96,
+    1.96,
+    1.44,
+    0.92,
+    0.48,
+    0.56,
+    0.56,
+    0.48,
+    0.88,
+    1.36,
+    0.76,
+    0.6,
+    0.72,
+    1.04,
+    2.32,
+    0.2,
+    0.84,
+    0.36,
+    2.52,
+    0.92,
+    1.32,
+    1.0,
+    1.4,
+    0.56,
+    0.64,
+    0.36,
+    2.24,
+    0.84,
+    0.56,
+    0.8,
+    0.8,
+    1.12,
+    0.92,
+    0.56,
+    1.08,
+    1.04,
+    2.16,
+    1.72,
+    1.76,
+    1.96,
+    0.84,
+    0.56,
+    0.8,
+    0.8,
+    1.16,
+    1.96,
+    1.68,
+    2.4,
+    1.72,
+    0.56,
+    0.84,
+    0.56,
+    0.8,
+    0.8,
+    1.16,
+    0.88,
+    1.8,
+    1.6,
+    1.08,
+    2.24
+  ],
+  "primary_shot_length_s": {
+    "count": 60,
+    "median": 0.92,
+    "mean": 1.093,
+    "p10": 0.468,
+    "p90": 2.16
+  },
+  "cuts_s": [
+    2.92,
+    5.08,
+    6.04,
+    7.76,
+    8.52,
+    8.76,
+    9.76,
+    11.72,
+    12.32,
+    12.56,
+    13.56,
+    14.24,
+    15.0,
+    16.44,
+    18.12,
+    19.76,
+    19.84,
+    19.92,
+    20.52,
+    21.0,
+    22.2,
+    22.56,
+    23.16,
+    24.68,
+    26.64,
+    27.16,
+    27.68,
+    28.12,
+    28.6,
+    29.16,
+    29.72,
+    30.2,
+    31.08,
+    32.44,
+    33.2,
+    33.8,
+    34.52,
+    35.56,
+    37.16,
+    37.72,
+    38.24,
+    40.04,
+    40.24,
+    41.08,
+    41.44,
+    43.96,
+    44.88,
+    46.2,
+    47.2,
+    48.6,
+    49.16,
+    49.8,
+    50.16,
+    52.4,
+    53.24,
+    53.8,
+    54.6,
+    55.4,
+    56.52,
+    56.56,
+    57.44,
+    58.0,
+    59.08,
+    60.12,
+    62.28,
+    62.52,
+    64.0,
+    65.76,
+    67.48
+  ],
+  "cuts_per_min": 62.96,
+  "layers": {
+    "median": 1,
+    "p90": 2,
+    "max": 4
+  },
+  "broll": {
+    "count": 21,
+    "length_s": {
+      "count": 21,
+      "median": 1.08,
+      "mean": 1.248,
+      "p10": 0.56,
+      "p90": 1.96
+    },
+    "tracks": [
+      "V2",
+      "V3",
+      "V4",
+      "V5",
+      "V6"
+    ]
+  },
+  "transitions": {
+    "count": 0,
+    "share_of_edits": 0.0,
+    "by_name": {},
+    "frames": null
+  },
+  "audio_transitions": {
+    "count": 43,
+    "share_of_audio_clips": 0.35,
+    "by_name": {
+      "Cross Fade (+3dB)": 35,
+      "Cross Fade ( 0dB)": 8
+    },
+    "frames": {
+      "count": 43,
+      "median": 39.0,
+      "mean": 39.209,
+      "p10": 15.0,
+      "p90": 77.0
+    }
+  },
+  "effects_seen": {},
+  "audio_effects_seen": {},
+  "speed_changes": {
+    "share": 0.333,
+    "ramp_share": 0.0,
+    "values": [
+      1.243,
+      1.5,
+      1.5,
+      0.5,
+      0.5,
+      1.74,
+      0.5,
+      1.207,
+      1.25,
+      1.25,
+      0.75,
+      1.347,
+      1.194,
+      1.21,
+      1.25,
+      1.21,
+      1.5,
+      0.5,
+      1.5,
+      1.243,
+      1.25,
+      0.5,
+      0.5,
+      0.5,
+      1.209,
+      0.7,
+      1.25
+    ]
+  },
+  "graphics": {
+    "adjustment": 0,
+    "adjustment_per_min": 0.0,
+    "adjustment_effects": {},
+    "graphic": 0,
+    "matte": 0,
+    "first_title_s": null
+  },
+  "labels": {
+    "video": {
+      "Iris": 63,
+      "Forest": 7,
+      "Lavender": 1,
+      "Violet": 8
+    },
+    "audio": {
+      "Caribbean": 106,
+      "Iris": 32
+    }
+  },
+  "luts_seen": {},
+  "audio_tracks": [
+    {
+      "track": "A1",
+      "clips": 1,
+      "covered_s": 65.76,
+      "role": "bed",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "VIVO FILM 01 VN SD06.wav"
+      ]
+    },
+    {
+      "track": "A2",
+      "clips": 1,
+      "covered_s": 65.76,
+      "role": "bed",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "VIVO FILM 01 VN SD06.wav"
+      ]
+    },
+    {
+      "track": "A3",
+      "clips": 1,
+      "covered_s": 2.32,
+      "role": "camera",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "9x16.mp4"
+      ]
+    },
+    {
+      "track": "A4",
+      "clips": 1,
+      "covered_s": 2.32,
+      "role": "camera",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "9x16.mp4"
+      ]
+    },
+    {
+      "track": "A5",
+      "clips": 11,
+      "covered_s": 60.6,
+      "role": "sfx",
+      "level_db": {
+        "count": 11,
+        "median": 0.0,
+        "mean": -5.455,
+        "p10": -16.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 5,
+        "median": -14.0,
+        "mean": -12.0,
+        "p10": -16.0,
+        "p90": -6.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 8,
+      "sources": [
+        "AMBSea_Beach, Calm Waves, Crashing, Ocean, Loop 1_Ocular Sounds_Seaside_The Complete Ambiences collection.wav",
+        "C021C049_260925UT_Proxy.mp4",
+        "DSGNWhsh_Quick Whoosh, Soft Pink Noise, Deep Cymbal_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "DoorBellRingClose.wav",
+        "O Humdum Suniyo Re (Saathiya - 2002).wav"
+      ]
+    },
+    {
+      "track": "A6",
+      "clips": 11,
+      "covered_s": 60.6,
+      "role": "sfx",
+      "level_db": {
+        "count": 11,
+        "median": 0.0,
+        "mean": -5.455,
+        "p10": -16.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 5,
+        "median": -14.0,
+        "mean": -12.0,
+        "p10": -16.0,
+        "p90": -6.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 8,
+      "sources": [
+        "AMBSea_Beach, Calm Waves, Crashing, Ocean, Loop 1_Ocular Sounds_Seaside_The Complete Ambiences collection.wav",
+        "C021C049_260925UT_Proxy.mp4",
+        "DSGNWhsh_Quick Whoosh, Soft Pink Noise, Deep Cymbal_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "DoorBellRingClose.wav",
+        "O Humdum Suniyo Re (Saathiya - 2002).wav"
+      ]
+    },
+    {
+      "track": "A7",
+      "clips": 9,
+      "covered_s": 13.4,
+      "role": "sfx",
+      "level_db": {
+        "count": 9,
+        "median": -8.0,
+        "mean": -8.667,
+        "p10": -13.4,
+        "p90": -6.4
+      },
+      "level_db_adjusted": {
+        "count": 8,
+        "median": -8.0,
+        "mean": -9.75,
+        "p10": -13.6,
+        "p90": -8.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "BOOM Library - Transitions - Impact Whoosh Drum.wav",
+        "Karl CLick.mp3",
+        "Top 5 notification sounds.mp3",
+        "WhatsApp Audio 2026-09-29 at 14.13.35.mp3",
+        "Whoosh 01.mp3"
+      ]
+    },
+    {
+      "track": "A8",
+      "clips": 8,
+      "covered_s": 9.76,
+      "role": "sfx",
+      "level_db": {
+        "count": 8,
+        "median": -8.0,
+        "mean": -9.75,
+        "p10": -13.6,
+        "p90": -8.0
+      },
+      "level_db_adjusted": {
+        "count": 8,
+        "median": -8.0,
+        "mean": -9.75,
+        "p10": -13.6,
+        "p90": -8.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "BOOM Library - Transitions - Impact Whoosh Drum.wav",
+        "Karl CLick.mp3",
+        "Top 5 notification sounds.mp3",
+        "Whoosh 01.mp3"
+      ]
+    },
+    {
+      "track": "A9",
+      "clips": 7,
+      "covered_s": 21.28,
+      "role": "sfx",
+      "level_db": {
+        "count": 7,
+        "median": 20.0,
+        "mean": 12.714,
+        "p10": 0.2,
+        "p90": 20.0
+      },
+      "level_db_adjusted": {
+        "count": 7,
+        "median": 20.0,
+        "mean": 12.714,
+        "p10": 0.2,
+        "p90": 20.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "260925-T017.WAV",
+        "260925-T031.WAV",
+        "B_0078_Proxy.mp4",
+        "C021C049_260925UT_Proxy.mp4",
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav"
+      ]
+    },
+    {
+      "track": "A10",
+      "clips": 6,
+      "covered_s": 18.92,
+      "role": "sfx",
+      "level_db": {
+        "count": 6,
+        "median": 15.0,
+        "mean": 11.5,
+        "p10": -0.5,
+        "p90": 20.0
+      },
+      "level_db_adjusted": {
+        "count": 6,
+        "median": 15.0,
+        "mean": 11.5,
+        "p10": -0.5,
+        "p90": 20.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "260925-T017.WAV",
+        "B_0078_Proxy.mp4",
+        "C021C049_260925UT_Proxy.mp4",
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav"
+      ]
+    },
+    {
+      "track": "A11",
+      "clips": 9,
+      "covered_s": 21.2,
+      "role": "sfx",
+      "level_db": {
+        "count": 9,
+        "median": -10.0,
+        "mean": -5.556,
+        "p10": -11.4,
+        "p90": 1.8
+      },
+      "level_db_adjusted": {
+        "count": 9,
+        "median": -10.0,
+        "mean": -5.556,
+        "p10": -11.4,
+        "p90": 1.8
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "260925-T043.WAV",
+        "BOOM Library - Transitions - Impact Whoosh Drum.wav",
+        "BOOM Library - Transitions - Whoosh  Wind Swift.wav",
+        "C021C049_260925UT_Proxy.mp4",
+        "C021C072_260925IG_Proxy.mp4",
+        "DSGNWhsh_Quick Whoosh, Cymbal Riser, Crash, Orchestral, Metal_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "FlyBy 13.wav",
+        "Whoosh 04.mp3"
+      ]
+    },
+    {
+      "track": "A12",
+      "clips": 8,
+      "covered_s": 18.84,
+      "role": "sfx",
+      "level_db": {
+        "count": 8,
+        "median": -10.0,
+        "mean": -9.375,
+        "p10": -11.6,
+        "p90": -6.8
+      },
+      "level_db_adjusted": {
+        "count": 8,
+        "median": -10.0,
+        "mean": -9.375,
+        "p10": -11.6,
+        "p90": -6.8
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "BOOM Library - Transitions - Impact Whoosh Drum.wav",
+        "BOOM Library - Transitions - Whoosh  Wind Swift.wav",
+        "C021C049_260925UT_Proxy.mp4",
+        "C021C072_260925IG_Proxy.mp4",
+        "DSGNWhsh_Quick Whoosh, Cymbal Riser, Crash, Orchestral, Metal_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "FlyBy 13.wav",
+        "Whoosh 04.mp3"
+      ]
+    },
+    {
+      "track": "A13",
+      "clips": 6,
+      "covered_s": 19.16,
+      "role": "sfx",
+      "level_db": {
+        "count": 6,
+        "median": -10.0,
+        "mean": -7.833,
+        "p10": -16.0,
+        "p90": 2.5
+      },
+      "level_db_adjusted": {
+        "count": 5,
+        "median": -14.0,
+        "mean": -9.4,
+        "p10": -16.4,
+        "p90": 0.6
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 5,
+      "sources": [
+        "03 Light Wind C.wav",
+        "AMBForst_Birdsong, Surrounding, Dense, Wind High in Trees_Ocular Sounds_Forest_The Complete Ambiences Collection.wav",
+        "Build Mix 3.wav",
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav",
+        "DSGNWhsh_Quick Whoosh, Accelerating, Rip, Crackle, Fireball_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "FlyBy 13.wav"
+      ]
+    },
+    {
+      "track": "A14",
+      "clips": 6,
+      "covered_s": 19.16,
+      "role": "sfx",
+      "level_db": {
+        "count": 6,
+        "median": -10.0,
+        "mean": -7.833,
+        "p10": -16.0,
+        "p90": 2.5
+      },
+      "level_db_adjusted": {
+        "count": 5,
+        "median": -14.0,
+        "mean": -9.4,
+        "p10": -16.4,
+        "p90": 0.6
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 5,
+      "sources": [
+        "03 Light Wind C.wav",
+        "AMBForst_Birdsong, Surrounding, Dense, Wind High in Trees_Ocular Sounds_Forest_The Complete Ambiences Collection.wav",
+        "Build Mix 3.wav",
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav",
+        "DSGNWhsh_Quick Whoosh, Accelerating, Rip, Crackle, Fireball_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "FlyBy 13.wav"
+      ]
+    },
+    {
+      "track": "A15",
+      "clips": 7,
+      "covered_s": 21.24,
+      "role": "sfx",
+      "level_db": {
+        "count": 7,
+        "median": -6.0,
+        "mean": -1.0,
+        "p10": -13.2,
+        "p90": 15.0
+      },
+      "level_db_adjusted": {
+        "count": 7,
+        "median": -6.0,
+        "mean": -1.0,
+        "p10": -13.2,
+        "p90": 15.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "01 Bright Riser.wav",
+        "260925-T005.WAV",
+        "DSGNMorph_SLOW MOTION-Stem 01 Quick Stop_Ocular_Shift.wav",
+        "DSGNWhsh_Medium Whoosh, Tremelo, Insect, Fly By, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "DSGNWhsh_Quick Whoosh, Accelerating, Rip, Crackle, Fireball_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "GOREStab_Whoosh And Stab, Crackles, Fast Movement_Ocular Sounds_Medieval Battle_The Complete Fantasy Collection.wav"
+      ]
+    },
+    {
+      "track": "A16",
+      "clips": 5,
+      "covered_s": 19.68,
+      "role": "sfx",
+      "level_db": {
+        "count": 5,
+        "median": -9.0,
+        "mean": -7.4,
+        "p10": -14.8,
+        "p90": 1.2
+      },
+      "level_db_adjusted": {
+        "count": 5,
+        "median": -9.0,
+        "mean": -7.4,
+        "p10": -14.8,
+        "p90": 1.2
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "01 Bright Riser.wav",
+        "DSGNMorph_SLOW MOTION-Stem 01 Quick Stop_Ocular_Shift.wav",
+        "DSGNWhsh_Medium Whoosh, Tremelo, Insect, Fly By, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "DSGNWhsh_Quick Whoosh, Accelerating, Rip, Crackle, Fireball_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "GOREStab_Whoosh And Stab, Crackles, Fast Movement_Ocular Sounds_Medieval Battle_The Complete Fantasy Collection.wav"
+      ]
+    },
+    {
+      "track": "A17",
+      "clips": 8,
+      "covered_s": 19.92,
+      "role": "sfx",
+      "level_db": {
+        "count": 8,
+        "median": 13.0,
+        "mean": 8.25,
+        "p10": -10.8,
+        "p90": 25.0
+      },
+      "level_db_adjusted": {
+        "count": 8,
+        "median": 13.0,
+        "mean": 8.25,
+        "p10": -10.8,
+        "p90": 25.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "#Impacts ALL-IN-ONE.wav",
+        "260925-T024.WAV",
+        "260925-T050.WAV",
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav",
+        "DSGNWhsh_Medium Whoosh, Tremelo, Insect, Fly By, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "DSGNWhsh_Quick Whoosh, Accelerating, Rip, Crackle, Fireball_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav"
+      ]
+    },
+    {
+      "track": "A18",
+      "clips": 6,
+      "covered_s": 16.76,
+      "role": "sfx",
+      "level_db": {
+        "count": 6,
+        "median": 0.0,
+        "mean": 2.667,
+        "p10": -12.0,
+        "p90": 20.0
+      },
+      "level_db_adjusted": {
+        "count": 6,
+        "median": 0.0,
+        "mean": 2.667,
+        "p10": -12.0,
+        "p90": 20.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "#Impacts ALL-IN-ONE.wav",
+        "260925-T050.WAV",
+        "DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav",
+        "DSGNWhsh_Medium Whoosh, Tremelo, Insect, Fly By, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+        "DSGNWhsh_Quick Whoosh, Accelerating, Rip, Crackle, Fireball_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav"
+      ]
+    },
+    {
+      "track": "A19",
+      "clips": 1,
+      "covered_s": 2.68,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -6.0,
+        "mean": -6.0,
+        "p10": -6.0,
+        "p90": -6.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -6.0,
+        "mean": -6.0,
+        "p10": -6.0,
+        "p90": -6.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "DSGNWhsh_Medium Whoosh, Deep Wind, Weather, Rain_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav"
+      ]
+    },
+    {
+      "track": "A20",
+      "clips": 1,
+      "covered_s": 2.68,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -6.0,
+        "mean": -6.0,
+        "p10": -6.0,
+        "p90": -6.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -6.0,
+        "mean": -6.0,
+        "p10": -6.0,
+        "p90": -6.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "DSGNWhsh_Medium Whoosh, Deep Wind, Weather, Rain_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav"
+      ]
+    },
+    {
+      "track": "A21",
+      "clips": 1,
+      "covered_s": 2.88,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -13.0,
+        "mean": -13.0,
+        "p10": -13.0,
+        "p90": -13.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -13.0,
+        "mean": -13.0,
+        "p10": -13.0,
+        "p90": -13.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "DSGNStngr_IMPACT TRANSITION OUT-Trickster_B00M_CMDS.wav"
+      ]
+    },
+    {
+      "track": "A22",
+      "clips": 1,
+      "covered_s": 2.88,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -13.0,
+        "mean": -13.0,
+        "p10": -13.0,
+        "p90": -13.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -13.0,
+        "mean": -13.0,
+        "p10": -13.0,
+        "p90": -13.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "DSGNStngr_IMPACT TRANSITION OUT-Trickster_B00M_CMDS.wav"
+      ]
+    },
+    {
+      "track": "A23",
+      "clips": 2,
+      "covered_s": 5.12,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -6.0,
+        "mean": -6.0,
+        "p10": -6.0,
+        "p90": -6.0
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -6.0,
+        "mean": -6.0,
+        "p10": -6.0,
+        "p90": -6.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "DSGNWhsh_Medium Whoosh, Tremelo, Insect, Fly By, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav"
+      ]
+    },
+    {
+      "track": "A24",
+      "clips": 2,
+      "covered_s": 5.12,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -6.0,
+        "mean": -6.0,
+        "p10": -6.0,
+        "p90": -6.0
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -6.0,
+        "mean": -6.0,
+        "p10": -6.0,
+        "p90": -6.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "DSGNWhsh_Medium Whoosh, Tremelo, Insect, Fly By, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav"
+      ]
+    },
+    {
+      "track": "A25",
+      "clips": 1,
+      "covered_s": 18.28,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 5.0,
+        "mean": 5.0,
+        "p10": 5.0,
+        "p90": 5.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 5.0,
+        "mean": 5.0,
+        "p10": 5.0,
+        "p90": 5.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "AMBRoom_Room Noise, Outside Construction, Filtered, Loop_Ocular Sounds_Room Tones_The Complete Ambiences Collection.wav"
+      ]
+    },
+    {
+      "track": "A26",
+      "clips": 1,
+      "covered_s": 18.28,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 5.0,
+        "mean": 5.0,
+        "p10": 5.0,
+        "p90": 5.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 5.0,
+        "mean": 5.0,
+        "p10": 5.0,
+        "p90": 5.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "AMBRoom_Room Noise, Outside Construction, Filtered, Loop_Ocular Sounds_Room Tones_The Complete Ambiences Collection.wav"
+      ]
+    },
+    {
+      "track": "A27",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A28",
+      "clips": 1,
+      "covered_s": 2.08,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -9.0,
+        "mean": -9.0,
+        "p10": -9.0,
+        "p90": -9.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -9.0,
+        "mean": -9.0,
+        "p10": -9.0,
+        "p90": -9.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "DSGNWhsh_Quick Whoosh, Accelerating, White Noise, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav"
+      ]
+    },
+    {
+      "track": "A29",
+      "clips": 1,
+      "covered_s": 2.08,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -9.0,
+        "mean": -9.0,
+        "p10": -9.0,
+        "p90": -9.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -9.0,
+        "mean": -9.0,
+        "p10": -9.0,
+        "p90": -9.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "DSGNWhsh_Quick Whoosh, Accelerating, White Noise, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav"
+      ]
+    },
+    {
+      "track": "A30",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 1,
+      "sources": []
+    },
+    {
+      "track": "A31",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 1,
+      "sources": []
+    },
+    {
+      "track": "A32",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A33",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A34",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A35",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A36",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    }
+  ],
+  "markers": 0,
+  "sources": [
+    "/Users/paritoshsrivastava/Downloads/AUDIO-2026-09-23-12-47-36.m4a",
+    "/Users/paritoshsrivastava/Downloads/OcularSounds \u2013 Full Access Bundle/OcularSounds \u2013 Full Access Bundle/Shift/Shift - Stems/Quick Stop/DSGNMorph_SLOW MOTION-Stem 01 Quick Stop_Ocular_Shift.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Boom_Library_Cinematic_Motion_Designed_WAV-ViP/DSGNStngr_IMPACT TRANSITION OUT-Trickster_B00M_CMDS.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Bryan Delimata - Essential Sound Pack/Impacts_Hits/#Impacts ALL-IN-ONE.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Film Crux Singularity SINGULARITY 2 Cinematic Sound Effects Library/05 Wind/03 Light Wind C.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Film Space - The Master Bundle/Interstellar_SFX/Interstellar SFX/Interstellar Risers/01 Bright Riser.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Karl CLick.mp3",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Epic Hits Vol. 1/DSGNImpt_Low Riser, Textured, Transition, Whoosh,_Ocular Sounds_Epic Hits Vol 1_The Complete Impacts Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Forest/AMBForst_Birdsong, Surrounding, Dense, Wind High in Trees_Ocular Sounds_Forest_The Complete Ambiences Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Medieval Battles/GOREStab_Whoosh And Stab, Crackles, Fast Movement_Ocular Sounds_Medieval Battle_The Complete Fantasy Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Roomtones/AMBRoom_Room Noise, Outside Construction, Filtered, Loop_Ocular Sounds_Room Tones_The Complete Ambiences Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Seaside/AMBSea_Beach, Calm Waves, Crashing, Ocean, Loop 1_Ocular Sounds_Seaside_The Complete Ambiences collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Short Whooshes/DSGNWhsh_Medium Whoosh, Deep Wind, Weather, Rain_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Short Whooshes/DSGNWhsh_Medium Whoosh, Dungeon, Wind_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Short Whooshes/DSGNWhsh_Medium Whoosh, Tremelo, Insect, Fly By, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Short Whooshes/DSGNWhsh_Quick Whoosh, Accelerating, Rip, Crackle, Fireball_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Short Whooshes/DSGNWhsh_Quick Whoosh, Accelerating, White Noise, Windy_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Short Whooshes/DSGNWhsh_Quick Whoosh, Cymbal Riser, Crash, Orchestral, Metal_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Short Whooshes/DSGNWhsh_Quick Whoosh, Soft Pink Noise, Deep Cymbal_Ocular Sounds_Short Whooshes_The Complete Whooshes Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Paramount Motion ULTIMATE Filmmaker Bundle/ODEON Sound Effects Update/ODEON Sound Effects/Build Mixer/Build Mix 3.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Paramount Motion ULTIMATE Filmmaker Bundle/ODEON Sound Effects Update/ODEON Sound Effects/FlyBy/FlyBy 13.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Paramount Motion ULTIMATE Filmmaker Bundle/ODEON Sound Effects Update/ODEON Sound Effects/Household/DoorBellRingClose.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Top 5 notification sounds.mp3",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Transitions/BOOM Library - Transitions - Impact Whoosh Drum.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Transitions/BOOM Library - Transitions - Whoosh  Wind Swift.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/whoosh-2022-03-31-08-31-57-utc/Whoosh 01.mp3",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/whoosh-2022-03-31-08-31-57-utc/Whoosh 04.mp3",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/whoosh-2022-03-31-08-31-57-utc/Whoosh 05.wav",
+    "/Users/paritoshsrivastava/Downloads/V80_Main KV_1080x1920pxls (1).png",
+    "/Users/paritoshsrivastava/Downloads/WhatsApp Audio 2026-09-29 at 14.13.35.mp3",
+    "/Volumes/Paritosh_1/Vivo/O Humdum Suniyo Re (Saathiya - 2002).wav",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/B_0078_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/C021C007_260925AT_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/C021C036_260925JS_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/C021C041_260925UC_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/C021C049_260925UT_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/C021C059_260925BS_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/C021C072_260925IG_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/C021C079_260925LN_Proxy.mp4",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/Sound/260925/260925-T005.WAV",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/Sound/260925/260925-T012.WAV",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/Sound/260925/260925-T017.WAV",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/Sound/260925/260925-T024.WAV",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/Sound/260925/260925-T031.WAV",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/Sound/260925/260925-T043.WAV",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/Sound/260925/260925-T050.WAV",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/C021C088_260925AY_V1-0049.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/C021C088_260925AY_V1-0050.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/C021C088_260925AY_V1-0051.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/C021C088_260925AY_V1-0052.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/Vivo Rohit_Supers2.2.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/untitled folder/[Screen - Sht02] 2.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/untitled folder/[ShtWrk - 01] 3.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3/untitled folder/[ShtWrk - 03].mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/9x16.mp4",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/[ShtWrk - 04].mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/drive-download-20261001T215709Z-1-001/Vivo Rohit_Supers1.2.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/drive-download-20261001T215709Z-1-001/Vivo Rohit_Supers3.1.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/C021C088_260925AY_V1-0048.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/C021C088_260925AY_V1-0049.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/C021C088_260925AY_V1-0050.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/C021C088_260925AY_V1-0051.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/C021C088_260925AY_V1-0059.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/CLUE1.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/CLUE2.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/CLUE3.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/VoiceNote Animation2.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/new/[ShtWrk - 01] 2.2.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/B_0023_V1-0018.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/B_0023_V1-0019.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/B_0024_V1-0020.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/B_0025_V1-0021.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/B_0027_V1-0022.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/B_0041_V1-0030.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/B_0050_V1-0029.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/B_0069_V1-0046.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/B_0072_V1-0058.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C019_260925ZY_V1-0005.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C021_260925ET_V1-0008.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C049_260925UT_V1-0002.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C049_260925UT_V1-0004.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C050_260925KL_V1-0003.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C052_260925BD_V1-0031.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C053_260925RQ_V1-0028.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C054_260925ME_V1-0027.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C055_260925DD_V1-0032.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C056_260925DX_V1-0033.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C059_260925BS_V1-0034.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C059_260925BS_V1-0037.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C061_260925YT_V1-0035.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C072_260925IG_V1-0041.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C072_260925IG_V1-0043.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C075_260925GJ_V1-0042.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C076_260925PY_V1-0044.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C079_260925LN_V1-0045.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C082_260925BO_V1-0056.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C082_260925BO_V1-0057.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C084_260925CM_V1-0059.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C088_260925AY_V1-0050.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C088_260925AY_V1-0051.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C088_260925AY_V1-0052.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C088_260925AY_V1-0053.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C088_260925AY_V1-0055.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C088_260925AY_V1-0061.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C098_260925MK_V1-0038.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/C021C098_260925MK_V1-0039.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/[ShtWrk - 04].mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/cleanup/[CLEANUP - 01]_V1-0063-003.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/cleanup/[CLEANUP - 02]_V1-0062.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/cleanup/[CLEANUP - 05]_V1-0064-002.mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/vfx/[ShtWrk - 01].mov",
+    "/Volumes/Paritosh_1/Vivo/Rohit saraf/vfx shots/vfx/[ShtWrk - 03].mov",
+    "/Volumes/Paritosh_1/Vivo/export/VIVO FILM 01 VN SD06.wav"
+  ]
+}

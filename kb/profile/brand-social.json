@@ -1,0 +1,94 @@
+{
+  "type": "brand-social",
+  "learned_from": 7,
+  "sequences": [
+    "Adidas.xml::Sequence 01",
+    "Coca cola.xml::Sequence 01",
+    "Guru.xml::Sequence 01",
+    "JW.xml::Sequence 01",
+    "Vivo 1.xml::Rohit saraf 2",
+    "Vivo 2.xml::ahsaas taruk",
+    "Zomato.xml::Final seq"
+  ],
+  "fps": 25.0,
+  "frame_size": [
+    1080,
+    1920
+  ],
+  "orientation": "vertical",
+  "duration_s": {
+    "count": 7,
+    "median": 65.76,
+    "mean": 63.743,
+    "p10": 41.3,
+    "p90": 91.972
+  },
+  "tracks": {
+    "video": 11,
+    "audio": 18
+  },
+  "shot_length_s": {
+    "count": 588,
+    "median": 0.88,
+    "mean": 1.261,
+    "p10": 0.25,
+    "p90": 2.507
+  },
+  "cuts_per_min": 64.08,
+  "layers": {
+    "median": 1,
+    "p90": 2
+  },
+  "broll_length_s": 1.001,
+  "transitions": {
+    "share_of_edits": 0.0,
+    "by_name": {
+      "Cross Dissolve": 1.0
+    },
+    "frames": 16.5
+  },
+  "audio_transitions": {
+    "share_of_audio_clips": 0.326,
+    "by_name": {
+      "Cross Fade (+3dB)": 0.895,
+      "Cross Fade ( 0dB)": 0.105
+    },
+    "frames": 24.0
+  },
+  "speed_changes": {
+    "share": 0.323,
+    "ramp_share": 0.0
+  },
+  "adjustment_layers_per_min": 20.15,
+  "adjustment_effects": {
+    "Flash blur": 35,
+    "Flash 2": 8
+  },
+  "effects_seen": {
+    "Distort": 19,
+    "Luma Key": 2
+  },
+  "audio_effects_seen": {
+    "Low Pass Filter": 54,
+    "High Pass Filter": 4
+  },
+  "luts_seen": {},
+  "audio_db": {
+    "camera": 0.0,
+    "bed": 0.0,
+    "sfx": -2.5
+  },
+  "audio_db_adjusted": {
+    "camera": 3.0,
+    "bed": -5.0,
+    "sfx": -6.0
+  },
+  "audio_level_touched_share": 0.845,
+  "audio_tracks_by_role": {
+    "sfx": 78,
+    "camera": 22,
+    "bed": 18,
+    "empty": 22
+  },
+  "first_title_s": 8.3
+}

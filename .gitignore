@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Videtor working data (never commit media or derived caches)
+cache/
+out/
+media/
+*.mov
+*.mp4
+*.mxf
+*.braw
+*.wav
+*.aif
+*.aiff
+*.mp3
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/

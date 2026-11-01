@@ -1,0 +1,268 @@
+{
+  "Gujarat Giants.xml::Sequence 01": {
+    "roots": [],
+    "files": {
+      "used": 2,
+      "unused": 0,
+      "renders": 0,
+      "duplicates": 0,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 5.5,
+      "unused_files": 0,
+      "selected": 5.5
+    },
+    "select_ratio": 1.0,
+    "unused_kinds": {},
+    "formats": {},
+    "matched_by_basename": 2,
+    "folders": {
+      "/Volumes/Paritosh_1/Vivo/Vivo Copied_Untitled": {
+        "used": 2,
+        "unused": 0
+      }
+    }
+  },
+  "Guru.xml::Sequence 01": {
+    "roots": [
+      "/Volumes/Paritosh_1/Guru "
+    ],
+    "files": {
+      "used": 43,
+      "unused": 114,
+      "renders": 0,
+      "duplicates": 0,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 593.3,
+      "unused_files": 1017.6,
+      "selected": 41.6
+    },
+    "select_ratio": 0.07,
+    "unused_kinds": {
+      "video": 114
+    },
+    "formats": {
+      "3840x2160 @100.0 h264": 114,
+      "720x576 @25.0 mpeg2video": 24,
+      "3840x2160 @25.0 h264": 19
+    },
+    "matched_by_basename": 0,
+    "folders": {
+      "Guru /CC": {
+        "used": 11,
+        "unused": 13
+      },
+      "Guru /data": {
+        "used": 32,
+        "unused": 101
+      }
+    }
+  },
+  "JW.xml::Sequence 01": {
+    "roots": [],
+    "files": {
+      "used": 1,
+      "unused": 0,
+      "renders": 0,
+      "duplicates": 0,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 2.7,
+      "unused_files": 0,
+      "selected": 2.7
+    },
+    "select_ratio": 1.0,
+    "unused_kinds": {},
+    "formats": {},
+    "matched_by_basename": 1,
+    "folders": {
+      "/Volumes/Paritosh_1/Vivo/Vivo Copied_Untitled": {
+        "used": 1,
+        "unused": 0
+      }
+    }
+  },
+  "Vivo 1.xml::Rohit saraf 2": {
+    "roots": [
+      "/Volumes/Paritosh_1/Vivo/Rohit saraf"
+    ],
+    "files": {
+      "used": 99,
+      "unused": 308,
+      "renders": 0,
+      "duplicates": 54,
+      "used_by_other_edits": 2
+    },
+    "seconds": {
+      "used_files": 1099.1,
+      "unused_files": 6951.7,
+      "selected": 299.5
+    },
+    "select_ratio": 0.272,
+    "unused_kinds": {
+      "video": 251,
+      "audio": 55,
+      "image": 2
+    },
+    "formats": {
+      "540x960 @25.0 h264": 114,
+      "540x960 @50.0 h264": 60,
+      "2160x3840 @50.0 prores": 59,
+      "2160x3840 @25.0 prores": 58,
+      "1080x1920 @25.0 prores": 26,
+      "960x540 @25.0 h264": 2
+    },
+    "matched_by_basename": 18,
+    "folders": {
+      "/Volumes/Paritosh_1/JW 2/Copied_slink and bardot": {
+        "used": 13,
+        "unused": 0
+      },
+      "/Volumes/Paritosh_1/Vivo": {
+        "used": 1,
+        "unused": 0
+      },
+      "/Volumes/Paritosh_1/Vivo/Vivo Copied_Untitled": {
+        "used": 5,
+        "unused": 0
+      },
+      "/Volumes/Paritosh_1/Vivo/export": {
+        "used": 1,
+        "unused": 0
+      },
+      "Rohit saraf": {
+        "used": 3,
+        "unused": 174
+      },
+      "Rohit saraf/Sound/260925": {
+        "used": 6,
+        "unused": 55
+      },
+      "Rohit saraf/new": {
+        "used": 7,
+        "unused": 17
+      },
+      "Rohit saraf/new 2": {
+        "used": 2,
+        "unused": 3
+      },
+      "Rohit saraf/new 2/3": {
+        "used": 4,
+        "unused": 11
+      },
+      "Rohit saraf/new 2/3/untitled folder": {
+        "used": 3,
+        "unused": 0
+      },
+      "Rohit saraf/new 2/drive-download-20261001T215708Z-1-002": {
+        "used": 0,
+        "unused": 4
+      },
+      "Rohit saraf/new 2/drive-download-20261001T215709Z-1-001": {
+        "used": 0,
+        "unused": 6
+      },
+      "Rohit saraf/new/drive-download-20261001T111835Z-1-001": {
+        "used": 0,
+        "unused": 6
+      },
+      "Rohit saraf/new/drive-download-20261001T123558Z-1-001": {
+        "used": 0,
+        "unused": 4
+      },
+      "Rohit saraf/vfx shots": {
+        "used": 48,
+        "unused": 21
+      },
+      "Rohit saraf/vfx shots/cleanup": {
+        "used": 4,
+        "unused": 2
+      },
+      "Rohit saraf/vfx shots/clue": {
+        "used": 0,
+        "unused": 3
+      },
+      "Rohit saraf/vfx shots/vfx": {
+        "used": 2,
+        "unused": 2
+      }
+    }
+  },
+  "Vivo 2.xml::ahsaas taruk": {
+    "roots": [
+      "/Volumes/Paritosh_1/Vivo/Ahsaas Tarik"
+    ],
+    "files": {
+      "used": 63,
+      "unused": 274,
+      "renders": 0,
+      "duplicates": 3,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 1446.3,
+      "unused_files": 6108.9,
+      "selected": 189.6
+    },
+    "select_ratio": 0.131,
+    "unused_kinds": {
+      "video": 226,
+      "audio": 48
+    },
+    "formats": {
+      "540x960 @50.0 h264": 142,
+      "540x960 @25.0 h264": 114,
+      "3840x2160 @50.0 h264": 9,
+      "3840x2160 @50.0 hevc": 5,
+      "960x540 @25.0 h264": 4,
+      "1080x1920 @25.0 h264": 1
+    },
+    "matched_by_basename": 9,
+    "folders": {
+      "/Volumes/Paritosh_1/JW 2/Copied_slink and bardot": {
+        "used": 3,
+        "unused": 0
+      },
+      "/Volumes/Paritosh_1/Vivo": {
+        "used": 1,
+        "unused": 0
+      },
+      "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2": {
+        "used": 1,
+        "unused": 0
+      },
+      "/Volumes/Paritosh_1/Vivo/Rohit saraf/new 2/3": {
+        "used": 2,
+        "unused": 0
+      },
+      "/Volumes/Paritosh_1/Vivo/Vivo Copied_Untitled": {
+        "used": 6,
+        "unused": 0
+      },
+      "Ahsaas Tarik": {
+        "used": 50,
+        "unused": 210
+      },
+      "Ahsaas Tarik/Drone": {
+        "used": 0,
+        "unused": 2
+      },
+      "Ahsaas Tarik/Drone/drive-download-20261004T122010Z-1-001": {
+        "used": 0,
+        "unused": 14
+      },
+      "Ahsaas Tarik/sound/Sound/240926": {
+        "used": 0,
+        "unused": 43
+      },
+      "Ahsaas Tarik/sound/Sound/260924": {
+        "used": 0,
+        "unused": 5
+      }
+    }
+  }
+}

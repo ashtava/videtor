@@ -1,0 +1,847 @@
+{
+  "name": "Final seq",
+  "id": "sequence-1",
+  "role": "main",
+  "source_xml": ".xml-exports/Zomato.xml",
+  "key": "Zomato.xml::Final seq",
+  "fps": 25.0,
+  "frame_size": [
+    1920,
+    1080
+  ],
+  "orientation": "horizontal",
+  "duration_s": 85.8,
+  "tracks": {
+    "video": 10,
+    "audio": 16
+  },
+  "nested": {
+    "clips": 4,
+    "expanded": 4
+  },
+  "primary_video_track": "V1",
+  "shot_length_s": {
+    "count": 93,
+    "median": 1.12,
+    "mean": 1.91,
+    "p10": 0.6,
+    "p90": 3.184
+  },
+  "shot_lengths_s": [
+    3.56,
+    1.0,
+    1.6,
+    0.68,
+    1.04,
+    2.56,
+    0.4,
+    0.84,
+    3.0,
+    0.64,
+    0.6,
+    0.76,
+    0.72,
+    5.68,
+    0.68,
+    0.96,
+    1.96,
+    2.04,
+    0.88,
+    1.04,
+    1.2,
+    3.88,
+    3.32,
+    9.52,
+    9.68,
+    3.4,
+    0.8,
+    0.52,
+    0.6,
+    0.64,
+    0.76,
+    0.68,
+    0.6,
+    0.68,
+    0.68,
+    1.04,
+    2.0,
+    2.8,
+    1.12,
+    1.76,
+    1.88,
+    3.2,
+    2.96,
+    0.64,
+    1.0,
+    1.12,
+    1.04,
+    1.96,
+    2.16,
+    1.04,
+    2.0,
+    0.84,
+    2.12,
+    1.92,
+    2.44,
+    1.48,
+    1.04,
+    1.52,
+    3.12,
+    2.68,
+    0.56,
+    0.6,
+    0.56,
+    0.44,
+    0.72,
+    1.04,
+    6.08,
+    0.32,
+    1.48,
+    2.12,
+    2.56,
+    0.88,
+    0.52,
+    0.72,
+    1.04,
+    1.56,
+    0.56,
+    1.0,
+    1.04,
+    2.12,
+    0.96,
+    1.96,
+    3.12,
+    2.56,
+    1.8,
+    2.12,
+    3.12,
+    14.8,
+    2.64,
+    1.12,
+    1.04,
+    1.96,
+    2.04
+  ],
+  "primary_shot_length_s": {
+    "count": 26,
+    "median": 1.12,
+    "mean": 2.371,
+    "p10": 0.66,
+    "p90": 4.78
+  },
+  "cuts_s": [
+    0.8,
+    1.0,
+    1.36,
+    1.52,
+    2.12,
+    2.72,
+    3.24,
+    3.36,
+    3.56,
+    3.8,
+    4.56,
+    4.8,
+    5.32,
+    5.76,
+    6.48,
+    7.2,
+    8.32,
+    9.36,
+    11.32,
+    13.36,
+    13.48,
+    14.4,
+    15.44,
+    17.0,
+    17.56,
+    18.56,
+    19.6,
+    21.2,
+    21.88,
+    22.92,
+    25.48,
+    25.68,
+    26.0,
+    26.4,
+    27.24,
+    28.0,
+    28.64,
+    29.48,
+    30.24,
+    30.92,
+    31.52,
+    32.2,
+    32.88,
+    33.52,
+    34.12,
+    34.72,
+    34.88,
+    35.36,
+    35.6,
+    35.76,
+    37.48,
+    39.48,
+    41.4,
+    43.16,
+    43.84,
+    44.8,
+    46.76,
+    48.24,
+    48.8,
+    49.04,
+    49.92,
+    50.96,
+    51.04,
+    52.16,
+    54.28,
+    56.04,
+    57.52,
+    59.36,
+    59.4,
+    61.96,
+    62.96,
+    63.72,
+    64.0,
+    65.52,
+    67.64,
+    68.88,
+    69.76,
+    72.88,
+    75.32,
+    78.0,
+    79.44,
+    81.2,
+    82.84
+  ],
+  "cuts_per_min": 58.04,
+  "layers": {
+    "median": 2,
+    "p90": 3,
+    "max": 4
+  },
+  "broll": {
+    "count": 67,
+    "length_s": {
+      "count": 67,
+      "median": 1.12,
+      "mean": 1.731,
+      "p10": 0.584,
+      "p90": 2.864
+    },
+    "tracks": [
+      "V10",
+      "V2",
+      "V3",
+      "V4",
+      "V5",
+      "V6",
+      "V9"
+    ]
+  },
+  "transitions": {
+    "count": 3,
+    "share_of_edits": 0.032,
+    "by_name": {
+      "Cross Dissolve": 3
+    },
+    "frames": {
+      "count": 3,
+      "median": 16.0,
+      "mean": 18.667,
+      "p10": 15.2,
+      "p90": 23.2
+    }
+  },
+  "audio_transitions": {
+    "count": 32,
+    "share_of_audio_clips": 0.271,
+    "by_name": {
+      "Cross Fade (+3dB)": 30,
+      "Cross Fade ( 0dB)": 2
+    },
+    "frames": {
+      "count": 32,
+      "median": 24.0,
+      "mean": 28.312,
+      "p10": 11.4,
+      "p90": 56.9
+    }
+  },
+  "effects_seen": {},
+  "audio_effects_seen": {
+    "Low Pass Filter": 6
+  },
+  "speed_changes": {
+    "share": 0.344,
+    "ramp_share": 0.0,
+    "values": [
+      0.5,
+      0.5,
+      3.0,
+      3.0,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.25,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      2.0,
+      0.5,
+      0.5,
+      0.5,
+      1.5,
+      0.5,
+      0.5,
+      1.11,
+      1.11,
+      1.11,
+      0.5
+    ]
+  },
+  "graphics": {
+    "adjustment": 13,
+    "adjustment_per_min": 9.09,
+    "adjustment_effects": {
+      "Flash 2": 8
+    },
+    "graphic": 0,
+    "matte": 0,
+    "first_title_s": null
+  },
+  "labels": {
+    "video": {
+      "Iris": 69,
+      "Forest": 4,
+      "Lavender": 25,
+      "Violet": 11
+    },
+    "audio": {
+      "Caribbean": 70,
+      "Iris": 50
+    }
+  },
+  "luts_seen": {},
+  "audio_tracks": [
+    {
+      "track": "A1",
+      "clips": 11,
+      "covered_s": 85.8,
+      "role": "bed",
+      "level_db": {
+        "count": 11,
+        "median": -15.0,
+        "mean": -11.818,
+        "p10": -20.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 9,
+        "median": -15.0,
+        "mean": -14.444,
+        "p10": -20.0,
+        "p90": -9.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {
+        "Low Pass Filter": 3
+      },
+      "transitions": 11,
+      "sources": [
+        "ES_Bytez - Stray Bandit-2.mp3"
+      ]
+    },
+    {
+      "track": "A2",
+      "clips": 11,
+      "covered_s": 85.8,
+      "role": "bed",
+      "level_db": {
+        "count": 11,
+        "median": -15.0,
+        "mean": -11.818,
+        "p10": -20.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 9,
+        "median": -15.0,
+        "mean": -14.444,
+        "p10": -20.0,
+        "p90": -9.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {
+        "Low Pass Filter": 3
+      },
+      "transitions": 11,
+      "sources": [
+        "ES_Bytez - Stray Bandit-2.mp3"
+      ]
+    },
+    {
+      "track": "A3",
+      "clips": 27,
+      "covered_s": 58.84,
+      "role": "camera",
+      "level_db": {
+        "count": 27,
+        "median": 15.0,
+        "mean": 11.148,
+        "p10": -10.0,
+        "p90": 25.0
+      },
+      "level_db_adjusted": {
+        "count": 27,
+        "median": 15.0,
+        "mean": 11.148,
+        "p10": -10.0,
+        "p90": 25.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "B018C008_260818AI.MP4",
+        "B018C009_260818NH.MP4",
+        "Karl CLick.mp3",
+        "zom10.mp4",
+        "zom5.mp4"
+      ]
+    },
+    {
+      "track": "A4",
+      "clips": 27,
+      "covered_s": 58.84,
+      "role": "camera",
+      "level_db": {
+        "count": 27,
+        "median": 15.0,
+        "mean": 11.148,
+        "p10": -10.0,
+        "p90": 25.0
+      },
+      "level_db_adjusted": {
+        "count": 27,
+        "median": 15.0,
+        "mean": 11.148,
+        "p10": -10.0,
+        "p90": 25.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "B018C008_260818AI.MP4",
+        "B018C009_260818NH.MP4",
+        "Karl CLick.mp3",
+        "zom10.mp4",
+        "zom5.mp4"
+      ]
+    },
+    {
+      "track": "A5",
+      "clips": 8,
+      "covered_s": 5.04,
+      "role": "sfx",
+      "level_db": {
+        "count": 8,
+        "median": -10.0,
+        "mean": -2.5,
+        "p10": -10.0,
+        "p90": 20.0
+      },
+      "level_db_adjusted": {
+        "count": 8,
+        "median": -10.0,
+        "mean": -2.5,
+        "p10": -10.0,
+        "p90": 20.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "B018C008_260818AI.MP4",
+        "Karl CLick.mp3"
+      ]
+    },
+    {
+      "track": "A6",
+      "clips": 8,
+      "covered_s": 5.04,
+      "role": "sfx",
+      "level_db": {
+        "count": 8,
+        "median": -10.0,
+        "mean": -2.5,
+        "p10": -10.0,
+        "p90": 20.0
+      },
+      "level_db_adjusted": {
+        "count": 8,
+        "median": -10.0,
+        "mean": -2.5,
+        "p10": -10.0,
+        "p90": 20.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "B018C008_260818AI.MP4",
+        "Karl CLick.mp3"
+      ]
+    },
+    {
+      "track": "A7",
+      "clips": 4,
+      "covered_s": 5.68,
+      "role": "sfx",
+      "level_db": {
+        "count": 4,
+        "median": -11.0,
+        "mean": -11.0,
+        "p10": -22.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "CMPTKey_MOUSE-Trackball Mouse Right Click Long 04_Oculatr_Utility.wav",
+        "SnapInsta.to_AQOiZttG_6PagKo3Ao8Utkf3MSVm9rle1as2m1sfUrjFhgON1zfAHSCVJykyUVAEafHJ34TRgiQicpz75FijbsSl5bvtnNBwSPYcV7Y.mp4",
+        "SnapInsta.to_AQPsZtcxa0ZV-LF-ex1VxMowGZCM7k0M6qwAR1r05JT1y9PxT0K3_bn5fjIA-ru8Crm8RdmrYdZP-QBoaBeVjAb_1ChIU5ybFGWYw-U.mp4"
+      ]
+    },
+    {
+      "track": "A8",
+      "clips": 4,
+      "covered_s": 5.68,
+      "role": "sfx",
+      "level_db": {
+        "count": 4,
+        "median": -11.0,
+        "mean": -11.0,
+        "p10": -22.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "CMPTKey_MOUSE-Trackball Mouse Right Click Long 04_Oculatr_Utility.wav",
+        "SnapInsta.to_AQOiZttG_6PagKo3Ao8Utkf3MSVm9rle1as2m1sfUrjFhgON1zfAHSCVJykyUVAEafHJ34TRgiQicpz75FijbsSl5bvtnNBwSPYcV7Y.mp4",
+        "SnapInsta.to_AQPsZtcxa0ZV-LF-ex1VxMowGZCM7k0M6qwAR1r05JT1y9PxT0K3_bn5fjIA-ru8Crm8RdmrYdZP-QBoaBeVjAb_1ChIU5ybFGWYw-U.mp4"
+      ]
+    },
+    {
+      "track": "A9",
+      "clips": 2,
+      "covered_s": 8.2,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "SnapInsta.to_AQOKzuBhtpj7cA4U-1YWq2JIFUkzq9I_xabua-7WgBKTBtWcxz-egTvVwFo4oN4EnC24ji4b1dCHwpeqGJnNXfNy.mp4"
+      ]
+    },
+    {
+      "track": "A10",
+      "clips": 2,
+      "covered_s": 8.2,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "SnapInsta.to_AQOKzuBhtpj7cA4U-1YWq2JIFUkzq9I_xabua-7WgBKTBtWcxz-egTvVwFo4oN4EnC24ji4b1dCHwpeqGJnNXfNy.mp4"
+      ]
+    },
+    {
+      "track": "A11",
+      "clips": 4,
+      "covered_s": 6.64,
+      "role": "sfx",
+      "level_db": {
+        "count": 4,
+        "median": -22.0,
+        "mean": -18.25,
+        "p10": -22.0,
+        "p90": -11.5
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": -22.0,
+        "mean": -18.25,
+        "p10": -22.0,
+        "p90": -11.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "SnapInsta.to_AQMtkw7GdvG4djw3gHLJV1JsDgeLbACnkcNHqyAKICaihtBRT30svXMdJGsnedsegjF_7g0Puby21ODq4tnji0p2ooz_k-u12WWuXRs.mp4",
+        "SnapInsta.to_AQOKzuBhtpj7cA4U-1YWq2JIFUkzq9I_xabua-7WgBKTBtWcxz-egTvVwFo4oN4EnC24ji4b1dCHwpeqGJnNXfNy.mp4"
+      ]
+    },
+    {
+      "track": "A12",
+      "clips": 4,
+      "covered_s": 6.64,
+      "role": "sfx",
+      "level_db": {
+        "count": 4,
+        "median": -22.0,
+        "mean": -18.25,
+        "p10": -22.0,
+        "p90": -11.5
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": -22.0,
+        "mean": -18.25,
+        "p10": -22.0,
+        "p90": -11.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "SnapInsta.to_AQMtkw7GdvG4djw3gHLJV1JsDgeLbACnkcNHqyAKICaihtBRT30svXMdJGsnedsegjF_7g0Puby21ODq4tnji0p2ooz_k-u12WWuXRs.mp4",
+        "SnapInsta.to_AQOKzuBhtpj7cA4U-1YWq2JIFUkzq9I_xabua-7WgBKTBtWcxz-egTvVwFo4oN4EnC24ji4b1dCHwpeqGJnNXfNy.mp4"
+      ]
+    },
+    {
+      "track": "A13",
+      "clips": 2,
+      "covered_s": 2.72,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "SnapInsta.to_AQMtkw7GdvG4djw3gHLJV1JsDgeLbACnkcNHqyAKICaihtBRT30svXMdJGsnedsegjF_7g0Puby21ODq4tnji0p2ooz_k-u12WWuXRs.mp4",
+        "SnapInsta.to_AQNoDrwXYPLmBU98i64bB2y34lagyf3MBQOC68hkm8KztJfS8JmXdhrtdkAGKhexS2DAP5lqp8gLbbPsw7bGIlw4i_-RU5ylWOZkFSA.mp4"
+      ]
+    },
+    {
+      "track": "A14",
+      "clips": 2,
+      "covered_s": 2.72,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "SnapInsta.to_AQMtkw7GdvG4djw3gHLJV1JsDgeLbACnkcNHqyAKICaihtBRT30svXMdJGsnedsegjF_7g0Puby21ODq4tnji0p2ooz_k-u12WWuXRs.mp4",
+        "SnapInsta.to_AQNoDrwXYPLmBU98i64bB2y34lagyf3MBQOC68hkm8KztJfS8JmXdhrtdkAGKhexS2DAP5lqp8gLbbPsw7bGIlw4i_-RU5ylWOZkFSA.mp4"
+      ]
+    },
+    {
+      "track": "A15",
+      "clips": 1,
+      "covered_s": 1.04,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "SnapInsta.to_AQOKzuBhtpj7cA4U-1YWq2JIFUkzq9I_xabua-7WgBKTBtWcxz-egTvVwFo4oN4EnC24ji4b1dCHwpeqGJnNXfNy.mp4"
+      ]
+    },
+    {
+      "track": "A16",
+      "clips": 1,
+      "covered_s": 1.04,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -22.0,
+        "mean": -22.0,
+        "p10": -22.0,
+        "p90": -22.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "SnapInsta.to_AQOKzuBhtpj7cA4U-1YWq2JIFUkzq9I_xabua-7WgBKTBtWcxz-egTvVwFo4oN4EnC24ji4b1dCHwpeqGJnNXfNy.mp4"
+      ]
+    }
+  ],
+  "markers": 0,
+  "sources": [
+    "/Users/paritoshsrivastava/Downloads/ES_Bytez - Stray Bandit-2.mp3",
+    "/Users/paritoshsrivastava/Downloads/Endslate V2.png",
+    "/Users/paritoshsrivastava/Downloads/OcularSounds \u2013 Full Access Bundle/OcularSounds \u2013 Full Access Bundle/Utility-Ocular-Sounds/Utility - Designed/Computer Mouse/CMPTKey_MOUSE-Trackball Mouse Right Click Long 04_Oculatr_Utility.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Karl CLick.mp3",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQMtkw7GdvG4djw3gHLJV1JsDgeLbACnkcNHqyAKICaihtBRT30svXMdJGsnedsegjF_7g0Puby21ODq4tnji0p2ooz_k-u12WWuXRs.mp4",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQNoDrwXYPLmBU98i64bB2y34lagyf3MBQOC68hkm8KztJfS8JmXdhrtdkAGKhexS2DAP5lqp8gLbbPsw7bGIlw4i_-RU5ylWOZkFSA.mp4",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQOKzuBhtpj7cA4U-1YWq2JIFUkzq9I_xabua-7WgBKTBtWcxz-egTvVwFo4oN4EnC24ji4b1dCHwpeqGJnNXfNy.mp4",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQOiZttG_6PagKo3Ao8Utkf3MSVm9rle1as2m1sfUrjFhgON1zfAHSCVJykyUVAEafHJ34TRgiQicpz75FijbsSl5bvtnNBwSPYcV7Y.mp4",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQPsZtcxa0ZV-LF-ex1VxMowGZCM7k0M6qwAR1r05JT1y9PxT0K3_bn5fjIA-ru8Crm8RdmrYdZP-QBoaBeVjAb_1ChIU5ybFGWYw-U.mp4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/Auditorium Section - Static Cams/CAM1 (WIDE)/B018C008_260818AI.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/Auditorium Section - Static Cams/CAM1 (WIDE)/B018C009_260818NH.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/Auditorium Section - Static Cams/CAM3(CU)(RGHT)/G.6778.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs7954.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs7956.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs7974.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs7977.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs7980.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs7982.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs7985.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs7987.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs8003.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs8015.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs8021.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs8029.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP/bibs8033.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0029.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0031.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0040.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0041.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0042.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0043.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0062.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0144.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0147.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0166.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0168.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0169.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0172.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0190.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0192.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0195.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0197.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0198.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0199.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0200.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP/aswin0202.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Jason/CARD 01/M4ROOT/CLIP/C0205.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-KAK/CARD 01/M4ROOT/CLIP/B018C068_260818YS.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-KAK/CARD 01/M4ROOT/CLIP/B018C083_260818YB.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-KAK/CARD 01/M4ROOT/CLIP/B018C084_260818LP.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/VIDEO-Nihal/CARD 01/M4ROOT/CLIP/G.6844.MP4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/bytes/zom10.mp4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/bytes/zom5.mp4",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Lower Thirds/Lower Thirds 1.png",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Lower Thirds/Lower Thirds 2.png",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Lower Thirds/Lower Thirds 3.png",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Lower Thirds/Lower Thirds 4.png",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Supers/Super 1.png",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Supers/Super 2.png",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Supers/Super 3.png",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Supers/Super 4.png",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Supers/Super 5.png",
+    "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder/untitled folder/Supers/Super 6.png",
+    "/Volumes/Macintosh HD/Users/paritoshsrivastava/Desktop/untitled folder/Screen Recording 2026-08-26 at 11.03.18\u202fAM.mov",
+    "/Volumes/Macintosh HD/Users/paritoshsrivastava/Desktop/untitled folder/Screen Recording 2026-09-10 at 7.16.38\u202fPM.mov",
+    "/Volumes/Macintosh HD/Users/paritoshsrivastava/Desktop/untitled folder/Screen Recording 2026-09-10 at 7.22.39\u202fPM.mov",
+    "/Volumes/Macintosh HD/Users/paritoshsrivastava/Desktop/untitled folder/Screen Recording 2026-09-10 at 7.25.14\u202fPM.mov",
+    "/Volumes/Macintosh HD/Users/paritoshsrivastava/Desktop/untitled folder/Screenshot 2026-09-09 at 12.19.52\u202fPM.png"
+  ]
+}

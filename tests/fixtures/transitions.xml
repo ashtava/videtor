@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xmeml>
+<!-- Clips that start or end under a transition, written the way Premiere does (start/end -1):
+     V1  fade in from black 0-10 (no cutPointTicks: cut at its start) · A.mov · dissolve 45-55 cut at 50
+         (cutPointTicks = 5 frames) · B.mov at 50% (Time Remap) · fade to black 105-111 cut at 110, a frame
+         before it ends (cutPointTicks). In/out cover the media under each dissolve; a fade has none extra.
+     V2  track output off.
+     A1  music cut with a centred crossfade 94-106 (no cutPointTicks: cut at 100). -->
+<xmeml version="4">
+	<sequence id="sequence-1">
+		<name>Transitions</name>
+		<duration>200</duration>
+		<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+		<media>
+			<video>
+				<format><samplecharacteristics><width>1080</width><height>1920</height></samplecharacteristics></format>
+				<track>
+					<transitionitem>
+						<start>0</start><end>10</end><alignment>start-black</alignment>
+						<effect><name>Dip to Black</name><effectid>Dip to Black</effectid><effecttype>transition</effecttype></effect>
+					</transitionitem>
+					<clipitem id="clipitem-1">
+						<name>A.mov</name><enabled>TRUE</enabled>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>-1</start><end>-1</end><in>100</in><out>155</out>
+						<file id="file-1"><name>A.mov</name><pathurl>file://localhost/x/A.mov</pathurl></file>
+					</clipitem>
+					<transitionitem>
+						<start>45</start><end>55</end><alignment>center</alignment><cutPointTicks>50803200000</cutPointTicks>
+						<effect><name>Cross Dissolve</name><effectid>Cross Dissolve</effectid><effecttype>transition</effecttype></effect>
+					</transitionitem>
+					<clipitem id="clipitem-2">
+						<name>B.mov</name><enabled>TRUE</enabled>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>-1</start><end>-1</end><in>200</in><out>265</out>
+						<file id="file-2"><name>B.mov</name><pathurl>file://localhost/x/B.mov</pathurl></file>
+						<filter><effect><name>Time Remap</name><effectid>timeremap</effectid><effectcategory>motion</effectcategory>
+							<parameter><parameterid>variablespeed</parameterid><name>variablespeed</name><value>0</value></parameter>
+							<parameter><parameterid>speed</parameterid><name>speed</name><value>50</value></parameter>
+						</effect></filter>
+					</clipitem>
+					<transitionitem>
+						<start>105</start><end>111</end><alignment>end-black</alignment><cutPointTicks>50803200000</cutPointTicks>
+						<effect><name>Cross Dissolve</name><effectid>Cross Dissolve</effectid><effecttype>transition</effecttype></effect>
+					</transitionitem>
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+				<track>
+					<clipitem id="clipitem-3">
+						<name>C.mov</name><enabled>TRUE</enabled>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>0</start><end>50</end><in>0</in><out>50</out>
+						<file id="file-3"><name>C.mov</name><pathurl>file://localhost/x/C.mov</pathurl></file>
+					</clipitem>
+					<enabled>FALSE</enabled>
+					<locked>FALSE</locked>
+				</track>
+			</video>
+			<audio>
+				<track>
+					<clipitem id="clipitem-4">
+						<name>m.wav</name><enabled>TRUE</enabled>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>0</start><end>-1</end><in>0</in><out>106</out>
+						<file id="file-4"><name>m.wav</name><pathurl>file://localhost/x/m.wav</pathurl></file>
+					</clipitem>
+					<transitionitem>
+						<start>94</start><end>106</end><alignment>center</alignment>
+						<effect><name>Constant Power</name><effectid>KGAudioTransCrossFade3dB</effectid><effecttype>transition</effecttype><mediatype>audio</mediatype></effect>
+					</transitionitem>
+					<clipitem id="clipitem-5">
+						<name>m.wav</name><enabled>TRUE</enabled>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>-1</start><end>200</end><in>294</in><out>400</out>
+						<file id="file-4"/>
+					</clipitem>
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+			</audio>
+		</media>
+	</sequence>
+</xmeml>

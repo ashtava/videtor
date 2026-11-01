@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xmeml>
+<!-- A 10 s, 25 fps vertical edit laid out like a Premiere export: cuts at 2, 4 and 7 s; a music bed as an exploded
+     stereo pair; a riser whose path has a '#' and whose start is -1 next to a fade-in; an impact on the 4 s cut with
+     Audio Levels; a whoosh with Gain and a mono shutter one frame after the 7 s cut; a fly-by between two fades (both
+     edges -1, on an old library path); camera audio, an Instagram reference, a disabled clip and a recorder take. -->
+<xmeml version="4">
+	<sequence id="sequence-1">
+		<duration>250</duration>
+		<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+		<name>SFX Mini</name>
+		<media>
+			<video>
+				<format><samplecharacteristics><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><width>1080</width><height>1920</height></samplecharacteristics></format>
+				<track>
+					<clipitem id="clipitem-1">
+						<name>C0001.MP4</name><enabled>TRUE</enabled><duration>500</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>0</start><end>50</end><in>100</in><out>150</out>
+						<file id="file-1"><name>C0001.MP4</name><pathurl>file://localhost/Volumes/RAW/C0001.MP4</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>500</duration></file>
+						<link><linkclipref>clipitem-1</linkclipref><mediatype>video</mediatype><trackindex>1</trackindex><clipindex>1</clipindex></link>
+						<link><linkclipref>clipitem-20</linkclipref><mediatype>audio</mediatype><trackindex>1</trackindex><clipindex>1</clipindex></link>
+					</clipitem>
+					<clipitem id="clipitem-2">
+						<name>C0002.MP4</name><enabled>TRUE</enabled><duration>500</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>50</start><end>100</end><in>0</in><out>50</out>
+						<file id="file-2"><name>C0002.MP4</name><pathurl>file://localhost/Volumes/RAW/C0002.MP4</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>500</duration></file>
+					</clipitem>
+					<clipitem id="clipitem-3">
+						<name>C0003.MP4</name><enabled>TRUE</enabled><duration>500</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>100</start><end>175</end><in>0</in><out>75</out>
+						<file id="file-3"><name>C0003.MP4</name><pathurl>file://localhost/Volumes/RAW/C0003.MP4</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>500</duration></file>
+					</clipitem>
+					<clipitem id="clipitem-4">
+						<name>C0004.MP4</name><enabled>TRUE</enabled><duration>500</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>175</start><end>250</end><in>0</in><out>75</out>
+						<file id="file-4"><name>C0004.MP4</name><pathurl>file://localhost/Volumes/RAW/C0004.MP4</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>500</duration></file>
+					</clipitem>
+					<enabled>TRUE</enabled><locked>FALSE</locked>
+				</track>
+			</video>
+			<audio>
+				<numOutputChannels>2</numOutputChannels>
+				<track currentExplodedTrackIndex="0" totalExplodedTrackCount="1" premiereTrackType="Mono">
+					<clipitem id="clipitem-20" premiereChannelType="mono">
+						<name>C0001.MP4</name><enabled>TRUE</enabled><duration>500</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>0</start><end>50</end><in>100</in><out>150</out>
+						<file id="file-1"/>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+						<link><linkclipref>clipitem-1</linkclipref><mediatype>video</mediatype><trackindex>1</trackindex><clipindex>1</clipindex></link>
+						<link><linkclipref>clipitem-20</linkclipref><mediatype>audio</mediatype><trackindex>1</trackindex><clipindex>1</clipindex></link>
+					</clipitem>
+					<enabled>TRUE</enabled><locked>FALSE</locked><outputchannelindex>1</outputchannelindex>
+				</track>
+				<track currentExplodedTrackIndex="0" totalExplodedTrackCount="2" premiereTrackType="Mono">
+					<clipitem id="clipitem-21" premiereChannelType="stereo">
+						<name>Artist - Song.wav</name><enabled>TRUE</enabled><duration>4500</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>0</start><end>250</end><in>250</in><out>500</out>
+						<file id="file-10"><name>Artist - Song.wav</name><pathurl>file://localhost/Users/nobody/Downloads/Artist%20-%20Song.wav</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>4500</duration></file>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+					</clipitem>
+					<enabled>TRUE</enabled><locked>FALSE</locked><outputchannelindex>1</outputchannelindex>
+				</track>
+				<track currentExplodedTrackIndex="1" totalExplodedTrackCount="2" premiereTrackType="Mono">
+					<clipitem id="clipitem-22" premiereChannelType="stereo">
+						<name>Artist - Song.wav</name><enabled>TRUE</enabled><duration>4500</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>0</start><end>250</end><in>250</in><out>500</out>
+						<file id="file-10"/>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>2</trackindex></sourcetrack>
+					</clipitem>
+					<enabled>TRUE</enabled><locked>FALSE</locked><outputchannelindex>2</outputchannelindex>
+				</track>
+				<track currentExplodedTrackIndex="0" totalExplodedTrackCount="2" premiereTrackType="Mono">
+					<transitionitem>
+						<start>50</start><end>60</end><alignment>start-black</alignment>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<effect><name>Cross Fade (+3dB)</name><effectid>KGAudioTransCrossFade3dB</effectid><effecttype>transition</effecttype><mediatype>audio</mediatype></effect>
+					</transitionitem>
+					<clipitem id="clipitem-30" premiereChannelType="stereo">
+						<name>#Riser Pack.wav</name><enabled>TRUE</enabled><duration>600</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>-1</start><end>100</end><in>300</in><out>350</out>
+						<file id="file-11"><name>#Riser Pack.wav</name><pathurl>file://localhost/Users/nobody/Documents/Assetss/Regular%20Basis%20SFX/Risers/#Riser%20Pack.wav</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>600</duration></file>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+						<filter><effect><name>Gain</name><effectid>{61756678, 4761696e, 4b657947}</effectid><effecttype>filter</effecttype><mediatype>audio</mediatype>
+							<parameter authoringApp="PremierePro"><parameterid>Gain(dB)</parameterid><name>Gain(dB)</name><valuemin>-96</valuemin><valuemax>96</valuemax><value>4.5</value></parameter>
+						</effect></filter>
+					</clipitem>
+					<clipitem id="clipitem-31" premiereChannelType="stereo">
+						<name>Impact Hit.wav</name><enabled>TRUE</enabled><duration>100</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>100</start><end>150</end><in>0</in><out>50</out>
+						<file id="file-12"><name>Impact Hit.wav</name><pathurl>file://localhost/Users/nobody/SFX/Impacts/Impact%20Hit.wav</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>100</duration></file>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+						<filter><effect><name>Audio Levels</name><effectid>audiolevels</effectid><effectcategory>audiolevels</effectcategory><effecttype>audiolevels</effecttype><mediatype>audio</mediatype><pproBypass>false</pproBypass>
+							<parameter authoringApp="PremierePro"><parameterid>level</parameterid><name>Level</name><valuemin>0</valuemin><valuemax>3.98109</valuemax><value>0.501187</value></parameter>
+						</effect></filter>
+					</clipitem>
+					<enabled>TRUE</enabled><locked>FALSE</locked><outputchannelindex>1</outputchannelindex>
+				</track>
+				<track currentExplodedTrackIndex="1" totalExplodedTrackCount="2" premiereTrackType="Mono">
+					<transitionitem>
+						<start>50</start><end>60</end><alignment>start-black</alignment>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<effect><name>Cross Fade (+3dB)</name><effectid>KGAudioTransCrossFade3dB</effectid><effecttype>transition</effecttype><mediatype>audio</mediatype></effect>
+					</transitionitem>
+					<clipitem id="clipitem-32" premiereChannelType="stereo">
+						<name>#Riser Pack.wav</name><enabled>TRUE</enabled><duration>600</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>-1</start><end>100</end><in>300</in><out>350</out>
+						<file id="file-11"/>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>2</trackindex></sourcetrack>
+						<filter><effect><name>Gain</name><effectid>{61756678, 4761696e, 4b657947}</effectid><effecttype>filter</effecttype><mediatype>audio</mediatype>
+							<parameter authoringApp="PremierePro"><parameterid>Gain(dB)</parameterid><name>Gain(dB)</name><valuemin>-96</valuemin><valuemax>96</valuemax><value>4.5</value></parameter>
+						</effect></filter>
+					</clipitem>
+					<clipitem id="clipitem-33" premiereChannelType="stereo">
+						<name>Impact Hit.wav</name><enabled>TRUE</enabled><duration>100</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>100</start><end>150</end><in>0</in><out>50</out>
+						<file id="file-12"/>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>2</trackindex></sourcetrack>
+						<filter><effect><name>Audio Levels</name><effectid>audiolevels</effectid><effectcategory>audiolevels</effectcategory><effecttype>audiolevels</effecttype><mediatype>audio</mediatype><pproBypass>false</pproBypass>
+							<parameter authoringApp="PremierePro"><parameterid>level</parameterid><name>Level</name><valuemin>0</valuemin><valuemax>3.98109</valuemax><value>0.501187</value></parameter>
+						</effect></filter>
+					</clipitem>
+					<enabled>TRUE</enabled><locked>FALSE</locked><outputchannelindex>2</outputchannelindex>
+				</track>
+				<track currentExplodedTrackIndex="0" totalExplodedTrackCount="1" premiereTrackType="Mono">
+					<clipitem id="clipitem-40" premiereChannelType="stereo">
+						<name>Whoosh 01.mp3</name><enabled>TRUE</enabled><duration>67</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>125</start><end>170</end><in>0</in><out>45</out>
+						<file id="file-13"><name>Whoosh 01.mp3</name><pathurl>file://localhost/Users/nobody/Documents/Assetss/Regular%20Basis%20SFX/whoosh/Whoosh%2001.mp3</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>67</duration></file>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+						<filter><effect><name>Gain</name><effectid>{61756678, 4761696e, 4b657947}</effectid><effecttype>filter</effecttype><mediatype>audio</mediatype>
+							<parameter authoringApp="PremierePro"><parameterid>Gain(dB)</parameterid><name>Gain(dB)</name><valuemin>-96</valuemin><valuemax>96</valuemax><value>-3</value></parameter>
+						</effect></filter>
+					</clipitem>
+					<clipitem id="clipitem-41" premiereChannelType="mono">
+						<name>COMCam_Test Shutter_Ocular Sounds_Camera Shutters.wav</name><enabled>TRUE</enabled><duration>8</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>176</start><end>184</end><in>0</in><out>8</out>
+						<file id="file-14"><name>COMCam_Test Shutter_Ocular Sounds_Camera Shutters.wav</name><pathurl>file://localhost/Users/nobody/Ocular%20Sounds/Camera%20Shutters/COMCam_Test%20Shutter_Ocular%20Sounds_Camera%20Shutters.wav</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>8</duration></file>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+					</clipitem>
+					<enabled>TRUE</enabled><locked>FALSE</locked><outputchannelindex>1</outputchannelindex>
+				</track>
+				<track currentExplodedTrackIndex="0" totalExplodedTrackCount="1" premiereTrackType="Mono">
+					<transitionitem>
+						<start>212</start><end>217</end><alignment>start-black</alignment>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<effect><name>Cross Fade (+3dB)</name><effectid>KGAudioTransCrossFade3dB</effectid><effecttype>transition</effecttype><mediatype>audio</mediatype></effect>
+					</transitionitem>
+					<clipitem id="clipitem-50" premiereChannelType="stereo">
+						<name>FlyBy 13.wav</name><enabled>TRUE</enabled><duration>80</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>-1</start><end>-1</end><in>0</in><out>25</out>
+						<file id="file-15"><name>FlyBy 13.wav</name><pathurl>file://localhost/Users/nobody/Paramount/ODEON%20Sound%20Effects/FlyBy/FlyBy%2013.wav</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>80</duration></file>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+					</clipitem>
+					<transitionitem>
+						<start>232</start><end>237</end><alignment>end-black</alignment>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<effect><name>Cross Fade (+3dB)</name><effectid>KGAudioTransCrossFade3dB</effectid><effecttype>transition</effecttype><mediatype>audio</mediatype></effect>
+					</transitionitem>
+					<enabled>TRUE</enabled><locked>FALSE</locked><outputchannelindex>1</outputchannelindex>
+				</track>
+				<track currentExplodedTrackIndex="0" totalExplodedTrackCount="1" premiereTrackType="Mono">
+					<clipitem id="clipitem-60" premiereChannelType="stereo">
+						<name>SnapInsta.to_AQReference.mp4</name><enabled>TRUE</enabled><duration>300</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>0</start><end>100</end><in>0</in><out>100</out>
+						<file id="file-16"><name>SnapInsta.to_AQReference.mp4</name><pathurl>file://localhost/Users/nobody/sfx%20Ref/SnapInsta.to_AQReference.mp4</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>300</duration></file>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+					</clipitem>
+					<clipitem id="clipitem-61" premiereChannelType="stereo">
+						<name>Disabled Whoosh.wav</name><enabled>FALSE</enabled><duration>50</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>110</start><end>140</end><in>0</in><out>30</out>
+						<file id="file-17"><name>Disabled Whoosh.wav</name><pathurl>file://localhost/Users/nobody/SFX/Disabled%20Whoosh.wav</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>50</duration></file>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+					</clipitem>
+					<clipitem id="clipitem-62" premiereChannelType="mono">
+						<name>260925-T017.WAV</name><enabled>TRUE</enabled><duration>900</duration>
+						<rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate>
+						<start>150</start><end>200</end><in>400</in><out>450</out>
+						<file id="file-18"><name>260925-T017.WAV</name><pathurl>file://localhost/Volumes/RAW/Sound/260925-T017.WAV</pathurl><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><duration>900</duration></file>
+						<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex></sourcetrack>
+					</clipitem>
+					<enabled>TRUE</enabled><locked>FALSE</locked><outputchannelindex>1</outputchannelindex>
+				</track>
+			</audio>
+		</media>
+		<timecode><rate><timebase>25</timebase><ntsc>FALSE</ntsc></rate><string>00:00:00:00</string><frame>0</frame><displayformat>NDF</displayformat></timecode>
+	</sequence>
+</xmeml>

@@ -1,0 +1,30 @@
+{
+  "JW.xml::Sequence 01": {
+    "n": {
+      "used": 46,
+      "unused": 2288
+    },
+    "used": {
+      "duration_s": 17.148,
+      "fps": 29.97,
+      "height": 2160.0,
+      "sharpness": 91.859,
+      "brightness": 118.526,
+      "contrast": 31.84,
+      "colorfulness": 20.188,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    },
+    "unused": {
+      "duration_s": 9.12,
+      "fps": 50.0,
+      "height": 2160.0,
+      "sharpness": 77.197,
+      "brightness": 115.048,
+      "contrast": 31.855,
+      "colorfulness": 17.535,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    }
+  }
+}

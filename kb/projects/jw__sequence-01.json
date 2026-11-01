@@ -1,0 +1,826 @@
+{
+  "name": "Sequence 01",
+  "id": "sequence-1",
+  "role": "main",
+  "source_xml": ".xml-exports/JW.xml",
+  "key": "JW.xml::Sequence 01",
+  "fps": 23.976,
+  "frame_size": [
+    1080,
+    1920
+  ],
+  "orientation": "vertical",
+  "duration_s": 37.37,
+  "tracks": {
+    "video": 11,
+    "audio": 18
+  },
+  "nested": {
+    "clips": 13,
+    "expanded": 13
+  },
+  "primary_video_track": "V11",
+  "shot_length_s": {
+    "count": 79,
+    "median": 0.5,
+    "mean": 1.066,
+    "p10": 0.167,
+    "p90": 1.218
+  },
+  "shot_lengths_s": [
+    0.542,
+    0.292,
+    0.083,
+    1.126,
+    1.126,
+    0.709,
+    0.125,
+    0.125,
+    0.209,
+    0.25,
+    0.167,
+    0.209,
+    0.709,
+    1.168,
+    0.542,
+    0.5,
+    1.168,
+    0.334,
+    0.667,
+    0.459,
+    0.25,
+    0.167,
+    0.083,
+    0.5,
+    0.417,
+    0.5,
+    1.418,
+    0.459,
+    0.834,
+    1.418,
+    0.709,
+    0.459,
+    0.626,
+    0.167,
+    0.459,
+    0.667,
+    0.5,
+    0.876,
+    0.626,
+    0.375,
+    0.417,
+    0.667,
+    0.542,
+    0.667,
+    0.167,
+    0.709,
+    1.418,
+    1.168,
+    0.959,
+    2.711,
+    3.17,
+    0.959,
+    0.5,
+    0.751,
+    0.167,
+    0.209,
+    0.25,
+    0.167,
+    0.209,
+    0.542,
+    0.667,
+    0.417,
+    0.5,
+    0.125,
+    0.542,
+    0.751,
+    1.168,
+    0.459,
+    0.125,
+    0.375,
+    0.459,
+    0.167,
+    0.626,
+    0.459,
+    0.5,
+    3.253,
+    1.043,
+    3.128,
+    31.073
+  ],
+  "primary_shot_length_s": {
+    "count": 1,
+    "median": 31.073,
+    "mean": 31.073,
+    "p10": 31.073,
+    "p90": 31.073
+  },
+  "cuts_s": [
+    3.17,
+    3.253,
+    4.588,
+    5.297,
+    6.256,
+    6.715,
+    7.216,
+    7.841,
+    8.383,
+    8.55,
+    9.009,
+    9.134,
+    9.259,
+    9.509,
+    9.635,
+    10.177,
+    10.677,
+    10.886,
+    10.969,
+    11.386,
+    11.887,
+    12.095,
+    12.221,
+    12.93,
+    12.971,
+    13.096,
+    13.305,
+    13.555,
+    13.722,
+    13.931,
+    14.556,
+    15.098,
+    15.265,
+    15.474,
+    15.557,
+    16.016,
+    16.85,
+    17.184,
+    17.392,
+    17.893,
+    19.061,
+    19.478,
+    19.811,
+    20.479,
+    20.646,
+    21.146,
+    21.271,
+    21.688,
+    22.147,
+    22.564,
+    22.814,
+    22.981,
+    23.148,
+    23.315,
+    23.398,
+    23.899,
+    24.316,
+    24.816,
+    24.942,
+    25.484,
+    26.235,
+    26.735,
+    26.944,
+    27.903,
+    29.321,
+    29.78,
+    30.739,
+    31.198,
+    32.366,
+    32.824,
+    33.659,
+    34.243,
+    34.618,
+    37.329
+  ],
+  "cuts_per_min": 118.81,
+  "layers": {
+    "median": 2,
+    "p90": 3,
+    "max": 5
+  },
+  "broll": {
+    "count": 78,
+    "length_s": {
+      "count": 78,
+      "median": 0.5,
+      "mean": 0.681,
+      "p10": 0.167,
+      "p90": 1.168
+    },
+    "tracks": [
+      "V1",
+      "V2",
+      "V3",
+      "V4",
+      "V5",
+      "V8"
+    ]
+  },
+  "transitions": {
+    "count": 9,
+    "share_of_edits": 0.114,
+    "by_name": {
+      "Cross Dissolve": 9
+    },
+    "frames": {
+      "count": 9,
+      "median": 17.0,
+      "mean": 17.111,
+      "p10": 12.6,
+      "p90": 21.8
+    }
+  },
+  "audio_transitions": {
+    "count": 12,
+    "share_of_audio_clips": 0.2,
+    "by_name": {
+      "Cross Fade (+3dB)": 12
+    },
+    "frames": {
+      "count": 12,
+      "median": 24.0,
+      "mean": 28.333,
+      "p10": 7.3,
+      "p90": 53.7
+    }
+  },
+  "effects_seen": {},
+  "audio_effects_seen": {},
+  "speed_changes": {
+    "share": 0.304,
+    "ramp_share": 0.0,
+    "values": [
+      2.0,
+      0.5,
+      75.0,
+      85.0,
+      3.0,
+      0.5,
+      0.25,
+      1.5,
+      0.5,
+      0.5,
+      1.15,
+      0.75,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      3.0,
+      1.21,
+      0.5,
+      1.25,
+      1.11,
+      0.5,
+      3.0,
+      1.042
+    ]
+  },
+  "graphics": {
+    "adjustment": 27,
+    "adjustment_per_min": 43.35,
+    "adjustment_effects": {
+      "Flash blur": 11
+    },
+    "graphic": 0,
+    "matte": 0,
+    "first_title_s": null
+  },
+  "labels": {
+    "video": {
+      "Forest": 2,
+      "Iris": 58,
+      "Lavender": 2,
+      "Violet": 1
+    },
+    "audio": {
+      "Caribbean": 54,
+      "Iris": 6
+    }
+  },
+  "luts_seen": {},
+  "audio_tracks": [
+    {
+      "track": "A1",
+      "clips": 4,
+      "covered_s": 37.37,
+      "role": "bed",
+      "level_db": {
+        "count": 4,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "messwave - homealone.wav"
+      ]
+    },
+    {
+      "track": "A2",
+      "clips": 4,
+      "covered_s": 37.37,
+      "role": "bed",
+      "level_db": {
+        "count": 4,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "messwave - homealone.wav"
+      ]
+    },
+    {
+      "track": "A3",
+      "clips": 9,
+      "covered_s": 15.89,
+      "role": "sfx",
+      "level_db": {
+        "count": 9,
+        "median": 0.0,
+        "mean": 0.111,
+        "p10": -3.8,
+        "p90": 4.4
+      },
+      "level_db_adjusted": {
+        "count": 6,
+        "median": 0.5,
+        "mean": 0.167,
+        "p10": -5.0,
+        "p90": 5.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "C5228.MP4",
+        "Camera_Click_8.wav",
+        "Camera_Click_9.wav",
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3",
+        "Sports Stadium Crowd Cheering Sound Effect.mp3",
+        "Whoosh 01.mp3",
+        "akh1020260125_1690.MP4"
+      ]
+    },
+    {
+      "track": "A4",
+      "clips": 7,
+      "covered_s": 14.85,
+      "role": "sfx",
+      "level_db": {
+        "count": 7,
+        "median": 0.0,
+        "mean": 0.143,
+        "p10": -4.6,
+        "p90": 4.8
+      },
+      "level_db_adjusted": {
+        "count": 6,
+        "median": 0.5,
+        "mean": 0.167,
+        "p10": -5.0,
+        "p90": 5.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "C5228.MP4",
+        "Camera_Click_9.wav",
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3",
+        "Sports Stadium Crowd Cheering Sound Effect.mp3",
+        "Whoosh 01.mp3",
+        "akh1020260125_1690.MP4"
+      ]
+    },
+    {
+      "track": "A5",
+      "clips": 7,
+      "covered_s": 11.51,
+      "role": "sfx",
+      "level_db": {
+        "count": 7,
+        "median": 0.0,
+        "mean": 0.429,
+        "p10": -3.0,
+        "p90": 4.4
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": 0.5,
+        "mean": 0.75,
+        "p10": -3.0,
+        "p90": 4.7
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "27 Fireworks Display Long Constant Powerful Bursts, Whistling, Fireworks, Blockbuster.mp3",
+        "BOOM Library - WATER Refreshing burst.wav",
+        "C5158.MP4",
+        "Camera_Click_9.wav",
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3",
+        "On Your Left.wav"
+      ]
+    },
+    {
+      "track": "A6",
+      "clips": 7,
+      "covered_s": 11.51,
+      "role": "sfx",
+      "level_db": {
+        "count": 7,
+        "median": 0.0,
+        "mean": 0.429,
+        "p10": -3.0,
+        "p90": 4.4
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": 0.5,
+        "mean": 0.75,
+        "p10": -3.0,
+        "p90": 4.7
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "27 Fireworks Display Long Constant Powerful Bursts, Whistling, Fireworks, Blockbuster.mp3",
+        "BOOM Library - WATER Refreshing burst.wav",
+        "C5158.MP4",
+        "Camera_Click_9.wav",
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3",
+        "On Your Left.wav"
+      ]
+    },
+    {
+      "track": "A7",
+      "clips": 5,
+      "covered_s": 15.97,
+      "role": "sfx",
+      "level_db": {
+        "count": 5,
+        "median": -7.0,
+        "mean": -3.2,
+        "p10": -7.0,
+        "p90": 3.0
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": -7.0,
+        "mean": -4.0,
+        "p10": -7.0,
+        "p90": 1.4
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "27 Fireworks Display Long Constant Powerful Bursts, Whistling, Fireworks, Blockbuster.mp3",
+        "Camera_Click_9.wav",
+        "On Your Left.wav",
+        "Sports Stadium Crowd Cheering Sound Effect.mp3"
+      ]
+    },
+    {
+      "track": "A8",
+      "clips": 5,
+      "covered_s": 15.97,
+      "role": "sfx",
+      "level_db": {
+        "count": 5,
+        "median": -7.0,
+        "mean": -3.2,
+        "p10": -7.0,
+        "p90": 3.0
+      },
+      "level_db_adjusted": {
+        "count": 4,
+        "median": -7.0,
+        "mean": -4.0,
+        "p10": -7.0,
+        "p90": 1.4
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "27 Fireworks Display Long Constant Powerful Bursts, Whistling, Fireworks, Blockbuster.mp3",
+        "Camera_Click_9.wav",
+        "On Your Left.wav",
+        "Sports Stadium Crowd Cheering Sound Effect.mp3"
+      ]
+    },
+    {
+      "track": "A9",
+      "clips": 2,
+      "covered_s": 4.09,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -1.5,
+        "mean": -1.5,
+        "p10": -5.9,
+        "p90": 2.9
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -1.5,
+        "mean": -1.5,
+        "p10": -5.9,
+        "p90": 2.9
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "Camera_Click_9.wav",
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3"
+      ]
+    },
+    {
+      "track": "A10",
+      "clips": 2,
+      "covered_s": 4.09,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -1.5,
+        "mean": -1.5,
+        "p10": -5.9,
+        "p90": 2.9
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -1.5,
+        "mean": -1.5,
+        "p10": -5.9,
+        "p90": 2.9
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "Camera_Click_9.wav",
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3"
+      ]
+    },
+    {
+      "track": "A11",
+      "clips": 1,
+      "covered_s": 2.71,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 5.0,
+        "mean": 5.0,
+        "p10": 5.0,
+        "p90": 5.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 5.0,
+        "mean": 5.0,
+        "p10": 5.0,
+        "p90": 5.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "On Your Left.wav"
+      ]
+    },
+    {
+      "track": "A12",
+      "clips": 1,
+      "covered_s": 2.71,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 5.0,
+        "mean": 5.0,
+        "p10": 5.0,
+        "p90": 5.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 5.0,
+        "mean": 5.0,
+        "p10": 5.0,
+        "p90": 5.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "On Your Left.wav"
+      ]
+    },
+    {
+      "track": "A13",
+      "clips": 1,
+      "covered_s": 2.96,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -10.0,
+        "mean": -10.0,
+        "p10": -10.0,
+        "p90": -10.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -10.0,
+        "mean": -10.0,
+        "p10": -10.0,
+        "p90": -10.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "ShortRiser2.wav"
+      ]
+    },
+    {
+      "track": "A14",
+      "clips": 1,
+      "covered_s": 2.96,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": -10.0,
+        "mean": -10.0,
+        "p10": -10.0,
+        "p90": -10.0
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": -10.0,
+        "mean": -10.0,
+        "p10": -10.0,
+        "p90": -10.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "ShortRiser2.wav"
+      ]
+    },
+    {
+      "track": "A15",
+      "clips": 1,
+      "covered_s": 3.71,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3"
+      ]
+    },
+    {
+      "track": "A16",
+      "clips": 1,
+      "covered_s": 3.71,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3"
+      ]
+    },
+    {
+      "track": "A17",
+      "clips": 1,
+      "covered_s": 3.71,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3"
+      ]
+    },
+    {
+      "track": "A18",
+      "clips": 1,
+      "covered_s": 3.71,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 0.0,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p90": 0.0
+      },
+      "level_db_adjusted": null,
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3"
+      ]
+    }
+  ],
+  "markers": 0,
+  "sources": [
+    "/Users/paritoshsrivastava/Documents/Assetss/Regular Basis SFX/27 Fireworks Display Long Constant Powerful Bursts, Whistling, Fireworks, Blockbuster.mp3",
+    "/Users/paritoshsrivastava/Documents/Assetss/Regular Basis SFX/BOOM Library - WATER Refreshing burst.wav",
+    "/Users/paritoshsrivastava/Documents/Assetss/Regular Basis SFX/Camera click and Elements  SFX/Camera_Click_8.wav",
+    "/Users/paritoshsrivastava/Documents/Assetss/Regular Basis SFX/Camera click and Elements  SFX/Camera_Click_9.wav",
+    "/Users/paritoshsrivastava/Documents/Assetss/Regular Basis SFX/FIRE WHOOSH TRANSITION SOUND EFFECTS.mp3",
+    "/Users/paritoshsrivastava/Documents/Assetss/Regular Basis SFX/Hudsonfilms SFX Vol 1/Riser/ShortRiser2.wav",
+    "/Users/paritoshsrivastava/Documents/Assetss/Regular Basis SFX/LOBO SFX/Whooshes/On Your Left.wav",
+    "/Users/paritoshsrivastava/Documents/Assetss/Regular Basis SFX/Sports Stadium Crowd Cheering Sound Effect.mp3",
+    "/Users/paritoshsrivastava/Documents/Assetss/Regular Basis SFX/whoosh-2022-03-31-08-31-57-utc/Whoosh 01.mp3",
+    "/Users/paritoshsrivastava/Downloads/21_1_Lolla-Story-Template-8 White JW.png",
+    "/Users/paritoshsrivastava/Downloads/JWB-OOH.png",
+    "/Users/paritoshsrivastava/Downloads/Luxe blended water - end slate/Comp 5.mov",
+    "/Users/paritoshsrivastava/Downloads/hf_20260124_233324_46039c22-da07-4090-ba22-eee745f00680.mp4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Akhosh/akh1020260125_1601.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Akhosh/akh1020260125_1674.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Akhosh/akh1020260125_1677.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Akhosh/akh1020260125_1690.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0002.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0015.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0025.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0031.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0037.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0039.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0057.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0076.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0089.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Basim/1/BASIM20260125_0103.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0003.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0004.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0061.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0073.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0088.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0098.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0107.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0136.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0139.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0141.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0143.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Hariydesh/1/HRI0145.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Internal/Anurag/1/ANURAG4362.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Paritosh/C9439.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Paritosh/C9440.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Paritosh/C9467.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Paritosh/C9472.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Paritosh/C9478.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Paritosh/C9479.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Paritosh/C9484.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5144.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5158.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5195.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5203.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5217.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5228.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5230.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5231.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5233.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/FTG/Day 2/Pranshant/1/C5237.MP4",
+    "/Volumes/Extreme SSD/Jonnie walker X Lolla/Project Files/Untitled Project.aep",
+    "/Volumes/Extreme SSD/messwave - homealone.wav"
+  ]
+}

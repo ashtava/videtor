@@ -1,0 +1,30 @@
+{
+  "Adidas.xml::Sequence 01": {
+    "n": {
+      "used": 16,
+      "unused": 1210
+    },
+    "used": {
+      "duration_s": 53.28,
+      "fps": 50.0,
+      "height": 2160.0,
+      "sharpness": 105.609,
+      "brightness": 114.225,
+      "contrast": 37.05,
+      "colorfulness": 17.776,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    },
+    "unused": {
+      "duration_s": 8.16,
+      "fps": 50.0,
+      "height": 2160.0,
+      "sharpness": 51.951,
+      "brightness": 101.94,
+      "contrast": 32.257,
+      "colorfulness": 13.476,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    }
+  }
+}

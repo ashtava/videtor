@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xmeml>
+<xmeml version="4">
+  <project>
+    <name>Fixture</name>
+    <children>
+      <sequence id="sequence-9"/>
+      <sequence id="sequence-1">
+        <name>Fixture Seq</name>
+        <duration>240</duration>
+        <rate><timebase>24</timebase><ntsc>TRUE</ntsc></rate>
+        <media>
+          <video>
+            <format><samplecharacteristics>
+              <rate><timebase>24</timebase><ntsc>TRUE</ntsc></rate>
+              <width>1920</width><height>1080</height>
+            </samplecharacteristics></format>
+            <track>
+              <clipitem id="clipitem-1">
+                <name>A001.mov</name><enabled>TRUE</enabled>
+                <rate><timebase>24</timebase><ntsc>TRUE</ntsc></rate>
+                <start>0</start><end>96</end><in>10</in><out>106</out>
+                <file id="file-1">
+                  <name>A001.mov</name><pathurl>file://localhost/Volumes/RAW/Day%201/A001.mov</pathurl>
+                  <rate><timebase>24</timebase><ntsc>TRUE</ntsc></rate>
+                  <media><video><colorinfo><lut></lut><lut1>SLog3_to_Rec709.cube</lut1><lut2></lut2></colorinfo></video></media>
+                </file>
+                <filter><effect><name>Basic Motion</name><effectid>basic</effectid><effectcategory>motion</effectcategory></effect></filter>
+                <filter><effect><name>Lumetri Color</name><effectid>Lumetri</effectid><effectcategory>Color</effectcategory></effect></filter>
+                <link><linkclipref>clipitem-1</linkclipref><mediatype>video</mediatype></link>
+                <link><linkclipref>clipitem-3</linkclipref><mediatype>audio</mediatype></link>
+                <labels><label2>Iris</label2></labels>
+              </clipitem>
+              <transitionitem>
+                <start>84</start><end>108</end><alignment>center</alignment>
+                <effect><name>Cross Dissolve</name><effectid>Cross Dissolve</effectid><effectcategory>Dissolve</effectcategory></effect>
+              </transitionitem>
+              <clipitem id="clipitem-2">
+                <name>A002.mov</name><enabled>TRUE</enabled>
+                <start>96</start><end>240</end><in>0</in><out>288</out>
+                <file id="file-2"><name>A002.mov</name><pathurl>file://localhost/Volumes/RAW/Day%201/A002.mov</pathurl></file>
+                <filter><effect><name>Time Remap</name><effectid>timeremap</effectid><effectcategory>motion</effectcategory>
+                  <parameter><parameterid>variablespeed</parameterid><name>variablespeed</name><value>0</value></parameter>
+                  <parameter><parameterid>speed</parameterid><name>speed</name><value>200</value></parameter>
+                  <parameter><parameterid>reverse</parameterid><name>reverse</name><value>FALSE</value></parameter>
+                </effect></filter>
+              </clipitem>
+            </track>
+            <track>
+              <clipitem id="clipitem-4">
+                <name>B001.mov</name><enabled>TRUE</enabled>
+                <start>120</start><end>168</end><in>0</in><out>48</out>
+                <file id="file-3"><name>B001.mov</name><pathurl>file://localhost/Volumes/RAW/B001.mov</pathurl></file>
+              </clipitem>
+              <clipitem id="clipitem-6">
+                <name>Disabled.mov</name><enabled>FALSE</enabled>
+                <start>200</start><end>230</end><in>0</in><out>30</out>
+                <file id="file-5"><name>Disabled.mov</name><pathurl>file://localhost/Volumes/RAW/Disabled.mov</pathurl></file>
+              </clipitem>
+              <clipitem id="clipitem-8">
+                <name>Nested Sequence 1</name><enabled>TRUE</enabled>
+                <start>168</start><end>192</end><in>0</in><out>24</out>
+                <sequence id="sequence-2"/>
+              </clipitem>
+            </track>
+            <track>
+              <generatoritem id="clipitem-7">
+                <name>Lower Third</name><enabled>TRUE</enabled>
+                <start>48</start><end>144</end><in>0</in><out>96</out>
+                <effect><name>Text</name><effectid>Text</effectid><effectcategory>Text</effectcategory></effect>
+              </generatoritem>
+            </track>
+            <track>
+              <clipitem id="clipitem-11">
+                <name>Adjustment Layer</name><enabled>TRUE</enabled>
+                <start>0</start><end>240</end><in>0</in><out>240</out>
+                <file id="file-6"><name>Adjustment Layer</name><media><video/></media></file>
+                <filter><effect><name>Vector Motion</name><effectid>vm</effectid><effectcategory>motion</effectcategory></effect></filter>
+                <filter><effect><name>Gaussian Blur</name><effectid>gblur</effectid><effectcategory>Blur</effectcategory></effect></filter>
+              </clipitem>
+            </track>
+          </video>
+          <audio>
+            <track>
+              <clipitem id="clipitem-3">
+                <name>A001.mov</name><enabled>TRUE</enabled>
+                <start>0</start><end>96</end><in>10</in><out>106</out>
+                <file id="file-1"/>
+                <link><linkclipref>clipitem-1</linkclipref><mediatype>video</mediatype></link>
+                <filter><effect><name>Audio Levels</name><effectid>audiolevels</effectid><effectcategory>audiolevels</effectcategory>
+                  <parameter><parameterid>level</parameterid><name>Level</name><valuemin>0</valuemin><valuemax>3.98109</valuemax><value>1</value></parameter>
+                </effect></filter>
+                <filter><effect><name>Gain</name><effectid>{61756678, 4761696e, 4b657947}</effectid>
+                  <parameter><parameterid>Gain(dB)</parameterid><name>Gain(dB)</name><valuemin>-96</valuemin><valuemax>96</valuemax><value>-3</value></parameter>
+                </effect></filter>
+              </clipitem>
+              <transitionitem>
+                <start>90</start><end>102</end><alignment>end-black</alignment>
+                <effect><name>Cross Fade (+3dB)</name><effectid>KGAudioTransCrossFade3dB</effectid><effecttype>transition</effecttype><mediatype>audio</mediatype></effect>
+              </transitionitem>
+            </track>
+            <track>
+              <clipitem id="clipitem-5">
+                <name>music.wav</name><enabled>TRUE</enabled>
+                <start>0</start><end>240</end><in>0</in><out>240</out>
+                <file id="file-4"><name>music.wav</name><pathurl>file://localhost/Volumes/RAW/music.wav</pathurl></file>
+                <filter><effect><name>Audio Levels</name><effectid>audiolevels</effectid><effectcategory>audiolevels</effectcategory>
+                  <parameter><parameterid>level</parameterid><name>Level</name><value>0.251189</value>
+                    <keyframe><when>0</when><value>0.251189</value></keyframe>
+                    <keyframe><when>96</when><value>0.501187</value></keyframe>
+                  </parameter>
+                </effect></filter>
+              </clipitem>
+            </track>
+            <track>
+              <clipitem id="clipitem-9">
+                <name>whoosh.wav</name><enabled>TRUE</enabled>
+                <start>0</start><end>12</end><in>0</in><out>12</out>
+                <file id="file-8"><name>whoosh.wav</name><pathurl>file://localhost/Volumes/SFX/whoosh.wav</pathurl></file>
+              </clipitem>
+              <clipitem id="clipitem-10">
+                <name>hit.wav</name><enabled>TRUE</enabled>
+                <start>96</start><end>104</end><in>0</in><out>8</out>
+                <file id="file-9"><name>hit.wav</name><pathurl>file://localhost/Volumes/SFX/hit.wav</pathurl></file>
+                <filter><effect><name>Low Pass Filter</name><effectid>lpf</effectid><effectcategory>EQ</effectcategory></effect></filter>
+              </clipitem>
+            </track>
+          </audio>
+        </media>
+        <marker><name>Title here</name><comment></comment><in>48</in><out>-1</out></marker>
+      </sequence>
+      <sequence id="sequence-2">
+        <name>Nested Sequence 1</name>
+        <duration>24</duration>
+        <rate><timebase>24</timebase><ntsc>TRUE</ntsc></rate>
+        <media><video><track>
+          <clipitem id="clipitem-20">
+            <name>N001.mov</name><enabled>TRUE</enabled>
+            <start>0</start><end>12</end><in>0</in><out>12</out>
+            <file id="file-7"><name>N001.mov</name><pathurl>file://localhost/Volumes/RAW/N001.mov</pathurl></file>
+          </clipitem>
+          <clipitem id="clipitem-21">
+            <name>N002.mov</name><enabled>TRUE</enabled>
+            <start>12</start><end>24</end><in>0</in><out>12</out>
+            <file id="file-10"><name>N002.mov</name><pathurl>file://localhost/Volumes/RAW/N002.mov</pathurl></file>
+          </clipitem>
+        </track></video></media>
+      </sequence>
+    </children>
+  </project>
+</xmeml>

@@ -1,0 +1,179 @@
+{
+  "TPL.xml::Leander Paes": {
+    "roots": [
+      "/Volumes/Paritosh_3/TPL/Videos",
+      "/Volumes/Paritosh_3/TPL"
+    ],
+    "files": {
+      "used": 14,
+      "unused": 858,
+      "renders": 6,
+      "duplicates": 0,
+      "used_by_other_edits": 1
+    },
+    "seconds": {
+      "used_files": 248.6,
+      "unused_files": 16345.3,
+      "selected": 27.7
+    },
+    "select_ratio": 0.111,
+    "unused_kinds": {
+      "audio": 7,
+      "video": 704,
+      "image": 147
+    },
+    "formats": {
+      "3840x2160 @50.0 h264": 531,
+      "3840x2160 @25.0 h264": 96,
+      "3840x2160 @50.0 hevc": 83,
+      "1920x1080 @23.976 prores": 9,
+      "1080x1920 @30.0 hevc": 5,
+      "1920x1080 @23.976 hevc": 1
+    },
+    "matched_by_basename": 0,
+    "folders": {
+      "TPL/TPL AUCTION": {
+        "used": 0,
+        "unused": 7
+      },
+      "TPL/Videos/Jatin/Card 1": {
+        "used": 0,
+        "unused": 68
+      },
+      "TPL/Videos/Jatin/Card 2": {
+        "used": 1,
+        "unused": 94
+      },
+      "TPL/Videos/Sam/Card 1": {
+        "used": 1,
+        "unused": 57
+      },
+      "TPL/Videos/Sam/Card 1/DCIM/100MSDCF": {
+        "used": 0,
+        "unused": 147
+      },
+      "TPL/Videos/Sam/Card 2": {
+        "used": 1,
+        "unused": 173
+      },
+      "TPL/Videos/Tanmay/Card 1": {
+        "used": 3,
+        "unused": 61
+      },
+      "TPL/Videos/Tanmay/Card 2": {
+        "used": 8,
+        "unused": 183
+      },
+      "TPL/Videos/Tanmay/Card 3": {
+        "used": 0,
+        "unused": 59
+      },
+      "TPL/untitled folder/drive-download-20261013T181940Z-1-001": {
+        "used": 0,
+        "unused": 9
+      }
+    }
+  },
+  "Zomato.xml::Final seq": {
+    "roots": [],
+    "files": {
+      "used": 1,
+      "unused": 0,
+      "renders": 0,
+      "duplicates": 0,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 3.4,
+      "unused_files": 0,
+      "selected": 1.1
+    },
+    "select_ratio": 0.324,
+    "unused_kinds": {},
+    "formats": {
+      "3840x2160 @50.0 h264": 1
+    },
+    "matched_by_basename": 1,
+    "folders": {
+      "/Volumes/Paritosh_3/TPL/Videos/Sam/Card 2": {
+        "used": 1,
+        "unused": 0
+      }
+    }
+  },
+  "leander.xml::Leander Paes": {
+    "roots": [
+      "/Volumes/Paritosh_3/TPL/Videos",
+      "/Volumes/Paritosh_3/TPL"
+    ],
+    "files": {
+      "used": 14,
+      "unused": 858,
+      "renders": 6,
+      "duplicates": 0,
+      "used_by_other_edits": 1
+    },
+    "seconds": {
+      "used_files": 248.6,
+      "unused_files": 16345.3,
+      "selected": 27.7
+    },
+    "select_ratio": 0.111,
+    "unused_kinds": {
+      "audio": 7,
+      "video": 704,
+      "image": 147
+    },
+    "formats": {
+      "3840x2160 @50.0 h264": 531,
+      "3840x2160 @25.0 h264": 96,
+      "3840x2160 @50.0 hevc": 83,
+      "1920x1080 @23.976 prores": 9,
+      "1080x1920 @30.0 hevc": 5,
+      "1920x1080 @23.976 hevc": 1
+    },
+    "matched_by_basename": 0,
+    "folders": {
+      "TPL/TPL AUCTION": {
+        "used": 0,
+        "unused": 7
+      },
+      "TPL/Videos/Jatin/Card 1": {
+        "used": 0,
+        "unused": 68
+      },
+      "TPL/Videos/Jatin/Card 2": {
+        "used": 1,
+        "unused": 94
+      },
+      "TPL/Videos/Sam/Card 1": {
+        "used": 1,
+        "unused": 57
+      },
+      "TPL/Videos/Sam/Card 1/DCIM/100MSDCF": {
+        "used": 0,
+        "unused": 147
+      },
+      "TPL/Videos/Sam/Card 2": {
+        "used": 1,
+        "unused": 173
+      },
+      "TPL/Videos/Tanmay/Card 1": {
+        "used": 3,
+        "unused": 61
+      },
+      "TPL/Videos/Tanmay/Card 2": {
+        "used": 8,
+        "unused": 183
+      },
+      "TPL/Videos/Tanmay/Card 3": {
+        "used": 0,
+        "unused": 59
+      },
+      "TPL/untitled folder/drive-download-20261013T181940Z-1-001": {
+        "used": 0,
+        "unused": 9
+      }
+    }
+  }
+}

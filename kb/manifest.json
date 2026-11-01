@@ -1,0 +1,42 @@
+{
+  "default": "unsorted",
+  "types": {
+    "Adidas.xml::Sequence 01": "brand-social",
+    "Coca cola.xml::Sequence 01": "brand-social",
+    "Guru.xml::Sequence 01": "brand-social",
+    "JW.xml::Sequence 01": "brand-social",
+    "Vivo 1.xml::Rohit saraf 2": "brand-social",
+    "Vivo 2.xml::ahsaas taruk": "brand-social",
+    "Zomato.xml::Final seq": "brand-social",
+    "Gujarat Giants.xml::Sequence 01": "sports-promo",
+    "TPL.xml::Leander Paes": "sports-promo",
+    "leander.xml::Leander Paes": "sports-promo",
+    "Diwali Party.xml::Sequence 01": "event"
+  },
+  "footage": {
+    "Gujarat Giants.xml::Sequence 01": [
+      "/Volumes/AMAZONSSD/WPL Gujarat Giants"
+    ],
+    "Zomato.xml::Final seq": [
+      "/Volumes/AJAN SSD4/Packswitcg_consolidated"
+    ],
+    "JW.xml::Sequence 01": [
+      "/Volumes/Extreme SSD/Jonnie walker X Lolla"
+    ],
+    "Coca cola.xml::Sequence 01": [
+      "/Volumes/Paritosh_4/coca cola"
+    ],
+    "TPL.xml::Leander Paes": [
+      "/Volumes/Paritosh_3/TPL"
+    ],
+    "leander.xml::Leander Paes": [
+      "/Volumes/Paritosh_3/TPL"
+    ],
+    "Adidas.xml::Sequence 01": [
+      "/Volumes/Adidas/ADIDAS x NEXMAG"
+    ],
+    "Diwali Party.xml::Sequence 01": [
+      "/Volumes/Paritosh_2/Diwali Party/Data"
+    ]
+  }
+}

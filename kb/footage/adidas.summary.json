@@ -1,0 +1,149 @@
+{
+  "Adidas.xml::Sequence 01": {
+    "roots": [
+      "/Volumes/Adidas/ADIDAS x NEXMAG/BCCI",
+      "/Volumes/Adidas/ADIDAS x NEXMAG"
+    ],
+    "files": {
+      "used": 16,
+      "unused": 7151,
+      "renders": 0,
+      "duplicates": 0,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 2724.9,
+      "unused_files": 112112.7,
+      "selected": 74.1
+    },
+    "select_ratio": 0.027,
+    "unused_kinds": {
+      "image": 5782,
+      "video": 1210,
+      "audio": 159
+    },
+    "formats": {
+      "3840x2160 @50.0 h264": 884,
+      "3840x2160 @100.0 h264": 127,
+      "3840x2160 @59.94 h264": 103,
+      "3840x2160 @59.94 hevc": 78,
+      "4096x2160 @25.0 h264": 17,
+      "3840x2160 @25.0 h264": 10
+    },
+    "matched_by_basename": 0,
+    "folders": {
+      "ADIDAS x NEXMAG/BCCI/Anurag/Card 1/CLIP": {
+        "used": 0,
+        "unused": 13
+      },
+      "ADIDAS x NEXMAG/BCCI/Anurag/Card 2/CLIP": {
+        "used": 6,
+        "unused": 32
+      },
+      "ADIDAS x NEXMAG/BCCI/Photos/Kaustubh": {
+        "used": 0,
+        "unused": 1219
+      },
+      "ADIDAS x NEXMAG/BCCI/Photos/Yash/DCIM 2/100EOSR5": {
+        "used": 0,
+        "unused": 2742
+      },
+      "ADIDAS x NEXMAG/BCCI/Prathamesh/CLIP": {
+        "used": 0,
+        "unused": 103
+      },
+      "ADIDAS x NEXMAG/BCCI/Sam/Card 1/CLIP": {
+        "used": 3,
+        "unused": 48
+      },
+      "ADIDAS x NEXMAG/BCCI/Sam/Card 2/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 46
+      },
+      "ADIDAS x NEXMAG/BCCI/Sam/Card 2/XDROOT/Clip": {
+        "used": 0,
+        "unused": 17
+      },
+      "ADIDAS x NEXMAG/BCCI/Sam/Card 2/XDROOT/Thmbnl": {
+        "used": 0,
+        "unused": 17
+      },
+      "ADIDAS x NEXMAG/BCCI/Sound/Card 1/DJI_Audio_001": {
+        "used": 0,
+        "unused": 51
+      },
+      "ADIDAS x NEXMAG/BCCI/Sound/Card 1/DJI_Audio_002": {
+        "used": 0,
+        "unused": 12
+      },
+      "ADIDAS x NEXMAG/BCCI/Sound/Card 2/DJI_Audio_001": {
+        "used": 0,
+        "unused": 50
+      },
+      "ADIDAS x NEXMAG/BCCI/Sound/Card 2/DJI_Audio_002": {
+        "used": 0,
+        "unused": 26
+      },
+      "ADIDAS x NEXMAG/BCCI/VIper/DCIM/100MSDCF": {
+        "used": 0,
+        "unused": 15
+      },
+      "ADIDAS x NEXMAG/BCCI/VIper/M4ROOT/CLIP": {
+        "used": 3,
+        "unused": 63
+      },
+      "ADIDAS x NEXMAG/BCCI/Vaibhav/CLIP": {
+        "used": 1,
+        "unused": 77
+      },
+      "ADIDAS x NEXMAG/BCCI/Vedant/CLIP": {
+        "used": 3,
+        "unused": 76
+      },
+      "ADIDAS x NEXMAG/BCCI/Vedant/Card 2/CLIP": {
+        "used": 0,
+        "unused": 39
+      },
+      "ADIDAS x NEXMAG/DAY01_22_05_2026/PHOTOSHOOT/DCIM/100MSDCF": {
+        "used": 0,
+        "unused": 1766
+      },
+      "ADIDAS x NEXMAG/DAY01_22_05_2026/RAW_FOOTAGE/CAM_A/CARD_A001": {
+        "used": 0,
+        "unused": 42
+      },
+      "ADIDAS x NEXMAG/DAY01_22_05_2026/RAW_FOOTAGE/CAM_B/CARD_B001": {
+        "used": 0,
+        "unused": 37
+      },
+      "ADIDAS x NEXMAG/DAY01_22_05_2026/RAW_FOOTAGE/CAM_C/CARD_C001": {
+        "used": 0,
+        "unused": 34
+      },
+      "ADIDAS x NEXMAG/DAY01_22_05_2026/RAW_FOOTAGE/CAM_D/CARD_D001": {
+        "used": 0,
+        "unused": 36
+      },
+      "ADIDAS x NEXMAG/DAY01_22_05_2026/REPORT": {
+        "used": 0,
+        "unused": 8
+      },
+      "ADIDAS x NEXMAG/DAY01_22_05_2026/SOUND": {
+        "used": 0,
+        "unused": 20
+      },
+      "ADIDAS x NEXMAG/DAY01_22_05_2026/STILLS & MAKING/DCIM/100MSDCF": {
+        "used": 0,
+        "unused": 15
+      },
+      "ADIDAS x NEXMAG/DAY01_22_05_2026/STILLS & MAKING/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 542
+      },
+      "ADIDAS x NEXMAG/drive-download-20260605T210008Z-3-001": {
+        "used": 0,
+        "unused": 5
+      }
+    }
+  }
+}

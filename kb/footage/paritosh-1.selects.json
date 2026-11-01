@@ -1,0 +1,86 @@
+{
+  "Guru.xml::Sequence 01": {
+    "n": {
+      "used": 43,
+      "unused": 114
+    },
+    "used": {
+      "duration_s": 11.04,
+      "fps": 100.0,
+      "height": 2160,
+      "sharpness": 88.832,
+      "brightness": 78.848,
+      "contrast": 27.47,
+      "colorfulness": 5.988,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    },
+    "unused": {
+      "duration_s": 7.68,
+      "fps": 100.0,
+      "height": 2160.0,
+      "sharpness": 38.078,
+      "brightness": 78.526,
+      "contrast": 26.864,
+      "colorfulness": 5.564,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    }
+  },
+  "Vivo 1.xml::Rohit saraf 2": {
+    "n": {
+      "used": 71,
+      "unused": 252
+    },
+    "used": {
+      "duration_s": 1.877,
+      "fps": 25.0,
+      "height": 3840,
+      "sharpness": 53.186,
+      "brightness": 117.414,
+      "contrast": 52.46,
+      "colorfulness": 30.128,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    },
+    "unused": {
+      "duration_s": 14.4,
+      "fps": 25.0,
+      "height": 960.0,
+      "sharpness": 22.236,
+      "brightness": 108.955,
+      "contrast": 28.251,
+      "colorfulness": 10.095,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    }
+  },
+  "Vivo 2.xml::ahsaas taruk": {
+    "n": {
+      "used": 51,
+      "unused": 225
+    },
+    "used": {
+      "duration_s": 18.72,
+      "fps": 25.0,
+      "height": 960,
+      "sharpness": 17.881,
+      "brightness": 115.798,
+      "contrast": 30.177,
+      "colorfulness": 9.877,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    },
+    "unused": {
+      "duration_s": 14.88,
+      "fps": 50.0,
+      "height": 960,
+      "sharpness": 12.773,
+      "brightness": 117.883,
+      "contrast": 27.909,
+      "colorfulness": 9.798,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    }
+  }
+}

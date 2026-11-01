@@ -1,0 +1,86 @@
+{
+  "type": "sports-promo",
+  "learned_from": 2,
+  "sequences": [
+    "Gujarat Giants.xml::Sequence 01",
+    "leander.xml::Leander Paes"
+  ],
+  "fps": 23.976,
+  "frame_size": [
+    1080,
+    1920
+  ],
+  "orientation": "vertical",
+  "duration_s": {
+    "count": 2,
+    "median": 136.24,
+    "mean": 136.24,
+    "p10": 49.704,
+    "p90": 222.776
+  },
+  "tracks": {
+    "video": 10.5,
+    "audio": 14.5
+  },
+  "shot_length_s": {
+    "count": 191,
+    "median": 1.21,
+    "mean": 1.601,
+    "p10": 0.533,
+    "p90": 2.836
+  },
+  "cuts_per_min": 35.355,
+  "layers": {
+    "median": 1.5,
+    "p90": 2.0
+  },
+  "broll_length_s": 0.946,
+  "transitions": {
+    "share_of_edits": 0.006,
+    "by_name": {
+      "Cross Dissolve": 1.0
+    },
+    "frames": 12.0
+  },
+  "audio_transitions": {
+    "share_of_audio_clips": 0.296,
+    "by_name": {
+      "Cross Fade (+3dB)": 0.972,
+      "Cross Fade ( 0dB)": 0.028
+    },
+    "frames": 25.0
+  },
+  "speed_changes": {
+    "share": 0.069,
+    "ramp_share": 0.0
+  },
+  "adjustment_layers_per_min": 11.87,
+  "adjustment_effects": {
+    "Flash blur": 16
+  },
+  "effects_seen": {
+    "Gaussian Blur": 20
+  },
+  "audio_effects_seen": {
+    "Low Pass Filter": 12
+  },
+  "luts_seen": {},
+  "audio_db": {
+    "camera": 2.5,
+    "bed": 0.0,
+    "sfx": -5.0
+  },
+  "audio_db_adjusted": {
+    "camera": 8.0,
+    "bed": -12.0,
+    "sfx": -10.0
+  },
+  "audio_level_touched_share": 0.917,
+  "audio_tracks_by_role": {
+    "camera": 8,
+    "empty": 9,
+    "sfx": 10,
+    "bed": 2
+  },
+  "first_title_s": null
+}

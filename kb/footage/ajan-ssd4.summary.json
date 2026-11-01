@@ -1,0 +1,158 @@
+{
+  "Vivo 1.xml::Rohit saraf 2": {
+    "roots": [],
+    "files": {
+      "used": 1,
+      "unused": 0,
+      "renders": 0,
+      "duplicates": 0,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 0.1,
+      "unused_files": 0,
+      "selected": 0.1
+    },
+    "select_ratio": 1.0,
+    "unused_kinds": {},
+    "formats": {},
+    "matched_by_basename": 1,
+    "folders": {
+      "/Volumes/AJAN SSD4/Packswitcg_consolidated": {
+        "used": 1,
+        "unused": 0
+      }
+    }
+  },
+  "Zomato.xml::Final seq": {
+    "roots": [
+      "/Volumes/AJAN SSD4/PackSwitch - Main RAW Data Folder",
+      "/Volumes/AJAN SSD4/Packswitcg_consolidated"
+    ],
+    "files": {
+      "used": 70,
+      "unused": 2100,
+      "renders": 0,
+      "duplicates": 131,
+      "used_by_other_edits": 0
+    },
+    "seconds": {
+      "used_files": 11902.1,
+      "unused_files": 43420.1,
+      "selected": 276.3
+    },
+    "select_ratio": 0.023,
+    "unused_kinds": {
+      "image": 1505,
+      "video": 591,
+      "audio": 4
+    },
+    "formats": {
+      "3840x2160 @50.0 h264": 260,
+      "3840x2160 @100.0 h264": 146,
+      "3840x2160 @59.94 h264": 143,
+      "3840x2160 @25.0 h264": 72,
+      "3840x2160 @24.0 h264": 11,
+      "1920x996 @600.0 h264": 3
+    },
+    "matched_by_basename": 15,
+    "folders": {
+      "PackSwitch - Main RAW Data Folder/Audio/FOLDER01/ZOOM0001": {
+        "used": 0,
+        "unused": 1
+      },
+      "PackSwitch - Main RAW Data Folder/Audio/FOLDER01/ZOOM0002": {
+        "used": 0,
+        "unused": 2
+      },
+      "PackSwitch - Main RAW Data Folder/Auditorium Section - Static Cams/CAM1 (WIDE)": {
+        "used": 2,
+        "unused": 7
+      },
+      "PackSwitch - Main RAW Data Folder/Auditorium Section - Static Cams/CAM2(CU)(LEFT)": {
+        "used": 0,
+        "unused": 2
+      },
+      "PackSwitch - Main RAW Data Folder/Auditorium Section - Static Cams/CAM3(CU)(RGHT)": {
+        "used": 1,
+        "unused": 4
+      },
+      "PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/DCIM/100MSDCF": {
+        "used": 0,
+        "unused": 216
+      },
+      "PackSwitch - Main RAW Data Folder/HYBRID CAM-Bibs/CARD 01/M4ROOT/CLIP": {
+        "used": 13,
+        "unused": 130
+      },
+      "PackSwitch - Main RAW Data Folder/PHOTO-1-SAM/CARD 01/DCIM/114NZ6_3": {
+        "used": 0,
+        "unused": 20
+      },
+      "PackSwitch - Main RAW Data Folder/PHOTO-2-ABHISHEK/CARD 01/DCIM/100ABHI_": {
+        "used": 0,
+        "unused": 987
+      },
+      "PackSwitch - Main RAW Data Folder/PHOTO-2-ABHISHEK/CARD 02": {
+        "used": 0,
+        "unused": 15
+      },
+      "PackSwitch - Main RAW Data Folder/Portraits - Anjali/100MSDCF": {
+        "used": 0,
+        "unused": 248
+      },
+      "PackSwitch - Main RAW Data Folder/VIDEO- Customer Bytes/Anjali Interview second angle/CARD 01": {
+        "used": 0,
+        "unused": 2
+      },
+      "PackSwitch - Main RAW Data Folder/VIDEO- Customer Bytes/CARD 01/private/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 11
+      },
+      "PackSwitch - Main RAW Data Folder/VIDEO-Aswin/CARD 01/private/M4ROOT/CLIP": {
+        "used": 22,
+        "unused": 195
+      },
+      "PackSwitch - Main RAW Data Folder/VIDEO-Jason/CARD 01/M4ROOT/CLIP": {
+        "used": 1,
+        "unused": 59
+      },
+      "PackSwitch - Main RAW Data Folder/VIDEO-KAK/CARD 01/M4ROOT/CLIP": {
+        "used": 3,
+        "unused": 83
+      },
+      "PackSwitch - Main RAW Data Folder/VIDEO-Nihal/CARD 01/M4ROOT/CLIP": {
+        "used": 2,
+        "unused": 71
+      },
+      "PackSwitch - Main RAW Data Folder/VIDEO-Nihal/CARD 02 Hybrid/DCIM/10060818": {
+        "used": 0,
+        "unused": 12
+      },
+      "PackSwitch - Main RAW Data Folder/VIDEO-Nihal/CARD 02 Hybrid/private/M4ROOT/CLIP": {
+        "used": 0,
+        "unused": 13
+      },
+      "PackSwitch - Main RAW Data Folder/bytes": {
+        "used": 2,
+        "unused": 9
+      },
+      "PackSwitch - Main RAW Data Folder/untitled folder/Endslate": {
+        "used": 1,
+        "unused": 1
+      },
+      "PackSwitch - Main RAW Data Folder/untitled folder/Lower Thirds": {
+        "used": 4,
+        "unused": 0
+      },
+      "PackSwitch - Main RAW Data Folder/untitled folder/Supers": {
+        "used": 5,
+        "unused": 1
+      },
+      "Packswitcg_consolidated": {
+        "used": 14,
+        "unused": 11
+      }
+    }
+  }
+}

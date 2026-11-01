@@ -1,0 +1,559 @@
+{
+ "mount": "/Volumes/Paritosh_1",
+ "scanned_at": "2026-10-29T23:42:10",
+ "dirs": [
+  "/Volumes/Paritosh_1/JW 2/17 sep/cc"
+ ],
+ "roots": {
+  "smoke-jw-cc::footage": [
+   "/Volumes/Paritosh_1/JW 2/17 sep/cc"
+  ]
+ },
+ "top_level": [
+  "Guru ",
+  "JW",
+  "JW 2",
+  "Karl 2",
+  "Vivo",
+  "orry"
+ ],
+ "files": [
+  {
+   "fid": "8200e205617e",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00525.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00525.MPG",
+   "kind": "video",
+   "size": 20447232,
+   "inode": 478433,
+   "mtime": 1270200268,
+   "media": {
+    "duration_s": 25.44,
+    "container": "mpeg",
+    "bitrate": 6429947,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "d3ace798fbd7",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00526.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00526.MPG",
+   "kind": "video",
+   "size": 27492352,
+   "inode": 478462,
+   "mtime": 1270200398,
+   "media": {
+    "duration_s": 36.48,
+    "container": "mpeg",
+    "bitrate": 6029024,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "c7617592ca52",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00527.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00527.MPG",
+   "kind": "video",
+   "size": 16580608,
+   "inode": 478529,
+   "mtime": 1270200524,
+   "media": {
+    "duration_s": 19.68,
+    "container": "mpeg",
+    "bitrate": 6740084,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "c639d45d20e6",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00528.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00528.MPG",
+   "kind": "video",
+   "size": 16809984,
+   "inode": 478670,
+   "mtime": 1270200621,
+   "media": {
+    "duration_s": 21.6,
+    "container": "mpeg",
+    "bitrate": 6225920,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "2ba70f08c742",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00529.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00529.MPG",
+   "kind": "video",
+   "size": 6815744,
+   "inode": 478693,
+   "mtime": 1270200721,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mpeg",
+    "bitrate": 6682101,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "26d0f7efa50e",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00530.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00530.MPG",
+   "kind": "video",
+   "size": 12648448,
+   "inode": 478717,
+   "mtime": 1270200739,
+   "media": {
+    "duration_s": 16.32,
+    "container": "mpeg",
+    "bitrate": 6200219,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "a3ed35c93a7a",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00531.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00531.MPG",
+   "kind": "video",
+   "size": 13336576,
+   "inode": 478735,
+   "mtime": 1270200885,
+   "media": {
+    "duration_s": 16.8,
+    "container": "mpeg",
+    "bitrate": 6350750,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "a3c9cfcfa73c",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00532.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00532.MPG",
+   "kind": "video",
+   "size": 4685824,
+   "inode": 478751,
+   "mtime": 1270200893,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mpeg",
+    "bitrate": 6508088,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "e6ec52a6dfaa",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00533.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00533.MPG",
+   "kind": "video",
+   "size": 9732096,
+   "inode": 478764,
+   "mtime": 1270201026,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mpeg",
+    "bitrate": 6758400,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "f76ebf963f5d",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00534.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00534.MPG",
+   "kind": "video",
+   "size": 17694720,
+   "inode": 478774,
+   "mtime": 1270202101,
+   "media": {
+    "duration_s": 20.64,
+    "container": "mpeg",
+    "bitrate": 6858418,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "28f2d3da2935",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00535.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00535.MPG",
+   "kind": "video",
+   "size": 16711680,
+   "inode": 478791,
+   "mtime": 1270202124,
+   "media": {
+    "duration_s": 19.2,
+    "container": "mpeg",
+    "bitrate": 6963200,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "ff0c72d52a38",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00536.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00536.MPG",
+   "kind": "video",
+   "size": 19693568,
+   "inode": 478807,
+   "mtime": 1270202309,
+   "media": {
+    "duration_s": 24.96,
+    "container": "mpeg",
+    "bitrate": 6312041,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "a4122b270d78",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00537.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00537.MPG",
+   "kind": "video",
+   "size": 35749888,
+   "inode": 478848,
+   "mtime": 1270202470,
+   "media": {
+    "duration_s": 46.08,
+    "container": "mpeg",
+    "bitrate": 6206577,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  },
+  {
+   "fid": "7e040380fe1a",
+   "path": "/Volumes/Paritosh_1/JW 2/17 sep/cc/M2U00538.MPG",
+   "dir": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+   "basename": "M2U00538.MPG",
+   "kind": "video",
+   "size": 7503872,
+   "inode": 478921,
+   "mtime": 1270208953,
+   "media": {
+    "duration_s": 9.6,
+    "container": "mpeg",
+    "bitrate": 6253226,
+    "created": null,
+    "video": {
+     "codec": "mpeg2video",
+     "width": 720,
+     "height": 576,
+     "fps": 25.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "ac3",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": -90,
+    "source": "manual",
+    "reason": "set by hand with videtor orient"
+   }
+  }
+ ],
+ "project": {
+  "name": "smoke-jw-cc",
+  "folder": "/Volumes/Paritosh_1/JW 2/17 sep/cc",
+  "key": "smoke-jw-cc::footage"
+ }
+}

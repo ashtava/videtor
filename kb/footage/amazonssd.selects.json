@@ -1,0 +1,30 @@
+{
+  "Gujarat Giants.xml::Sequence 01": {
+    "n": {
+      "used": 14,
+      "unused": 235
+    },
+    "used": {
+      "duration_s": 51.84,
+      "fps": 25.0,
+      "height": 2160.0,
+      "sharpness": 64.939,
+      "brightness": 105.464,
+      "contrast": 26.452,
+      "colorfulness": 27.361,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    },
+    "unused": {
+      "duration_s": 16.32,
+      "fps": 50.0,
+      "height": 2160,
+      "sharpness": 50.687,
+      "brightness": 117.456,
+      "contrast": 34.037,
+      "colorfulness": 24.05,
+      "dark_share": 0.0,
+      "bright_share": 0.0
+    }
+  }
+}

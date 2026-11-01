@@ -1,0 +1,780 @@
+{
+  "name": "Sequence 01",
+  "id": "sequence-1",
+  "role": "main",
+  "source_xml": ".xml-exports/Guru.xml",
+  "key": "Guru.xml::Sequence 01",
+  "fps": 25.0,
+  "frame_size": [
+    1080,
+    1920
+  ],
+  "orientation": "vertical",
+  "duration_s": 43.92,
+  "tracks": {
+    "video": 9,
+    "audio": 17
+  },
+  "nested": {
+    "clips": 22,
+    "expanded": 22
+  },
+  "primary_video_track": "V2",
+  "shot_length_s": {
+    "count": 88,
+    "median": 0.62,
+    "mean": 0.798,
+    "p10": 0.12,
+    "p90": 1.648
+  },
+  "shot_lengths_s": [
+    1.76,
+    1.76,
+    1.16,
+    0.12,
+    0.48,
+    0.2,
+    0.16,
+    0.36,
+    0.12,
+    0.16,
+    0.36,
+    0.12,
+    0.56,
+    0.32,
+    0.4,
+    0.44,
+    0.12,
+    0.28,
+    0.12,
+    1.48,
+    0.52,
+    0.72,
+    2.64,
+    2.64,
+    0.68,
+    1.44,
+    0.96,
+    0.64,
+    0.64,
+    0.76,
+    0.76,
+    0.84,
+    0.12,
+    0.6,
+    0.84,
+    0.12,
+    0.6,
+    1.16,
+    0.76,
+    0.28,
+    0.28,
+    0.84,
+    0.08,
+    0.48,
+    0.08,
+    0.48,
+    0.44,
+    0.68,
+    0.44,
+    1.4,
+    1.4,
+    0.48,
+    1.0,
+    0.8,
+    2.64,
+    2.64,
+    2.64,
+    2.64,
+    0.52,
+    0.32,
+    0.4,
+    0.64,
+    1.44,
+    0.84,
+    1.32,
+    0.48,
+    0.24,
+    0.48,
+    0.4,
+    0.6,
+    0.64,
+    0.8,
+    1.36,
+    0.96,
+    1.6,
+    0.32,
+    0.4,
+    2.44,
+    0.72,
+    0.72,
+    0.28,
+    1.08,
+    1.08,
+    0.12,
+    0.36,
+    0.12,
+    0.96,
+    0.96
+  ],
+  "primary_shot_length_s": {
+    "count": 34,
+    "median": 0.66,
+    "mean": 0.889,
+    "p10": 0.168,
+    "p90": 2.28
+  },
+  "cuts_s": [
+    1.76,
+    2.6,
+    2.72,
+    3.32,
+    4.48,
+    4.96,
+    5.2,
+    5.96,
+    6.24,
+    6.52,
+    7.0,
+    7.84,
+    7.96,
+    8.44,
+    8.64,
+    8.72,
+    9.2,
+    9.36,
+    9.72,
+    9.84,
+    10.28,
+    10.84,
+    11.16,
+    11.56,
+    12.24,
+    13.32,
+    13.72,
+    14.16,
+    15.56,
+    15.68,
+    15.96,
+    16.08,
+    16.2,
+    16.56,
+    16.68,
+    18.16,
+    18.64,
+    19.6,
+    20.24,
+    21.24,
+    21.76,
+    22.56,
+    23.28,
+    25.92,
+    28.56,
+    29.24,
+    29.76,
+    31.2,
+    32.56,
+    33.52,
+    35.12,
+    35.44,
+    35.84,
+    36.48,
+    38.92,
+    40.36,
+    41.0,
+    41.84,
+    42.6
+  ],
+  "cuts_per_min": 80.6,
+  "layers": {
+    "median": 1,
+    "p90": 2,
+    "max": 4
+  },
+  "broll": {
+    "count": 54,
+    "length_s": {
+      "count": 54,
+      "median": 0.58,
+      "mean": 0.741,
+      "p10": 0.12,
+      "p90": 1.564
+    },
+    "tracks": [
+      "V1",
+      "V3",
+      "V4"
+    ]
+  },
+  "transitions": {
+    "count": 0,
+    "share_of_edits": 0.0,
+    "by_name": {},
+    "frames": null
+  },
+  "audio_transitions": {
+    "count": 34,
+    "share_of_audio_clips": 0.34,
+    "by_name": {
+      "Cross Fade (+3dB)": 30,
+      "Cross Fade ( 0dB)": 4
+    },
+    "frames": {
+      "count": 34,
+      "median": 12.0,
+      "mean": 18.529,
+      "p10": 7.9,
+      "p90": 35.0
+    }
+  },
+  "effects_seen": {
+    "Distort": 19
+  },
+  "audio_effects_seen": {
+    "High Pass Filter": 4
+  },
+  "speed_changes": {
+    "share": 0.432,
+    "ramp_share": 0.0,
+    "values": [
+      1.21,
+      0.5,
+      1.5,
+      0.25,
+      1.25,
+      0.25,
+      1.25,
+      1.5,
+      1.35,
+      0.5,
+      1.21,
+      0.5,
+      0.5,
+      0.5,
+      10.0,
+      0.5,
+      0.5,
+      10.0,
+      0.5,
+      0.5,
+      1.5,
+      0.75,
+      1.5,
+      0.75,
+      1.21,
+      1.35,
+      0.5,
+      0.5,
+      0.25,
+      0.25,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.1,
+      1.35,
+      0.5,
+      1.25
+    ]
+  },
+  "graphics": {
+    "adjustment": 26,
+    "adjustment_per_min": 35.52,
+    "adjustment_effects": {},
+    "graphic": 0,
+    "matte": 0,
+    "first_title_s": null
+  },
+  "labels": {
+    "video": {
+      "Forest": 6,
+      "Iris": 36
+    },
+    "audio": {
+      "Caribbean": 98
+    }
+  },
+  "luts_seen": {},
+  "audio_tracks": [
+    {
+      "track": "A1",
+      "clips": 12,
+      "covered_s": 43.92,
+      "role": "bed",
+      "level_db": {
+        "count": 12,
+        "median": 0.0,
+        "mean": -2.083,
+        "p10": -9.5,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 3,
+        "median": -10.0,
+        "mean": -8.333,
+        "p10": -10.0,
+        "p90": -6.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {
+        "High Pass Filter": 2
+      },
+      "transitions": 8,
+      "sources": [
+        "FLAMEBOY - 1V1.wav"
+      ]
+    },
+    {
+      "track": "A2",
+      "clips": 12,
+      "covered_s": 43.92,
+      "role": "bed",
+      "level_db": {
+        "count": 12,
+        "median": 0.0,
+        "mean": -2.083,
+        "p10": -9.5,
+        "p90": 0.0
+      },
+      "level_db_adjusted": {
+        "count": 3,
+        "median": -10.0,
+        "mean": -8.333,
+        "p10": -10.0,
+        "p90": -6.0
+      },
+      "keyframed_share": 0.0,
+      "effects": {
+        "High Pass Filter": 2
+      },
+      "transitions": 8,
+      "sources": [
+        "FLAMEBOY - 1V1.wav"
+      ]
+    },
+    {
+      "track": "A3",
+      "clips": 7,
+      "covered_s": 13.48,
+      "role": "sfx",
+      "level_db": {
+        "count": 7,
+        "median": -2.5,
+        "mean": -0.571,
+        "p10": -4.5,
+        "p90": 4.7
+      },
+      "level_db_adjusted": {
+        "count": 7,
+        "median": -2.5,
+        "mean": -0.571,
+        "p10": -4.5,
+        "p90": 4.7
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "#Riser ALL-IN-ONE.wav",
+        "SnapInsta.to_AQMJp2-Z60GdvZixbyRQmzA_58rECI7EZFHPA43FJ7c4NlRtGJc_v3WciZyJe2J0qwt9OlRzzcKocOrRW7rRkc1T3jD_PCilqqNQcP8.mp4",
+        "SnapInsta.to_AQN3MyIVyKVU3lhN54uahtWVw7nQ2WSs0wN8vr_2ldLM83_roSWY6Apzs0bLmX6stz7-CoG-12jz23m9HDRQWFIObcJM4owRl1y-_xE.mp4",
+        "SnapInsta.to_AQOWhmjy4WK4STdxQdfZSSdVx5lYAtgj198Kb2zK-OxEd8wOipxdFL7vrVeO2OHkoRAoHoK7CVNVGDgikRmXuCl9tnCRiZoDt2MLMJY.mp4"
+      ]
+    },
+    {
+      "track": "A4",
+      "clips": 7,
+      "covered_s": 13.48,
+      "role": "sfx",
+      "level_db": {
+        "count": 7,
+        "median": -2.5,
+        "mean": -0.571,
+        "p10": -4.5,
+        "p90": 4.7
+      },
+      "level_db_adjusted": {
+        "count": 7,
+        "median": -2.5,
+        "mean": -0.571,
+        "p10": -4.5,
+        "p90": 4.7
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "#Riser ALL-IN-ONE.wav",
+        "SnapInsta.to_AQMJp2-Z60GdvZixbyRQmzA_58rECI7EZFHPA43FJ7c4NlRtGJc_v3WciZyJe2J0qwt9OlRzzcKocOrRW7rRkc1T3jD_PCilqqNQcP8.mp4",
+        "SnapInsta.to_AQN3MyIVyKVU3lhN54uahtWVw7nQ2WSs0wN8vr_2ldLM83_roSWY6Apzs0bLmX6stz7-CoG-12jz23m9HDRQWFIObcJM4owRl1y-_xE.mp4",
+        "SnapInsta.to_AQOWhmjy4WK4STdxQdfZSSdVx5lYAtgj198Kb2zK-OxEd8wOipxdFL7vrVeO2OHkoRAoHoK7CVNVGDgikRmXuCl9tnCRiZoDt2MLMJY.mp4"
+      ]
+    },
+    {
+      "track": "A5",
+      "clips": 14,
+      "covered_s": 21.64,
+      "role": "sfx",
+      "level_db": {
+        "count": 14,
+        "median": -2.5,
+        "mean": -2.786,
+        "p10": -7.5,
+        "p90": 1.5
+      },
+      "level_db_adjusted": {
+        "count": 14,
+        "median": -2.5,
+        "mean": -2.786,
+        "p10": -7.5,
+        "p90": 1.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "COMCam_Kissy Short Shutter_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav",
+        "ReelAudio-12930.mp3",
+        "SnapInsta.to_AQMCH7tHavdfsAHVNCLb8kfy_xyJClTxgSvhXB2F4UkALLgZuAMklSLqI9eMOn6OragDGdflcH4RIoYllmeARTVfR33PoiOLXpQzC-Y.mp4",
+        "SnapInsta.to_AQMJp2-Z60GdvZixbyRQmzA_58rECI7EZFHPA43FJ7c4NlRtGJc_v3WciZyJe2J0qwt9OlRzzcKocOrRW7rRkc1T3jD_PCilqqNQcP8.mp4",
+        "SnapInsta.to_AQMoZRaznUkNXnuIXOKOBRlZlZe9rP5cE1bQ_dlgoBXrWebueFRKHgcGeSD01rcVMjmOhjODDYgSOzwsTbUZn7kHAfMBIm6XvT3Yuks.mp4",
+        "SnapInsta.to_AQN3MyIVyKVU3lhN54uahtWVw7nQ2WSs0wN8vr_2ldLM83_roSWY6Apzs0bLmX6stz7-CoG-12jz23m9HDRQWFIObcJM4owRl1y-_xE.mp4"
+      ]
+    },
+    {
+      "track": "A6",
+      "clips": 14,
+      "covered_s": 21.64,
+      "role": "sfx",
+      "level_db": {
+        "count": 14,
+        "median": -2.5,
+        "mean": -2.786,
+        "p10": -7.5,
+        "p90": 1.5
+      },
+      "level_db_adjusted": {
+        "count": 14,
+        "median": -2.5,
+        "mean": -2.786,
+        "p10": -7.5,
+        "p90": 1.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 3,
+      "sources": [
+        "COMCam_Kissy Short Shutter_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav",
+        "ReelAudio-12930.mp3",
+        "SnapInsta.to_AQMCH7tHavdfsAHVNCLb8kfy_xyJClTxgSvhXB2F4UkALLgZuAMklSLqI9eMOn6OragDGdflcH4RIoYllmeARTVfR33PoiOLXpQzC-Y.mp4",
+        "SnapInsta.to_AQMJp2-Z60GdvZixbyRQmzA_58rECI7EZFHPA43FJ7c4NlRtGJc_v3WciZyJe2J0qwt9OlRzzcKocOrRW7rRkc1T3jD_PCilqqNQcP8.mp4",
+        "SnapInsta.to_AQMoZRaznUkNXnuIXOKOBRlZlZe9rP5cE1bQ_dlgoBXrWebueFRKHgcGeSD01rcVMjmOhjODDYgSOzwsTbUZn7kHAfMBIm6XvT3Yuks.mp4",
+        "SnapInsta.to_AQN3MyIVyKVU3lhN54uahtWVw7nQ2WSs0wN8vr_2ldLM83_roSWY6Apzs0bLmX6stz7-CoG-12jz23m9HDRQWFIObcJM4owRl1y-_xE.mp4"
+      ]
+    },
+    {
+      "track": "A7",
+      "clips": 9,
+      "covered_s": 19.12,
+      "role": "sfx",
+      "level_db": {
+        "count": 9,
+        "median": 3.5,
+        "mean": 0.278,
+        "p10": -3.5,
+        "p90": 3.5
+      },
+      "level_db_adjusted": {
+        "count": 9,
+        "median": 3.5,
+        "mean": 0.278,
+        "p10": -3.5,
+        "p90": 3.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "#Riser ALL-IN-ONE.wav",
+        "On Your Left.wav",
+        "SnapInsta.to_AQMJp2-Z60GdvZixbyRQmzA_58rECI7EZFHPA43FJ7c4NlRtGJc_v3WciZyJe2J0qwt9OlRzzcKocOrRW7rRkc1T3jD_PCilqqNQcP8.mp4",
+        "SnapInsta.to_AQN3MyIVyKVU3lhN54uahtWVw7nQ2WSs0wN8vr_2ldLM83_roSWY6Apzs0bLmX6stz7-CoG-12jz23m9HDRQWFIObcJM4owRl1y-_xE.mp4"
+      ]
+    },
+    {
+      "track": "A8",
+      "clips": 9,
+      "covered_s": 19.12,
+      "role": "sfx",
+      "level_db": {
+        "count": 9,
+        "median": 3.5,
+        "mean": 0.278,
+        "p10": -3.5,
+        "p90": 3.5
+      },
+      "level_db_adjusted": {
+        "count": 9,
+        "median": 3.5,
+        "mean": 0.278,
+        "p10": -3.5,
+        "p90": 3.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 1,
+      "sources": [
+        "#Riser ALL-IN-ONE.wav",
+        "On Your Left.wav",
+        "SnapInsta.to_AQMJp2-Z60GdvZixbyRQmzA_58rECI7EZFHPA43FJ7c4NlRtGJc_v3WciZyJe2J0qwt9OlRzzcKocOrRW7rRkc1T3jD_PCilqqNQcP8.mp4",
+        "SnapInsta.to_AQN3MyIVyKVU3lhN54uahtWVw7nQ2WSs0wN8vr_2ldLM83_roSWY6Apzs0bLmX6stz7-CoG-12jz23m9HDRQWFIObcJM4owRl1y-_xE.mp4"
+      ]
+    },
+    {
+      "track": "A9",
+      "clips": 5,
+      "covered_s": 11.04,
+      "role": "sfx",
+      "level_db": {
+        "count": 5,
+        "median": 3.5,
+        "mean": 1.3,
+        "p10": -2.9,
+        "p90": 3.5
+      },
+      "level_db_adjusted": {
+        "count": 5,
+        "median": 3.5,
+        "mean": 1.3,
+        "p10": -2.9,
+        "p90": 3.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "COMCam_Ascending Beep Shutter Flash_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav",
+        "On Your Left.wav",
+        "SnapInsta.to_AQMJp2-Z60GdvZixbyRQmzA_58rECI7EZFHPA43FJ7c4NlRtGJc_v3WciZyJe2J0qwt9OlRzzcKocOrRW7rRkc1T3jD_PCilqqNQcP8.mp4",
+        "Sub Drop Whoosh1.wav"
+      ]
+    },
+    {
+      "track": "A10",
+      "clips": 5,
+      "covered_s": 11.04,
+      "role": "sfx",
+      "level_db": {
+        "count": 5,
+        "median": 3.5,
+        "mean": 1.3,
+        "p10": -2.9,
+        "p90": 3.5
+      },
+      "level_db_adjusted": {
+        "count": 5,
+        "median": 3.5,
+        "mean": 1.3,
+        "p10": -2.9,
+        "p90": 3.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 2,
+      "sources": [
+        "COMCam_Ascending Beep Shutter Flash_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav",
+        "On Your Left.wav",
+        "SnapInsta.to_AQMJp2-Z60GdvZixbyRQmzA_58rECI7EZFHPA43FJ7c4NlRtGJc_v3WciZyJe2J0qwt9OlRzzcKocOrRW7rRkc1T3jD_PCilqqNQcP8.mp4",
+        "Sub Drop Whoosh1.wav"
+      ]
+    },
+    {
+      "track": "A11",
+      "clips": 2,
+      "covered_s": 6.0,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -1.5,
+        "mean": -1.5,
+        "p10": -5.5,
+        "p90": 2.5
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -1.5,
+        "mean": -1.5,
+        "p10": -5.5,
+        "p90": 2.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "#Riser ALL-IN-ONE.wav",
+        "COMCam_Pre Shifted High Beep Shutter_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav"
+      ]
+    },
+    {
+      "track": "A12",
+      "clips": 2,
+      "covered_s": 6.0,
+      "role": "sfx",
+      "level_db": {
+        "count": 2,
+        "median": -1.5,
+        "mean": -1.5,
+        "p10": -5.5,
+        "p90": 2.5
+      },
+      "level_db_adjusted": {
+        "count": 2,
+        "median": -1.5,
+        "mean": -1.5,
+        "p10": -5.5,
+        "p90": 2.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "#Riser ALL-IN-ONE.wav",
+        "COMCam_Pre Shifted High Beep Shutter_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav"
+      ]
+    },
+    {
+      "track": "A13",
+      "clips": 1,
+      "covered_s": 2.96,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 2.5,
+        "mean": 2.5,
+        "p10": 2.5,
+        "p90": 2.5
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 2.5,
+        "mean": 2.5,
+        "p10": 2.5,
+        "p90": 2.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "#Impacts ALL-IN-ONE.wav"
+      ]
+    },
+    {
+      "track": "A14",
+      "clips": 1,
+      "covered_s": 2.96,
+      "role": "sfx",
+      "level_db": {
+        "count": 1,
+        "median": 2.5,
+        "mean": 2.5,
+        "p10": 2.5,
+        "p90": 2.5
+      },
+      "level_db_adjusted": {
+        "count": 1,
+        "median": 2.5,
+        "mean": 2.5,
+        "p10": 2.5,
+        "p90": 2.5
+      },
+      "keyframed_share": 0.0,
+      "effects": {},
+      "transitions": 0,
+      "sources": [
+        "#Impacts ALL-IN-ONE.wav"
+      ]
+    },
+    {
+      "track": "A15",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A16",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    },
+    {
+      "track": "A17",
+      "clips": 0,
+      "covered_s": 0.0,
+      "role": "empty",
+      "level_db": null,
+      "level_db_adjusted": null,
+      "keyframed_share": null,
+      "effects": {},
+      "transitions": 0,
+      "sources": []
+    }
+  ],
+  "markers": 0,
+  "sources": [
+    "/Users/paritoshsrivastava/Downloads/FLAMEBOY - 1V1.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Bryan Delimata - Essential Sound Pack/Impacts_Hits/#Impacts ALL-IN-ONE.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Bryan Delimata - Essential Sound Pack/Risers/#Riser ALL-IN-ONE.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Camera click and Elements  SFX/ReelAudio-12930.mp3",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/LOBO SFX/Whooshes/On Your Left.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/LOBO SFX/Whooshes/Sub Drop Whoosh1.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Camera Shutters/COMCam_Ascending Beep Shutter Flash_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Camera Shutters/COMCam_Kissy Short Shutter_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Camera Shutters/COMCam_Pre Shifted High Beep Shutter_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/Ocular Sounds/Camera Shutters/COMCam_Very Short Shutter 3_Ocular Sounds_Camera Shutters_The Cinematic Elements Collection.wav",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQMCH7tHavdfsAHVNCLb8kfy_xyJClTxgSvhXB2F4UkALLgZuAMklSLqI9eMOn6OragDGdflcH4RIoYllmeARTVfR33PoiOLXpQzC-Y.mp4",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQMJp2-Z60GdvZixbyRQmzA_58rECI7EZFHPA43FJ7c4NlRtGJc_v3WciZyJe2J0qwt9OlRzzcKocOrRW7rRkc1T3jD_PCilqqNQcP8.mp4",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQMoZRaznUkNXnuIXOKOBRlZlZe9rP5cE1bQ_dlgoBXrWebueFRKHgcGeSD01rcVMjmOhjODDYgSOzwsTbUZn7kHAfMBIm6XvT3Yuks.mp4",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQN3MyIVyKVU3lhN54uahtWVw7nQ2WSs0wN8vr_2ldLM83_roSWY6Apzs0bLmX6stz7-CoG-12jz23m9HDRQWFIObcJM4owRl1y-_xE.mp4",
+    "/Users/paritoshsrivastava/Downloads/Regular Basis SFX/sfx Ref/SnapInsta.to_AQOWhmjy4WK4STdxQdfZSSdVx5lYAtgj198Kb2zK-OxEd8wOipxdFL7vrVeO2OHkoRAoHoK7CVNVGDgikRmXuCl9tnCRiZoDt2MLMJY.mp4",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00405.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00407.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00411.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00412.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00413.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00414.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00416.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00419.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00421.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00423.mpg",
+    "/Volumes/Paritosh_1/Guru /CC/M2U00424.mpg",
+    "/Volumes/Paritosh_1/Guru /data/C3892.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3913.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3920.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3921.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3923.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3924.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3927.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3932.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3950.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3960.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3967.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3972.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3996.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C3997.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C4008.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C4010.mp4",
+    "/Volumes/Paritosh_1/Guru /data/C4011.mp4"
+  ]
+}
