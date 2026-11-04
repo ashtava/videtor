@@ -29,3 +29,6 @@ media/
 
 # Claude Code desktop worktree sessions (Worktree toggle) live here
 .claude/worktrees/
+
+# Local-only context: session history, memory snapshot (never pushed; the repo is public)
+private/

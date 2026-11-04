@@ -1,6 +1,8 @@
 # Videtor status
 
-Checkpoint 2026-11-01, 13:30 IST. Update this file after every delivery, verdict or build.
+Checkpoint 2026-11-04 (first written 2026-11-01). Update this file after every delivery, verdict or build.
+The user is switching Claude accounts. A new session starts with `docs/handoff.md`; the history up to now is
+in `private/` (local only).
 
 **Where things stand.** Videtor cuts a Premiere Pro timeline from a written brief and a folder of raw footage,
 in the user's style. The Guru 25 s cut (Round 4) was approved as the way to work, and five blind tests on

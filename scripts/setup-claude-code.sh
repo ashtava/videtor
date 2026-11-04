@@ -12,7 +12,7 @@
 set -eu
 REPO=$(cd "$(dirname "$0")/.." && pwd -P)
 SRC="$REPO/.claude/skills/cut-from-brief"
-DEST="$HOME/.claude/skills/cut-from-brief"
+DEST="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/cut-from-brief"  # a config dir per account is honoured
 LOCAL="$REPO/.claude/settings.local.json"
 HOOK='"$CLAUDE_PROJECT_DIR"/scripts/hooks/autopush.sh'
 CHECK=0; [ "${1:-}" = "--check" ] && CHECK=1

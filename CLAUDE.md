@@ -5,8 +5,13 @@ brief, in the user's own style, learned from their past Premiere edits. DaVinci 
 Paritosh, is a video editor in India (IST): brand/social reels, events, interviews, music videos, sports
 promos.
 
+**New session, or a new Claude account** (the user switched on 2026-11-04)? Follow `docs/handoff.md` first.
+It sets up the skill on whichever platform you're running on (Claude Code terminal or desktop, Desktop chat,
+the cloud), and says what to read and how to reply.
+
 ## Read before working
 
+0. `docs/handoff.md` when the session is new.
 1. `docs/status.md`: where every project stands, what the user owes us and what we owe them, the working
    agreements, the backlog. **Update it after every delivery, verdict or build.**
 2. `docs/architecture.md`: the modules, files and formats, and the verified Premiere and footage facts. Don't
@@ -78,10 +83,11 @@ kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · 
 cache/        derived data, about 5 GB (footage maps took hours with the drives connected: don't delete)
 out/<name>/   one folder per cut: brief.md, shotmap.json, picks.json, <name>.xml, sheets, report.md, work/
 scripts/      helpers and archived experiments (not imported by the CLI)
-docs/         status.md · architecture.md · architecture.html (the original 10-29 design page)
+docs/         handoff.md · status.md · architecture.md · architecture.html (the original 10-29 design page)
+private/      local-only context: the first session's messages and reports, a memory snapshot
 ```
 
-`cache/` and `out/` are gitignored.
+`cache/`, `out/` and `private/` are gitignored.
 
 ## Conventions
 

@@ -7,6 +7,8 @@ the edit in the NLE; when you re-export the finished sequence, the knowledge bas
 learns from what you changed.
 
 Docs:
+- `docs/handoff.md`: where a new Claude session (Claude Code or Desktop) starts. It sets up the skill and
+  lists what to read.
 - `docs/status.md`: where every project stands, and what's pending.
 - `docs/architecture.md`: how it works, as built, with the verified Premiere and footage facts.
 - `CLAUDE.md`: notes for agents working in this repo.
