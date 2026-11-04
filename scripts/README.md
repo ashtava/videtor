@@ -27,9 +27,15 @@ is wiped on reboot.
 | `premiere/project_marks.js` | Read-only. Lists every clip in the open Premiere project: bin, path, colour label, markers, Source Monitor in/out marks | `prpr exec scripts/premiere/project_marks.js`. Produced `kb/marks/guru.json` |
 | `premiere/motion_probe.js` | Read-only. Reads Motion Position/Scale/Rotation of named clips on the active sequence (edit `want`) | Checking Basic Motion conventions against Premiere's stored values |
 
+`setup-claude-code.sh` sets this Mac up for Claude Code (terminal, desktop, VS Code); it is safe to rerun,
+and `--check` only reports.
+- It links `~/.claude/skills/cut-from-brief` to the repo's skill, so `/cut-from-brief` works in every session.
+- It adds the auto-push hook to `.claude/settings.local.json` when missing.
+
 `hooks/autopush.sh` is the Claude Code Stop hook. It is set up in `.claude/settings.local.json`, which is
 gitignored.
 - At the end of every Claude turn it commits whatever changed and pushes it to `origin`.
+- In a Claude Code desktop worktree session, it also commits and pushes the worktree's branch.
 - It skips merges and rebases in progress, refuses leftover conflict markers and anything that looks like
   a secret, and leaves out files over 50 MB.
 - It prints one line when it acts.

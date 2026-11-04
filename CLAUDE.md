@@ -59,6 +59,14 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   - `cut` and `look` otherwise run from `cache/`.
 - **Slow decode:** Sony XAVC 4:2:2 10-bit decodes in software (about real time per worker), so a big shoot's
   `prep` takes 30-60 min. Run it in the background and read stills meanwhile (`scripts/stills_sheets.py`).
+- **Claude Code desktop** (set up 2026-11-04) reads the same `~/.claude` and project settings as the CLI.
+  - `scripts/setup-claude-code.sh` links the skill into `~/.claude/skills/`, so `/cut-from-brief` works from
+    any folder (checked in a session opened outside the repo), and makes sure the auto-push hook is set up.
+  - Prefer sessions opened on this folder with Worktree off (the desktop default).
+  - A Worktree session (`.claude/worktrees/<name>`, gitignored) still runs every Videtor command from the
+    main checkout, and the hook pushes its own edits to its branch.
+  - Hooks wait for the folder-trust prompt.
+  - The project's `.mcp.json` servers (prpr, videtor) need approving per session; the skill doesn't use them.
 
 ## Layout
 

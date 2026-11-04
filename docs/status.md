@@ -58,6 +58,11 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    - The user has the snippet. Claude doesn't edit that config.
    - Where the workflow lives and what it does: asked, not yet known.
    - The server itself starts fine the way Desktop launches it (stdio, cwd `/`, Homebrew on PATH; 10 tools).
+   - **Claude Code desktop** was set up by the user on 2026-11-04.
+     - `scripts/setup-claude-code.sh` linked `/cut-from-brief` as a personal skill. A session opened outside
+       the repo lists it.
+     - The skill runs every command from the main checkout.
+     - `.claude/worktrees/` is gitignored, and the hook pushes a worktree session's branch.
 6. **GitHub visibility:** `github.com/ashtava/videtor` is public (checked 2026-11-01).
    - It holds the user's Premiere XMLs (`.xml-exports/`) and footage indexes (`kb/footage/`) with client file
      names and paths, and the auto-push publishes every change.

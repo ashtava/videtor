@@ -50,7 +50,15 @@ tests/              unittest suite with synthetic fixtures
 brew install ffmpeg uv
 uv sync                   # core: OpenTimelineIO, CLI
 uv sync --extra analyze   # Phase 1: scene detection, Whisper, librosa, loudness
+scripts/setup-claude-code.sh   # /cut-from-brief in every Claude Code session, plus the auto-push hook
 ```
+
+Claude Code works in the terminal, in Claude Code desktop and in VS Code.
+- `scripts/setup-claude-code.sh` links the skill into `~/.claude/skills/`, so `/cut-from-brief` works whatever
+  folder a session opens in. The skill always runs Videtor from this checkout.
+- It also adds the Stop hook that commits and pushes every change (`scripts/hooks/autopush.sh`).
+- In desktop, open this folder and leave Worktree off for deliveries. A Worktree session's own edits go to
+  its branch on GitHub, while the footage maps and outputs stay in the main checkout.
 
 ## Knowledge base
 

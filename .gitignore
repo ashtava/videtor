@@ -26,3 +26,6 @@ media/
 
 # Claude Code personal settings (the auto-push hook lives here)
 .claude/settings.local.json
+
+# Claude Code desktop worktree sessions (Worktree toggle) live here
+.claude/worktrees/
