@@ -38,6 +38,10 @@ Work out which one you are in. Can you run shell commands? Which folder is the s
    - `export PATH=/opt/homebrew/bin:$PATH && .venv/bin/videtor --help` and `ffmpeg -version`;
    - `.venv/bin/python -m unittest discover -s tests` (266 tests, about 15 s, no drive needed);
    - `git status -sb` and `git ls-remote origin`: SSH push access. The Claude account doesn't matter to git.
+   - If the user hasn't approved these commands yet, ask them to: shell commands need approval in a new
+     session.
+   - The project `.mcp.json` server `prpr` (the Premiere bridge) connects only while Premiere runs with its
+     plugin, so a failed `prpr` connection is normal. The skill doesn't need it.
 4. If `.venv/` is missing (a fresh clone or another Mac): `brew install ffmpeg uv && uv sync --extra analyze`.
    Then:
    - `cache/` (about 5 GB of footage maps and models) has to be rebuilt with the drives connected, so say so;
