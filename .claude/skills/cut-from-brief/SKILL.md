@@ -5,8 +5,12 @@ description: Cut a Premiere Pro timeline from a written brief with Videtor (fold
 
 # Cut from a brief
 
-You turn the user's brief into a shot map; Videtor does the rest on their Mac. Work in
-`~/workspace/videtor` with `.venv/bin/videtor` (prefix `export PATH=/opt/homebrew/bin:$PATH`).
+You turn the user's brief into a shot map; Videtor does the rest on their Mac. Work in the main
+checkout with `.venv/bin/videtor`: start every command with
+`cd /Users/paritoshsrivastava/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH &&`. Do this even
+when the session opened in another folder or a git worktree. The CLI reads `kb/`, `cache/` and `out/`
+from the folder it runs in, and the footage maps, models, `.venv/` and outputs exist only in the main
+checkout (they are gitignored). Write `out/<name>/` files there too.
 The repo is on GitHub (`ashtava/videtor`, public as of 2026-11-01). A Stop hook commits and pushes
 every change at the end of each turn, except `out/` and `cache/`, which are gitignored. So keep a
 project's specifics there: people's names, client details, sheets. The user allowed Claude to see frames
