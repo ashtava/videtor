@@ -231,6 +231,11 @@ Not built; the source is in brackets.
     library.
   - Fix: have the MCP tools call the CLI's functions (one code path), and add `prep` as a background job
     with a status tool.
+- **The app can't cut an interview piece** [cls-test, 11-07]: its Cut runs `videtor cut <shotmap>` only, so a
+  brief with B-roll layered over the voice (`aroll.json` + a region shot map, `cut-interview`) runs from the
+  terminal, and Cut on that `shotmap.json` would give B-roll with no voice. The app could run `cut-interview`
+  when an `aroll.json` sits beside the shot map. `cut-interview` also skips the sparse prep's full decode
+  (`_takes_for`, not `_takes_for_cut`); cls-test worked only because colourstone-mia had mapped every take.
 - Regression check: re-cut past projects after each change, and compare picks.
 
 ## Drives
