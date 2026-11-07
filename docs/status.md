@@ -36,6 +36,7 @@ verdict.
 | — | 10-31 | `diwali-party-v2/` | event, re-cut with their edit in view | `diwali-party-v2.xml` (47.4 s, 9:16) | None given |
 | B4 | 10-31 | `alpha-summit/` | event, `keeper_w` 0.3 | `alpha-summit.xml` (30.5 s, 9:16, bytes, steadied) | **Awaiting** |
 | B5 | 11-01 | `engagement/` | wedding (new) | `engagement.xml` (60 s, 16:9, steadied, music only) | **Awaiting** |
+| A1 | 11-07 | `~/Desktop/diwali_test/diwali-test/` (an app project, not under `out/`) | event, the first brief through the app; the Diwali footage again, so not blind | Shot map only (49.7 s, 9:16, 91 slots); the user cuts it from the app | **Awaiting the cut** |
 
 Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past projects. Their outputs:
 - `out/guru-v0`, `guru-v1`, `guru-v2`: benchmarks against the real Guru edit;
@@ -60,6 +61,16 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    it back: `.venv/bin/python -m videtor.kb.readback out/<name>/picks.json --live` (say so before touching
    Premiere) or `--xml <export>`, then `videtor kb learn`. No real feedback is recorded yet: `kb/feedback/` is
    empty and there's no `kb/taste.json`.
+1a. **diwali-test (A1)**: the shot map is written and validated. The user cuts from the app. Then do the second
+   look, write `report.md` in the project folder, and record the verdict. The plan:
+   - Brief: "fast paced party edit for diwali, under 60 seconds". Bucket `event` (inferred).
+   - Classes: close-up, b-roll, wide and interview-bite. The photo-wall arrivals from the second camera sorted as interview-bite.
+   - Music: "Mauja Hi Mauja", the only track in the footage folder, from 154.877 s. Chosen by measurement.
+   - The song's own break (164.0-165.4 s) carries the black. The reveal sits on its hit at 165.40 s, half a beat
+     before the tracker's beat.
+   - The flow follows the event card: decor flicker, sign, card flicker, 3 ramped arrivals, a board run, the
+     build, black, then the drop (half-beat cuts, punches, 2 stacks, crowd bed), the casino break, the prism
+     finale, and a slowed group at the board.
 2. **The offline plan** (below): approved. On 2026-11-07 the user wrote "all the open decisions are checked and
    can be closed. move ahead." Step 1 follows the library's cut integration.
 3. **Bucket material:**
@@ -182,6 +193,16 @@ Not built; the source is in brackets.
 - The riser `ShortRiser5` peaks 0.9 s in. The user starts it on a cut; the placer aligns its peak to the drop.
   [Diwali v2]
 - Still photos can't be placed. [Diwali v2]
+- `check_shotmap` (MCP) counts half beats as 0 in its "slots ask for N beats" warning and per-section beats.
+  The timing it prints is right. [A1]
+- A drop off the beat grid is missed. Mauja Hi Mauja hits at 165.40 s, but the beat tracker and the 0.5 s RMS
+  put it at 165.74 s or 165.19 s. It was found by hand at 50 ms; `music`/`check_shotmap` could report hits at
+  that resolution. [A1]
+- The app's copyable request says "the footage is already read" while prep is still running (the user pasted
+  it at the start). Word it by the project's state. [A1]
+- Guests posing at the photo wall get sorted as interview-bite (they face a locked-off camera). A map has to
+  name that class to use them. [A1]
+- `scripts/search_sheet.py --skip` matches substrings, so `*/drive-download-*/*` skips nothing; pass `drive-download`. [A1]
 - Event pace is still slower than the user's (0.56 s against their 0.32 s median); more half-beat slots would
   help. [Diwali v2]
 - HD vox-pop bytes scaled 178% into 9:16 look soft. [B4]
