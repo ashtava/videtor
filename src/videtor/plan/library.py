@@ -329,19 +329,19 @@ def bites_for(rec: dict, data: dict) -> list[dict]:
             groups.append([s])
     out = []
     for g in groups:
-        start, end = g[0]["start"], g[-1]["end"]
+        start, end = float(g[0]["start"]), float(g[-1]["end"])  # plain floats: a fresh transcript may carry numpy ones
         if end - start < 1.0:
             continue
-        prev_end = max([w["end"] for w in words if w["end"] <= start + 1e-6], default=0.0)
-        next_start = min([w["start"] for w in words if w["start"] >= end - 1e-6], default=duration)
+        prev_end = float(max([w["end"] for w in words if w["end"] <= start + 1e-6], default=0.0))
+        next_start = float(min([w["start"] for w in words if w["start"] >= end - 1e-6], default=duration))
         gap_in, gap_out = start - prev_end if prev_end > 0 else EDGE_S, next_start - end if next_start < duration else EDGE_S
         t_in = max(0.0, start - PAD_IN_S, prev_end + 0.05 if prev_end > 0 else 0.0)
         t_out = min(duration, end + PAD_OUT_S, next_start - 0.05 if next_start < duration else duration)
         text = " ".join(s["text"] for s in g)
         out.append({"fid": rec["fid"], "in": round(t_in, 3), "out": round(t_out, 3), "start": start, "end": end, "text": text,
-                    "clean": gap_in >= EDGE_S and gap_out >= EDGE_S, "gap_in": round(gap_in, 2), "gap_out": round(gap_out, 2),
+                    "clean": bool(gap_in >= EDGE_S and gap_out >= EDGE_S), "gap_in": round(gap_in, 2), "gap_out": round(gap_out, 2),
                     "fumbles": sum(1 for x in fumbles if start <= x["start"] and x["end"] <= end),
-                    "words": sum(len(s["words"]) for s in g), "short": end - start < BITE_MIN_S, "long": end - start > BITE_MAX_S})
+                    "words": sum(len(s["words"]) for s in g), "short": bool(end - start < BITE_MIN_S), "long": bool(end - start > BITE_MAX_S)})
     return out
 
 

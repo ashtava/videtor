@@ -40,10 +40,11 @@ def transcribe(path: str | Path, fid: str, cache_dir: Path = CACHE_DIR, prompt: 
     for s in r.get("segments", []):
         if s.get("no_speech_prob", 0) > 0.6 and s.get("avg_logprob", 0) < -1.0:
             continue  # music or room tone that Whisper tried to read as words
-        words = [{"w": w["word"].strip(), "start": round(w["start"], 3), "end": round(w["end"], 3), "p": round(w.get("probability", 1.0), 3)}
+        # plain floats: mlx-whisper's timings are numpy floats, which survive json.dumps but turn a comparison into a numpy bool
+        words = [{"w": w["word"].strip(), "start": round(float(w["start"]), 3), "end": round(float(w["end"]), 3), "p": round(float(w.get("probability", 1.0)), 3)}
                  for w in s.get("words", []) if w.get("word", "").strip()]
-        segments.append({"start": round(s["start"], 3), "end": round(s["end"], 3), "text": s["text"].strip(),
-                         "avg_logprob": round(s.get("avg_logprob", 0), 3), "no_speech_prob": round(s.get("no_speech_prob", 0), 3), "words": words})
+        segments.append({"start": round(float(s["start"]), 3), "end": round(float(s["end"]), 3), "text": s["text"].strip(),
+                         "avg_logprob": round(float(s.get("avg_logprob", 0)), 3), "no_speech_prob": round(float(s.get("no_speech_prob", 0)), 3), "words": words})
     data = {"fid": fid, "path": str(path), "language": r.get("language"), "model": MODEL, "segments": segments,
             "text": " ".join(s["text"] for s in segments)}
     out.parent.mkdir(parents=True, exist_ok=True)

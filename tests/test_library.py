@@ -127,6 +127,17 @@ class BiteTests(unittest.TestCase):
         self.assertTrue(second["clean"])
         self.assertEqual(first["fumbles"], 0)
 
+    def test_bites_from_a_fresh_transcript_with_numpy_timings_are_plain_json(self):
+        data = self.transcript()
+        for s in data["segments"]:
+            s["start"], s["end"] = np.float64(s["start"]), np.float64(s["end"])
+            for w in s["words"]:
+                w["start"], w["end"] = np.float64(w["start"]), np.float64(w["end"])
+        bites = library.bites_for({"fid": "f1", "duration_s": 20.0}, data)
+        self.assertEqual(len(bites), 2)
+        json.dumps(bites)  # numpy bools would raise here
+        self.assertIs(type(bites[0]["clean"]), bool)
+
     def test_the_bites_xml_has_one_linked_clip_per_bite(self):
         tmp = Path(tempfile.mkdtemp())
         try:
