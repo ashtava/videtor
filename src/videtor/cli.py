@@ -1203,6 +1203,20 @@ def look(
     console.print(f"{len(chosen)} slots swapped · Premiere XML: {path}")
 
 
+@app.command()
+def ui(
+    port: int = typer.Option(8765, "--port", help="The local port the page is served on (this Mac only)."),
+    window: bool = typer.Option(True, "--window/--browser", help="A native window (pywebview: uv sync --extra analyze --extra ui) or the browser."),
+    out_root: Path = typer.Option(Path("out"), "--out", help="The output folder offered for new projects; every prep and build can pick its own."),
+) -> None:
+    """The user interface: a local page to prep a shoot into a folder you choose, write the brief and the shot map,
+    cut, do the second look and sort the library. Every action runs as its own videtor process; a cut pauses running
+    preps and gets the machine, and they carry on after it."""
+    from videtor.ui import server
+
+    server.main(port=port, window=window, out_root=out_root, log=console.print)
+
+
 @library_app.command("build")
 def library_build(
     folders: list[Path] = typer.Argument(..., help="Footage folders on the drives, e.g. /Volumes/Paritosh_3/TPL/Videos."),

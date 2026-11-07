@@ -36,7 +36,9 @@ translation, the music choice when none is given, reading contact sheets, and th
 | Area | Module | What it does |
 |---|---|---|
 | CLI | `cli.py` | `videtor <command>` (typer): `prep orient music search cut look cut-interview cut-mv finish plan export analyze ingest`, `kb ...` and `library ...`. `prep` is sparse by default; `cut` narrows the pool to the map's classes (`library.candidates`) and decodes those takes in full before filling |
-| | `mcp_server.py` | The brief-to-cut steps as MCP tools (registered in `.mcp.json`) |
+| | `mcp_server.py` | The brief-to-cut steps as MCP tools (registered in `.mcp.json`); superseded by the UI for the user's own use |
+| UI | `ui/server.py` | `videtor ui`: a standard-library HTTP server on 127.0.0.1 with JSON endpoints (prep, cut, look, music, search, library build/learn/move, projects, jobs, files from allowed roots) and the static page in `ui/static/`; a pywebview window when installed |
+| | `ui/jobs.py` | Background jobs, each `videtor <command>` in its own process group with a polled log ring; a cut pauses (SIGSTOP) running preps and library builds and resumes them after, a prep submitted during a cut waits, a paused prep that ends with failures is rerun once |
 | Knowledge base | `kb/xmeml.py` | Reads Premiere FCP7 xmeml exports into dataclasses (stdlib only). Nests, Time Remap, transitions' −1 ends |
 | | `kb/metrics.py`, `kb/profile.py` | Style numbers per sequence, rolled up per bucket |
 | | `kb/footage.py`, `kb/selects.py` | Indexes the raw footage behind an edit (used ranges, duplicates, consolidated copies); used vs unused |

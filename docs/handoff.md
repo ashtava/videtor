@@ -112,9 +112,11 @@ The details are in `docs/status.md`.
 - **Platform:** set up on 2026-11-04. `/cut-from-brief` is a personal skill, the auto-push hook is live,
   and Claude Code desktop is installed.
 - **Built 2026-11-07:** `videtor library` (a shoot sorted by shot type into folders, offline, on every core,
-  learning from the user's moves), the parallel footage map, and the sparse-first `prep`/`cut` (prep reads
-  keyframes in minutes; the cut decodes only the takes the map's classes allow); see `docs/status.md`. The TPL
-  library at `out/library/tpl` is accepted and learnt (786 labels). Next in line: MCP parity, then offline step 1.
+  learning from the user's moves), the parallel footage map, the sparse-first `prep`/`cut` (prep reads
+  keyframes in minutes; the cut decodes only the takes the map's classes allow), and the UI (`videtor ui`: a
+  local page in Videtor's own Python, prep/cut as separate processes with the cut first); see `docs/status.md`.
+  The TPL library at `out/library/tpl` is accepted and learnt (786 labels). The UI replaces the MCP-parity item.
+  Next in line: offline step 1.
 
 ## 5. Your first reply
 

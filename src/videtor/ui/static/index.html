@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Videtor</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div id="app">
+  <nav>
+    <div class="brand">VIDETOR</div>
+    <button data-view="prep" class="active">Prep</button>
+    <button data-view="project">Project</button>
+    <button data-view="library">Library</button>
+    <button data-view="jobs">Jobs <span class="jobs-dot" id="jobs-dot"></span></button>
+    <div style="flex:1"></div>
+    <div class="muted" style="font-size:12px;padding:8px 10px" id="repo-line"></div>
+  </nav>
+  <main>
+
+    <section class="view active" id="view-prep">
+      <h1>Prep a shoot</h1>
+      <p class="muted">Reads every take from its keyframes on every core, sorts the takes into shot types and writes the overview into the output folder, in minutes. The drive stays connected until the cut.</p>
+      <div class="row"><label>Input folder</label><input type="text" id="prep-folder" placeholder="/Volumes/Drive/Shoot"><button class="btn" data-browse="prep-folder">Browse…</button></div>
+      <div class="row"><label>Output folder</label><input type="text" id="prep-out"><button class="btn" data-browse="prep-out">Browse…</button><span class="muted">the project lands in &lt;output&gt;/&lt;name&gt;/</span></div>
+      <div class="row"><label>Name</label><input type="text" id="prep-name" placeholder="from the folder" style="min-width:220px"><label style="min-width:auto"><input type="checkbox" id="prep-dense"> map every second now (hours)</label><label style="min-width:auto">workers <input type="number" id="prep-workers" placeholder="auto"></label></div>
+      <div class="row"><button class="btn primary" id="prep-run">Run prep</button><span id="prep-msg" class="muted"></span></div>
+      <h2>Log</h2>
+      <pre class="log" id="prep-log">—</pre>
+    </section>
+
+    <section class="view" id="view-project">
+      <h1>Project</h1>
+      <div class="row"><label>Project</label><select id="project-select"></select><button class="btn" id="project-refresh">Refresh</button><span id="project-msg" class="muted"></span></div>
+      <div class="row"><label>Add existing</label><input type="text" id="project-add-dir" placeholder="a project folder made from the terminal, e.g. out/engagement"><button class="btn" data-browse="project-add-dir">Browse…</button><button class="btn" id="project-add">Add</button></div>
+      <div class="tabs" id="project-tabs">
+        <button data-tab="overview" class="active">Overview</button>
+        <button data-tab="brief">Brief &amp; shot map</button>
+        <button data-tab="tools">Music &amp; search</button>
+        <button data-tab="cut">Cut</button>
+        <button data-tab="look">Second look</button>
+      </div>
+      <div class="tab active" id="tab-overview">
+        <div class="counts" id="project-classes"></div>
+        <pre class="text" id="project-overview">—</pre>
+        <div id="project-sheets"></div>
+      </div>
+      <div class="tab" id="tab-brief">
+        <h2>Brief</h2>
+        <textarea id="brief" placeholder="Paste the brief as the client wrote it."></textarea>
+        <h2>Shot map (shotmap.json)</h2>
+        <p class="muted">Written by Claude from the brief and the overview (the /cut-from-brief skill in Claude Code), or by hand. Name the classes it draws on: <code>"classes": ["close-up", "b-roll", "wide"]</code>, or a slot's <code>"class"</code>.</p>
+        <textarea id="shotmap" style="min-height:320px"></textarea>
+        <div class="row"><button class="btn primary" id="save-project">Save</button><button class="btn" id="validate-shotmap">Validate</button><span id="shotmap-errors"></span></div>
+      </div>
+      <div class="tab" id="tab-tools">
+        <h2>Music</h2>
+        <div class="row"><label>Music folder</label><input type="text" id="music-folder" placeholder="~/Music/library"><button class="btn" data-browse="music-folder">Browse…</button></div>
+        <div class="row"><label>Length (s)</label><input type="number" id="music-length" value="25"><label>Reveal at (s)</label><input type="number" id="music-reveal" placeholder="optional"><button class="btn" id="music-run">Rank the folder</button></div>
+        <pre class="log" id="music-log">—</pre>
+        <h2>Search the footage</h2>
+        <div class="row"><input type="text" id="search-query" placeholder="rings on his fingers, close-up"><input type="number" id="search-top" value="12"><button class="btn" id="search-run">Search</button></div>
+        <pre class="log" id="search-log">—</pre>
+      </div>
+      <div class="tab" id="tab-cut">
+        <p class="muted">Decodes in full the takes the shot map's classes allow (drive connected), fills every slot and writes the Premiere XML. A running prep is paused while the cut runs and resumed after it.</p>
+        <div class="row"><label style="min-width:auto"><input type="checkbox" id="cut-sfx" checked> SFX in your style</label><button class="btn primary" id="cut-run">Cut</button><span id="cut-msg" class="muted"></span></div>
+        <pre class="log" id="cut-log">—</pre>
+      </div>
+      <div class="tab" id="tab-look">
+        <div class="row"><span id="xml-line" class="muted">No cut yet.</span><button class="btn" id="xml-reveal" style="display:none">Reveal in Finder</button></div>
+        <div id="cut-sheet"></div>
+        <p class="muted">Click a runner-up to make it the pick; the old pick takes its place. A re-cut drops the swaps, so apply them again after one.</p>
+        <div class="row"><label>Note (why)</label><input type="text" id="look-note" placeholder="optional, saved with the swap" style="min-width:320px"></div>
+        <div id="slots"></div>
+        <pre class="log" id="look-log" style="display:none">—</pre>
+      </div>
+    </section>
+
+    <section class="view" id="view-library">
+      <h1>Library</h1>
+      <p class="muted">Every clip under the folders sorted into wide / close-up / talking-head / interview-bite / b-roll, as links, with a sheet per class and the interview bites as a Premiere sequence. Move a clip to the right class and Learn: the next build and every prep sort with it.</p>
+      <div class="row"><label>Folders</label><input type="text" id="lib-folder" placeholder="/Volumes/Drive/Shoot"><button class="btn" data-browse="lib-folder">Browse…</button><button class="btn" id="lib-add">Add</button></div>
+      <ul id="lib-folders" class="muted" style="margin:4px 0 8px 120px"></ul>
+      <div class="row"><label>Output folder</label><input type="text" id="lib-out"><button class="btn" data-browse="lib-out">Browse…</button><span class="muted">the library lands in &lt;output&gt;/&lt;name&gt;/</span></div>
+      <div class="row"><label>Name</label><input type="text" id="lib-name" style="min-width:220px"><label style="min-width:auto"><input type="checkbox" id="lib-extract"> cut every bite to a file</label><label style="min-width:auto"><input type="checkbox" id="lib-transcribe" checked> transcribe (bites)</label></div>
+      <div class="row"><button class="btn primary" id="lib-run">Build</button><span id="lib-msg" class="muted"></span></div>
+      <pre class="log" id="lib-log">—</pre>
+      <h2>Built libraries</h2>
+      <div class="row"><select id="lib-select"></select><button class="btn" id="lib-open">Open</button><button class="btn" id="lib-learn">Learn from the folders</button><span id="lib-status" class="muted"></span></div>
+      <div class="row"><label>Add existing</label><input type="text" id="lib-add-dir" placeholder="a library folder made from the terminal, e.g. out/library/tpl"><button class="btn" data-browse="lib-add-dir">Browse…</button><button class="btn" id="lib-add-existing">Add</button></div>
+      <div id="lib-view"></div>
+    </section>
+
+    <section class="view" id="view-jobs">
+      <h1>Jobs</h1>
+      <p class="muted">Each job is its own videtor process. A cut pauses running preps and library builds and hands the machine back when it ends; a prep started during a cut waits.</p>
+      <table id="jobs-table"><thead><tr><th>id</th><th>job</th><th>status</th><th>elapsed</th><th></th></tr></thead><tbody></tbody></table>
+      <h2>Log</h2>
+      <pre class="log" id="jobs-log">Pick a job.</pre>
+    </section>
+
+  </main>
+</div>
+
+<div class="modal" id="browser">
+  <div class="box">
+    <header id="browser-path">/Volumes</header>
+    <ul id="browser-list"></ul>
+    <footer><span class="muted" id="browser-info"></span><span><button class="btn" id="browser-up">Up</button> <button class="btn" id="browser-cancel">Cancel</button> <button class="btn primary" id="browser-choose">Choose this folder</button></span></footer>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

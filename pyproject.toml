@@ -20,6 +20,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# The desktop window for `videtor ui` (macOS WebKit through pywebview); the page works in the browser without it.
+ui = [
+  "pywebview>=5",
+]
 # Phase 1 media analysis. Installed separately so the knowledge-base commands
 # stay light: `uv sync --extra analyze`.
 analyze = [

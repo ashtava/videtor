@@ -62,6 +62,26 @@ Claude Code works in the terminal, in Claude Code desktop and in VS Code.
 - In desktop, open this folder and leave Worktree off for deliveries. A Worktree session's own edits go to
   its branch on GitHub, while the footage maps and outputs stay in the main checkout.
 
+## The UI
+
+```sh
+uv run videtor ui                 # a local page (this Mac only): prep a shoot into a folder you choose, brief, shot map, cut, second look, library
+uv run videtor ui --browser       # in the browser instead of a window; --port 8800 if 8765 is taken
+uv sync --extra analyze --extra ui   # once, for the native window (pywebview over the system WebKit)
+open scripts/Videtor.command      # the same, double-clickable (drag it to the Dock)
+```
+
+Nothing but the standard library serves it (`videtor.ui.server`), and every action is `videtor <command>` run as
+its own process (`videtor.ui.jobs`), so the page and the terminal share one code path. Prep and cut are two
+processes: a cut gets the machine (running preps and library builds are paused and resumed after it; a prep
+started during a cut waits), and a prep paused into failures is run again by itself, since every pass is
+resumable. The Prep screen takes the input folder and the output folder (the project lands in
+`<output>/<name>/`), with a folder browser; the Project screen shows the overview and shot types, holds the
+brief and the shot map (validated on save), ranks music, searches the footage, cuts, and does the second look by
+clicking a runner-up; the Library screen builds a library, shows its sheets and clips, moves a clip to another
+class and learns from the folders; Jobs shows every process with pause, resume and cancel. State lives in
+`cache/ui-state.json`; stills and sheets are served only from the repo's cache and the folders you chose.
+
 ## Knowledge base
 
 Export each past sequence from Premiere with **File ▸ Export ▸ Final Cut Pro XML**, then:
