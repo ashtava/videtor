@@ -82,7 +82,10 @@ when there is no window). The Prep screen takes the footage folder and where the
 `<output>/<name>/`); the Project screen shows the overview and shot types, holds the
 brief and the shot map (validated on save), ranks music, searches the footage, cuts, and does the second look by
 clicking a runner-up; the Library screen builds a library, shows its sheets and clips, moves a clip to another
-class and learns from the folders; Jobs shows every process with pause, resume and cancel. State lives in
+class and learns from the folders; Jobs shows every process with pause, resume and cancel. Every page and tab
+opens with a "How this works" guide (the steps in order, what to expect, how long it takes) that stays open until
+it is closed, and the Prep page carries the five-step flow: prep, brief and shot map, cut, second look, Premiere.
+State lives in
 `cache/ui-state.json`; stills and sheets are served only from the repo's cache and the folders you chose.
 
 ## Knowledge base

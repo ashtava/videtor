@@ -21,7 +21,25 @@
 
     <section class="view active" id="view-prep">
       <h1>Prep a shoot</h1>
-      <p class="muted">Reads every take from its keyframes on every core, sorts the takes into shot types and writes the overview into the output folder, in minutes. The drive stays connected until the cut.</p>
+      <div class="flow" id="flow">
+        <button data-go="prep"><b>1</b>Prep the shoot</button><span>→</span>
+        <button data-go="project:brief"><b>2</b>Brief &amp; shot map</button><span>→</span>
+        <button data-go="project:cut"><b>3</b>Cut</button><span>→</span>
+        <button data-go="project:look"><b>4</b>Second look</button><span>→</span>
+        <button data-go="project:look"><b>5</b>Import in Premiere</button>
+      </div>
+      <details class="guide" data-guide="prep">
+        <summary>How this works</summary>
+        <ol>
+          <li><b>Plug in the drive</b> with the footage. Videtor reads the camera files where they are; nothing is copied or moved.</li>
+          <li><b>Footage folder:</b> Choose… and pick the folder with the shoot. Cards and subfolders inside it are fine.</li>
+          <li><b>Project goes to:</b> where the project folder is made. A project is a folder named after the shoot that holds the overview, the brief, the shot map and, later, the Premiere XML.</li>
+          <li><b>Name:</b> short, no spaces; filled in from the folder. The XML is named after it.</li>
+          <li><b>Run prep.</b> Videtor looks at every take's keyframes (faces, speech, what the shot shows), sorts the takes into shot types and writes an overview with a still per take. A day's shoot takes about ten minutes; the log shows the progress, and you can do other things meanwhile.</li>
+          <li>When the log ends with the shot-map key, open <b>Project</b>. <b>Keep the drive connected:</b> the cut decodes in full only the takes it needs, and that is when the drive is read again.</li>
+        </ol>
+        <p class="muted">"Map every second now" is the old, thorough way (about an hour per hour of footage). Leave it off unless you were asked for it.</p>
+      </details>
       <div class="row"><label>Footage folder</label><input type="text" id="prep-folder" placeholder="/Volumes/Drive/Shoot"><button class="btn" data-browse="prep-folder">Choose…</button></div>
       <div class="row"><label>Project goes to</label><input type="text" id="prep-out"><button class="btn" data-browse="prep-out">Choose…</button><span class="muted">the project lands in &lt;output&gt;/&lt;name&gt;/</span></div>
       <div class="row"><label>Name</label><input type="text" id="prep-name" placeholder="from the folder" style="min-width:220px"><label style="min-width:auto"><input type="checkbox" id="prep-dense"> map every second now (hours)</label><label style="min-width:auto">workers <input type="number" id="prep-workers" placeholder="auto"></label></div>
@@ -32,6 +50,10 @@
 
     <section class="view" id="view-project">
       <h1>Project</h1>
+      <details class="guide" data-guide="project">
+        <summary>How this works</summary>
+        <p>One project per cut. The tabs run left to right: <b>Overview</b> (what the shoot holds) → <b>Brief &amp; shot map</b> (what to make of it) → <b>Music &amp; search</b> (the track, and finding moments) → <b>Cut</b> → <b>Second look</b> (swap shots, take the XML to Premiere). A project made from the terminal joins the list with "Add existing".</p>
+      </details>
       <div class="row"><label>Project</label><select id="project-select"></select><button class="btn" id="project-refresh">Refresh</button><span id="project-msg" class="muted"></span></div>
       <div class="row"><label>Add existing</label><input type="text" id="project-add-dir" placeholder="a project folder made from the terminal, e.g. out/engagement"><button class="btn" data-browse="project-add-dir">Choose…</button><button class="btn" id="project-add">Add</button></div>
       <div class="tabs" id="project-tabs">
@@ -42,19 +64,43 @@
         <button data-tab="look">Second look</button>
       </div>
       <div class="tab active" id="tab-overview">
+        <details class="guide" data-guide="overview">
+          <summary>How to read the overview</summary>
+          <ul>
+            <li>The counts are the shot types prep found: wide, close-up, talking-head, interview-bite, b-roll. The shot map names which of these the cut may use.</li>
+            <li>The text says what the shoot holds: cameras and frame rates, how many takes, how much has faces or hands, the setups (takes that look alike) and what stands out.</li>
+            <li>The sheets show one still per take, grouped by setup (s0, s1, …). Look through them before the brief is turned into a shot map: they say what can be asked for.</li>
+          </ul>
+        </details>
         <div class="counts" id="project-classes"></div>
         <pre class="text" id="project-overview">—</pre>
         <div id="project-sheets"></div>
       </div>
       <div class="tab" id="tab-brief">
+        <details class="guide" data-guide="brief">
+          <summary>How this works</summary>
+          <ol>
+            <li><b>Brief:</b> paste it as the client wrote it: the length and format, the feel, what must be in and what must stay out. Save.</li>
+            <li><b>Shot map:</b> the plan the cut follows: sections in order, each a list of slots saying what the shot must show, how many beats it lasts and which shot types it may come from. Claude writes it from the brief and the overview: in Claude Code, in the Videtor folder, type <code>/cut-from-brief</code> and give it this project's folder and brief. It shows up here on Refresh. It can also be edited by hand.</li>
+            <li><b>Validate</b> says what is wrong in plain words; <b>Save</b> keeps it. The cut refuses a map with problems.</li>
+            <li>Name the shot types the cut may draw on, like <code>"classes": ["close-up", "b-roll", "wide"]</code>. People speaking come from talking-head and interview-bite. A map that names none uses every take, which takes longer.</li>
+            <li>The map's <code>music</code> is a track and an in-point. Rank your music folder on the next tab to choose them.</li>
+          </ol>
+        </details>
         <h2>Brief</h2>
         <textarea id="brief" placeholder="Paste the brief as the client wrote it."></textarea>
         <h2>Shot map (shotmap.json)</h2>
-        <p class="muted">Written by Claude from the brief and the overview (the /cut-from-brief skill in Claude Code), or by hand. Name the classes it draws on: <code>"classes": ["close-up", "b-roll", "wide"]</code>, or a slot's <code>"class"</code>.</p>
-        <textarea id="shotmap" style="min-height:320px"></textarea>
+        <textarea id="shotmap" style="min-height:320px" placeholder='{"version": 1, "name": "...", "key": "<name>::footage", "length_s": 25, "fps": 25, "width": 1080, "height": 1920, "classes": ["close-up", "b-roll"], "sections": [...]}'></textarea>
         <div class="row"><button class="btn primary" id="save-project">Save</button><button class="btn" id="validate-shotmap">Validate</button><span id="shotmap-errors"></span></div>
       </div>
       <div class="tab" id="tab-tools">
+        <details class="guide" data-guide="tools">
+          <summary>How this works</summary>
+          <ul>
+            <li><b>Music:</b> choose the folder with your tracks, give the piece's length and, when the brief has a reveal, the second it lands on. The ranking lists the tracks that cut well at that length, with the in-point that puts a drop on the reveal. Put the path and the in-point into the shot map's <code>music</code>.</li>
+            <li><b>Search:</b> describe a shot in concrete words ("a golden trophy", "a man in a white jacket") and the best moment of every take comes back, best first. Use a take's name in a slot's <code>takes</code> when that very shot is wanted.</li>
+          </ul>
+        </details>
         <h2>Music</h2>
         <div class="row"><label>Music folder</label><input type="text" id="music-folder" placeholder="~/Music/library"><button class="btn" data-browse="music-folder">Choose…</button></div>
         <div class="row"><label>Length (s)</label><input type="number" id="music-length" value="25"><label>Reveal at (s)</label><input type="number" id="music-reveal" placeholder="optional"><button class="btn" id="music-run">Rank the folder</button></div>
@@ -64,14 +110,31 @@
         <pre class="log" id="search-log">—</pre>
       </div>
       <div class="tab" id="tab-cut">
-        <p class="muted">Decodes in full the takes the shot map's classes allow (drive connected), fills every slot and writes the Premiere XML. A running prep is paused while the cut runs and resumed after it.</p>
+        <details class="guide" data-guide="cut">
+          <summary>How this works</summary>
+          <ol>
+            <li><b>Drive connected.</b> The first cut of a shot map decodes in full the takes the map's shot types allow; the log counts them, and it takes minutes. A re-cut runs from what is already decoded.</li>
+            <li><b>SFX in your style</b> places risers, impacts and whooshes the way your past edits do. Untick it for a cut without sound effects.</li>
+            <li><b>Cut.</b> Every slot gets its best take and three runners-up, and the Premiere XML is written into the project folder. When it finishes, the Second look opens.</li>
+            <li>Changed the shot map? Save it and cut again. A re-cut starts over, so swaps from the second look have to be made again.</li>
+          </ol>
+          <p class="muted">A prep running in the background is paused while the cut runs and carries on after it.</p>
+        </details>
         <div class="row"><label style="min-width:auto"><input type="checkbox" id="cut-sfx" checked> SFX in your style</label><button class="btn primary" id="cut-run">Cut</button><span id="cut-msg" class="muted"></span></div>
         <pre class="log" id="cut-log">—</pre>
       </div>
       <div class="tab" id="tab-look">
+        <details class="guide" data-guide="look">
+          <summary>How this works</summary>
+          <ol>
+            <li>The <b>cut sheet</b> shows the shots in order. Below it, every slot: the pick (outlined) and three runners-up.</li>
+            <li>Click a runner-up to make it the pick; the old pick becomes a runner-up and the XML is rewritten at once. The note is optional and is saved with the swap.</li>
+            <li><b>Reveal in Finder</b> shows the XML. In Premiere: File ▸ Import, with the drive connected so the clips play. The picks sit on V1, the runners-up on V2 and V3 switched off, the music on A1, the SFX on their own tracks.</li>
+            <li>Finish in Premiere as usual. The grade and Warp Stabilizer are applied there; they cannot travel in an XML.</li>
+          </ol>
+        </details>
         <div class="row"><span id="xml-line" class="muted">No cut yet.</span><button class="btn" id="xml-reveal" style="display:none">Reveal in Finder</button></div>
         <div id="cut-sheet"></div>
-        <p class="muted">Click a runner-up to make it the pick; the old pick takes its place. A re-cut drops the swaps, so apply them again after one.</p>
         <div class="row"><label>Note (why)</label><input type="text" id="look-note" placeholder="optional, saved with the swap" style="min-width:320px"></div>
         <div id="slots"></div>
         <pre class="log" id="look-log" style="display:none">—</pre>
@@ -80,7 +143,16 @@
 
     <section class="view" id="view-library">
       <h1>Library</h1>
-      <p class="muted">Every clip under the folders sorted into wide / close-up / talking-head / interview-bite / b-roll, as links, with a sheet per class and the interview bites as a Premiere sequence. Move a clip to the right class and Learn: the next build and every prep sort with it.</p>
+      <details class="guide" data-guide="library">
+        <summary>How this works</summary>
+        <ol>
+          <li><b>Folders:</b> Choose… a footage folder and Add. Add more when the shoot spans drives or cards.</li>
+          <li><b>Library goes to</b> and <b>Name:</b> the library is a folder with five subfolders: wide, close-up, talking-head, interview-bite, b-roll. Each holds links to the clips; the footage stays where it is.</li>
+          <li><b>Build.</b> Every clip is read from its keyframes (minutes for a day's shoot) and sorted; then the clips with someone speaking are transcribed so their sentences become bites (longer: it runs on this Mac). The result: the folders, a sheet per class, <code>bites.xml</code> for Premiere and <code>library.md</code> listing the clips worth a look.</li>
+          <li><b>Check</b> the sheets below. Wrong class? Change it in the clip's selector (it moves the link), or move links between the folders in Finder.</li>
+          <li><b>Learn from the folders.</b> Everything in the folders then counts as sorted by you: the next build and every prep sort new clips the way you do.</li>
+        </ol>
+      </details>
       <div class="row"><label>Folders</label><input type="text" id="lib-folder" placeholder="/Volumes/Drive/Shoot"><button class="btn" data-browse="lib-folder">Choose…</button><button class="btn" id="lib-add">Add</button></div>
       <ul id="lib-folders" class="muted" style="margin:4px 0 8px 120px"></ul>
       <div class="row"><label>Library goes to</label><input type="text" id="lib-out"><button class="btn" data-browse="lib-out">Choose…</button><span class="muted">the library lands in &lt;output&gt;/&lt;name&gt;/</span></div>
@@ -95,7 +167,15 @@
 
     <section class="view" id="view-jobs">
       <h1>Jobs</h1>
-      <p class="muted">Each job is its own videtor process. A cut pauses running preps and library builds and hands the machine back when it ends; a prep started during a cut waits.</p>
+      <details class="guide" data-guide="jobs">
+        <summary>How this works</summary>
+        <ul>
+          <li>Every button on the other pages starts a job: its own Videtor process, listed here with its log.</li>
+          <li>A <b>cut comes first</b>: when one starts, running preps and library builds pause and get the machine back when it ends. A prep started during a cut waits for it.</li>
+          <li>A prep that was paused and ended with failures runs again by itself; everything it had done is kept.</li>
+          <li>Pause, resume or cancel any job by hand. A cancelled or failed job can simply be started again from its page: the work already done is kept.</li>
+        </ul>
+      </details>
       <table id="jobs-table"><thead><tr><th>id</th><th>job</th><th>status</th><th>elapsed</th><th></th></tr></thead><tbody></tbody></table>
       <h2>Log</h2>
       <pre class="log" id="jobs-log">Pick a job.</pre>

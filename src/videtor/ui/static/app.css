@@ -63,3 +63,17 @@ th { color: var(--muted); font-weight: 500; }
 .counts span { margin-right: 14px; }
 .filter { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
 .lib-row select { padding: 3px 6px; }
+details.guide { background: #1c2027; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 8px 14px; margin: 10px 0 16px; max-width: 980px; }
+details.guide summary { cursor: pointer; color: var(--accent); font-weight: 600; list-style: none; user-select: none; }
+details.guide summary::-webkit-details-marker { display: none; }
+details.guide summary::before { content: "▸ "; }
+details.guide[open] summary::before { content: "▾ "; }
+details.guide ol, details.guide ul { margin: 8px 0 4px; padding-left: 22px; }
+details.guide li { margin: 5px 0; }
+details.guide p { margin: 8px 0 4px; }
+details.guide code { background: #0f1114; padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+.flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin: 4px 0 14px; }
+.flow button { background: var(--panel); border: 1px solid var(--line); color: var(--fg); border-radius: 20px; padding: 6px 12px; cursor: pointer; font-size: 13px; }
+.flow button:hover { border-color: var(--accent); }
+.flow button b { color: var(--accent); margin-right: 6px; }
+.flow span { color: var(--muted); }

@@ -26,6 +26,20 @@ function showTab(name) {
   document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.id === "tab-" + name));
 }
 
+/* ---- the guides on every page: open until the user closes one, remembered per page ---- */
+document.querySelectorAll("details.guide").forEach((d) => {
+  const key = "videtor.guide." + d.dataset.guide;
+  let saved = null;
+  try { saved = localStorage.getItem(key); } catch (e) { /* private window: just open it */ }
+  d.open = saved === null ? true : saved === "1";
+  d.addEventListener("toggle", () => { try { localStorage.setItem(key, d.open ? "1" : "0"); } catch (e) { /* fine */ } });
+});
+document.querySelectorAll(".flow button[data-go]").forEach((b) => b.addEventListener("click", () => {
+  const [view, tab] = b.dataset.go.split(":");
+  showView(view);
+  if (tab) showTab(tab);
+}));
+
 /* ---- state ---- */
 async function refreshState() {
   state = await api("/api/state");
@@ -142,7 +156,7 @@ $("lib-add-existing").onclick = async () => {
 };
 async function loadProject() {
   const dir = $("project-select").value;
-  if (!dir) { $("project-msg").textContent = "no project yet: prep one"; return; }
+  if (!dir) { $("project-msg").textContent = "No project yet: start on the Prep page, or add an existing project folder below."; return; }
   const p = await api("/api/project?dir=" + encodeURIComponent(dir));
   if (p.error) { $("project-msg").textContent = p.error; return; }
   currentProject = p;
