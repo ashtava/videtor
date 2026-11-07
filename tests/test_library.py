@@ -36,34 +36,57 @@ def feats(**over) -> dict:
     base = {"log_dur": 2.0, "face_share": 0.0, "faces_med": 0.0, "multi_share": 0.0, "face_area_med": 0.0, "face_area_max": 0.0, "partial_share": 0.0,
             "hands_share": 0.0, "face_drift": 0.0, "speech_share": 0.0, "log_speech_s": 0.0, "rms": -30.0, "shift_med": 0.1, "shift_p90": 0.2,
             "response_med": 0.1, "diff_med": 0.05, "static_share": 0.0, "steps": 10, "log_sharp": 5.0, "bright": 100.0,
-            "p_wide": 0.25, "p_close": 0.25, "p_talk": 0.25, "p_broll": 0.25, "emb": np.zeros(512, np.float32)}
+            "p_wide": 0.2, "p_close": 0.2, "p_interview": 0.15, "p_stage": 0.1, "p_talk": 0.25, "p_broll": 0.35, "emb": np.zeros(512, np.float32)}
     base.update(over)
+    if "p_talk" not in over:
+        base["p_talk"] = base["p_interview"] + base["p_stage"]
     return base
+
+
+def speaker(**over) -> dict:
+    """A green-screen interview: one face, locked off, speech, CLIP sure of the setup."""
+    base = dict(speech_share=0.3, face_share=1.0, faces_med=1, face_area_med=0.006, shift_med=0.003, shift_p90=0.01, static_share=0.8, face_drift=0.01,
+                p_interview=0.9, p_stage=0.05, p_wide=0.0, p_close=0.0, p_broll=0.05)
+    base.update(over)
+    return feats(**base)
 
 
 class RuleTests(unittest.TestCase):
     def test_a_locked_off_speaker_is_a_talking_head(self):
-        f = feats(speech_share=0.3, face_share=1.0, faces_med=1, face_area_med=0.006, shift_med=0.003, static_share=0.8, face_drift=0.01)
-        cls, conf, reasons, second = library.classify_rules(f)
+        cls, conf, reasons, second = library.classify_rules(speaker())
         self.assertEqual(cls, "talking-head")
         self.assertGreaterEqual(conf, 0.5)
         self.assertEqual(second, "interview-bite")
         self.assertTrue(any("locked off" in r for r in reasons))
 
-    def test_a_speaker_with_the_camera_moving_is_a_bite_when_clip_sees_an_interview(self):
-        f = feats(speech_share=0.6, face_share=0.9, faces_med=1, face_area_med=0.01, shift_med=0.08, static_share=0.0, face_drift=0.1, p_talk=0.4)
-        self.assertEqual(library.classify_rules(f)[0], "interview-bite")
-        f["p_talk"] = 0.1  # a single listener in the audience with the PA on the track
-        self.assertNotIn(library.classify_rules(f)[0], ("interview-bite", "talking-head"))
+    def test_a_plain_backdrop_counts_as_locked_when_the_face_stays_put(self):
+        # the shift follows the subject's gestures on a green screen: static 0.3, but the face barely moves
+        self.assertEqual(library.classify_rules(speaker(shift_med=0.02, shift_p90=0.06, static_share=0.3, face_drift=0.03))[0], "talking-head")
+        self.assertEqual(library.classify_rules(speaker(shift_med=0.02, shift_p90=0.2, static_share=0.3, face_drift=0.15, p_interview=0.6))[0], "interview-bite")
 
-    def test_a_second_person_in_frame_rules_out_the_speech_classes(self):
-        f = feats(speech_share=0.6, face_share=1.0, faces_med=2, multi_share=0.8, face_area_med=0.01, shift_med=0.003, static_share=0.9)
-        self.assertEqual(library.classify_rules(f)[0], "b-roll")
+    def test_a_stage_mic_or_a_podium_is_a_bite_even_on_a_tripod(self):
+        f = speaker(speech_share=0.9, p_interview=0.02, p_stage=0.95)
+        cls, _, reasons, _ = library.classify_rules(f)
+        self.assertEqual(cls, "interview-bite")
+        self.assertTrue(any("a stage" in r for r in reasons))
+
+    def test_a_speaker_with_the_camera_moving_is_a_bite_when_clip_sees_a_speaker(self):
+        f = feats(speech_share=0.6, face_share=0.9, faces_med=1, face_area_med=0.01, shift_med=0.08, shift_p90=0.2, static_share=0.0, face_drift=0.1,
+                  p_interview=0.1, p_stage=0.5)
+        self.assertEqual(library.classify_rules(f)[0], "interview-bite")
+        listener = feats(speech_share=1.0, face_share=1.0, faces_med=1, face_area_med=0.03, shift_med=0.03, shift_p90=0.05, static_share=0.0,
+                         face_drift=0.03, p_interview=0.3, p_stage=0.0, p_broll=0.7)  # an audience close-up with the PA on the track
+        self.assertNotIn(library.classify_rules(listener)[0], ("interview-bite", "talking-head"))
+
+    def test_two_people_facing_a_locked_camera_can_be_a_talking_head_but_a_group_cannot(self):
+        pair = speaker(faces_med=2, multi_share=1.0, speech_share=0.7)
+        self.assertEqual(library.classify_rules(pair)[0], "talking-head")
+        group = feats(speech_share=0.6, face_share=1.0, faces_med=4, multi_share=1.0, face_area_med=0.01, shift_med=0.003, static_share=0.9, p_interview=0.5)
+        self.assertEqual(library.classify_rules(group)[0], "b-roll")
 
     def test_a_transcript_without_words_demotes_a_speaker(self):
-        f = feats(speech_share=0.3, face_share=1.0, faces_med=1, face_area_med=0.006, shift_med=0.003, static_share=0.8)
-        self.assertEqual(library.classify_rules(f)[0], "talking-head")
-        self.assertEqual(library.classify_rules(f, speaker=False)[0], "b-roll")
+        self.assertEqual(library.classify_rules(speaker())[0], "talking-head")
+        self.assertEqual(library.classify_rules(speaker(), speaker=False)[0], "b-roll")
 
     def test_a_face_filling_the_frame_is_a_close_up(self):
         f = feats(face_share=1.0, faces_med=1, face_area_med=0.06)

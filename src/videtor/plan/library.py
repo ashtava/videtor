@@ -3,11 +3,11 @@
 From the sparse map of every clip (analyze/sparse.py: a dozen keyframe stills, faces, speech, a motion proxy,
 CLIP) each clip gets one class, by these rules in this order:
 
-  talking-head    someone speaks for most of the clip, framed medium or closer, to a camera that holds
-                  still: the interview setup (a green screen, a backdrop, a seated interview)
-  interview-bite  someone speaks on camera but the camera moves: a vox pop, a line into a stage mic, a
-                  podium. The clip is itself a usable quote. (Every talking head's sentences are listed
-                  as bites too, see below.)
+  talking-head    one or two people speaking, framed medium or closer, to a camera that holds still, in
+                  what CLIP reads as an interview setup (a green screen, a backdrop, a seated interview)
+  interview-bite  someone speaking on camera at a stage or a podium (CLIP's "stage" prompts win), or with
+                  the camera moving: a vox pop, a line into a stage mic, a speech. The clip is itself a
+                  usable quote. (Every talking head's sentences are listed as bites too, see below.)
   close-up        a face filling the frame (the largest face >= faces.CLOSE_AREA) or a tight detail
                   (hands, a trophy, a jersey, lettering) with nobody mid-frame, by CLIP
   wide            a scene: the hall, the stage and audience, the venue, a crowd; faces small or none
@@ -58,25 +58,28 @@ PROMPTS = {
     "close-up": ["a close-up of a person's face", "a close-up of an object", "a detail shot of hands holding something",
                  "a close-up of lettering, a logo or a product"],
     "talking-head": ["a person talking to the camera in an interview", "a person being interviewed in front of a plain backdrop",
-                     "a seated interview with one person speaking", "a person speaking into a microphone"],
+                     "a seated interview with one person speaking", "two people being interviewed together in front of a plain backdrop"],
+    "stage": ["a person speaking into a microphone on a stage", "a speaker at a podium giving a speech", "a presenter on stage holding a microphone"],
     "b-roll": ["people walking and talking at an event", "a medium shot of a group of people", "a person listening in an audience",
                "a candid shot of people at an event", "people posing together for a photograph"],
 }
-CLIP_CLASSES = list(PROMPTS)
+CLIP_CLASSES = list(PROMPTS)  # "stage" is not a folder: it tells a podium or a stage mic (a bite) from an interview setup (a talking head)
 NUMERIC = ["log_dur", "face_share", "faces_med", "multi_share", "face_area_med", "face_area_max", "partial_share", "hands_share", "face_drift",
            "speech_share", "log_speech_s", "rms", "shift_med", "shift_p90", "response_med", "diff_med", "static_share", "log_sharp", "bright",
-           "p_wide", "p_close", "p_talk", "p_broll"]
+           "p_wide", "p_close", "p_interview", "p_stage", "p_talk", "p_broll"]
 
 SPEECH_MIN = 0.15  # share of the clip the VAD hears speech in; low, because a camera mic records an interview quietly (-35 dBFS)
 BITE_SPEECH_MIN = 0.3  # a speaker with the camera moving needs more: event audio carries the PA everywhere
 FACE_SHARE_MIN = 0.6  # stills with a face
 MULTI_SHARE_MAX = 0.3  # stills with two or more faces: a speaker is on their own
 SPEAKER_FACE_AREA = 0.004  # a face about 6% of the width: a full-length figure on a green screen reads this small
-SPEAKER_P_TALK = 0.25  # CLIP's probability for the interview / microphone prompts when the camera moves
+SPEAKER_P_TALK = 0.4  # CLIP's probability for the interview + stage prompts a speaker needs (0.5 when the camera moves): audience close-ups score 0.3
 MIN_WORDS_PER_S = 0.3  # under this, Whisper heard room sound, not this person: demoted to a visual class
 LOCKED_SHIFT = 0.012  # frame widths between stills: a camera on a tripod
 LOCKED_STATIC = 0.5
 LOCKED_DRIFT = 0.06  # the largest face's centre wanders less than this (frame units) when the camera holds
+LOCKED_P90 = 0.08  # on a plain backdrop the shift follows the subject's gestures (green screen: p90 up to 0.067), so the face decides
+INTERVIEW_SURE = 0.8  # CLIP this sure of an interview setup makes a talking head even when the camera moved (someone walked in)
 CLOSE_P = 0.45  # CLIP's probability for the close-up prompts on a shot with no medium face
 WIDE_P = 0.40
 CHECK_BELOW = 0.6  # confidence under which library.md lists the clip for a look
@@ -172,7 +175,8 @@ def features(rec: dict, text: np.ndarray) -> dict:
         "response_med": float(m["response_med"]) if steps else 0.0, "diff_med": float(m["diff_med"]) if steps else 0.0,
         "static_share": float(m["static_share"]) if steps else 0.0, "steps": steps,
         "log_sharp": math.log1p(float(rec.get("sharp_med") or 0.0)), "bright": float(rec.get("bright_med") or 0.0),
-        "p_wide": probs["wide"], "p_close": probs["close-up"], "p_talk": probs["talking-head"], "p_broll": probs["b-roll"],
+        "p_wide": probs["wide"], "p_close": probs["close-up"], "p_interview": probs["talking-head"], "p_stage": probs["stage"],
+        "p_talk": probs["talking-head"] + probs["stage"], "p_broll": probs["b-roll"],
         "emb": emb.mean(axis=0) / max(np.linalg.norm(emb.mean(axis=0)), 1e-9) if len(emb) else np.zeros(512, np.float32),
     }
 
@@ -185,21 +189,28 @@ def _scale_word(area: float) -> str:
 
 
 def is_locked(f: dict) -> bool:
-    """A camera that holds its framing between stills (a tripod); with one still, CLIP's interview prompts decide."""
-    if f["steps"]:
-        return f["shift_med"] <= LOCKED_SHIFT and f["static_share"] >= LOCKED_STATIC and f["face_drift"] <= LOCKED_DRIFT
-    return f["p_talk"] >= 0.4
+    """A camera that holds its framing between stills (a tripod). The picture's shift says so when the
+    background has texture; on a plain backdrop the shift follows the subject, so a face that stays put
+    counts too. With one still, CLIP's interview prompts decide."""
+    if not f["steps"]:
+        return f["p_interview"] >= 0.4
+    if f["shift_med"] <= LOCKED_SHIFT and f["static_share"] >= LOCKED_STATIC and f["face_drift"] <= LOCKED_DRIFT:
+        return True
+    return f["face_share"] >= 0.9 and f["face_drift"] <= LOCKED_DRIFT and f["shift_p90"] <= LOCKED_P90
 
 
 def is_speaker(f: dict) -> bool:
-    """One person, medium or closer, in most stills, with speech on the track: speech enough for a locked-off
-    camera, more (and CLIP's say) when the camera moves, since event audio carries the PA into every shot."""
-    alone = f["face_share"] >= FACE_SHARE_MIN and f["multi_share"] <= MULTI_SHARE_MAX and f["face_area_med"] >= SPEAKER_FACE_AREA
-    if not alone:
+    """One person (two, when both face a locked-off camera), medium or closer, in most stills, that CLIP reads
+    as an interview or a stage, with speech on the track: a little is enough for a locked-off camera (a camera
+    mic records an interview quietly), more when the camera moves, since event audio carries the PA into
+    every shot."""
+    alone = f["face_share"] >= FACE_SHARE_MIN and f["face_area_med"] >= SPEAKER_FACE_AREA and (
+        f["multi_share"] <= MULTI_SHARE_MAX or (f["faces_med"] <= 2 and f["face_share"] >= 0.9))
+    if not alone or f["p_talk"] < SPEAKER_P_TALK:
         return False
     if is_locked(f):
         return f["speech_share"] >= SPEECH_MIN
-    return f["speech_share"] >= BITE_SPEECH_MIN and f["p_talk"] >= SPEAKER_P_TALK
+    return f["speech_share"] >= BITE_SPEECH_MIN and f["p_talk"] >= 0.5
 
 
 def classify_rules(f: dict, speaker: bool | None = None) -> tuple[str, float, list[str], str | None]:
@@ -210,13 +221,16 @@ def classify_rules(f: dict, speaker: bool | None = None) -> tuple[str, float, li
     probs = {"wide": f["p_wide"], "close-up": f["p_close"], "talking-head": f["p_talk"], "b-roll": f["p_broll"]}
     ranked = sorted(probs, key=probs.get, reverse=True)
     if speaker:
-        how = (f"speech {f['speech_share']:.0%} of the clip, one face in {f['face_share']:.0%} of the stills ({_scale_word(f['face_area_med'])})")
+        who = "one face" if f["multi_share"] <= MULTI_SHARE_MAX else "two faces"
+        how = f"speech {f['speech_share']:.0%} of the clip, {who} in {f['face_share']:.0%} of the stills ({_scale_word(f['face_area_med'])})"
         margin = _clamp((f["speech_share"] - SPEECH_MIN) / 0.3) * _clamp((f["face_share"] - FACE_SHARE_MIN) / 0.3 + 0.5)
-        if locked:
-            steady = f"camera locked off (shift {f['shift_med']:.3f} between stills)" if f["steps"] else "one still, read as an interview setup"
-            return "talking-head", round(0.5 + 0.5 * margin, 2), [how, steady], "interview-bite"
-        moving = f"camera moving (shift {f['shift_med']:.3f} between stills, face drift {f['face_drift']:.2f}), CLIP {f['p_talk']:.0%} interview/mic"
-        return "interview-bite", round(0.5 + 0.5 * margin * 0.8, 2), [how, moving], "talking-head"
+        setup = f"CLIP {f['p_interview']:.0%} an interview setup, {f['p_stage']:.0%} a stage"
+        if f["p_interview"] >= f["p_stage"] and (locked or f["p_interview"] >= INTERVIEW_SURE):
+            steady = (f"camera locked off (shift {f['shift_med']:.3f} between stills)" if locked and f["steps"] else
+                      "one still, read as an interview setup" if not f["steps"] else f"camera moved (shift {f['shift_med']:.3f}) but the setup is sure")
+            return "talking-head", round(0.5 + 0.5 * margin, 2), [how, setup, steady], "interview-bite"
+        moving = "camera locked off" if locked else f"camera moving (shift {f['shift_med']:.3f} between stills, face drift {f['face_drift']:.2f})"
+        return "interview-bite", round(0.5 + 0.5 * margin * 0.8, 2), [how, setup, moving], "talking-head"
     if f["face_area_med"] >= faces_mod.CLOSE_AREA:
         margin = _clamp((f["face_area_med"] - faces_mod.CLOSE_AREA) / faces_mod.CLOSE_AREA)
         return "close-up", round(0.6 + 0.4 * margin, 2), [f"a face fills the frame (largest {f['face_area_med']:.1%} of it)"], "b-roll"
@@ -539,9 +553,19 @@ def build(entries: list[dict], out: Path, cache_dir: Path, kb_dir: Path, log: Lo
         clips.append({"fid": fid, "path": rec["path"], "name": names[fid], "class": d["class"], "conf": d["conf"], "by": d["by"], "second": d["second"],
                       "reasons": d["reasons"], "duration_s": rec["duration_s"], "stills": rec["n"],
                       "faces": rec["faces"], "speech_share": rec["audio"].get("speech_share"), "motion": rec["motion"],
-                      "clip": {c: round(f[k], 3) for c, k in (("wide", "p_wide"), ("close-up", "p_close"), ("talking-head", "p_talk"), ("b-roll", "p_broll"))},
+                      "clip": {c: round(f[k], 3) for c, k in (("wide", "p_wide"), ("close-up", "p_close"), ("interview", "p_interview"), ("stage", "p_stage"), ("b-roll", "p_broll"))},
                       "bites": sum(1 for b in bites if b["fid"] == fid)})
     clips.sort(key=lambda x: x["name"])
+    seen: dict[tuple, str] = {}  # the same file on two cards (a Master Cam folder copied off a card): sorted alike, noted
+    for x in clips:
+        try:
+            key = (os.path.basename(x["path"]), os.path.getsize(x["path"]), round(x["duration_s"], 2))
+        except OSError:
+            continue
+        if key in seen:
+            x["copy_of"] = seen[key]
+        else:
+            seen[key] = x["name"]
     bite_dir = out / "interview-bite"
     xml = write_bites_xml(bites, records, bite_dir / "bites.xml") if bites else None
     if bites:
@@ -573,6 +597,7 @@ def build(entries: list[dict], out: Path, cache_dir: Path, kb_dir: Path, log: Lo
     lib = {"version": 1, "built_at": time.strftime("%Y-%m-%dT%H:%M:%S"), "folders": folders or [], "out": str(out), "copy": copy,
            "model": {"n": model["n"], "cv_accuracy": model["cv_accuracy"], "trained_at": model["trained_at"]} if model else None,
            "labels": sum(1 for x in clips if x["by"] == "label"), "counts": dict(Counter(x["class"] for x in clips)),
+           "copies": sum(1 for x in clips if x.get("copy_of")),
            "minutes": {c: round(sum(x["duration_s"] for x in clips if x["class"] == c) / 60, 1) for c in CLASSES},
            "clips": clips, "bites": [{**b, "name": names[b["fid"]]} for b in bites], "bites_xml": str(xml) if xml else None,
            "sheets": [str(p) for p in sheet_paths], "unscanned": [e["path"] for e in entries if e["fid"] not in records]}
@@ -584,8 +609,8 @@ def build(entries: list[dict], out: Path, cache_dir: Path, kb_dir: Path, log: Lo
 
 def summary_md(lib: dict) -> str:
     clips = lib["clips"]
-    how = {"talking-head": "someone speaks for most of the clip, framed medium or closer, camera locked off",
-           "interview-bite": "someone speaks on camera and the camera moves (vox pop, stage mic, podium); also every talking head's sentences, below",
+    how = {"talking-head": "one or two people speaking, framed medium or closer, camera locked off, CLIP reads an interview setup (a backdrop)",
+           "interview-bite": "someone speaking on camera at a stage, a podium or with the camera moving (a vox pop); also every talking head's sentences, below",
            "close-up": "a face fills the frame, or a tight detail with nobody mid-frame (CLIP)",
            "wide": "a scene (hall, stage and audience, venue, crowd), faces small or none (CLIP)",
            "b-roll": "everything else: mediums, groups, action, coverage on the move"}
@@ -595,7 +620,9 @@ def summary_md(lib: dict) -> str:
              + (f"by your model ({lib['model']['n']} labels, cross-validated accuracy {lib['model']['cv_accuracy']}) with the rules as fallback"
                 if lib.get("model") else "by the rules")
              + (f"; {lib['labels']} clips kept where you put them" if lib.get("labels") else "") + ".",
-             "The folders hold " + ("copies" if lib.get("copy") else "links to the files on the drive (the footage has not moved)") + ".", "",
+             "The folders hold " + ("copies" if lib.get("copy") else "links to the files on the drive (the footage has not moved)") + "."
+             + (f" {lib['copies']} clips are the same file as another (same name, size and length), sorted alike; `copy_of` in library.json names the first."
+                if lib.get("copies") else ""), "",
              "| class | clips | minutes | how it was decided |", "|---|---|---|---|"]
     for c in CLASSES:
         lines.append(f"| {c} | {lib['counts'].get(c, 0)} | {lib['minutes'].get(c, 0)} | {how[c]} |")
