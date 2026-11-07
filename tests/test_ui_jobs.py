@@ -83,6 +83,37 @@ class JobTests(unittest.TestCase):
         time.sleep(0.2)
         self.assertIsNone(prep.reran_as)
 
+    def test_progress_is_read_from_the_cli_lines_in_plain_words(self):
+        t = 1000.0
+        prep = jobs.Job(id="x", kind="prep", title="t", args=[])
+        jobs.note(prep, "[2/5] keyframe map: stills, faces, hands, speech and CLIP from every take's keyframes", now=t)
+        self.assertEqual(prep.progress["stage"], "Reading the footage")
+        jobs.note(prep, "      sparse map: 68 of 68 clips to scan (18 min of footage), 8 worker(s)", now=t + 1)
+        self.assertEqual(prep.progress["t0"], t)  # the same stage: its clock keeps running
+        jobs.note(prep, "        25/68 clips (1m35s): C1380.MP4 8s, 8 stills, faces 0%", now=t + 10)
+        self.assertEqual((prep.progress["done"], prep.progress["total"]), (25, 68))
+        self.assertEqual(jobs.eta(prep.progress, now=t + 10), round(10 / 25 * 43))
+        jobs.note(prep, "[4/5] shot types: the library's classes for every take", now=t + 20)
+        self.assertEqual((prep.progress["stage"], prep.progress["done"], prep.progress["total"]), ("Sorting the shots by type", None, None))
+        cut = jobs.Job(id="y", kind="cut", title="t", args=[])
+        jobs.note(cut, "footage map: decoding 52 takes in full (8.4 min of footage); keep the drive connected", now=t)
+        jobs.note(cut, "        content 3: C1384.MP4 32 samples, faces in 3%, 1.9s", now=t + 2)
+        jobs.note(cut, "        decode 12/52: C1400.MP4 13.4s -> 108 frames, 23.4s hw", now=t + 5)
+        self.assertEqual((cut.progress["stage"], cut.progress["done"], cut.progress["total"]), ("Reading those takes in full", 12, 52))
+        jobs.note(cut, "Premiere XML: /x/out/my shoot/my shoot.xml", now=t + 9)
+        self.assertEqual(cut.result["xml"], "/x/out/my shoot/my shoot.xml")
+        self.assertIsNone(jobs.eta({"done": 5, "total": 5, "t0": t}, now=t + 60))
+
+    def test_the_job_list_carries_progress_and_the_finish_hook_runs(self):
+        ended = []
+        self.m.on_finish = ended.append
+        job = self.m.submit("prep", "p", ["0.1", "[5/5] overview: x"])
+        self.assertTrue(wait_for(lambda: job.status == "done"))
+        self.assertTrue(wait_for(lambda: ended == [job]))
+        d = job.to_dict()
+        self.assertEqual(d["progress"]["stage"], "Writing the overview")
+        self.assertIsNone(d["progress"]["eta_s"])
+
     def test_cancel_stops_a_job_and_a_waiting_one(self):
         cut = self.m.submit("cut", "a cut", ["5"])
         prep = self.m.submit("prep", "a prep", ["0.1"])

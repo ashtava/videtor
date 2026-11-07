@@ -28,6 +28,54 @@ SPOILT = re.compile(r"\bFAILED\b|timeout|not decoded|(?<!0 )failed\b")
 _ids = itertools.count(1)
 Log = Callable[[str], None]
 
+# What the page says while a job runs: the CLI's own progress lines, matched and put in plain words.
+STAGES = [
+    (re.compile(r"\[1/5\] index|^\s*index: \d+ video files"), "Finding the clips"),
+    (re.compile(r"\[2/5\] (keyframe map|stills)|sparse map: \d+ of \d+ clips to scan"), "Reading the footage"),
+    (re.compile(r"\[3/5\] orientation"), "Checking for sideways cameras"),
+    (re.compile(r"\[4/5\] shot types|^\s*classified \d+ clips"), "Sorting the shots by type"),
+    (re.compile(r"\[4/5\] footage map"), "Mapping every second (slow)"),
+    (re.compile(r"\[5/5\] overview"), "Writing the overview"),
+    (re.compile(r"transcribing \d+ speaker clips"), "Transcribing the interviews"),
+    (re.compile(r"takes can serve this map"), "Choosing the takes the plan can use"),
+    (re.compile(r"footage map: decoding \d+ takes"), "Reading those takes in full"),
+    (re.compile(r"slots filled"), "Writing the Premiere XML"),
+    (re.compile(r"^\s*labels: \d+ clips in the folders"), "Learning from your sorting"),
+]
+COUNT = re.compile(r"^\s*(?:decode )?(\d+)/(\d+)\b")  # "  25/786 clips (1m35s)", "decode 12/52:", "  10/129 (49s):"
+XML_LINE = re.compile(r"Premiere XML: (\S.*?\.xml)\s*$")
+
+
+def note(job: "Job", line: str, now: float | None = None) -> None:
+    """Read one output line into the job's progress: its stage in plain words, k of n, the XML it wrote."""
+    text = line.strip()
+    if not text:
+        return
+    now = now or time.time()
+    p = job.progress
+    p["last"] = text[:300]
+    for pattern, label in STAGES:
+        if pattern.search(line):
+            if p.get("stage") != label:
+                p.update(stage=label, done=None, total=None, t0=now)
+            break
+    m = COUNT.match(line)
+    if m:
+        p["done"], p["total"] = int(m.group(1)), int(m.group(2))
+        p.setdefault("t0", now)
+    m = XML_LINE.search(line)
+    if m:
+        job.result["xml"] = m.group(1)
+
+
+def eta(progress: dict, now: float | None = None) -> int | None:
+    """Seconds left in the current stage at its pace so far; None until it has a pace."""
+    done, total, t0 = progress.get("done"), progress.get("total"), progress.get("t0")
+    if not (done and total and t0) or done >= total:
+        return None
+    elapsed = (now or time.time()) - t0
+    return round(elapsed / done * (total - done)) if elapsed >= 3 else None
+
 
 @dataclass
 class Job:
@@ -47,6 +95,8 @@ class Job:
     proc: subprocess.Popen | None = field(default=None, repr=False)
     log: deque = field(default_factory=lambda: deque(maxlen=LOG_LINES), repr=False)
     seen: int = 0  # lines dropped off the front of the ring
+    progress: dict = field(default_factory=dict)  # stage, done, total, t0, last (see `note`)
+    result: dict = field(default_factory=dict)  # xml: the Premiere XML a cut or a swap wrote
 
     @property
     def alive(self) -> bool:
@@ -54,10 +104,13 @@ class Job:
 
     def to_dict(self) -> dict:
         now = time.time()
+        p = self.progress
         return {"id": self.id, "kind": self.kind, "title": self.title, "args": self.args, "project": self.project, "status": self.status,
                 "created": self.created, "started": self.started, "ended": self.ended, "rc": self.rc, "paused_by": self.paused_by,
                 "elapsed": round((self.ended or now) - self.started, 1) if self.started else 0.0, "reran_as": self.reran_as,
-                "lines": self.seen + len(self.log)}
+                "lines": self.seen + len(self.log), "result": dict(self.result),
+                "progress": {"stage": p.get("stage"), "done": p.get("done"), "total": p.get("total"), "last": p.get("last"),
+                             "eta_s": eta(p, now) if self.status == "running" else None}}
 
 
 class Manager:
@@ -65,9 +118,11 @@ class Manager:
 
     def __init__(self, videtor: list[str], cwd: str, log: Log | None = None, env: dict | None = None):
         self.videtor, self.cwd, self.log_fn = list(videtor), cwd, log or (lambda s: None)
-        self.env = {**os.environ, **(env or {}), "PYTHONUNBUFFERED": "1", "PATH": "/opt/homebrew/bin:" + os.environ.get("PATH", "")}
+        # COLUMNS: rich wraps piped output at 80 columns, which splits paths and progress lines
+        self.env = {**os.environ, **(env or {}), "PYTHONUNBUFFERED": "1", "COLUMNS": "240", "PATH": "/opt/homebrew/bin:" + os.environ.get("PATH", "")}
         self.jobs: dict[str, Job] = {}
         self.lock = threading.RLock()
+        self.on_finish: Callable[[Job], None] | None = None  # e.g. a macOS notification when a long job ends
 
     # --- submitting ---------------------------------------------------------------------
 
@@ -107,8 +162,14 @@ class Manager:
                     if len(job.log) == job.log.maxlen:
                         job.seen += 1
                     job.log.append(line)
+                    note(job, line)
         rc = job.proc.wait()
         self._finished(job, rc)
+        if self.on_finish and job.status in ("done", "failed"):
+            try:
+                self.on_finish(job)
+            except Exception:  # noqa: BLE001 - a notification must never break the jobs
+                pass
 
     # --- finishing and the rules --------------------------------------------------------------
 

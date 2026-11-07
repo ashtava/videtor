@@ -117,7 +117,9 @@ The details are in `docs/status.md`.
   local page in Videtor's own Python, prep/cut as separate processes with the cut first, `~/Applications/Videtor.app`
   from `scripts/make-app.sh` to open it without a terminal, the Mac's own folder dialogs); see `docs/status.md`.
   The TPL library at `out/library/tpl` is accepted and learnt (786 labels). The UI replaces the MCP-parity item.
-  Next in line: offline step 1.
+- **Open (2026-11-07): the UI's next shape.** The user asked for the user journey to give UX feedback; it is at
+  https://claude.ai/artifact/Sfuj5WCoBeKHtEoidt4wxX with five decisions (D1-D5, also in `docs/status.md`).
+  Build the proposed journey only after the user answers them. Offline step 1 depends on D1.
 
 ## 5. Your first reply
 

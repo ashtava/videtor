@@ -116,6 +116,37 @@ class ServerTests(unittest.TestCase):
             status, r = self.post("/api/pick-folder", {})
         self.assertEqual(r, {"path": None, "cancelled": True})
 
+    def test_a_project_says_what_comes_next(self):
+        d = self.tmp / "out" / "steps"
+        d.mkdir(parents=True, exist_ok=True)
+        self.app.add_project("steps", str(self.tmp / "nowhere"), str(d))
+        proj = lambda: json.loads(self.get("/api/project?dir=" + str(d))[2])  # noqa: E731
+        p = proj()
+        self.assertEqual([s["id"] for s in p["steps"]], ["overview", "brief", "tools", "cut", "look"])
+        self.assertEqual([s["state"] for s in p["steps"]], ["todo", "blocked", "optional", "blocked", "blocked"])
+        self.assertIn("Plug in the footage drive", p["next"]["text"])
+        self.assertFalse(p["drive"]["connected"])
+        (d / "overview.md").write_text("# steps")
+        p = proj()
+        self.assertEqual((p["steps"][0]["state"], p["next"]["tab"]), ("done", "brief"))
+        self.assertIn("brief", p["next"]["text"])
+        (d / "brief.md").write_text("A 20 s reel.")
+        p = proj()
+        self.assertIn("plan", p["next"]["text"])
+        status = next(x["status"] for x in json.loads(self.get("/api/state")[2])["projects"] if x["dir"] == str(d))
+        self.assertEqual(status, {"text": "Needs the plan", "tone": "todo"})
+
+    def test_scan_counts_the_video_files_under_a_folder(self):
+        d = self.tmp / "scan" / "Card 1"
+        d.mkdir(parents=True)
+        (d / "C0001.MP4").write_bytes(b"x" * 10)
+        (d / "C0001M01.XML").write_text("x")
+        (self.tmp / "scan" / ".hidden.mp4").write_bytes(b"")
+        r = json.loads(self.get("/api/scan?path=" + str(self.tmp / "scan"))[2])
+        self.assertEqual((r["videos"], r["partial"]), (1, False))
+        self.assertIsNone(r["drive"]["name"])
+        self.assertTrue(r["drive"]["connected"])
+
     def test_unknown_routes_are_404(self):
         with self.assertRaises(urllib.error.HTTPError) as cm:
             urllib.request.urlopen(self.base + "/api/nope")

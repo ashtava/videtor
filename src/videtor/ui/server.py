@@ -27,6 +27,9 @@ from videtor.ui import jobs as jobs_mod
 
 STATIC = Path(__file__).with_name("static")
 STATE_FILE = Path("cache/ui-state.json")
+VIDEO_EXT = (".mp4", ".mov", ".mxf", ".mts", ".m4v", ".avi", ".braw", ".r3d", ".mpg")
+VERBS = {"prep": "Reading the footage", "cut": "Cutting", "look": "Updating the cut", "search": "Searching", "music": "Ranking music",
+         "library": "Sorting the footage", "learn": "Learning your sorting"}
 Log = Callable[[str], None]
 
 
@@ -86,6 +89,17 @@ class App:
         self.state = self._load_state()
         self.window = None  # pywebview window, when there is one
         self.lock = threading.Lock()
+        self.notify = False  # macOS notifications when a long job ends (main() turns them on)
+        self.jobs.on_finish = self._finished
+
+    def _finished(self, job) -> None:
+        if not self.notify or job.kind not in ("prep", "cut", "library"):
+            return
+        name = Path(job.project or "").name or "the project"
+        text = {("prep", "done"): f"The footage of {name} is read. Next: the brief and the plan.",
+                ("cut", "done"): f"The cut of {name} is ready to review.",
+                ("library", "done"): f"The footage of {name} is sorted."}.get((job.kind, job.status), f"{job.title} stopped with an error: see Activity.")
+        notify(text)
 
     # --- state ------------------------------------------------------------------------------
 
@@ -127,8 +141,111 @@ class App:
     def api_state(self) -> dict:
         volumes = sorted(str(p) for p in Path("/Volumes").glob("*") if p.is_dir() and not p.name.startswith(".")) if Path("/Volumes").is_dir() else []
         return {"repo": str(self.root), "out_root": str(self.out_root if self.out_root.is_absolute() else self.root / self.out_root),
-                "projects": self.state["projects"], "libraries": self.state.get("libraries", []), "jobs": self.jobs.list(),
-                "volumes": volumes, "window": self.window is not None, "home": str(Path.home())}
+                "projects": [{**p, "status": self._status(p)} for p in self.state["projects"]], "libraries": self.state.get("libraries", []),
+                "jobs": self.jobs.list(), "volumes": volumes, "window": self.window is not None, "home": str(Path.home())}
+
+    # --- where a project stands, in the user's words --------------------------------------------
+
+    @staticmethod
+    def _drive(folder: str) -> dict:
+        """The drive a footage folder lives on and whether it is plugged in."""
+        f = Path(folder) if folder else None
+        parts = f.parts if f else ()
+        name = parts[2] if len(parts) > 2 and parts[1] == "Volumes" else None
+        return {"folder": folder, "name": name, "connected": bool(f and f.exists())}
+
+    def _active_job(self, dir_: str):
+        with self.jobs.lock:
+            live = [j for j in self.jobs.jobs.values() if j.project == dir_ and (j.alive or j.status == "waiting")]
+        return live[-1] if live else None
+
+    def _status(self, p: dict) -> dict:
+        """One line for the project's card: what is happening, or what it needs next."""
+        d = Path(p["dir"])
+        job = self._active_job(p["dir"])
+        if job:
+            text, pr = VERBS.get(job.kind, "Working"), job.progress
+            if job.status == "paused":
+                text += " · paused for a cut"
+            elif job.status == "waiting":
+                text += " · waits for a cut"
+            elif pr.get("total"):
+                text += f" · {round(100 * (pr.get('done') or 0) / pr['total'])}%"
+            return {"text": text, "tone": "busy"}
+        # the furthest step reached decides (a project made in the terminal may have a cut and no brief)
+        if (d / "picks.json").exists():
+            return {"text": "Cut ready for Premiere", "tone": "done"}
+        if (d / "shotmap.json").exists():
+            return {"text": "Ready to cut", "tone": "todo"}
+        if not (d / "overview.md").exists():
+            drive = self._drive(p.get("folder", ""))
+            return {"text": "Footage not read" + ("" if drive["connected"] else f" · plug in {drive['name'] or 'the drive'}"), "tone": "todo"}
+        brief = d / "brief.md"
+        if not brief.exists() or not brief.read_text().strip():
+            return {"text": "Needs the brief", "tone": "todo"}
+        return {"text": "Needs the plan", "tone": "todo"}
+
+    def _cut_needs(self, p: dict) -> dict | None:
+        """How many takes the plan can use, and how many of those still need the drive (no full footage map yet)."""
+        try:
+            from videtor.analyze import footmap
+            from videtor.cli import _pool_entries
+            from videtor.cli import _slug as cli_slug
+            from videtor.plan import library
+
+            d = Path(p["dir"])
+            m = json.loads((d / "shotmap.json").read_text())
+            index = json.loads((self.root / "kb" / "footage" / f"{cli_slug(p['name'])}.json").read_text())
+            entries = _pool_entries(index, m.get("key") or p["key"])
+            classes = json.loads((d / "classes.json").read_text()) if (d / "classes.json").exists() else {}
+            cands = library.candidates(entries, classes, m) if library.wanted_classes(m) else entries
+            todo = sum(1 for e in cands if not footmap.is_done(e, self.root / "cache" / "footmap"))
+            return {"takes": len(cands), "pool": len(entries), "to_decode": todo}
+        except (OSError, ValueError, KeyError, TypeError):
+            return None
+
+    def _steps(self, p: dict, out: dict, job) -> tuple[list[dict], dict]:
+        """The project's steps with their state (done / running / todo / blocked / optional) and the one thing to do next."""
+        d = Path(p["dir"])
+        running = job.kind if job else None
+        footage = (d / "overview.md").exists()
+        brief = bool(out["brief"].strip())
+        has_plan = bool(out["shotmap"].strip())
+        plan = has_plan and not out["errors"]
+        cut = out["picks"] is not None
+
+        def state(done: bool, run: bool = False, ready: bool = True) -> str:
+            return "running" if run else "done" if done else "todo" if ready else "blocked"
+
+        steps = [
+            {"id": "overview", "label": "Footage", "state": state(footage, running == "prep")},
+            {"id": "brief", "label": "Brief & plan", "state": state(plan, False, footage or running == "prep" or has_plan)},
+            {"id": "tools", "label": "Music & search", "state": "optional"},
+            {"id": "cut", "label": "Cut", "state": state(cut, running == "cut", plan)},
+            {"id": "look", "label": "Review & export", "state": state(False, running == "look", cut)},
+        ]
+        drive, needs = out["drive"], out.get("cut_needs") or {}
+        plug = f"Plug in {drive['name'] or 'the footage drive'}"
+        # the furthest step reached decides what comes next
+        if running == "prep":
+            nxt = {"text": "Videtor is reading the footage. Paste the brief meanwhile.", "tab": "brief"}
+        elif running == "cut":
+            nxt = {"text": "Cutting. The review opens when it is done.", "tab": "cut"}
+        elif cut:
+            nxt = {"text": "Review the shots, then import the XML into Premiere.", "tab": "look"}
+        elif has_plan and out["errors"]:
+            nxt = {"text": f"Fix the plan: {len(out['errors'])} problem(s), listed under Edit the plan.", "tab": "brief"}
+        elif has_plan:
+            nxt = ({"text": f"{plug}: {needs['to_decode']} takes still need reading from it. Then cut.", "tab": "cut"}
+                   if needs.get("to_decode") and not drive["connected"] else {"text": "Cut it.", "tab": "cut"})
+        elif not footage:
+            nxt = {"text": (f"{plug}, then read the footage again." if not drive["connected"] else "The footage has not been read yet."),
+                   "tab": "overview", "action": "reprep" if drive["connected"] and p.get("folder") else None}
+        elif not brief:
+            nxt = {"text": "Paste the client's brief.", "tab": "brief"}
+        else:
+            nxt = {"text": "Get the plan written from the brief: copy the request on Brief & plan into Claude Code.", "tab": "brief"}
+        return steps, nxt
 
     def api_fs(self, path: str) -> dict:
         p = Path(path or "/Volumes").expanduser()
@@ -159,8 +276,35 @@ class App:
         if body.get("workers"):
             args += ["--workers", str(int(body["workers"]))]
         project = self.add_project(name, str(folder), str(out_root / name))
-        job = self.jobs.submit("prep", f"prep {name}", args, project=project["dir"])
+        job = self.jobs.submit("prep", f"Read the footage · {name}", args, project=project["dir"])
         return {"job": job.to_dict(), "project": project}
+
+    def api_reprep(self, body: dict) -> dict:
+        """Read a project's footage again, with the folder and name it was made with (after a failure or a drive swap)."""
+        p = self._project(body.get("project", ""))
+        if not p:
+            return {"error": "unknown project"}
+        return self.api_prep({"folder": p.get("folder", ""), "out": str(Path(p["dir"]).parent), "name": p["name"]})
+
+    def api_scan(self, path: str) -> dict:
+        """What a footage folder holds, for the New project form: video files, their size, the drive (stops after 5 s)."""
+        root = Path(path).expanduser()
+        if not root.is_dir():
+            return {"error": f"not a folder: {root}"}
+        n, size, t0, partial = 0, 0, time.time(), False
+        for here, dirs, files in os.walk(root):
+            dirs[:] = [x for x in dirs if not x.startswith(".")]
+            for f in files:
+                if not f.startswith(".") and Path(f).suffix.lower() in VIDEO_EXT:
+                    n += 1
+                    try:
+                        size += os.path.getsize(os.path.join(here, f))
+                    except OSError:
+                        pass
+            if time.time() - t0 > 5:
+                partial = True
+                break
+        return {"path": str(root), "videos": n, "gb": round(size / 1e9, 1), "partial": partial, "drive": self._drive(str(root))}
 
     def _project(self, dir_: str) -> dict | None:
         return next((p for p in self.state["projects"] if p["dir"] == dir_), None)
@@ -201,11 +345,14 @@ class App:
         except ValueError as exc:
             errors = [f"not valid JSON: {exc}"]
         if errors:
-            return {"error": "the shot map has problems: " + "; ".join(errors)}
+            return {"error": "The plan has problems: " + "; ".join(errors)}
+        needs, drive = self._cut_needs(p), self._drive(p.get("folder", ""))
+        if needs and needs["to_decode"] and not drive["connected"]:
+            return {"error": f"Plug in {drive['name'] or 'the footage drive'} first: {needs['to_decode']} of the {needs['takes']} takes the plan can use still need reading from it."}
         args = ["cut", str(shotmap), "--out", p["dir"]]
         if body.get("sfx") is False:
             args.append("--no-sfx")
-        job = self.jobs.submit("cut", f"cut {p['name']}", args, project=p["dir"])
+        job = self.jobs.submit("cut", f"Cut · {p['name']}", args, project=p["dir"])
         return {"job": job.to_dict()}
 
     def api_look(self, body: dict) -> dict:
@@ -220,7 +367,7 @@ class App:
         for sid, note in (body.get("notes") or {}).items():
             if note:
                 args += ["--note", f"{sid}={note}"]
-        job = self.jobs.submit("look", f"second look {p['name']}: " + ", ".join(f"{k}={v}" for k, v in choices.items()), args, project=p["dir"])
+        job = self.jobs.submit("look", f"Review swap · {p['name']}: " + ", ".join(f"{k}={v}" for k, v in choices.items()), args, project=p["dir"])
         return {"job": job.to_dict()}
 
     def api_music(self, body: dict) -> dict:
@@ -230,7 +377,7 @@ class App:
         args = ["music", str(folder), "--length", str(float(body.get("length") or 25))]
         if body.get("reveal_at"):
             args += ["--reveal-at", str(float(body["reveal_at"]))]
-        job = self.jobs.submit("music", f"music {folder.name}", args, project=body.get("project"))
+        job = self.jobs.submit("music", f"Rank music · {folder.name}", args, project=body.get("project"))
         return {"job": job.to_dict()}
 
     def api_search(self, body: dict) -> dict:
@@ -238,7 +385,7 @@ class App:
         if not p or not body.get("query"):
             return {"error": "a project and a query are needed"}
         args = ["search", "-", body["query"], "--key", p["key"], "--top", str(int(body.get("top") or 12))]
-        job = self.jobs.submit("search", f"search {p['name']}: {body['query'][:40]}", args, project=p["dir"])
+        job = self.jobs.submit("search", f"Search · {p['name']}: {body['query'][:40]}", args, project=p["dir"])
         return {"job": job.to_dict()}
 
     def api_library_build(self, body: dict) -> dict:
@@ -254,14 +401,14 @@ class App:
         if body.get("transcribe") is False:
             args.append("--no-transcribe")
         lib = self.add_library(name, [str(f) for f in folders], str(out_dir))
-        job = self.jobs.submit("library", f"library {name}", args, project=lib["dir"])
+        job = self.jobs.submit("library", f"Sort the footage · {name}", args, project=lib["dir"])
         return {"job": job.to_dict(), "library": lib}
 
     def api_library_learn(self, body: dict) -> dict:
         out_dir = body.get("out", "")
         if not Path(out_dir, "library.json").exists():
             return {"error": "no library there yet"}
-        job = self.jobs.submit("learn", f"learn {Path(out_dir).name}", ["library", "learn", out_dir], project=out_dir)
+        job = self.jobs.submit("learn", f"Learn your sorting · {Path(out_dir).name}", ["library", "learn", out_dir], project=out_dir)
         return {"job": job.to_dict()}
 
     def api_library_move(self, body: dict) -> dict:
@@ -321,6 +468,15 @@ class App:
             out["picks"] = self._picks_view(json.loads(picks_p.read_text()))
             xml = d / f"{p['name']}.xml"
             out["xml"] = str(xml) if xml.exists() else next((str(x) for x in d.glob("*.xml")), None)
+        job = self._active_job(p["dir"])
+        out["drive"] = self._drive(p.get("folder", ""))
+        out["status"] = self._status(p)
+        out["job"] = job.to_dict() if job else None
+        with self.jobs.lock:
+            mine = [j for j in self.jobs.jobs.values() if j.project == p["dir"]]
+        out["last_job"] = mine[-1].to_dict() if mine else None
+        out["cut_needs"] = self._cut_needs(p) if out["shotmap"].strip() and not out["errors"] else None
+        out["steps"], out["next"] = self._steps(p, out, job)
         return out
 
     def _picks_view(self, picks: dict) -> dict:
@@ -463,6 +619,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(self.app.api_state())
         if path == "/api/fs":
             return self._json(self.app.api_fs(q.get("path", "")))
+        if path == "/api/scan":
+            return self._json(self.app.api_scan(q.get("path", "")))
         if path == "/api/project":
             return self._json(self.app.api_project(q.get("dir", "")))
         if path == "/api/library":
@@ -481,7 +639,7 @@ class Handler(BaseHTTPRequestHandler):
                   "/api/search": self.app.api_search, "/api/library/build": self.app.api_library_build, "/api/library/learn": self.app.api_library_learn,
                   "/api/library/move": self.app.api_library_move, "/api/project/save": self.app.api_project_save, "/api/validate": self.app.api_validate,
                   "/api/reveal": self.app.api_reveal, "/api/pick-folder": self.app.api_pick_folder, "/api/project/add": self.app.api_project_add,
-                  "/api/library/add": self.app.api_library_add}
+                  "/api/library/add": self.app.api_library_add, "/api/reprep": self.app.api_reprep}
         if path in routes:
             try:
                 return self._json(routes[path](body))
@@ -508,6 +666,7 @@ def main(port: int = 8765, window: bool = True, out_root: Path = Path("out"), lo
     os.chdir(root)
     videtor_cmd = [str(root / ".venv" / "bin" / "videtor")] if (root / ".venv" / "bin" / "videtor").exists() else ["videtor"]
     app = App(root, videtor_cmd, out_root=out_root, log=log)
+    app.notify = True
     try:
         httpd = serve(app, port=port)
     except OSError as exc:
