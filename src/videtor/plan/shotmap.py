@@ -39,6 +39,9 @@ for a shoot unlike the bucket's edits.
 `scale`, `face`, `hands` and `camera` are soft filters: a shot that misses one
 loses points but can still win. `speed` below 1 asks for slow motion and is
 honoured only on high-frame-rate takes.
+`classes` (on the map) and a slot's `class` name the library's shot types the cut may draw on
+(`videtor library`: wide, close-up, talking-head, interview-bite, b-roll). After a sparse `prep`
+only those takes (and the ones slots name in `takes`) are decoded in full; without them, every take is.
 """
 
 from __future__ import annotations
@@ -51,6 +54,7 @@ import numpy as np
 SCALES = {"detail", "close", "medium", "wide"}
 FACES = {"none", "partial", "full", "any"}
 CAMERAS = {"steady", "moving", "any"}
+LIBRARY_CLASSES = {"wide", "close-up", "talking-head", "interview-bite", "b-roll"}  # plan/library.py's CLASSES
 
 
 def slots(m: dict) -> list[dict]:
@@ -72,12 +76,17 @@ def validate(m: dict) -> list[str]:
         out.append("length_s is missing")
     if not slots(m):
         out.append("no slots")
+    if set(m.get("classes") or []) - LIBRARY_CLASSES:
+        out.append(f"classes must be among {sorted(LIBRARY_CLASSES)}")
     seen = set()
     for s in slots(m):
         sid = s.get("id")
         if not sid or sid in seen:
             out.append(f"slot id missing or repeated: {sid!r}")
         seen.add(sid)
+        c = s.get("class")
+        if set([c] if isinstance(c, str) else c or []) - LIBRARY_CLASSES:
+            out.append(f"{sid}: class must be among {sorted(LIBRARY_CLASSES)}")
         if not s.get("show") and not s.get("black"):
             out.append(f"{sid}: show is empty")
         if s.get("ramp") and not (isinstance(s["ramp"], list) or s["ramp"] in ("arrival", "punch")):

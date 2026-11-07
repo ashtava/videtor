@@ -28,10 +28,15 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    with no card yet: plan from `kb/notes.md` and the nearest bucket, and say so. Put `"bucket"` in the
    shot map: the cut then adds the bucket's keeper score (what the user's edits of it keep) to every slot.
 2. **Prepare the footage.**
-   - New folder: `videtor prep "<folder>" --name <name>` (drive connected; about 5 min per
-     25 min of footage). It indexes, samples stills, detects sideways cameras, builds the
-     per-second footage map, and writes `out/<name>/overview.md` + `overview-*.jpg`. When it
-     prints that the drive can be unplugged, tell the user. The shot-map key is
+   - New folder: `videtor prep "<folder>" --name <name>` (drive connected; minutes: it reads every take
+     from its keyframes on every core). It indexes, detects sideways cameras, sorts the takes into the
+     library's shot types (`out/<name>/classes.json`: wide, close-up, talking-head, interview-bite,
+     b-roll) and writes `out/<name>/overview.md` + `overview-*.jpg`. The full footage map is built by
+     `videtor cut`, only for the takes the shot map's `classes` (or a slot's `class`) allow, so **the
+     drive stays connected until the cut**; tell the user when the cut prints that it can be unplugged.
+     Name the classes in the shot map (a brand reel: `["close-up", "b-roll", "wide"]`; bytes come from
+     `talking-head` and `interview-bite`); a map without them decodes every take. `--dense` is the old
+     way (every second of every take now, about real time per hour of XAVC). The shot-map key is
      `<name>::footage`.
    - Indexed project without a map: `.venv/bin/python -m videtor.analyze.footmap <mount> --key KEY`.
    - A big shoot, or one to read by shot type first: `videtor library build "<folder>" --name <name>` (minutes:
@@ -106,7 +111,8 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
      for a shot you have seen and want (a sign, an arrival before a photographer walks in).
    - `skip` leaves out takes by path pattern (a second camera's folder, `"*/drive-download-*/*"`);
      `sfx_skip` leaves out SFX kinds (`["shutter"]` when the flashes are party lights, not cameras).
-7. **Cut.** `videtor cut out/<name>/shotmap.json` writes `picks.json`, the second-look sheets and
+7. **Cut.** `videtor cut out/<name>/shotmap.json` (drive connected after a keyframe prep: it first decodes
+   in full the takes the map's classes allow and says how many) writes `picks.json`, the second-look sheets and
    `<name>.xml`: picks on V1, two alternates per slot on V2-V3 switched off, music on A1 with a
    fade-out, SFX in the user's style on their own track (`--no-sfx` to leave them out), Basic
    Motion per camera type (the user's own habit, else fill the frame; landscape takes in a

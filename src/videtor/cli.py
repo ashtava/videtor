@@ -547,6 +547,7 @@ def kb_benchmark(
 # --- cutting from a brief ------------------------------------------------------------
 
 FOOTMAP_OPTION = typer.Option(Path("cache/footmap"), "--footmap", help="Footage map folder (videtor footmap).")
+SPARSE_OPTION = typer.Option(Path("cache/sparse"), "--cache", help="Where the keyframe scan of every clip is kept (videtor.analyze.sparse).")
 
 
 def _index_for(mount: Path, kb_dir: Path) -> dict:
@@ -632,13 +633,19 @@ def prep(
     folder: Path = typer.Argument(..., help="A folder of raw footage on any drive, never edited before."),
     name: str = typer.Option(..., "--name", help="A short project name, e.g. 'nike-teaser'; the brief's shot map uses it."),
     workers: int = typer.Option(None, "--workers", help="Decode processes for the footage map (default: the machine's performance cores)."),
+    sparse: bool = typer.Option(True, "--sparse/--dense", help="Read every take from its keyframes (minutes; the cut decodes what the map needs) or map every second now (hours)."),
     kb_dir: Path = KB_OPTION,
     frames_dir: Path = typer.Option(Path("cache/frames"), "--frames"),
     footmap_dir: Path = FOOTMAP_OPTION,
+    sparse_dir: Path = SPARSE_OPTION,
     out_root: Path = typer.Option(Path("out"), "--out"),
 ) -> None:
-    """Get unknown footage ready for a brief: index it, sample it, turn sideways cameras upright, map every
-    second, and write an overview of what it holds. Prints the shot-map key and when the drive can be unplugged."""
+    """Get unknown footage ready for a brief: index it, read every take from its keyframes (faces, speech, CLIP,
+    the library's shot types), turn sideways cameras upright and write an overview of what it holds, in minutes on
+    every core. The cut then decodes in full only the takes the shot map can use (drive connected). `--dense` maps
+    every second of every take now instead, as before, and says when the drive can be unplugged."""
+    from collections import Counter
+
     from videtor.analyze import footmap, parallel
     from videtor.plan import fill, overview
 
@@ -659,8 +666,15 @@ def prep(
         index_path.write_text(json.dumps(index, indent=1) + "\n")
     pool = footmap.pool(index, key)
     console.print(f"      {len(pool)} takes in the pool, {sum((e['media'] or {}).get('duration_s', 0) for e in pool) / 60:.1f} min")
-    console.print("[2/5] stills: 3 per take")
-    footage.extract_frames({**index, "files": pool}, frames_dir, workers=max(4, parallel.workers()), log=lambda s: None)
+    if sparse:
+        from videtor.analyze import sparse as sparse_mod
+
+        console.print("[2/5] keyframe map: stills, faces, hands, speech and CLIP from every take's keyframes, on every core")
+        sparse_mod.scan(pool, sparse_dir, workers=workers, log=lambda s: console.print(f"      {s}"))
+        sparse_mod.copy_overview_stills(pool, sparse_dir, frames_dir)
+    else:
+        console.print("[2/5] stills: 3 per take")
+        footage.extract_frames({**index, "files": pool}, frames_dir, workers=max(4, parallel.workers()), log=lambda s: None)
     try:
         from videtor.analyze import orientation
     except ImportError:
@@ -680,6 +694,21 @@ def prep(
         index_path.write_text(json.dumps(index, indent=1) + "\n")
     else:
         console.print("[3/5] orientation: detector not installed; sideways cameras stay as shot")
+    if sparse:
+        from videtor.plan import library
+
+        console.print("[4/5] shot types: the library's classes for every take (kb/library: your labels and model, else the rules)")
+        classes = library.classes_for(pool, sparse_dir, kb_dir)
+        (out_root / name).mkdir(parents=True, exist_ok=True)
+        (out_root / name / "classes.json").write_text(json.dumps(classes, indent=1) + "\n")
+        counts = Counter(c["class"] for c in classes.values())
+        console.print("      " + ", ".join(f"{counts.get(c, 0)} {c}" for c in library.CLASSES) + f"  →  {out_root / name / 'classes.json'}")
+        takes = sparse_mod.as_takes(pool, sparse_dir)
+        md, sheets = overview.write(takes, fill.Pool(takes), sparse_dir / "frames", out_root / name, name)
+        console.print(f"[5/5] overview: {md}  ·  {len(sheets)} contact sheet(s)")
+        console.print(f"Shot-map key: {key!r}. Next: write {out_root / name / 'shotmap.json'} from the brief, naming the classes it draws on "
+                      f"(\"classes\" or a slot's \"class\"), then videtor cut it with {mount} connected: the cut decodes in full only the takes the map can use.")
+        return
     console.print("[4/5] footage map: 2 samples a second of every take")
     result = footmap.build_pool(index, key, workers=workers, cache_dir=footmap_dir, log=lambda s: console.print(f"      {s}"))
     console.print(f"      {result.get('built', 0)} built, {result.get('already_done', 0)} already mapped, {len(result.get('failed') or {})} failed")
@@ -690,15 +719,48 @@ def prep(
     console.print(f"Shot-map key: {key!r}. Next: write {out_root / name / 'shotmap.json'} from the brief, then videtor cut it.")
 
 
-def _takes_for(index: dict, key: str, footmap_dir: Path) -> tuple[list, int]:
-    """The pool's takes that have a footage map, and how many takes the pool has."""
-    from videtor.plan import fill
-
-    entries = [
+def _pool_entries(index: dict, key: str) -> list[dict]:
+    """The pool's video takes: what a cut may draw on."""
+    return [
         f for f in _pool_for(index, key)
         if f["kind"] == "video" and not f.get("duplicate_of") and not footage.is_render(f["path"]) and (f.get("media") or {}).get("duration_s")
     ]
-    return fill.load_takes(entries, footmap_dir), len(entries)
+
+
+def _takes_for(index: dict, key: str, footmap_dir: Path, sparse_dir: Path | None = None) -> tuple[list, int]:
+    """The pool's takes that have a footage map, and how many takes the pool has. With `sparse_dir`, takes
+    without a footage map come from the keyframe map instead (search and the overview, not a cut)."""
+    from videtor.plan import fill
+
+    entries = _pool_entries(index, key)
+    takes = fill.load_takes(entries, footmap_dir)
+    if sparse_dir is not None:
+        from videtor.analyze import sparse
+
+        have = {t.fid for t in takes}
+        takes += sparse.as_takes([e for e in entries if e["fid"] not in have], sparse_dir)
+    return takes, len(entries)
+
+
+def _takes_for_cut(index: dict, m: dict, out: Path, footmap_dir: Path, sparse_dir: Path, kb_dir: Path) -> tuple[list, int]:
+    """The takes a cut scores: the pool narrowed to the shot map's classes (after a sparse prep), decoded in
+    full now when they aren't yet (drive connected)."""
+    from videtor.analyze import footmap
+    from videtor.plan import fill, library
+
+    entries = _pool_entries(index, m["key"])
+    cands = entries
+    wanted = library.wanted_classes(m)
+    if wanted:
+        classes_p = out / "classes.json"
+        classes = json.loads(classes_p.read_text()) if classes_p.exists() else library.classes_for(entries, sparse_dir, kb_dir)
+        cands = library.candidates(entries, classes, m)
+        console.print(f"classes {', '.join(sorted(wanted))}: {len(cands)} of {len(entries)} takes can serve this map")
+    todo = [e for e in cands if not footmap.is_done(e, footmap_dir)]
+    if todo:
+        console.print(f"footage map: decoding {len(todo)} takes in full ({sum(e['media']['duration_s'] for e in todo) / 60:.1f} min of footage); keep the drive connected")
+        footmap.build_pool({**index, "files": cands}, m["key"], cache_dir=footmap_dir, log=lambda s: console.print(f"      {s}"))
+    return fill.load_takes(cands, footmap_dir), len(entries)
 
 
 @app.command()
@@ -729,17 +791,19 @@ def search(
     key: str = typer.Option(..., "--key"),
     top: int = typer.Option(12, "--top"),
     footmap_dir: Path = FOOTMAP_OPTION,
+    sparse_dir: Path = SPARSE_OPTION,
     kb_dir: Path = KB_OPTION,
 ) -> None:
-    """Find moments by description: the best-matching half-second of each take, best takes first."""
+    """Find moments by description: the best-matching half-second of each take, best takes first. Takes without a
+    footage map are searched on their keyframe map (a sparse prep)."""
     import numpy as np
 
     from videtor.analyze import tags
     from videtor.plan import fill
 
-    takes, n = _takes_for(_index_for_key(key, kb_dir, mount), key, footmap_dir)
+    takes, n = _takes_for(_index_for_key(key, kb_dir, mount), key, footmap_dir, sparse_dir)
     if not takes:
-        console.print(f"No footage map for {key!r} yet ({n} takes in the pool). Run: python -m videtor.analyze.footmap {mount} --key {key!r}")
+        console.print(f"No footage map for {key!r} yet ({n} takes in the pool). Run: videtor prep, or python -m videtor.analyze.footmap {mount} --key {key!r}")
         raise typer.Exit(1)
     pool = fill.Pool(takes)
     z = pool.similarity(tags.embed_texts([query]))
@@ -749,7 +813,8 @@ def search(
         _, _, moving, steady = pool.camera(t)
         camera = "moving" if moving[i] else "steady" if steady[i] else "-"
         table.add_row(f"{score:+.2f}", t.name, f"{t.a['t'][i]:.1f}s", str(t.scale[i]), str(int(t.a["hands"][i])), camera)
-    console.print(f"{len(takes)} of {n} takes mapped")
+    k = sum(1 for t in takes if getattr(t, "sparse", False))
+    console.print(f"{len(takes)} of {n} takes mapped" + (f" ({k} on the keyframe map only: moments to the nearest keyframe, camera unknown)" if k else ""))
     console.print(table)
 
 
@@ -865,19 +930,21 @@ def cut(
     sheets: bool = typer.Option(True, "--sheets/--no-sheets", help="Write second-look contact sheets."),
     sfx: bool = typer.Option(True, "--sfx/--no-sfx", help="Place SFX in your style (kb/sfx.json) on their own tracks."),
     footmap_dir: Path = FOOTMAP_OPTION,
+    sparse_dir: Path = SPARSE_OPTION,
     kb_dir: Path = KB_OPTION,
     beats_dir: Path = typer.Option(Path("cache/beats"), "--beats"),
 ) -> None:
-    """Cut from a shot map: fill every slot from the footage map; writes picks.json, the second-look sheets and the Premiere XML."""
+    """Cut from a shot map: fill every slot from the footage map; writes picks.json, the second-look sheets and the
+    Premiere XML. After a sparse prep it first decodes in full the takes the map's classes allow (drive connected)."""
     from videtor.analyze import tags
     from videtor.plan import benchmark, fill, second_look, shotmap
 
     m = shotmap.load(shotmap_path)
     out = out or shotmap_path.parent
     out.mkdir(parents=True, exist_ok=True)
-    takes, n = _takes_for(_index_for_key(m["key"], kb_dir, mount), m["key"], footmap_dir)
+    takes, n = _takes_for_cut(_index_for_key(m["key"], kb_dir, mount), m, out, footmap_dir, sparse_dir, kb_dir)
     if not takes:
-        console.print(f"No footage map for {m['key']!r} ({n} takes in the pool). Run: python -m videtor.analyze.footmap {mount} --key {m['key']!r}")
+        console.print(f"No footage map for {m['key']!r} ({n} takes in the pool). Connect the drive and cut again, or: python -m videtor.analyze.footmap {mount} --key {m['key']!r}")
         raise typer.Exit(1)
     music, beats_rel = _music_for(m, beats_dir)
     times = shotmap.timing(m, beats_rel, float(m.get("fps", 25)))
@@ -1134,9 +1201,6 @@ def look(
         picks["sfx"] = _place_sfx(picks, KB_DIR_DEFAULT, Path("cache/beats"), Path("cache/footmap"))
     path = _write_cut(picks, picks_path.parent, mu if mu and (mu.get("duration_s") or mu.get("segments")) else None)
     console.print(f"{len(chosen)} slots swapped · Premiere XML: {path}")
-
-
-SPARSE_OPTION = typer.Option(Path("cache/sparse"), "--cache", help="Where the keyframe scan of every clip is kept (videtor.analyze.sparse).")
 
 
 @library_app.command("build")

@@ -31,6 +31,7 @@ import json
 import math
 import os
 import re
+import shutil
 import subprocess
 import tempfile
 import time
@@ -59,7 +60,7 @@ _PTS = re.compile(r"pts_time:\s*([-\d.]+)")
 
 
 def still_path(cache_dir: Path, fid: str, i: int) -> Path:
-    return Path(cache_dir) / "frames" / f"{fid}_{i:03d}.jpg"
+    return Path(cache_dir) / "frames" / f"{fid}_{i:04d}.jpg"  # the footage map's naming, so the overview reads either
 
 
 def record_path(cache_dir: Path, fid: str) -> Path:
@@ -116,7 +117,7 @@ def _stills_pass(path: str, duration: float, fid: str, cache_dir: Path, hw: bool
     """One decode of every keyframe, thinned to at most MAX_STILLS spaced `step` apart; returns their times."""
     step = max(MIN_STEP_S, duration / MAX_STILLS)
     vf = f"select='isnan(prev_selected_t)+gte(t-prev_selected_t,{step:.3f})',scale={STILL_WIDTH}:-2,showinfo"
-    out = str(Path(cache_dir) / "frames" / f"{fid}_%03d.jpg")
+    out = str(Path(cache_dir) / "frames" / f"{fid}_%04d.jpg")
     cmd = _base_cmd(hw, threads) + ["-i", path, "-map", "0:V:0", "-vf", vf, "-fps_mode", "passthrough", "-frames:v", str(MAX_STILLS),
                                     "-start_number", "0", "-q:v", str(JPEG_Q), out]
     rc, err = _run(cmd, 120 + 2 * duration)
@@ -346,3 +347,53 @@ def scan(
     log(f"sparse map: {summary['built']} built, {summary['already_done']} already done, {len(summary['failed'])} failed, "
         f"{timer} wall ({summary['seconds']['clips']:.0f}s in workers, {summary['seconds']['embed']:.0f}s CLIP)")
     return summary
+
+
+# --- the sparse map in the planner ------------------------------------------------------
+
+MOTION_KEYS = ("cam_dx", "cam_dy", "cam_zoom", "cam_rot", "shake", "subject_motion")
+
+
+def as_takes(entries: list[dict], cache_dir: Path = CACHE_DIR) -> list:
+    """The scanned entries as planner takes (fill.Take) built from the sparse map: one sample per still with
+    CLIP, faces and sharpness as measured, the camera-motion arrays NaN (the filler then reads the camera as
+    unknown) and `sparse` True. Enough for the overview, for search and for choosing what to decode in full."""
+    from videtor.plan.fill import Take
+
+    out = []
+    for e in entries:
+        if not is_done(e, cache_dir):
+            continue
+        rec = load(e["fid"], cache_dir)
+        a, n = rec["a"], int(rec["n"])
+        arrays = {k: np.asarray(a[k]) for k in STILL_KEYS}
+        arrays["emb"] = np.asarray(a["emb"], np.float16)
+        arrays.update({k: np.full(n, np.nan, np.float32) for k in MOTION_KEYS})
+        arrays["jump"] = np.zeros(n, bool)
+        media = e.get("media") or {}
+        video = media.get("video") or {}
+        out.append(Take(fid=e["fid"], path=e["path"], name=e.get("basename") or os.path.basename(e["path"]),
+                        fps=float(rec.get("fps") or video.get("fps") or 25), duration_s=float(rec["duration_s"]),
+                        width=video.get("width") or rec.get("stored_w"), height=video.get("height") or rec.get("stored_h"),
+                        audio_channels=int((media.get("audio") or {}).get("channels") or 0),
+                        display_w=int(rec["display_w"]), display_h=int(rec["display_h"]), rotation=0, a=arrays, sparse=True))
+    return out
+
+
+def copy_overview_stills(entries: list[dict], cache_dir: Path = CACHE_DIR, frames_dir: Path = Path("cache/frames"), per_clip: int = 3) -> int:
+    """The three stills per clip that the orientation check, `kb analyze` and the stills sheets read from
+    cache/frames (<fid>_0..2.jpg), copied from the keyframe stills so a sparse prep makes no second pass over
+    the drive. Returns how many were written."""
+    frames_dir = Path(frames_dir)
+    frames_dir.mkdir(parents=True, exist_ok=True)
+    written = 0
+    for e in entries:
+        meta = footmap._read_json(record_path(cache_dir, e["fid"]))
+        n = int((meta or {}).get("n") or 0)
+        for i in range(per_clip if n else 0):
+            dst = frames_dir / f"{e['fid']}_{i}.jpg"
+            src = still_path(cache_dir, e["fid"], min(n - 1, int(n * (i + 0.5) / per_clip)))
+            if not dst.exists() and src.exists():
+                shutil.copyfile(src, dst)
+                written += 1
+    return written

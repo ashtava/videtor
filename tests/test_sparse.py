@@ -106,6 +106,29 @@ class ScanTests(unittest.TestCase):
         again = sparse.scan([self.entry], self.cache, log=logs.append, embed=fake_embed, detect=one_face)
         self.assertEqual((again["built"], again["already_done"]), (0, 1))
 
+    def test_the_sparse_map_serves_the_planner_as_takes(self):
+        from videtor.plan import fill
+
+        sparse.scan([self.entry], self.cache, log=lambda _: None, embed=fake_embed, detect=one_face)
+        takes = sparse.as_takes([self.entry, {**self.entry, "fid": "unscanned"}], self.cache)
+        self.assertEqual(len(takes), 1)
+        t = takes[0]
+        self.assertTrue(t.sparse)
+        n = len(t.a["t"])
+        self.assertEqual(t.a["emb"].shape, (n, 512))
+        self.assertTrue(np.isnan(t.a["cam_dx"]).all() and np.isnan(t.a["shake"]).all())
+        self.assertEqual(t.a["jump"].shape, (n,))
+        self.assertEqual(list(t.scale), ["close"] * n)
+        pool = fill.Pool(takes)
+        z = pool.similarity(fake_embed([None]))
+        self.assertEqual(len(z[0]), n)
+        _, _, moving, steady = pool.camera(t)
+        self.assertFalse(moving.any() or steady.any())  # the camera is unknown on a keyframe map
+        frames = self.tmp / "frames"
+        self.assertEqual(sparse.copy_overview_stills([self.entry], self.cache, frames), 3)
+        self.assertTrue(all((frames / f"{self.entry['fid']}_{i}.jpg").exists() for i in range(3)))
+        self.assertEqual(sparse.copy_overview_stills([self.entry], self.cache, frames), 0)
+
     def test_a_bad_clip_is_reported_and_the_rest_built(self):
         bad = {"fid": "bad", "path": str(self.tmp / "none.mov"), "basename": "none.mov", "media": {"duration_s": 2}}
         s = sparse.scan([bad, self.entry], self.cache, log=lambda _: None, embed=fake_embed, detect=one_face)

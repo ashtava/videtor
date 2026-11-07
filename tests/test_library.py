@@ -156,6 +156,39 @@ class BiteTests(unittest.TestCase):
             shutil.rmtree(tmp, ignore_errors=True)
 
 
+class CandidateTests(unittest.TestCase):
+    """Which takes a shot map can use, by the library's classes."""
+
+    def setUp(self):
+        self.entries = [{"fid": f, "path": f"/V/{n}", "basename": n} for f, n in (("a", "C0001.MP4"), ("b", "C0002.MP4"), ("c", "C0003.MP4"), ("d", "C0004.MP4"))]
+        self.classes = {"a": {"class": "wide"}, "b": {"class": "close-up"}, "c": {"class": "talking-head"}}  # d was never scanned
+
+    def test_a_map_without_classes_keeps_every_take(self):
+        m = {"sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x"}]}]}
+        self.assertEqual(library.wanted_classes(m), set())
+        self.assertEqual(library.candidates(self.entries, self.classes, m), self.entries)
+
+    def test_map_and_slot_classes_narrow_the_pool_and_unscanned_takes_stay(self):
+        m = {"classes": ["wide"], "sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x", "class": "close-up"}]}]}
+        self.assertEqual(library.wanted_classes(m), {"wide", "close-up"})
+        self.assertEqual([e["fid"] for e in library.candidates(self.entries, self.classes, m)], ["a", "b", "d"])
+
+    def test_a_byte_slot_admits_the_speech_classes_and_named_takes_always_pass(self):
+        m = {"classes": ["wide"], "sections": [{"name": "s", "slots": [{"id": "b-1", "show": "x", "byte": True, "takes": ["C0003*@1-3"]}]}]}
+        self.assertEqual(library.wanted_classes(m), {"wide", "talking-head", "interview-bite"})
+        m2 = {"classes": ["wide"], "sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x", "takes": ["C0002*"]}]}]}
+        self.assertEqual([e["fid"] for e in library.candidates(self.entries, self.classes, m2)], ["a", "b", "d"])
+
+    def test_the_shot_map_validator_knows_the_classes(self):
+        from videtor.plan import shotmap
+
+        base = {"version": 1, "length_s": 10, "sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x", "beats": 1, "class": "b-roll"}]}]}
+        self.assertEqual(shotmap.validate({**base, "classes": ["wide", "close-up"]}), [])
+        self.assertTrue(any("classes must be" in e for e in shotmap.validate({**base, "classes": ["wides"]})))
+        bad = {**base, "sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x", "beats": 1, "class": ["b-roll", "x"]}]}]}
+        self.assertTrue(any("class must be" in e for e in shotmap.validate(bad)))
+
+
 class FolderTests(unittest.TestCase):
     def test_link_names_keep_the_folder_when_two_cards_share_a_file_number(self):
         entries = [{"fid": "a", "path": "/V/Sam/Card 1/C0101.MP4", "basename": "C0101.MP4"}, {"fid": "b", "path": "/V/Sam/Card 2/C0101.MP4", "basename": "C0101.MP4"},

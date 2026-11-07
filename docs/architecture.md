@@ -14,13 +14,15 @@ stands, see `docs/status.md`.
    └─ kb sfx, kb breakdown, kb keeper, kb bucket                (sound habits, edit breakdowns, the keeper, bucket cards)
 
  a new shoot (/Volumes/<drive>/<folder>)
-   └─ videtor prep → index, stills, orientation, footage map (2 samples/s), out/<name>/overview.md + sheets
-   └─ videtor library build → sparse map (keyframes only, cache/sparse) → out/library/<name>/<class>/ links, sheets, bites.xml
-        └─ the user moves links → videtor library learn → kb/library/{labels,model}.json → the next build sorts with it
+   └─ videtor prep → index, sparse map (keyframes only, cache/sparse), orientation, the library's classes
+   │                 (out/<name>/classes.json), out/<name>/overview.md + sheets: minutes. --dense maps every second now
+   └─ videtor library build → sparse map → out/library/<name>/<class>/ links, sheets, bites.xml
+        └─ the user moves links → videtor library learn → kb/library/{labels,model}.json → the next build and prep sort with it
 
  a brief ──► Claude (/cut-from-brief) reads the bucket card, kb/notes.md, the overview, search sheets
               └─ writes out/<name>/shotmap.json                 (sections → slots: what each shot must show)
-                   └─ videtor cut → picks.json, second-look sheets, cut-sheet.jpg, <name>.xml
+                   └─ videtor cut → the footage map (2 samples/s, camera motion) for the takes the map's classes allow
+                        → picks.json, second-look sheets, cut-sheet.jpg, <name>.xml
                         └─ Claude's second look → videtor look <id>=<take> → the XML again
                              └─ the user imports into Premiere and fixes the cut
                                   └─ kb.readback (--live / --xml) → kb/feedback → kb learn → kb/taste.json → next cut
@@ -33,7 +35,7 @@ translation, the music choice when none is given, reading contact sheets, and th
 
 | Area | Module | What it does |
 |---|---|---|
-| CLI | `cli.py` | `videtor <command>` (typer): `prep orient music search cut look cut-interview cut-mv finish plan export analyze ingest` and `kb ...` |
+| CLI | `cli.py` | `videtor <command>` (typer): `prep orient music search cut look cut-interview cut-mv finish plan export analyze ingest`, `kb ...` and `library ...`. `prep` is sparse by default; `cut` narrows the pool to the map's classes (`library.candidates`) and decodes those takes in full before filling |
 | | `mcp_server.py` | The brief-to-cut steps as MCP tools (registered in `.mcp.json`) |
 | Knowledge base | `kb/xmeml.py` | Reads Premiere FCP7 xmeml exports into dataclasses (stdlib only). Nests, Time Remap, transitions' −1 ends |
 | | `kb/metrics.py`, `kb/profile.py` | Style numbers per sequence, rolled up per bucket |

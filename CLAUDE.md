@@ -59,9 +59,10 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 
 - **Machine:** M2 Pro, 16 GB, macOS 26.3.1. Premiere Pro 26.0.2 (UXP), Resolve 19.1.4 Studio.
 - **Footage** is on external drives under `/Volumes` (the map is in `docs/status.md`):
-  - `prep` and the steadying pass in `cut` need the drive connected;
+  - `prep` (keyframes, minutes) and the first `cut` of a shot map (it decodes the takes the map's classes
+    allow in full, plus the steadying pass) need the drive connected;
   - the XML needs it to play;
-  - `cut` and `look` otherwise run from `cache/`.
+  - a re-cut and `look` otherwise run from `cache/`.
 - **Slow decode:** Sony XAVC 4:2:2 10-bit decodes in software (about real time per worker, and CPU-bound: more
   workers don't help), so a big shoot's `prep` takes 30-60 min. Run it in the background and read stills meanwhile
   (`scripts/stills_sheets.py`). `videtor library build "<folder>" --name <name>` reads a shoot from its keyframes

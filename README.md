@@ -246,14 +246,23 @@ where nobody sings, slowed to 50% from 50/100 fps.
 ### Footage you have never edited
 
 ```sh
-uv run videtor prep "/Volumes/Drive/Shoot" --name nike-teaser   # index, stills, orientation, footage map, overview (all cores; --workers N to cap)
-# read out/nike-teaser/overview.md and overview-*.jpg, write out/nike-teaser/shotmap.json (key "nike-teaser::footage")
-uv run videtor cut out/nike-teaser/shotmap.json                  # picks, second-look sheets, cut sheet, Premiere XML
+uv run videtor prep "/Volumes/Drive/Shoot" --name nike-teaser   # index, keyframe map, orientation, shot types, overview: minutes, all cores
+# read out/nike-teaser/overview.md and overview-*.jpg, write out/nike-teaser/shotmap.json (key "nike-teaser::footage"),
+# naming the classes it draws on ("classes": ["close-up", "b-roll"], or a slot's "class")
+uv run videtor cut out/nike-teaser/shotmap.json                  # decodes those takes in full (drive connected), then picks, sheets, Premiere XML
+uv run videtor prep "/Volumes/Drive/Shoot" --name nike-teaser --dense   # the old way: map every second of every take now (hours)
 ```
 
-`prep` gives the folder its own index (`kb/footage/<name>.json`), so a drive's
-existing index is never touched; it says when the drive can be unplugged (after the
-footage map's decode). Cameras held sideways are found from the stills (faces only
+`prep` reads every take from its keyframes (`videtor.analyze.sparse`, the same pass
+the library uses: faces, hands, speech, CLIP, a motion proxy), sorts the takes into
+the library's shot types (`out/<name>/classes.json`, with your labels and model from
+`kb/library/` when they exist) and writes the overview, in minutes. The full footage
+map (2 samples a second with camera motion) is built by `cut`, only for the takes the
+shot map's classes allow and the ones its slots name, so the drive stays connected
+until the cut; a map that names no class decodes everything, as before. `search`
+works on the keyframe map until then (moments to the nearest keyframe, camera
+unknown). `prep` gives the folder its own index (`kb/footage/<name>.json`), so a
+drive's existing index is never touched. Cameras held sideways are found from the stills (faces only
 appear once the frame is turned) and turned upright before analysis and in the cut; a
 sideways camera that shot nothing with a face stays as shot, so check the overview and
 fix it with `videtor orient <name> --camera <prefix> --rotate -90` (or `--take <file>`);

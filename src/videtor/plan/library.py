@@ -694,6 +694,50 @@ def learn(out: Path, cache_dir: Path, kb_dir: Path, log: Log = print, embed_text
     return result
 
 
+def classes_for(entries: list[dict], cache_dir: Path, kb_dir: Path, embed_texts: Callable | None = None) -> dict[str, dict]:
+    """{fid: {class, conf, by}} for every scanned entry: the user's labels first, then their model, then the rules."""
+    if embed_texts is None:
+        from videtor.analyze import tags
+
+        embed_texts = tags.embed_texts
+    records = {e["fid"]: sparse.load(e["fid"], cache_dir) for e in entries if sparse.is_done(e, cache_dir)}
+    decided = classify(records, prompt_embeddings(embed_texts), load_model(kb_dir), load_labels(kb_dir))
+    return {fid: {"class": d["class"], "conf": d["conf"], "by": d["by"]} for fid, d in decided.items()}
+
+
+def wanted_classes(m: dict) -> set[str]:
+    """The classes a shot map draws on: its `classes`, every slot's `class`, and the speech classes for bytes."""
+    from videtor.plan import shotmap
+
+    wanted = set(m.get("classes") or [])
+    for s in shotmap.slots(m):
+        c = s.get("class")
+        wanted |= set([c] if isinstance(c, str) else c or [])
+        if s.get("byte"):
+            wanted |= {"talking-head", "interview-bite"}
+    return wanted
+
+
+def candidates(entries: list[dict], classes: dict[str, dict], m: dict) -> list[dict]:
+    """The pool's takes a shot map can use: every take when the map names no class; else the takes of the
+    wanted classes, the takes a slot names by pattern, and takes with no class (never scanned)."""
+    import fnmatch
+
+    from videtor.plan import shotmap
+
+    wanted = wanted_classes(m)
+    if not wanted:
+        return list(entries)
+    patterns = [t.split("@", 1)[0] for s in shotmap.slots(m) for t in s.get("takes") or []]
+    out = []
+    for e in entries:
+        c = (classes.get(e["fid"]) or {}).get("class")
+        name = e.get("basename") or os.path.basename(e["path"])
+        if c is None or c in wanted or any(fnmatch.fnmatch(name, p) for p in patterns):
+            out.append(e)
+    return out
+
+
 def run_build(folders: list[Path], out: Path, cache_dir: Path = sparse.CACHE_DIR, kb_dir: Path = Path("kb"), workers: int | None = None,
               copy: bool = False, extract: bool = False, transcribe: bool = True, fresh: bool = False, log: Log = print) -> dict:
     """Index the folders, scan what isn't scanned, then build (or rebuild) the library at `out`."""

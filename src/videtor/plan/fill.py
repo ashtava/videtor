@@ -69,6 +69,7 @@ class Take:
     display_h: int
     rotation: int  # degrees the editor rotates this take in Premiere (Basic Motion), e.g. -90 for sideways camcorders
     a: dict  # footage map arrays
+    sparse: bool = False  # built from the keyframe map (analyze/sparse.py): no camera motion, a sample per keyframe
 
     @property
     def scale(self) -> np.ndarray:
@@ -81,6 +82,8 @@ class Take:
     @property
     def cam_speed(self) -> np.ndarray:
         a = self.a
+        if self.sparse:  # the keyframe map measured no camera motion: unknown, not still
+            return np.full(len(a["t"]), np.nan, np.float32)
         speed = np.hypot(a["cam_dx"], a["cam_dy"]) + 0.5 * np.abs(a["cam_zoom"]) + np.abs(a["cam_rot"]) / 90.0
         return np.nan_to_num(speed, nan=0.0)
 

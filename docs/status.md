@@ -49,6 +49,7 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
 | Date | What | Code | Result |
 |---|---|---|---|
 | 11-07 | **The footage library**, `videtor library build \| learn \| status`: a shoot sorted into wide / close-up / talking-head / interview-bite / b-roll folders (links to the clips), a contact sheet per class, every interview bite as a Premiere sequence (`interview-bite/bites.xml` + `bites.md`), `library.md` with the reasons and the clips worth a look. Rules first; `learn` reads the user's folder moves back as labels and fits a model the next build uses. Keyframes only, every core, no Claude at run time | `plan/library.py`, `analyze/sparse.py` (the keyframe-only map, `cache/sparse/`), `analyze/parallel.py`, `kb/library/` | TPL, both folders the user named (786 clips, 5.9 h): the scan took 11 min 15 s on 8 workers, none failed; Whisper on the 159 speaker clips (136 min of audio) 12 min 45 s the first time; a rebuild with the caches 5 min 49 s. Sorted: 77 wide, 158 close-up, 83 talking-head, 68 interview-bite, 400 b-roll; 903 bites (132 min, 751 with clean edges); 115 clips flagged for a look; 58 of the 61 Master Cam takes read as talking heads (the other 3 have no speech or a walk-in). 15 clips are copies (Sam's Card 3 holds Master Cam files). `out/library/tpl/` |
+| 11-07 | **Sparse-first prep and cut** (after the user closed the decisions): `prep` now reads a shoot from its keyframes (the library's pass), sorts the takes into the library's classes (`out/<name>/classes.json`) and writes the overview in minutes; `cut` narrows the pool to the shot map's `classes` / a slot's `class` (plus named takes and the speech classes for bytes) and decodes only those takes in full, then fills as before. `search` falls back to the keyframe map. `--dense` keeps the old way | `cli.py` (`prep`, `_takes_for_cut`, `search`), `analyze/sparse.py` (`as_takes`, `copy_overview_stills`), `plan/library.py` (`classes_for`, `candidates`), `plan/shotmap.py` (`classes`, `class`) | Smoke test on Jatin's Card 1 (68 takes, 18 min): `prep` 17 s with the scan cached; a 4-slot map with `classes: ["close-up"]` decoded 52 of 68 takes (8.4 min of HEVC) in 107 s on 8 hardware sessions and filled every slot; XML written. The drive now stays connected until the cut |
 | 11-07 | **Parallel passes**: workers sized to the Mac (performance cores, memory, `VIDETOR_WORKERS`), ffmpeg thread caps, the footage map's face and hand detections in up to 4 worker processes with CLIP in the main process, steadying measured side by side, `prep` and `orient --workers` default to the machine instead of 3 | `analyze/parallel.py`, `analyze/footmap.py`, `plan/stabilize.py`, `cli.py` | Measured (`docs/architecture.md`): a 4K XAVC H.264 software decode is CPU-bound (one ffmpeg fills 10 cores), so the footage map can't run faster than about 2.5-3× real time whatever the worker count; thread caps gain 15%, HEVC goes to the hardware decoder many at a time, and the content stage (49 ms per sample, the hand landmarker most of it) now runs 4-wide. The keyframe-only pass is 8-10× cheaper, which is why the library reads 5.9 h in 11 min |
 
 ## Waiting on the user
@@ -57,7 +58,8 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    it back: `.venv/bin/python -m videtor.kb.readback out/<name>/picks.json --live` (say so before touching
    Premiere) or `--xml <export>`, then `videtor kb learn`. No real feedback is recorded yet: `kb/feedback/` is
    empty and there's no `kb/taste.json`.
-2. **The offline plan** (below): whether to build step 1.
+2. **The offline plan** (below): approved. On 2026-11-07 the user wrote "all the open decisions are checked and
+   can be closed. move ahead." Step 1 follows the library's cut integration.
 3. **Bucket material:**
    - Their own XML exports of the colourstone (interview) and Check (music video) edits; the footage is
      already mapped.
@@ -66,7 +68,8 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
      ad, maybe a celebrity/fashion BTS bucket split off for Guru.
 4. **A Premiere check** of `out/guru-25s-brief/guru-25s-brief-sfx.xml`: do the SFX levels and `#` in file
    paths come through?
-5. **Claude Desktop** was installed by the user on 2026-11-01, who said they set up the MCP and made a workflow.
+5. **Claude Desktop** (closed by the user on 2026-11-07, nothing pending; Claude Code desktop is the platform in
+   use) was installed by the user on 2026-11-01, who said they set up the MCP and made a workflow.
    - At Desktop's 13:43 start its config had no `mcpServers`, and its log said "no stdio servers
      connected", so Videtor isn't loaded in Desktop yet.
    - The user has the snippet. Claude doesn't edit that config.
@@ -77,18 +80,18 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
        the repo lists it.
      - The skill runs every command from the main checkout.
      - `.claude/worktrees/` is gitignored, and the hook pushes a worktree session's branch.
-6. **GitHub visibility:** `github.com/ashtava/videtor` is public (checked 2026-11-01).
+6. **GitHub visibility** (closed 2026-11-07: the user decided, the repo stays public): `github.com/ashtava/videtor`
+   is public (checked 2026-11-01).
    - It holds the user's Premiere XMLs (`.xml-exports/`) and footage indexes (`kb/footage/`) with client file
      names and paths, and the auto-push publishes every change.
    - Raised with the user, who decides whether to make it private.
-7. **The TPL library** (`out/library/tpl`, built 11-07): open the five folders or `sheets/<class>-N.jpg`, move
-   the wrong links into the right folders, then run `videtor library learn out/library/tpl` and build again
-   (`videtor library build "/Volumes/Paritosh_3/TPL/Videos" "/Volumes/Paritosh_2/TPL Promo/Master Cam" --name tpl`).
-   The 115 clips under "worth a look" in `library.md` come first. Also whether the five classes are the right
-   ones: a tight detail of an object sits in close-up, a two-person interview in talking-head, stage mics and
-   podium speeches in interview-bite, and everything with people mid-frame not speaking to camera in b-roll.
+7. **The TPL library** (`out/library/tpl`, built 11-07): the user looked and said "the current segregation is
+   perfect, might need very little changes but can proceed with it". So `learn` ran on the folders as they are:
+   786 labels in `kb/library/labels.json`, a model with cross-validated accuracy 0.884 in `kb/library/model.json`.
+   When a clip is wrong, move its link and run `videtor library learn out/library/tpl` again; the next build
+   keeps it there.
 
-## The offline proposal (2026-11-01, not yet approved)
+## The offline proposal (2026-11-01, approved 2026-11-07)
 
 The user asked how much is pushed to Claude, whether frames are sent, and why the code keeps changing. The
 answer given:
@@ -177,14 +180,16 @@ Not built; the source is in brackets.
 - Resolve import hasn't been checked (Phase 2). Resolve 19.1.4 Studio has external scripting for later.
 - Offline steps 1-3 (above).
 - **The library's next steps** [11-07]: transcription runs after the scan, not alongside it (13 min on top of
-  the 11 min scan for TPL); the sparse map could feed `search` and a sparse-first `cut` (dense-decode only the
-  candidate takes), which would take a big shoot's `prep` from an hour to minutes; "speech" is the WebRTC VAD,
+  the 11 min scan for TPL); the sparse-first `prep`/`cut` is built (above) but narrows by class only, not yet
+  by each slot's best candidates, so a map that draws on b-roll still decodes every b-roll take; the
+  orientation check runs after the keyframe scan, so a camera it turns keeps as-shot stills and classes until
+  the cut's full decode; "speech" is the WebRTC VAD,
   which hears the PA, so a listener in a single medium shot can read as a bite until the user's labels say
   otherwise; CLIP's "stage" prompts tell a podium from an interview setup, a plain wall behind a vox pop can
   still read as a setup.
 - `cut` itself: `fill` is single-threaded numpy (90 s on Alpha Summit) and the sheets and SFX placement are
   serial; small next to the footage map. [11-07]
-- **The MCP server lags the CLI** (found 2026-11-01). `mcp_server.cut` and `apply_look` are Round 4 copies of
+- **The MCP server lags the CLI** (found 2026-11-01; fixing it approved 2026-11-07). `mcp_server.cut` and `apply_look` are Round 4 copies of
   the CLI code.
   - Missing: SFX placement, steadying, byte levelling, the bucket keeper, taste corrections, `sfx_skip`,
     beds, flash frames, the cut and match sheets.

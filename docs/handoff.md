@@ -103,20 +103,18 @@ The details are in `docs/status.md`.
   - Blind test 3 (Diwali v1): not good. That led to the event moves, buckets and the v2 re-cut.
   - Blind tests 2 (Check Hai music video), 4 (ET Alpha Summit) and 5 (engagement): awaiting verdicts. So is
     Diwali v2.
-- **Open decisions the user hasn't answered:**
-  - build offline step 1;
-  - make the MCP server call the CLI's code (and add a `prep` tool);
-  - whether to make the public GitHub repo private (it holds client XMLs and footage indexes);
-  - connect Videtor to Desktop chat;
-  - what the "workflow" they said they created in Claude Desktop is (never seen).
+- **Decisions, all closed on 2026-11-07** (the user: "all the open decisions are checked and can be closed. move
+  ahead"): offline step 1 is approved; the MCP server calling the CLI's code (plus `prep` and library tools) is
+  approved; the repo stays public; Desktop chat and the "workflow" need nothing. Don't raise them again.
 - **Waiting on the user:**
   - XML exports of their own colourstone and Check edits, to seed the interview and music-video buckets;
   - 3-5 edits per bucket.
 - **Platform:** set up on 2026-11-04. `/cut-from-brief` is a personal skill, the auto-push hook is live,
   and Claude Code desktop is installed.
 - **Built 2026-11-07:** `videtor library` (a shoot sorted by shot type into folders, offline, on every core,
-  learning from the user's moves) and the parallel footage map; see `docs/status.md`. The TPL library is at
-  `out/library/tpl`; the user's next step there is to move wrong links and run `videtor library learn out/library/tpl`.
+  learning from the user's moves), the parallel footage map, and the sparse-first `prep`/`cut` (prep reads
+  keyframes in minutes; the cut decodes only the takes the map's classes allow); see `docs/status.md`. The TPL
+  library at `out/library/tpl` is accepted and learnt (786 labels). Next in line: MCP parity, then offline step 1.
 
 ## 5. Your first reply
 
