@@ -195,8 +195,13 @@ def source_seconds(pick: dict, length_s: float) -> float:
 def plan(picks: dict, log=print) -> int:
     """Measure every V1 pick (flicker sub-shots aside, too short to shake) and set its `stab`; returns how many
     shots get keyframes. Needs the drive: a pick whose take cannot be read stays as shot."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    from videtor.analyze import parallel
+
     W, H = int(picks["width"]), int(picks["height"])
     done = 0
+    todo = []
     for slot in picks["slots"]:
         p = slot.get("pick")
         if not p or p.get("pieces") or slot.get("black"):
@@ -205,7 +210,11 @@ def plan(picks: dict, log=print) -> int:
         if slot.get("stabilize") is False or slot.get("byte") or slot["length_s"] < MIN_SHOT_S or not Path(p["path"]).exists():
             p.pop("stab", None)  # a byte is on a tripod: what moves there is the speaker
             continue
-        s = measure(p, source_seconds(p, slot["length_s"]), W, H)
+        todo.append((slot, p))
+    # each shot's frames come from its own ffmpeg, so the measurements run side by side; the results are applied in slot order
+    with ThreadPoolExecutor(max_workers=parallel.workers(len(todo))) as pool:
+        measured = list(pool.map(lambda sp: measure(sp[1], source_seconds(sp[1], sp[0]["length_s"]), W, H), todo))
+    for (slot, p), s in zip(todo, measured):
         if s and s["jitter_px"] > MAX_JITTER_PX:
             p["reasons"].append(f"left as shot: its move ({s['jitter_px']} px) is a whip or a subject crossing, not shake")
             s = None

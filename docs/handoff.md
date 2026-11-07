@@ -114,6 +114,9 @@ The details are in `docs/status.md`.
   - 3-5 edits per bucket.
 - **Platform:** set up on 2026-11-04. `/cut-from-brief` is a personal skill, the auto-push hook is live,
   and Claude Code desktop is installed.
+- **Built 2026-11-07:** `videtor library` (a shoot sorted by shot type into folders, offline, on every core,
+  learning from the user's moves) and the parallel footage map; see `docs/status.md`. The TPL library is at
+  `out/library/tpl`; the user's next step there is to move wrong links and run `videtor library learn out/library/tpl`.
 
 ## 5. Your first reply
 

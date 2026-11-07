@@ -34,6 +34,10 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
      prints that the drive can be unplugged, tell the user. The shot-map key is
      `<name>::footage`.
    - Indexed project without a map: `.venv/bin/python -m videtor.analyze.footmap <mount> --key KEY`.
+   - A big shoot, or one to read by shot type first: `videtor library build "<folder>" --name <name>` (minutes:
+     keyframes only, every core, no Claude) sorts every clip into `out/library/<name>/{wide,close-up,talking-head,
+     interview-bite,b-roll}/` with a sheet per class, `library.md` and the interview bites as a Premiere sequence
+     (`interview-bite/bites.xml`). Read the sheets instead of thousands of stills; `prep` is still needed to cut.
    - Another shoot left on the same card (other dates in the file names, another event in the stills):
      mark those files `"excluded": true` in `kb/footage/<name>.json`, and they stay out of every pool. If
      prep is decoding them, stop it and run it again (Alpha Summit: the 22 May clips).

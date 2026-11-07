@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import math
 import shutil
@@ -273,6 +274,22 @@ class DecodeTests(unittest.TestCase):
         self.assertTrue((m["faces"] == 0).all() and np.isnan(m["face_box"]).all() and (m["face_area"] == 0).all())
         again = footmap.build_pool(index, KEY, workers=1, stage="all", cache_dir=self.cache, log=logs.append, embed=fake_embed, detect=fake_detect)
         self.assertEqual((again["already_done"], again["decoded"], again["built"]), (1, 0, 0))
+
+    @unittest.skipUnless(importlib.util.find_spec("mediapipe") is not None, "needs mediapipe (uv sync)")
+    def test_detections_run_in_worker_processes(self):
+        """The real content path: faces and hands found in worker processes, CLIP (faked) merged in this one."""
+        e = self.entries["static"]
+        cache = self.tmp / "footmap-pool"
+        index = {"mount": str(self.tmp), "roots": {KEY: [str(self.tmp)]}, "files": [e]}
+        logs = []
+        footmap.build_pool(index, KEY, workers=1, stage="decode", cache_dir=cache, log=logs.append)
+        summary = footmap.build_pool(index, KEY, workers=1, stage="content", cache_dir=cache, log=logs.append, embed=fake_embed, content_workers=2)
+        self.assertEqual((summary["built"], summary["complete"], summary["failed"]), (1, 1, {}), logs)
+        self.assertTrue(any("2 detection worker(s)" in line for line in logs))
+        m = footmap.load(e["fid"], cache)
+        self.assertEqual(m["faces"].shape, m["t"].shape)
+        self.assertEqual(m["emb"].shape, (len(m["t"]), 512))
+        self.assertTrue((m["faces"] >= 0).all() and (m["hands"] >= 0).all())
 
     def test_a_missing_file_fails_alone(self):
         e = {**self.entries["static"], "fid": "missing00000", "path": str(self.tmp / "gone.mp4")}

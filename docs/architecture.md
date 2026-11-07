@@ -15,6 +15,8 @@ stands, see `docs/status.md`.
 
  a new shoot (/Volumes/<drive>/<folder>)
    └─ videtor prep → index, stills, orientation, footage map (2 samples/s), out/<name>/overview.md + sheets
+   └─ videtor library build → sparse map (keyframes only, cache/sparse) → out/library/<name>/<class>/ links, sheets, bites.xml
+        └─ the user moves links → videtor library learn → kb/library/{labels,model}.json → the next build sorts with it
 
  a brief ──► Claude (/cut-from-brief) reads the bucket card, kb/notes.md, the overview, search sheets
               └─ writes out/<name>/shotmap.json                 (sections → slots: what each shot must show)
@@ -44,6 +46,8 @@ translation, the music choice when none is given, reading contact sheets, and th
 | | `analyze/faces.py`, `tags.py` | MediaPipe faces, hands and shot scale; CLIP ViT-B/32 tags and embeddings |
 | | `analyze/footmap.py` | Every take sampled twice a second (CLIP embedding, faces, hands, focus, exposure) with camera motion at 8 fps (LK flow + partial affine): the per-second map everything searches |
 | | `analyze/orientation.py` | Sideways or upside-down cameras found from faces turned four ways (camera majority ≥ 3 at 70%) |
+| | `analyze/parallel.py` | How many processes and ffmpeg threads this machine gets (performance cores, memory, `VIDETOR_WORKERS`), and `run(fn, items)` over them with each item's failure captured |
+| | `analyze/sparse.py` | The keyframe-only map of a clip: at most 24 stills (`-skip_frame nokey`, seeks over 60 s), faces, hands, VAD speech, the shift between stills, CLIP; `cache/sparse/` |
 | | `analyze/beats.py` | Beat grid, loudness and onset curves per track (`cache/beats/`) |
 | | `analyze/speech.py` | Local Whisper (mlx-whisper large-v3-turbo) with word timings; a fumble finder |
 | | `analyze/sync.py` | Lip-sync: each take's camera audio matched to the master by onset envelopes, stretch by stretch, 2× playback included |
@@ -54,7 +58,8 @@ translation, the music choice when none is given, reading contact sheets, and th
 | | `plan/moves.py` | Ramps (arrival, punch), flicker, stack, black, flash frames, beds, medley music |
 | | `plan/music.py` | Library scan, best window, ranking for fast cuts (`videtor music`) |
 | | `plan/sfx.py` | Places risers, impacts, whooshes, shutters and clicks the way the user does |
-| | `plan/stabilize.py` | Keyframe steadying (below) |
+| | `plan/stabilize.py` | Keyframe steadying (below); the shots are measured side by side |
+| | `plan/library.py` | A shoot sorted into wide / close-up / talking-head / interview-bite / b-roll folders from the sparse map: rules first, then a model learnt from the user's moves (`kb/library/`); the bites as a Premiere sequence |
 | | `plan/interview.py` | A-roll paper edit (`aroll.json`), B-roll by region, voice levelling, music dips, finishing pass (ramps, zooms, Warp flags) |
 | | `plan/musicvideo.py` | Beat-grid lip-sync cut with shares per singer, cutaways moved by whole bars, beam search (`mv.json`) |
 | | `plan/second_look.py`, `sheets.py`, `overview.py` | Contact sheets for Claude or the user; `look` applies choices |
@@ -78,6 +83,9 @@ translation, the music choice when none is given, reading contact sheets, and th
 | `cache/frames/` (1.0 GB) | Sampled stills per clip (`<fid>_N.jpg`) | |
 | `cache/analysis/`, `beats/`, `transcripts/`, `sync/`, `stab/`, `probe/` | Per-clip analyses, beat grids, Whisper transcripts, synced camera audio, stabiliser measurements, probe frames | All rebuildable, but slowly |
 | `cache/models/` (1.5 GB) | BlazeFace, hand landmarker, Whisper large-v3-turbo | CLIP lives in `~/.cache/huggingface` (1.4 GB) |
+| `cache/sparse/` | Per clip: `<fid>.json`, `<fid>.npz` (stills' arrays and CLIP), `frames/<fid>_<i>.jpg` (keyframe stills, 480 px) | `videtor library build`; minutes per shoot, resumable |
+| `kb/library/` | `labels.json` (path → class, read from the user's folder moves), `model.json` (the logistic regression) | `videtor library learn` |
+| `out/library/<name>/` | One folder per class holding links to the clips, `sheets/<class>-N.jpg`, `interview-bite/bites.xml` + `bites.md`, `library.json`, `library.md`, `index.json` | The user sorts by moving links |
 | `out/<name>/` | Per cut: `brief.md`, `shotmap.json` (or `aroll.json`/`mv.json`), `picks.json`, `<name>.xml`, `overview*`, `second-look-*.jpg`, `cut-sheet.jpg`, `report.md`, `work/` | `report.md` is the record of what was delivered |
 
 `cache/` and `out/` are gitignored, so that media and derived data never get committed.
@@ -166,6 +174,26 @@ These were checked against the user's own exports and projects; don't re-derive 
   - it covers V1 shots of 0.5 s or more, skipping bytes, black, flickers and shakes over 40 px;
   - on real takes it removes about 50-65% of the shake.
 
+## Parallelism and decode costs (measured 2026-11-07, M2 Pro 8+4 cores, 16 GB, USB SSDs)
+
+- **A 4K 4:2:2 10-bit H.264 (XAVC) full decode is CPU-bound.** One ffmpeg takes about 10 cores for 138 fps
+  (2.8× real time at 50p): 64 CPU-seconds per 18 s of footage. More decode workers can't make the footage map
+  faster than that; capping each ffmpeg at `-threads 2` makes it 15% cheaper per frame, which is what the pool
+  does now (`parallel.ffmpeg_threads`).
+- **HEVC 4:2:2 10-bit decodes in hardware** (VideoToolbox): 1.4 CPU-seconds per 8 s clip, and four sessions at
+  once ran 2.4× faster than one, so hardware takes are worth decoding many at a time.
+- **Keyframes only** (`-skip_frame nokey`) cost 0.13-0.15 s per 4K keyframe, single-threaded, 8-10× less than a
+  full decode. A seek to one keyframe costs about 0.7 s on USB (the file's index is read each time), so clips
+  over 60 s are sampled by 24 seeks and shorter ones in one pass. Sony cards keep a keyframe every 12 frames
+  (25p) or every 24-40 (50p).
+- **The content stage, per 480 px still:** PIL load 1 ms, BlazeFace 4.5 ms, the hand landmarker 14 ms, CLIP
+  ViT-B/32 on MPS 6 ms (4 ms forward, batched). The hands are the cost, so the footage map now runs its
+  detections in up to 4 processes and keeps CLIP in the main process (one model on the GPU).
+- `analyze/parallel.py` sizes every pass: workers = the performance cores (8), capped by memory (0.9 GB per 4K
+  software decode, 4 GB kept free) and by the items; `VIDETOR_WORKERS` overrides. `prep`, the footage map,
+  the sparse map, the stills and the steadying measurements all use it; `videtor prep --workers` is no longer
+  3 by default.
+
 ## Where Claude is in the loop
 
 - **Local on the Mac:** all per-frame work (footage map, faces, CLIP, motion), Whisper, music analysis, the
@@ -182,5 +210,5 @@ These were checked against the user's own exports and projects; don't re-derive 
 
 ## Tests
 
-`.venv/bin/python -m unittest discover -s tests`: 266 tests in about 15 s, with synthetic fixtures (no drive
+`.venv/bin/python -m unittest discover -s tests`: 291 tests in about 20 s, with synthetic fixtures (no drive
 needed). The parser and metrics use only the standard library.

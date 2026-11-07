@@ -62,8 +62,12 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   - `prep` and the steadying pass in `cut` need the drive connected;
   - the XML needs it to play;
   - `cut` and `look` otherwise run from `cache/`.
-- **Slow decode:** Sony XAVC 4:2:2 10-bit decodes in software (about real time per worker), so a big shoot's
-  `prep` takes 30-60 min. Run it in the background and read stills meanwhile (`scripts/stills_sheets.py`).
+- **Slow decode:** Sony XAVC 4:2:2 10-bit decodes in software (about real time per worker, and CPU-bound: more
+  workers don't help), so a big shoot's `prep` takes 30-60 min. Run it in the background and read stills meanwhile
+  (`scripts/stills_sheets.py`). `videtor library build "<folder>" --name <name>` reads a shoot from its keyframes
+  alone in minutes (all cores, no Claude) and sorts it by shot type; the footage map is still needed to cut.
+- **Parallel passes** are sized by `analyze/parallel.py` (performance cores, memory); `VIDETOR_WORKERS=4` lowers
+  it when the Mac is busy with Premiere.
 - **Claude Code desktop** (set up 2026-11-04) reads the same `~/.claude` and project settings as the CLI.
   - `scripts/setup-claude-code.sh` links the skill into `~/.claude/skills/`, so `/cut-from-brief` works from
     any folder (checked in a session opened outside the repo), and makes sure the auto-push hook is set up.
@@ -78,10 +82,11 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 ```
 src/videtor/  cli.py · mcp_server.py · kb/ (past edits, read-back) · analyze/ (per clip, per second)
               plan/ (shot map → picks; moves, music, SFX, steadying, interview, music video) · export/ (xmeml writer)
-kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ ...
+kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ library/ ...
 .xml-exports/ the user's Premiere exports: the knowledge base's source
-cache/        derived data, about 5 GB (footage maps took hours with the drives connected: don't delete)
+cache/        derived data, about 5 GB (footage maps took hours with the drives connected: don't delete); sparse/ holds the keyframe maps
 out/<name>/   one folder per cut: brief.md, shotmap.json, picks.json, <name>.xml, sheets, report.md, work/
+out/library/<name>/  a shoot sorted by shot type (videtor library): wide/ close-up/ talking-head/ interview-bite/ b-roll/ (links), sheets/, bites.xml, library.md
 scripts/      helpers and archived experiments (not imported by the CLI)
 docs/         handoff.md · status.md · architecture.md · architecture.html (the original 10-29 design page)
 private/      local-only context: the first session's messages and reports, a memory snapshot

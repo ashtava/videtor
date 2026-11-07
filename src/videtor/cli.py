@@ -20,6 +20,11 @@ app = typer.Typer(
 )
 kb_app = typer.Typer(help="Knowledge base built from your past edits.", no_args_is_help=True)
 app.add_typer(kb_app, name="kb")
+library_app = typer.Typer(
+    help="Your footage sorted by shot type into folders (wide, close-up, talking head, interview bite, B-roll), offline, on every core; it learns from how you move things.",
+    no_args_is_help=True,
+)
+app.add_typer(library_app, name="library")
 console = Console()
 
 KB_DIR_DEFAULT = Path("kb")
@@ -582,7 +587,7 @@ def orient(
     rotate: int = typer.Option(..., "--rotate", help="Premiere's turn: -90 (counter-clockwise), 90, 180, or 0 to undo."),
     take: list[str] = typer.Option([], "--take", help="A take's file name (repeatable)."),
     camera: str = typer.Option(None, "--camera", help="Every take whose file name starts with this, e.g. M2U."),
-    workers: int = typer.Option(3, "--workers"),
+    workers: int = typer.Option(None, "--workers", help="Decode processes (default: the machine's performance cores)."),
     kb_dir: Path = KB_OPTION,
     footmap_dir: Path = FOOTMAP_OPTION,
     out_root: Path = typer.Option(Path("out"), "--out"),
@@ -626,7 +631,7 @@ def _mount_of(folder: Path) -> Path:
 def prep(
     folder: Path = typer.Argument(..., help="A folder of raw footage on any drive, never edited before."),
     name: str = typer.Option(..., "--name", help="A short project name, e.g. 'nike-teaser'; the brief's shot map uses it."),
-    workers: int = typer.Option(3, "--workers", help="Decode processes for the footage map."),
+    workers: int = typer.Option(None, "--workers", help="Decode processes for the footage map (default: the machine's performance cores)."),
     kb_dir: Path = KB_OPTION,
     frames_dir: Path = typer.Option(Path("cache/frames"), "--frames"),
     footmap_dir: Path = FOOTMAP_OPTION,
@@ -634,7 +639,7 @@ def prep(
 ) -> None:
     """Get unknown footage ready for a brief: index it, sample it, turn sideways cameras upright, map every
     second, and write an overview of what it holds. Prints the shot-map key and when the drive can be unplugged."""
-    from videtor.analyze import footmap
+    from videtor.analyze import footmap, parallel
     from videtor.plan import fill, overview
 
     folder = folder.expanduser().resolve()
@@ -655,7 +660,7 @@ def prep(
     pool = footmap.pool(index, key)
     console.print(f"      {len(pool)} takes in the pool, {sum((e['media'] or {}).get('duration_s', 0) for e in pool) / 60:.1f} min")
     console.print("[2/5] stills: 3 per take")
-    footage.extract_frames({**index, "files": pool}, frames_dir, log=lambda s: None)
+    footage.extract_frames({**index, "files": pool}, frames_dir, workers=max(4, parallel.workers()), log=lambda s: None)
     try:
         from videtor.analyze import orientation
     except ImportError:
@@ -1129,6 +1134,78 @@ def look(
         picks["sfx"] = _place_sfx(picks, KB_DIR_DEFAULT, Path("cache/beats"), Path("cache/footmap"))
     path = _write_cut(picks, picks_path.parent, mu if mu and (mu.get("duration_s") or mu.get("segments")) else None)
     console.print(f"{len(chosen)} slots swapped · Premiere XML: {path}")
+
+
+SPARSE_OPTION = typer.Option(Path("cache/sparse"), "--cache", help="Where the keyframe scan of every clip is kept (videtor.analyze.sparse).")
+
+
+@library_app.command("build")
+def library_build(
+    folders: list[Path] = typer.Argument(..., help="Footage folders on the drives, e.g. /Volumes/Paritosh_3/TPL/Videos."),
+    out: Path = typer.Option(None, "--out", help="The library folder (default out/library/<name>)."),
+    name: str = typer.Option(None, "--name", help="A short name for the library, e.g. tpl (default: the first folder's name)."),
+    workers: int = typer.Option(None, "--workers", help="Clips scanned at once (default: the machine's performance cores, memory permitting)."),
+    copy: bool = typer.Option(False, "--copy", help="Copy the files into the folders instead of linking them."),
+    extract: bool = typer.Option(False, "--extract", help="Also cut every interview bite to its own file (stream copy, no re-encode)."),
+    transcribe: bool = typer.Option(True, "--transcribe/--no-transcribe", help="Transcribe the speaker clips (local Whisper) to find the bites."),
+    fresh: bool = typer.Option(False, "--fresh", help="Rebuild even if clips were moved since the last build (the moves are lost unless learnt first)."),
+    cache_dir: Path = SPARSE_OPTION,
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Sort every clip under the folders into wide / close-up / talking-head / interview-bite / b-roll, with contact
+    sheets per class, a Premiere sequence of the interview bites and library.md. Offline: keyframes only, every core.
+    Move a link to another folder and `videtor library learn` to teach it."""
+    from videtor.plan import library
+
+    folders = [f.expanduser().resolve() for f in folders]
+    for f in folders:
+        if not f.is_dir():
+            console.print(f"Not a folder: {f}")
+            raise typer.Exit(1)
+    name = name or _slug(folders[0].name)
+    out = (out or Path("out") / "library" / name).expanduser()
+    try:
+        lib = library.run_build(folders, out, cache_dir=cache_dir, kb_dir=kb_dir, workers=workers, copy=copy, extract=extract,
+                                transcribe=transcribe, fresh=fresh, log=lambda s: console.print(f"  {s}"))
+    except RuntimeError as exc:
+        console.print(f"[yellow]{exc}[/]")
+        raise typer.Exit(1)
+    console.print(f"Library: {out}  ·  read {out / 'library.md'} and the sheets in {out / 'sheets'}")
+    if lib.get("bites"):
+        console.print(f"Interview bites: {lib['bites_xml']} (Premiere: File > Import) and {out / 'interview-bite' / 'bites.md'}")
+
+
+@library_app.command("learn")
+def library_learn(
+    out: Path = typer.Argument(..., help="The library folder, after you moved links between its class folders."),
+    cache_dir: Path = SPARSE_OPTION,
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Read the folders back as your labels, keep them, and fit the model the next build sorts with."""
+    from videtor.plan import library
+
+    try:
+        library.learn(out.expanduser(), cache_dir, kb_dir, log=lambda s: console.print(f"  {s}"))
+    except FileNotFoundError as exc:
+        console.print(f"[yellow]{exc}[/]")
+        raise typer.Exit(1)
+
+
+@library_app.command("status")
+def library_status(out: Path = typer.Argument(..., help="The library folder.")) -> None:
+    """What sits in each folder now, and what moved since the build."""
+    from videtor.plan import library
+
+    st = library.status(out.expanduser())
+    if not st.get("built"):
+        console.print(f"No library at {out} (no {library.LIBRARY_JSON}); run videtor library build.")
+        raise typer.Exit(1)
+    console.print(f"built {st['built_at']}: {st['clips']} clips · " + ", ".join(f"{st['counts'].get(c, 0)} {c}" for c in library.CLASSES))
+    for p, (was, now) in sorted(st["moved"].items()):
+        console.print(f"  moved: {os.path.basename(p)}  {was} -> {now}")
+    if st["missing"]:
+        console.print(f"  {len(st['missing'])} clips are in no folder any more")
+    console.print(f"{len(st['moved'])} moved since the build" + (f"; run videtor library learn {out} to keep them" if st["moved"] else ""))
 
 
 if __name__ == "__main__":

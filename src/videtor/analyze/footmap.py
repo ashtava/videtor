@@ -65,7 +65,7 @@ import sys
 import tempfile
 import threading
 import time
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import FIRST_COMPLETED, ProcessPoolExecutor, as_completed, wait
 from pathlib import Path
 from typing import Callable
 
@@ -311,12 +311,13 @@ def _plans(info: dict) -> list[tuple[bool, bool]]:
     return plans
 
 
-def _ffmpeg_cmd(path: str, info: dict, geom: dict, hw: bool, refs_only: bool, stats_path: str) -> list[str]:
+def _ffmpeg_cmd(path: str, info: dict, geom: dict, hw: bool, refs_only: bool, stats_path: str, threads: int = 0) -> list[str]:
+    """`threads` caps a software decode's threads (parallel.ffmpeg_threads), so eight workers share the cores."""
     vf = ["yadif=mode=send_frame:deint=interlaced"] if info["interlaced"] else []
     vf += [f"fps={MOTION_FPS}:round=up:start_time=0", f"scale={geom['scale_w']}:{geom['scale_h']}", *geom["rotate_filters"]]
     return [
         "ffmpeg", "-v", "error", "-nostdin",
-        *(motion_mod.HWACCEL if hw else []),
+        *(motion_mod.HWACCEL if hw else ["-threads", str(threads)] if threads else []),
         *(["-skip_frame", "noref"] if refs_only else []),
         "-noautorotate", "-i", path, "-map", "0:V:0", "-vf", ",".join(vf), "-fps_mode", "passthrough",
         "-stats_enc_pre", "file:" + stats_path, "-stats_enc_pre_fmt", "{n} {ti}",
@@ -522,7 +523,7 @@ def _frame_times(stats_path: Path, m: int) -> tuple[np.ndarray, bool]:
     return t, True
 
 
-def decode_take(entry: dict, cache_dir: Path = CACHE_DIR) -> dict:
+def decode_take(entry: dict, cache_dir: Path = CACHE_DIR, threads: int = 0) -> dict:
     """Decode stage for one take (needs the drive): writes the sample JPEGs and <fid>.decode.npz.
 
     Returns {fid, ok, seconds, error, ...}; never raises, so one bad take cannot stop a pool."""
@@ -533,7 +534,7 @@ def decode_take(entry: dict, cache_dir: Path = CACHE_DIR) -> dict:
         if decode_done(entry, cache_dir) or is_done(entry, cache_dir):
             out.update(ok=True, skipped=True)
             return out
-        out.update(_decode(entry, cache_dir))
+        out.update(_decode(entry, cache_dir, threads))
         out["ok"] = True
     except Exception as exc:  # noqa: BLE001 - logged by the caller, the pool carries on
         out["error"] = f"{type(exc).__name__}: {exc}"
@@ -541,7 +542,7 @@ def decode_take(entry: dict, cache_dir: Path = CACHE_DIR) -> dict:
     return out
 
 
-def _decode(entry: dict, cache_dir: Path) -> dict:
+def _decode(entry: dict, cache_dir: Path, threads: int = 0) -> dict:
     import cv2
 
     cv2.setNumThreads(1)
@@ -562,7 +563,7 @@ def _decode(entry: dict, cache_dir: Path) -> dict:
         os.close(fd)
         stats_path = Path(stats).resolve()
         try:
-            res = _stream(_ffmpeg_cmd(path, info, geom, hw, refs_only, str(stats_path)), geom, n, fid, cache_dir, timeout)
+            res = _stream(_ffmpeg_cmd(path, info, geom, hw, refs_only, str(stats_path), threads), geom, n, fid, cache_dir, timeout)
             frame_t, exact = _frame_times(stats_path, res["frames"])
         except (RuntimeError, OSError) as exc:
             errors.append(f"{'hw' if hw else 'sw'}{'+refs' if refs_only else ''}: {exc}")
@@ -624,20 +625,41 @@ def _faces_row(boxes: list[list[float]], hands: int) -> tuple[int, float, list[f
     return len(boxes), faces_mod.visible_area(largest), list(largest), faces_mod.is_partial(largest), int(hands)
 
 
-def content_take(entry: dict, cache_dir: Path = CACHE_DIR, embed: Callable | None = None, detect: Callable | None = None, batch: int = 32) -> dict:
-    """Content stage for one decoded take (no drive): faces, hands and CLIP over its JPEGs, merged into <fid>.npz.
+def detect_take(entry: dict, cache_dir: Path = CACHE_DIR, detect: Callable | None = None) -> dict:
+    """Faces and hands in every sample JPEG of a decoded take: the CPU half of the content stage, safe to run
+    in a worker process. Returns {n, faces, face_area, face_box, partial, hands, seconds}."""
+    from PIL import Image
 
-    `embed(list[PIL.Image]) -> (k, 512)` and `detect(rgb uint8) -> (boxes, hands)` default to tags._embed and faces.detect."""
+    if detect is None:
+        from videtor.analyze import faces as faces_mod
+
+        detect = faces_mod.detect
+    t0 = time.time()
+    cache_dir = Path(cache_dir)
+    fid = entry["fid"]
+    n = int(_decode_meta(cache_dir, fid)["n"])
+    faces = np.zeros(n, np.int8)
+    face_area = np.zeros(n, np.float32)
+    face_box = np.full((n, 4), np.nan, np.float32)
+    partial = np.zeros(n, bool)
+    hands = np.zeros(n, np.int8)
+    for i in range(n):
+        with Image.open(frame_path(cache_dir, fid, i)) as im:
+            boxes, nh = detect(np.asarray(im.convert("RGB")))
+        c, area, box, cut, nh = _faces_row(boxes, nh)
+        faces[i], face_area[i], face_box[i], partial[i], hands[i] = min(c, 127), area, box, cut, min(nh, 127)
+    return {"n": n, "faces": faces, "face_area": face_area, "face_box": face_box, "partial": partial, "hands": hands, "seconds": round(time.time() - t0, 2)}
+
+
+def finish_take(entry: dict, det: dict, cache_dir: Path = CACHE_DIR, embed: Callable | None = None, batch: int = 32) -> dict:
+    """The GPU half of the content stage: CLIP over the JPEGs, merged with the decode results and the detections
+    into <fid>.npz and its sidecar. Runs in the main process (one model on the GPU)."""
     from PIL import Image
 
     if embed is None:
         from videtor.analyze import tags
 
         embed = tags._embed
-    if detect is None:
-        from videtor.analyze import faces as faces_mod
-
-        detect = faces_mod.detect
     t0 = time.time()
     cache_dir = Path(cache_dir)
     fid = entry["fid"]
@@ -646,32 +668,29 @@ def content_take(entry: dict, cache_dir: Path = CACHE_DIR, embed: Callable | Non
     meta = json.loads(str(dec.pop("meta")))
     n = int(meta["n"])
     emb = np.zeros((n, 512), np.float32)
-    faces = np.zeros(n, np.int8)
-    face_area = np.zeros(n, np.float32)
-    face_box = np.full((n, 4), np.nan, np.float32)
-    partial = np.zeros(n, bool)
-    hands = np.zeros(n, np.int8)
     for start in range(0, n, batch):
-        idx = range(start, min(n, start + batch))
         images = []
-        for i in idx:
+        for i in range(start, min(n, start + batch)):
             with Image.open(frame_path(cache_dir, fid, i)) as im:
                 images.append(im.convert("RGB"))
         emb[start : start + len(images)] = np.asarray(embed(images), dtype=np.float32)
-        for i, im in zip(idx, images):
-            boxes, nh = detect(np.asarray(im))
-            c, area, box, cut, nh = _faces_row(boxes, nh)
-            faces[i], face_area[i], face_box[i], partial[i], hands[i] = min(c, 127), area, box, cut, min(nh, 127)
     arrays = {k: dec[k] for k in DECODE_KEYS}
-    arrays.update(emb=emb.astype(np.float16), faces=faces, face_area=face_area, face_box=face_box, partial=partial, hands=hands)
-    seconds_content = round(time.time() - t0, 2)
+    arrays.update(emb=emb.astype(np.float16), **{k: det[k] for k in ("faces", "face_area", "face_box", "partial", "hands")})
+    seconds_content = round(time.time() - t0 + float(det.get("seconds") or 0.0), 2)
     meta.update(seconds_content=seconds_content, seconds=round(meta.get("seconds_decode", 0.0) + seconds_content, 2),
                 built_at=time.strftime("%Y-%m-%dT%H:%M:%S"))
     _save_npz(cache_dir / f"{fid}.npz", **arrays)
     tmp = cache_dir / f".{fid}.json.part"
     tmp.write_text(json.dumps(meta, indent=1) + "\n")
     os.replace(tmp, cache_dir / f"{fid}.json")
-    return {"fid": fid, "n": n, "seconds": seconds_content, "face_share": float((faces > 0).mean()) if n else 0.0}
+    return {"fid": fid, "n": n, "seconds": seconds_content, "face_share": float((det["faces"] > 0).mean()) if n else 0.0}
+
+
+def content_take(entry: dict, cache_dir: Path = CACHE_DIR, embed: Callable | None = None, detect: Callable | None = None, batch: int = 32) -> dict:
+    """Content stage for one decoded take (no drive): faces, hands and CLIP over its JPEGs, merged into <fid>.npz.
+
+    `embed(list[PIL.Image]) -> (k, 512)` and `detect(rgb uint8) -> (boxes, hands)` default to tags._embed and faces.detect."""
+    return finish_take(entry, detect_take(entry, cache_dir, detect), cache_dir, embed, batch)
 
 
 def build_take(entry: dict, cache_dir: Path = CACHE_DIR) -> bool:
@@ -697,7 +716,7 @@ def build_take(entry: dict, cache_dir: Path = CACHE_DIR) -> bool:
 def build_pool(
     mount_or_index: str | Path | dict,
     key: str,
-    workers: int = 3,
+    workers: int | None = None,
     stage: str = "all",
     cache_dir: Path = CACHE_DIR,
     kb_dir: Path = Path("kb"),
@@ -705,11 +724,17 @@ def build_pool(
     log: Log = _log,
     embed: Callable | None = None,
     detect: Callable | None = None,
+    content_workers: int | None = None,
 ) -> dict:
     """Footage map for every take in a sequence's pool. stage: 'decode' (drive), 'content' (no drive) or 'all'.
 
-    Decodes run in `workers` processes; with stage 'all' the content stage follows each take as its decode
-    lands. Returns counts, failures and the seconds spent per stage."""
+    Decodes run in `workers` processes (default: the machine's performance cores, parallel.workers), each
+    ffmpeg capped to its share of the threads. The content stage follows each take as its decode lands:
+    faces and hands in `content_workers` processes (default: up to 4), CLIP in this process on the GPU.
+    A given `detect` (tests) runs the detections in this process. Returns counts, failures and the seconds
+    spent per stage."""
+    from videtor.analyze import parallel
+
     if stage not in ("all", "decode", "content"):
         raise ValueError("stage must be all, decode or content")
     index = mount_or_index if isinstance(mount_or_index, dict) else find_index(Path(mount_or_index), kb_dir)
@@ -726,26 +751,61 @@ def build_pool(
     summary["already_done"] = len(takes) - len(todo)
     to_decode = [e for e in todo if not decode_done(e, cache_dir)] if stage != "content" else []
     footage_s = sum(e["media"]["duration_s"] for e in to_decode)
-    log(f"{key}: {len(takes)} takes, {summary['already_done']} done, {len(to_decode)} to decode ({footage_s / 60:.1f} min of footage), stage {stage}")
+    workers = workers or parallel.workers(max(1, len(to_decode)))
+    threads = parallel.ffmpeg_threads(workers)
+    content_workers = 1 if detect is not None else (content_workers or min(4, workers))
+    log(f"{key}: {len(takes)} takes, {summary['already_done']} done, {len(to_decode)} to decode ({footage_s / 60:.1f} min of footage), "
+        f"stage {stage}, {workers} decode worker(s) x {threads} threads, {content_workers} detection worker(s)")
 
     content_q: queue.Queue = queue.Queue()
     content_thread = None
     content_t0 = [None]
 
+    def built(e: dict, r: dict, done: int) -> None:
+        summary["seconds"]["content"] += r["seconds"]
+        summary["built"] += 1
+        log(f"  content {done}: {e['basename']} {r['n']} samples, faces in {r['face_share']:.0%}, {r['seconds']:.1f}s")
+
+    def failed_content(e: dict, exc: BaseException) -> None:
+        summary["failed"][e["fid"]] = f"content: {type(exc).__name__}: {exc}"
+        log(f"  content FAILED {e['fid']} {e['path']}: {type(exc).__name__}: {exc}")
+
     def run_content() -> None:
         done = 0
-        while (e := content_q.get()) is not None:
-            if content_t0[0] is None:
-                content_t0[0] = time.time()
-            try:
-                r = content_take(e, cache_dir, embed=embed, detect=detect)
-                summary["seconds"]["content"] += r["seconds"]
-                summary["built"] += 1
-                done += 1
-                log(f"  content {done}: {e['basename']} {r['n']} samples, faces in {r['face_share']:.0%}, {r['seconds']:.1f}s")
-            except Exception as exc:  # noqa: BLE001
-                summary["failed"][e["fid"]] = f"content: {type(exc).__name__}: {exc}"
-                log(f"  content FAILED {e['fid']} {e['path']}: {type(exc).__name__}: {exc}")
+        if content_workers <= 1:  # detections and CLIP in this thread, one take at a time
+            while (e := content_q.get()) is not None:
+                if content_t0[0] is None:
+                    content_t0[0] = time.time()
+                try:
+                    built(e, content_take(e, cache_dir, embed=embed, detect=detect), done := done + 1)
+                except Exception as exc:  # noqa: BLE001
+                    failed_content(e, exc)
+        else:  # detections in worker processes, CLIP here as each take's detections land
+            from videtor.analyze import footmap as this
+
+            pending: dict = {}
+            closed = False
+            with ProcessPoolExecutor(max_workers=content_workers) as ex:
+                while not closed or pending:
+                    try:
+                        e = content_q.get(timeout=0.2)
+                        if e is None:
+                            closed = True
+                        else:
+                            if content_t0[0] is None:
+                                content_t0[0] = time.time()
+                            pending[ex.submit(this.detect_take, e, cache_dir)] = e
+                    except queue.Empty:
+                        pass
+                    if not pending:
+                        continue
+                    ready, _ = wait(pending, timeout=0.2, return_when=FIRST_COMPLETED)
+                    for fut in ready:
+                        e = pending.pop(fut)
+                        try:
+                            built(e, finish_take(e, fut.result(), cache_dir, embed), done := done + 1)
+                        except Exception as exc:  # noqa: BLE001
+                            failed_content(e, exc)
         if content_t0[0] is not None:
             summary["wall"]["content"] = round(time.time() - content_t0[0], 1)
 
@@ -775,12 +835,12 @@ def build_pool(
 
         if workers <= 1:
             for k, e in enumerate(order, start=1):
-                finished(decode_take(e, cache_dir), k)
+                finished(decode_take(e, cache_dir, threads), k)
         else:
             from videtor.analyze import footmap as this  # pickled by module name, also when run as __main__
 
             with ProcessPoolExecutor(max_workers=workers) as ex:
-                futures = {ex.submit(this.decode_take, e, cache_dir): e for e in order}
+                futures = {ex.submit(this.decode_take, e, cache_dir, threads): e for e in order}
                 for k, fut in enumerate(as_completed(futures), start=1):
                     try:
                         res = fut.result()
@@ -818,7 +878,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="python -m videtor.analyze.footmap", description="Per-second footage map of a sequence's footage pool.")
     ap.add_argument("mount", type=Path, help="The drive indexed by `videtor kb footage`, e.g. /Volumes/Paritosh_1.")
     ap.add_argument("--key", required=True, help='Sequence key, e.g. "Guru.xml::Sequence 01".')
-    ap.add_argument("--workers", type=int, default=3, help="Parallel decode processes.")
+    ap.add_argument("--workers", type=int, default=None, help="Parallel decode processes (default: the machine's performance cores).")
     ap.add_argument("--stage", choices=("all", "decode", "content"), default="all", help="decode needs the drive; content does not.")
     ap.add_argument("--kb", type=Path, default=Path("kb"))
     ap.add_argument("--analysis", type=Path, default=Path("cache/analysis"))

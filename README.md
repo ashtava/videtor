@@ -246,7 +246,7 @@ where nobody sings, slowed to 50% from 50/100 fps.
 ### Footage you have never edited
 
 ```sh
-uv run videtor prep "/Volumes/Drive/Shoot" --name nike-teaser   # index, stills, orientation, footage map, overview
+uv run videtor prep "/Volumes/Drive/Shoot" --name nike-teaser   # index, stills, orientation, footage map, overview (all cores; --workers N to cap)
 # read out/nike-teaser/overview.md and overview-*.jpg, write out/nike-teaser/shotmap.json (key "nike-teaser::footage")
 uv run videtor cut out/nike-teaser/shotmap.json                  # picks, second-look sheets, cut sheet, Premiere XML
 ```
@@ -260,6 +260,29 @@ fix it with `videtor orient <name> --camera <prefix> --rotate -90` (or `--take <
 landscape takes in a vertical piece are cropped around the face in the chosen window
 (Basic Motion centre: offset ÷ 3840 and ÷ 2160 on a 1080×1920 sequence, verified
 against Premiere's own stored positions).
+
+### A shoot sorted by shot type (the library)
+
+```sh
+uv run videtor library build "/Volumes/Drive/Shoot" "/Volumes/Drive/Interviews" --name shoot   # minutes, every core, no Claude
+#   out/library/shoot/{wide,close-up,talking-head,interview-bite,b-roll}/   links to the clips (--copy for copies)
+#   out/library/shoot/sheets/<class>-N.jpg                                   every clip of a class on one page
+#   out/library/shoot/interview-bite/bites.xml + bites.md                    every bite as a Premiere sequence (--extract: files too)
+#   out/library/shoot/library.md                                             counts, how each class was decided, the ones to check
+# move the wrong links into the right folders (Finder or mv), then
+uv run videtor library learn out/library/shoot      # keeps your labels (kb/library/labels.json), fits a model, reports its accuracy
+uv run videtor library build ... --name shoot        # sorts with the model; your labelled clips stay where you put them
+uv run videtor library status out/library/shoot     # what moved since the build
+```
+
+The library reads each clip from its keyframes alone (`videtor.analyze.sparse`: at most 24 stills, faces
+and hands, speech, how much the picture shifts between stills, CLIP), which is 8-10× cheaper than the
+footage map's full decode and runs on every core (`VIDETOR_WORKERS` caps it). The rules: someone speaking
+to a locked-off camera is a **talking head**; speaking with the camera moving (a vox pop, a stage mic) an
+**interview bite**; a face filling the frame or a tight detail a **close-up**; a scene with faces small or
+none a **wide**; the rest **B-roll**. The speaker clips are transcribed (local Whisper, cached) and their
+sentences become the bites; a speaker clip whose transcript has no words is demoted. The folders are the
+training data: `learn` fits a logistic regression on the sparse features from wherever you put the links.
 
 Helpers for reading a big shoot sit in `scripts/`:
 - `stills_sheets.py` sheets every take's middle still while the footage map builds;
