@@ -36,7 +36,7 @@ Work out which one you are in. Can you run shell commands? Which folder is the s
    - A real folder already at that path is left alone; tell the user.
 3. Check the toolchain:
    - `export PATH=/opt/homebrew/bin:$PATH && .venv/bin/videtor --help` and `ffmpeg -version`;
-   - `.venv/bin/python -m unittest discover -s tests` (266 tests, about 15 s, no drive needed);
+   - `.venv/bin/python -m unittest discover -s tests` (295 tests, about 20 s, no drive needed);
    - `git status -sb` and `git ls-remote origin`: SSH push access. The Claude account doesn't matter to git.
    - If the user hasn't approved these commands yet, ask them to: shell commands need approval in a new
      session.

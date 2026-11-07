@@ -1,6 +1,6 @@
 # Videtor status
 
-Checkpoint 2026-11-04 (first written 2026-11-01). Update this file after every delivery, verdict or build.
+Checkpoint 2026-11-07 (first written 2026-11-01). Update this file after every delivery, verdict or build.
 The user is switching Claude accounts. A new session starts with `docs/handoff.md`; the history up to now is
 in `private/` (local only).
 
@@ -12,7 +12,12 @@ footage the tool had never seen followed:
 - blind tests 2, 4 and 5: waiting for the user's verdict.
 
 The user also has an open question: how much of the work Claude does, and whether to take it offline. The
-proposal is below, and the user hasn't answered it yet. All 266 tests pass.
+proposal is below, and the user hasn't answered it yet. All 295 tests pass.
+
+On 2026-11-07 the user asked for two things, both built the same day (see Builds): a footage library that sorts
+a shoot into wide / close-up / talking-head / interview-bite / b-roll folders offline and in parallel, and the
+slow single-threaded passes behind `/cut-from-brief` made parallel. The TPL library is built and waits for the
+user's sorting pass.
 
 The repo has been on GitHub since 2026-11-01 (`ashtava/videtor`, `main`, public). Every Claude turn's
 changes are committed and pushed by a Stop hook; `out/` and `cache/` stay local.
@@ -38,6 +43,13 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
 - `guru-20s-glimpse`: a teaser. The user agreed the hook is a per-piece choice, and said better shots existed;
 - `roundtrip-*.xml` and `writer-test-tpl.xml`: reader/writer checks in Premiere;
 - `smoke-jw-cc`: the `prep` smoke test.
+
+## Builds (between projects)
+
+| Date | What | Code | Result |
+|---|---|---|---|
+| 11-07 | **The footage library**, `videtor library build \| learn \| status`: a shoot sorted into wide / close-up / talking-head / interview-bite / b-roll folders (links to the clips), a contact sheet per class, every interview bite as a Premiere sequence (`interview-bite/bites.xml` + `bites.md`), `library.md` with the reasons and the clips worth a look. Rules first; `learn` reads the user's folder moves back as labels and fits a model the next build uses. Keyframes only, every core, no Claude at run time | `plan/library.py`, `analyze/sparse.py` (the keyframe-only map, `cache/sparse/`), `analyze/parallel.py`, `kb/library/` | TPL, both folders the user named (786 clips, 5.9 h): the scan took 11 min 15 s on 8 workers, none failed; Whisper on the 159 speaker clips (136 min of audio) 12 min 45 s the first time; a rebuild with the caches 5 min 49 s. Sorted: 77 wide, 158 close-up, 83 talking-head, 68 interview-bite, 400 b-roll; 903 bites (132 min, 751 with clean edges); 115 clips flagged for a look; 58 of the 61 Master Cam takes read as talking heads (the other 3 have no speech or a walk-in). 15 clips are copies (Sam's Card 3 holds Master Cam files). `out/library/tpl/` |
+| 11-07 | **Parallel passes**: workers sized to the Mac (performance cores, memory, `VIDETOR_WORKERS`), ffmpeg thread caps, the footage map's face and hand detections in up to 4 worker processes with CLIP in the main process, steadying measured side by side, `prep` and `orient --workers` default to the machine instead of 3 | `analyze/parallel.py`, `analyze/footmap.py`, `plan/stabilize.py`, `cli.py` | Measured (`docs/architecture.md`): a 4K XAVC H.264 software decode is CPU-bound (one ffmpeg fills 10 cores), so the footage map can't run faster than about 2.5-3× real time whatever the worker count; thread caps gain 15%, HEVC goes to the hardware decoder many at a time, and the content stage (49 ms per sample, the hand landmarker most of it) now runs 4-wide. The keyframe-only pass is 8-10× cheaper, which is why the library reads 5.9 h in 11 min |
 
 ## Waiting on the user
 
@@ -69,6 +81,12 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    - It holds the user's Premiere XMLs (`.xml-exports/`) and footage indexes (`kb/footage/`) with client file
      names and paths, and the auto-push publishes every change.
    - Raised with the user, who decides whether to make it private.
+7. **The TPL library** (`out/library/tpl`, built 11-07): open the five folders or `sheets/<class>-N.jpg`, move
+   the wrong links into the right folders, then run `videtor library learn out/library/tpl` and build again
+   (`videtor library build "/Volumes/Paritosh_3/TPL/Videos" "/Volumes/Paritosh_2/TPL Promo/Master Cam" --name tpl`).
+   The 115 clips under "worth a look" in `library.md` come first. Also whether the five classes are the right
+   ones: a tight detail of an object sits in close-up, a two-person interview in talking-head, stage mics and
+   podium speeches in interview-bite, and everything with people mid-frame not speaking to camera in b-roll.
 
 ## The offline proposal (2026-11-01, not yet approved)
 
@@ -158,13 +176,22 @@ Not built; the source is in brackets.
   [B5]
 - Resolve import hasn't been checked (Phase 2). Resolve 19.1.4 Studio has external scripting for later.
 - Offline steps 1-3 (above).
+- **The library's next steps** [11-07]: transcription runs after the scan, not alongside it (13 min on top of
+  the 11 min scan for TPL); the sparse map could feed `search` and a sparse-first `cut` (dense-decode only the
+  candidate takes), which would take a big shoot's `prep` from an hour to minutes; "speech" is the WebRTC VAD,
+  which hears the PA, so a listener in a single medium shot can read as a bite until the user's labels say
+  otherwise; CLIP's "stage" prompts tell a podium from an interview setup, a plain wall behind a vox pop can
+  still read as a setup.
+- `cut` itself: `fill` is single-threaded numpy (90 s on Alpha Summit) and the sheets and SFX placement are
+  serial; small next to the footage map. [11-07]
 - **The MCP server lags the CLI** (found 2026-11-01). `mcp_server.cut` and `apply_look` are Round 4 copies of
   the CLI code.
   - Missing: SFX placement, steadying, byte levelling, the bucket keeper, taste corrections, `sfx_skip`,
     beds, flash frames, the cut and match sheets.
   - A medley `music` list fails: its `_music_for` only reads a single track.
   - `apply_look` takes runner-up numbers only; no `id=<take>` or `other:k`.
-  - No tools for `prep`, `orient`, `cut-interview`, `cut-mv`, transcription, or cinematic music ranking.
+  - No tools for `prep`, `orient`, `cut-interview`, `cut-mv`, transcription, cinematic music ranking, or the
+    library.
   - Fix: have the MCP tools call the CLI's functions (one code path), and add `prep` as a background job
     with a status tool.
 - Regression check: re-cut past projects after each change, and compare picks.

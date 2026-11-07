@@ -210,5 +210,5 @@ These were checked against the user's own exports and projects; don't re-derive 
 
 ## Tests
 
-`.venv/bin/python -m unittest discover -s tests`: 291 tests in about 20 s, with synthetic fixtures (no drive
+`.venv/bin/python -m unittest discover -s tests`: 295 tests in about 20 s, with synthetic fixtures (no drive
 needed). The parser and metrics use only the standard library.

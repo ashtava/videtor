@@ -54,7 +54,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 266 tests, about 15 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 295 tests, about 20 s, no drive needed
 ```
 
 - **Machine:** M2 Pro, 16 GB, macOS 26.3.1. Premiere Pro 26.0.2 (UXP), Resolve 19.1.4 Studio.
