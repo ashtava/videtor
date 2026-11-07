@@ -105,6 +105,17 @@ class ServerTests(unittest.TestCase):
         _, _, body = self.get(f"/api/jobs/{r['job']['id']}?since=0")
         self.assertEqual(json.loads(body)["job"]["id"], r["job"]["id"])
 
+    def test_the_folder_dialog_is_the_macs_own_in_the_browser_too(self):
+        from unittest import mock
+
+        with mock.patch.object(server, "choose_folder_native", return_value="/Volumes/Drive/Shoot") as dialog:
+            status, r = self.post("/api/pick-folder", {"start": "/Volumes", "prompt": "Choose the footage folder"})
+        self.assertEqual((status, r), (200, {"path": "/Volumes/Drive/Shoot", "cancelled": False}))
+        dialog.assert_called_once_with("Choose the footage folder", "/Volumes")
+        with mock.patch.object(server, "choose_folder_native", return_value=None):
+            status, r = self.post("/api/pick-folder", {})
+        self.assertEqual(r, {"path": None, "cancelled": True})
+
     def test_unknown_routes_are_404(self):
         with self.assertRaises(urllib.error.HTTPError) as cm:
             urllib.request.urlopen(self.base + "/api/nope")

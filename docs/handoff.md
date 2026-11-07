@@ -114,7 +114,8 @@ The details are in `docs/status.md`.
 - **Built 2026-11-07:** `videtor library` (a shoot sorted by shot type into folders, offline, on every core,
   learning from the user's moves), the parallel footage map, the sparse-first `prep`/`cut` (prep reads
   keyframes in minutes; the cut decodes only the takes the map's classes allow), and the UI (`videtor ui`: a
-  local page in Videtor's own Python, prep/cut as separate processes with the cut first); see `docs/status.md`.
+  local page in Videtor's own Python, prep/cut as separate processes with the cut first, `~/Applications/Videtor.app`
+  from `scripts/make-app.sh` to open it without a terminal, the Mac's own folder dialogs); see `docs/status.md`.
   The TPL library at `out/library/tpl` is accepted and learnt (786 labels). The UI replaces the MCP-parity item.
   Next in line: offline step 1.
 

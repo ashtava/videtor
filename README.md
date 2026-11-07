@@ -65,18 +65,21 @@ Claude Code works in the terminal, in Claude Code desktop and in VS Code.
 ## The UI
 
 ```sh
-uv run videtor ui                 # a local page (this Mac only): prep a shoot into a folder you choose, brief, shot map, cut, second look, library
-uv run videtor ui --browser       # in the browser instead of a window; --port 8800 if 8765 is taken
-uv sync --extra analyze --extra ui   # once, for the native window (pywebview over the system WebKit)
-open scripts/Videtor.command      # the same, double-clickable (drag it to the Dock)
+scripts/make-app.sh               # once: makes ~/Applications/Videtor.app, a double-clickable app (drag it to the Dock)
+uv run videtor ui                 # the same from a terminal; --browser for a browser tab, --port 8800 if 8765 is taken
+uv sync --extra analyze --extra ui   # the native window (pywebview over the system WebKit); the app does this on its first run
 ```
 
-Nothing but the standard library serves it (`videtor.ui.server`), and every action is `videtor <command>` run as
-its own process (`videtor.ui.jobs`), so the page and the terminal share one code path. Prep and cut are two
-processes: a cut gets the machine (running preps and library builds are paused and resumed after it; a prep
-started during a cut waits), and a prep paused into failures is run again by itself, since every pass is
-resumable. The Prep screen takes the input folder and the output folder (the project lands in
-`<output>/<name>/`), with a folder browser; the Project screen shows the overview and shot types, holds the
+Videtor.app is a launcher made on this Mac, so Gatekeeper lets it run: it opens the local page in its own window
+(the browser if the window package is missing), installs that package on first run, and logs to
+`~/Library/Logs/Videtor.log`. Opening it twice shows the one already running. Nothing but the standard library
+serves the page (`videtor.ui.server`), and every action is `videtor <command>` run as its own process
+(`videtor.ui.jobs`), so the page and the terminal share one code path. Prep and cut are two processes: a cut gets
+the machine (running preps and library builds are paused and resumed after it; a prep started during a cut
+waits), and a prep paused into failures is run again by itself, since every pass is resumable. Every Choose
+button opens the Mac's own folder dialog, in the window and in the browser alike (AppleScript's `choose folder`
+when there is no window). The Prep screen takes the footage folder and where the project goes (it lands in
+`<output>/<name>/`); the Project screen shows the overview and shot types, holds the
 brief and the shot map (validated on save), ranks music, searches the footage, cuts, and does the second look by
 clicking a runner-up; the Library screen builds a library, shows its sheets and clips, moves a clip to another
 class and learns from the folders; Jobs shows every process with pause, resume and cancel. State lives in

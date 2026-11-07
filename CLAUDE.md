@@ -69,10 +69,12 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   alone in minutes (all cores, no Claude) and sorts it by shot type; the footage map is still needed to cut.
 - **Parallel passes** are sized by `analyze/parallel.py` (performance cores, memory); `VIDETOR_WORKERS=4` lowers
   it when the Mac is busy with Premiere.
-- **The UI** (2026-11-07): `videtor ui`, or `scripts/Videtor.command` from Finder, serves a local page on this
-  Mac that runs every step as its own `videtor` process (a cut pauses preps and gets the machine). The window
-  needs `uv sync --extra analyze --extra ui` once (pywebview); without it the page opens in the browser. The
-  user chose this over the MCP server.
+- **The UI** (2026-11-07): `videtor ui`, or `~/Applications/Videtor.app` (made by `scripts/make-app.sh`; remake
+  it if the repo moves), serves a local page on this Mac that runs every step as its own `videtor` process (a cut
+  pauses preps and gets the machine). Folder pickers are the Mac's own dialog. The window needs pywebview
+  (`uv sync --extra analyze --extra ui`), which the app installs on its first run; without it the page opens in
+  the browser. The user chose this over the MCP server, and it is for a non-technical end user: keep its words
+  plain and its steps few.
 - **Claude Code desktop** (set up 2026-11-04) reads the same `~/.claude` and project settings as the CLI.
   - `scripts/setup-claude-code.sh` links the skill into `~/.claude/skills/`, so `/cut-from-brief` works from
     any folder (checked in a session opened outside the repo), and makes sure the auto-push hook is set up.

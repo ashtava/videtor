@@ -36,6 +36,40 @@ def repo_root() -> Path:
     return Path(videtor.__file__).resolve().parents[2]
 
 
+def choose_folder_native(prompt: str, start: str | None = None) -> str | None:
+    """macOS's own folder dialog through AppleScript: works from any process on this Mac, so the page gets a
+    real file selector in the browser as well as in the window. None when the user cancels."""
+    where = f' default location ((POSIX file "{start}") as alias)' if start and Path(start).is_dir() else ""
+    lines = ['tell application "Finder"', "activate", f'POSIX path of (choose folder with prompt "{prompt.replace(chr(34), "")}"{where})', "end tell"]
+    cmd = ["osascript"]
+    for line in lines:
+        cmd += ["-e", line]
+    try:
+        run = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    path = run.stdout.strip()
+    return path.rstrip("/") or "/" if run.returncode == 0 and path else None
+
+
+def notify(text: str, title: str = "Videtor") -> None:
+    try:
+        subprocess.run(["osascript", "-e", f'display notification "{text}" with title "{title}"'], capture_output=True, timeout=10)
+    except (OSError, subprocess.TimeoutExpired):
+        pass
+
+
+def is_videtor_ui(url: str) -> bool:
+    """Whether a Videtor UI already answers at `url`."""
+    import urllib.request
+
+    try:
+        with urllib.request.urlopen(url.rstrip("/") + "/api/state", timeout=2) as r:
+            return "repo" in json.loads(r.read())
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def _slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-") or "project"
 
@@ -344,15 +378,19 @@ class App:
         return {"ok": True}
 
     def api_pick_folder(self, body: dict) -> dict:
-        if self.window is None:
-            return {"error": "no native dialog in the browser: type or browse the path"}
-        try:
-            import webview
+        """The Mac's folder dialog: the window's own when there is a window, else AppleScript's (Finder in front)."""
+        start = body.get("start") or "/Volumes"
+        prompt = body.get("prompt") or "Choose a folder"
+        if self.window is not None:
+            try:
+                import webview
 
-            chosen = self.window.create_file_dialog(webview.FOLDER_DIALOG, directory=body.get("start") or "/Volumes")
-        except Exception as exc:  # noqa: BLE001
-            return {"error": f"dialog failed: {exc}"}
-        return {"path": chosen[0] if chosen else None}
+                chosen = self.window.create_file_dialog(webview.FOLDER_DIALOG, directory=start if Path(start).is_dir() else "/Volumes")
+                return {"path": chosen[0] if chosen else None, "cancelled": not chosen}
+            except Exception as exc:  # noqa: BLE001 - fall through to AppleScript
+                self.log(f"window dialog failed ({exc}); using AppleScript's")
+        path = choose_folder_native(prompt, start)
+        return {"path": path, "cancelled": path is None}
 
     def api_job(self, job_id: str, since: int) -> dict:
         job = self.jobs.get(job_id)
@@ -473,7 +511,13 @@ def main(port: int = 8765, window: bool = True, out_root: Path = Path("out"), lo
     try:
         httpd = serve(app, port=port)
     except OSError as exc:
-        log(f"cannot listen on port {port}: {exc} (another videtor ui running? --port picks another)")
+        url = f"http://127.0.0.1:{port}/"
+        if is_videtor_ui(url):  # opened twice: show the one that is running
+            log(f"Videtor is already open at {url}")
+            notify("Videtor is already open; showing it in the browser.")
+            webbrowser.open(url)
+            return
+        log(f"cannot listen on port {port}: {exc} (--port picks another)")
         return
     url = f"http://127.0.0.1:{httpd.server_address[1]}/"
     log(f"Videtor UI at {url} (this Mac only). Jobs run as videtor processes from {root}.")

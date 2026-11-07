@@ -48,16 +48,22 @@ async function refreshState() {
 /* ---- folder browser ---- */
 let browseTarget = null;
 let browsePath = "/Volumes";
+const PROMPTS = { "prep-folder": "Choose the footage folder", "prep-out": "Choose where the project goes", "music-folder": "Choose the music folder",
+  "lib-folder": "Choose a footage folder for the library", "lib-out": "Choose where the library goes", "project-add-dir": "Choose a project folder", "lib-add-dir": "Choose a library folder" };
 document.querySelectorAll("button[data-browse]").forEach((b) => b.addEventListener("click", () => browse(b.dataset.browse)));
 async function browse(targetId) {
   browseTarget = targetId;
-  const start = $(targetId).value || (targetId.endsWith("out") ? state.out_root : "/Volumes");
-  if (state.window) {
-    const r = await api("/api/pick-folder", { start });
+  const start = $(targetId).value || (targetId.endsWith("out") || targetId.endsWith("dir") ? state.out_root : "/Volumes");
+  const btn = document.querySelector(`button[data-browse="${targetId}"]`);
+  if (btn) { btn.disabled = true; btn.textContent = "Choosing…"; }
+  try {
+    const r = await api("/api/pick-folder", { start, prompt: PROMPTS[targetId] || "Choose a folder" });  // the Mac's own dialog
     if (r.path) { $(targetId).value = r.path; afterPick(targetId); return; }
-    if (!r.error || !r.error.startsWith("no native")) { if (r.error) alert(r.error); return; }
+    if (r.cancelled) return;
+    await openBrowser(start);  // no dialog came up (not a Mac?): the page's own folder list
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "Choose…"; }
   }
-  await openBrowser(start);
 }
 async function openBrowser(path) {
   const r = await api("/api/fs?path=" + encodeURIComponent(path));
