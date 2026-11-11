@@ -87,6 +87,15 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    `stack: true` (smaller shots popping on top every 5 frames), `black: true`, a music medley (`music` as
    a list of segments with `gap_beats`), `flash` frames over cuts and `beds` of ambience. Use them where
    the bucket's card shows the user using them, not by default.
+   **Sports** (a hype reel, a practice-day wrap, a match-day reel; bucket `sports-promo`): read
+   `kb/buckets/sports-promo.md` (learnt from eight of the user's rendered reels and a policy trained on them).
+   Start from `videtor draft <name> --length <s> --music "<track>"` (pace, holds, flicker bursts, what is
+   shown where, effects, accents from `kb/policy/sports-promo.json`) and rewrite its `show` lines and order
+   against the brief and the overview; keep `"effects": "sports-promo"` (flash and static overlays, whips,
+   spins, push-ins, black-and-white runs at the learnt rates; a slot's own `"effects": [...]` overrides) and
+   `"cut_on": "accents"`. Effects are not yet confirmed in Premiere (`out/fx-test/fx-test.xml` waits for the
+   user); report the black-and-white runs the cut prints as finishing steps, and the text cards from the
+   draft's `notes`.
    **People bytes** ("use people bytes", vox pops, testimonials): transcribe the interview takes
    (`videtor.analyze.speech.transcribe`, local Whisper), pick 1.5-2.5 s lines that say something about the
    event, check their edges on the audio (40 ms loudness: start and end in silence, not on a neighbour's

@@ -291,6 +291,45 @@ def kb_breakdown(
     console.print(breakdown.markdown(breakdown.describe(xml, kb_dir, footage or None)))
 
 
+@kb_app.command("renders")
+def kb_renders(
+    folder: Path = typer.Argument(..., help="A folder of your finished, rendered reels (mp4/mov), e.g. ~/Downloads/Exports/Videos."),
+    bucket: str = typer.Option(..., "--bucket", help="The edit type they are, e.g. sports-promo."),
+    labels: bool = typer.Option(True, "--labels/--no-labels", help="Name what each shot shows with CLIP."),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Learn a bucket's style from rendered reels alone: pace, transitions, black and white, moves, grade, beats, content."""
+    from videtor.kb import breakdown, render
+
+    style = render.read_folder(folder, bucket, kb_dir=kb_dir, labels=labels, log=console.print)
+    console.print(render.markdown(style, bucket))
+    console.print(f"style: {kb_dir / 'renders' / f'{bucket}.json'}; per reel: out/references/{bucket}/")
+    console.print(f"bucket card: {breakdown.card(bucket, kb_dir)}")
+
+
+@kb_app.command("train")
+def kb_train(
+    bucket: str = typer.Argument(..., help="A bucket whose reels have been read (videtor kb renders), e.g. sports-promo."),
+    iters: int = typer.Option(30, "--iters", help="Search rounds."),
+    check: bool = typer.Option(True, "--check/--no-check", help="First hold each reel out in turn and report how the policy does on it."),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Learn a cutting policy from the bucket's reels (plan/gym.py): writes kb/policy/<bucket>.json for effects and drafts."""
+    from videtor.plan import gym
+
+    data = gym.train(bucket, kb_dir, iters=iters, check=check, log=console.print)
+    ev = data.get("evaluation")
+    if ev:
+        m = ev["mean"]
+        console.print(f"held-out reward (0 = the reel's own style; two real reels differ by about -8): generic {m['generic']}, "
+                      f"medians {m['medians']}, trained {m['trained']}; trained beat the medians on {ev['won']} of {ev['of']} reels")
+    p = data["policy"]
+    console.print(f"policy: held shot {p['held_s']:.2f} s, open {p['open_s']:.2f} s, close {p['close_s']:.2f} s, "
+                  f"{p['flicker_per_min']:.1f} flicker bursts a minute, {p['snap']:.0%} of cuts on accents (within {p['window_s']:.2f} s)")
+    console.print("effect rates: " + ", ".join(f"{k} {v:.2f}" for k, v in data["rates"].items()))
+    console.print(f"written: {kb_dir / 'policy' / f'{bucket}.json'}")
+
+
 @kb_app.command("bucket")
 def kb_bucket(
     bucket: str = typer.Argument(..., help="An edit type from kb/manifest.json, e.g. event."),
@@ -922,6 +961,44 @@ def _music_for(m: dict, cache_dir: Path) -> tuple[dict | None, list[float] | Non
     return {"path": str(Path(mu["path"]).expanduser()), "duration_s": data["duration_s"], "in_s": in_s, "fade_out_s": mu.get("fade_out_s", 1.0)}, rel
 
 
+@app.command("fx-test")
+def fx_test(
+    media: Path = typer.Argument(..., help="Any video file on this Mac (e.g. one of your exports)."),
+    out: Path = typer.Option(Path("out/fx-test"), "--out"),
+) -> None:
+    """Write a test sequence with one clip per effect, a marker naming each: import it in Premiere to see which travel."""
+    from videtor.plan import fx
+
+    path = fx.write_test(media, out)
+    console.print(f"{path}: in Premiere, File > Import, then play the sequence; each marker names the effect on the clip after it")
+    console.print("tell Videtor which ones look wrong; three black-and-white variants are at the end (only one may work)")
+
+
+@app.command("draft")
+def draft_cmd(
+    name: str = typer.Argument(..., help="The project name (out/<name>/shotmap.json)."),
+    bucket: str = typer.Option("sports-promo", "--bucket", help="Whose learnt policy to draft from (kb/policy/<bucket>.json)."),
+    length: float = typer.Option(30.0, "--length", help="Seconds."),
+    key: str = typer.Option(None, "--key", help="The footage key (default <name>::footage after videtor prep)."),
+    music: Path = typer.Option(None, "--music", help="The track: slots are counted on its beats and cut on its accents."),
+    music_in: float = typer.Option(0.0, "--music-in", help="Where in the track the cut starts (seconds, on a beat)."),
+    seed: int = typer.Option(0, "--seed", help="Another seed, another draft."),
+    out: Path = typer.Option(Path("out"), "--out"),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Draft a shot map offline from a bucket's learnt style (pace, what is shown where, effects): edit it, then cut."""
+    from videtor.plan import draft
+
+    mu = {"path": str(music.expanduser()), "in_s": music_in, "fade_out_s": 1.0} if music else None
+    m = draft.draft(name, bucket, length, key or f"{name}::footage", mu, seed=seed, kb_dir=kb_dir)
+    path = draft.write(m, out)
+    for sec in m["sections"]:
+        console.print(f"{sec['name']}: " + ", ".join(f"{s['shows']} {s['beats']:g}b" + (" flicker" if s.get("flicker") else "") for s in sec["slots"]))
+    console.print(f"draft: {path} (effects from {bucket}" + (", cut on accents" if m.get("cut_on") else "") + "); check it against the brief, then videtor cut")
+    for note in m["notes"]:
+        console.print(f"  note: {note}")
+
+
 @app.command()
 def cut(
     shotmap_path: Path = typer.Argument(..., help="shotmap.json written from the brief."),
@@ -947,7 +1024,13 @@ def cut(
         console.print(f"No footage map for {m['key']!r} ({n} takes in the pool). Connect the drive and cut again, or: python -m videtor.analyze.footmap {mount} --key {m['key']!r}")
         raise typer.Exit(1)
     music, beats_rel = _music_for(m, beats_dir)
-    times = shotmap.timing(m, beats_rel, float(m.get("fps", 25)))
+    accents_rel = None
+    if m.get("cut_on") == "accents" and music and music.get("path"):
+        from videtor.analyze import beats as beats_mod
+
+        accents_rel = [round(a - music["in_s"], 3) for a in beats_mod.accents(music["path"], beats_dir) if a >= music["in_s"]]
+        console.print(f"cutting on the music's accents: {len(accents_rel)} strong onsets")
+    times = shotmap.timing(m, beats_rel, float(m.get("fps", 25)), accents_rel)
     real = benchmark.load_real_metrics(kb_dir, m["key"])
     habits = fill.motion_habits(real["source_xml"]) if real and os.path.exists(real.get("source_xml", "")) else None
     from videtor.plan import taste as taste_mod
@@ -979,6 +1062,17 @@ def cut(
 
         picks["flashes"] = moves.flashes(picks["slots"], m["flash"], picks["fps"], picks["width"], picks["height"])
         console.print(f"flash frames: {len(picks['flashes'])} over the cuts" if picks["flashes"] else f"flash frames: cannot read {m['flash'].get('path')}")
+    if m.get("effects"):
+        from videtor.plan import fx as fx_mod
+
+        eff = fx_mod.apply(picks, m["effects"], kb_dir)
+        counts = {}
+        for names in eff.values():
+            for e in names:
+                counts[e] = counts.get(e, 0) + 1
+        console.print("effects: " + (", ".join(f"{k} x{v}" for k, v in sorted(counts.items(), key=lambda kv: -kv[1])) or "none"))
+        for step in fx_mod.finishing(picks):
+            console.print(f"  finishing: {step}")
     if music:
         picks["music"] = {**(m["music"] if isinstance(m.get("music"), dict) else {}), **music}
     if sfx:

@@ -11,7 +11,8 @@ from videtor.plan.rules import Shot
 DIP_RAMP_S = 0.24  # the music steps down over this long before a byte (whole frames at 25 fps)
 
 
-def _choice_clip(choice: dict, length_s: float, fps: float, enabled: bool, slot_id: str, voice_db: float | None = None) -> otio.schema.Clip:
+def _choice_clip(choice: dict, length_s: float, fps: float, enabled: bool, slot_id: str, voice_db: float | None = None,
+                 fx: dict | None = None) -> otio.schema.Clip:
     ref = w.media_reference(choice["path"], choice["file_fps"], choice["duration_s"], choice.get("width"), choice.get("height"), choice.get("audio_channels") or 0)
     clip = otio.schema.Clip(
         name=choice["name"],
@@ -26,8 +27,15 @@ def _choice_clip(choice: dict, length_s: float, fps: float, enabled: bool, slot_
     # camera audio stays out (your music-led edits carry music and SFX only), except a byte's: its voice at `voice_db`
     clip.metadata["videtor"] = {"slot": slot_id, "enabled": enabled, "audio": voice_db is not None, "motion": choice.get("motion"),
                                 "score": choice.get("score"), "reasons": choice.get("reasons"),
-                                **({"gain_db": voice_db} if voice_db is not None else {})}
+                                **({"gain_db": voice_db} if voice_db is not None else {}), **({"fx": fx} if fx else {})}
     return clip
+
+
+def _part_effects(effects: list[str], i: int, n: int) -> list[str]:
+    """The effects of part i of a slot played in n parts (a ramp): the cut effect on the first, the move only when whole."""
+    from videtor.plan import fx
+
+    return [e for e in effects if (e in fx.CUT_FX and i == 0) or e == "bw" or (e in fx.SHOT_FX and n == 1 and e != "echo")]
 
 
 def _steadied(choice: dict, frames: int, fps: float) -> dict:
@@ -158,18 +166,30 @@ def build_from_picks(picks: dict, music: dict | None = None, alternates: int = 2
     tracks = [otio.schema.Track(name=f"V{i + 1}", kind=otio.schema.TrackKind.Video) for i in range(1 + alternates)]
     for t in tracks:
         tl.tracks.append(t)
+    from videtor.plan import fx as fx_mod
+
     total = 0.0
     layers: list[list[tuple[float, otio.schema.Item]]] = []
-    for slot in picks["slots"]:
+    echoes: list[tuple[float, otio.schema.Item]] = []
+    slots = picks["slots"]
+    for si, slot in enumerate(slots):
         length = slot["length_s"]
         parts = _v1_clips(slot, fps)
+        effects = slot.get("effects") or []
+        following = (slots[si + 1].get("effects") or []) if si + 1 < len(slots) else []
         if parts:
             n = round((total + length) * fps) - round(total * fps)  # the slot's frames on the timeline
             frames = [max(1, round(seconds * fps)) for _, seconds in parts[:-1]]
             frames.append(max(1, n - sum(frames)))  # the last part takes what is left: no gap, no overrun
             voice = float(slot["pick"].get("gain_db") or 0.0) if slot.get("byte") else None
-            for (choice, _), f in zip(parts, frames):
-                tracks[0].append(_choice_clip(_steadied(choice, f, fps), f / fps, fps, enabled=True, slot_id=slot["id"], voice_db=voice))
+            for i, ((choice, _), f) in enumerate(zip(parts, frames)):
+                choice = _steadied(choice, f, fps)
+                fx = fx_mod.clip_fx(_part_effects(effects, i, len(parts)), following if i == len(parts) - 1 else [], f, choice.get("motion")) if effects or following else None
+                tracks[0].append(_choice_clip(choice, f / fps, fps, enabled=True, slot_id=slot["id"], voice_db=voice, fx=fx))
+            if "echo" in effects and len(parts) == 1:  # a ghost of the shot, ECHO_DELAY_F frames behind it, lighten
+                pick = parts[0][0]
+                ghost = {**pick, "in_s": max(0.0, float(pick["in_s"]) - fx_mod.ECHO_DELAY_F / fps * float(pick.get("speed", 1.0)))}
+                echoes.append((total, _choice_clip(ghost, n / fps, fps, enabled=True, slot_id=slot["id"], fx=fx_mod.echo_fx())))
         else:
             tracks[0].append(_gap(length, fps))
         choices = list(slot.get("alternates") or [])[:alternates]
@@ -189,6 +209,10 @@ def build_from_picks(picks: dict, music: dict | None = None, alternates: int = 2
         t = otio.schema.Track(name=f"stack {n + 1}", kind=otio.schema.TrackKind.Video)
         _placed(t, items, fps)
         tl.tracks.append(t)
+    if echoes:
+        t = otio.schema.Track(name="echo", kind=otio.schema.TrackKind.Video)
+        _placed(t, echoes, fps)
+        tl.tracks.append(t)
     if picks.get("flashes"):
         t = otio.schema.Track(name="flash", kind=otio.schema.TrackKind.Video)
         items = []
@@ -197,7 +221,7 @@ def build_from_picks(picks: dict, music: dict | None = None, alternates: int = 2
             clip = otio.schema.Clip(name=fl["path"].rsplit("/", 1)[-1], media_reference=ref, source_range=otio.opentime.TimeRange(
                 otio.opentime.RationalTime(round(fl["in_s"] * (fl.get("fps") or fps)), fl.get("fps") or fps),
                 otio.opentime.RationalTime(max(1, round(fl["length_s"] * fps)), fps)))
-            clip.metadata["videtor"] = {"enabled": True, "audio": False, "motion": fl.get("motion")}
+            clip.metadata["videtor"] = {"enabled": True, "audio": False, "motion": fl.get("motion"), **({"fx": fl["fx"]} if fl.get("fx") else {})}
             items.append((fl["start_s"], clip))
         _placed(t, items, fps)
         tl.tracks.append(t)

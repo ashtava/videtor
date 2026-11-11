@@ -236,6 +236,23 @@ def card(bucket: str, kb_dir: Path = Path("kb"), exports: Path = Path(".xml-expo
                   + "; ".join(f"{n.replace('concept: ', '')} {w:+.2f}" for n, w in model["drops"][:6]) + ".", ""]
     if rules:
         lines += ["## Rules", "", *rules, ""]
+    from videtor.kb import render
+
+    style = render.load_style(bucket, kb_dir)
+    if style:
+        lines.append(render.markdown(style, bucket))
+    from videtor.plan import gym
+
+    pol = gym.load(bucket, kb_dir)
+    if pol:
+        p, ev = pol["policy"], pol.get("evaluation") or {}
+        m = ev.get("mean") or {}
+        lines += ["## Learnt policy (videtor kb train)", "",
+                  f"- From {pol['reels']} reels: held shot {p['held_s']:.2f} s, open {p['open_s']:.2f} s, close {p['close_s']:.2f} s; "
+                  f"{p['flicker_per_min']:.1f} flicker bursts a minute; {p['snap']:.0%} of cuts on an accent within {p['window_s']:.2f} s.",
+                  "- Effect rates (plan/fx.py): " + ", ".join(f"{k} {v:.2f}" for k, v in pol["rates"].items()) + ".",
+                  (f"- Held out in turn, its cuts scored {m.get('trained')} against the reel (0 = the reel's own style; another real reel "
+                   f"scores about -8), the reels' medians {m.get('medians')}, the old XML profile {m.get('generic')}." if m else ""), ""]
     lines += ["## Your edits", ""]
     for key, xml, folders in edits:
         d = describe(xml, kb_dir, folders)

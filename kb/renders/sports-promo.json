@@ -1,0 +1,1476 @@
+{
+ "bucket": "sports-promo",
+ "all": {
+  "renders": 8,
+  "duration_s": {
+   "median": 33.08,
+   "p10": 26.252,
+   "p90": 50.336
+  },
+  "cuts_per_min": 83.7,
+  "shot_length_s": {
+   "median": 0.4,
+   "p10": 0.04,
+   "p90": 1.644
+  },
+  "held_shot_s": {
+   "median": 0.5,
+   "p10": 0.398,
+   "p90": 0.624
+  },
+  "flicker_per_min": 1.525,
+  "flicker_shots": {
+   "median": 8.0,
+   "p10": 5.4,
+   "p90": 11.8
+  },
+  "pace_curve": [
+   1.52,
+   0.56,
+   0.76,
+   0.52,
+   0.61,
+   0.43,
+   0.36,
+   0.56,
+   0.89,
+   0.56
+  ],
+  "first_shot_s": 2.42,
+  "last_shot_s": 1.24,
+  "transitions": {
+   "cut": 0.661,
+   "flash": 0.14,
+   "static": 0.066,
+   "overlay": 0.043,
+   "whip": 0.031,
+   "black": 0.031,
+   "spin": 0.028
+  },
+  "transition_frames": {
+   "median": 3.0,
+   "p10": 2.0,
+   "p90": 7.0
+  },
+  "bw_share": 0.101,
+  "bw_runs_per_min": 5.53,
+  "turns_bw_per_min": 0.82,
+  "moves": {
+   "push-in": 0.277,
+   "pull-out": 0.088,
+   "spin": 0.084,
+   "shake": 0.051
+  },
+  "grade": {
+   "sat": 122.375,
+   "contrast": 42.85,
+   "warmth": 1.5,
+   "vignette": 0.915
+  },
+  "beat_fit": {
+   "on_beat": 0.285,
+   "near_beat": 0.49,
+   "on_half_beat": 0.475,
+   "chance_on_beat": 0.26,
+   "median_lead_s": 0.014
+  },
+  "tempo_bpm": {
+   "median": 129.2,
+   "p10": 104.079,
+   "p90": 146.881
+  },
+  "hits_per_min": 82.8,
+  "hits_on_cut": 0.335,
+  "accent": 1.23,
+  "shows": {
+   "walk": 0.17,
+   "portrait": 0.16,
+   "batting": 0.153,
+   "bowling": 0.086,
+   "nets": 0.079,
+   "helmet": 0.074,
+   "graphic": 0.056,
+   "fielding": 0.037,
+   "floodlights": 0.033,
+   "studio": 0.033,
+   "logo": 0.026,
+   "gear": 0.019,
+   "feet": 0.016,
+   "arrival": 0.014,
+   "stadium": 0.012,
+   "warmup": 0.009,
+   "sunset": 0.009,
+   "celebration": 0.007,
+   "aerial": 0.005,
+   "crowd": 0.002
+  },
+  "opens_on": [
+   "gear",
+   "stadium",
+   "aerial",
+   "batting",
+   "gear",
+   "arrival",
+   "portrait",
+   "stadium"
+  ],
+  "closes_on": [
+   "walk",
+   "graphic",
+   "nets",
+   "graphic",
+   "graphic",
+   "nets",
+   "logo",
+   "graphic"
+  ]
+ },
+ "by_format": {
+  "hype": {
+   "renders": 4,
+   "duration_s": {
+    "median": 39.72,
+    "p10": 32.136,
+    "p90": 46.52
+   },
+   "cuts_per_min": 92.4,
+   "shot_length_s": {
+    "median": 0.36,
+    "p10": 0.04,
+    "p90": 1.668
+   },
+   "held_shot_s": {
+    "median": 0.5,
+    "p10": 0.452,
+    "p90": 0.632
+   },
+   "flicker_per_min": 2.105,
+   "flicker_shots": {
+    "median": 8.25,
+    "p10": 6.6,
+    "p90": 12.35
+   },
+   "pace_curve": [
+    1.4,
+    0.6,
+    0.76,
+    0.52,
+    0.66,
+    0.54,
+    0.3,
+    0.52,
+    1.04,
+    0.08
+   ],
+   "first_shot_s": 2.64,
+   "last_shot_s": 1.24,
+   "transitions": {
+    "cut": 0.675,
+    "flash": 0.133,
+    "static": 0.067,
+    "spin": 0.037,
+    "overlay": 0.037,
+    "whip": 0.029,
+    "black": 0.021
+   },
+   "transition_frames": {
+    "median": 3.0,
+    "p10": 2.0,
+    "p90": 6.9
+   },
+   "bw_share": 0.105,
+   "bw_runs_per_min": 5.7,
+   "turns_bw_per_min": 0.38,
+   "moves": {
+    "push-in": 0.238,
+    "spin": 0.098,
+    "pull-out": 0.094,
+    "shake": 0.049
+   },
+   "grade": {
+    "sat": 123.85,
+    "contrast": 42.85,
+    "warmth": -4.85,
+    "vignette": 0.915
+   },
+   "beat_fit": {
+    "on_beat": 0.26,
+    "near_beat": 0.475,
+    "on_half_beat": 0.48,
+    "chance_on_beat": 0.26,
+    "median_lead_s": 0.027
+   },
+   "tempo_bpm": {
+    "median": 129.2,
+    "p10": 105.75,
+    "p90": 133.96
+   },
+   "hits_per_min": 86.5,
+   "hits_on_cut": 0.32,
+   "accent": 1.195,
+   "shows": {
+    "portrait": 0.184,
+    "batting": 0.131,
+    "walk": 0.131,
+    "bowling": 0.098,
+    "nets": 0.066,
+    "graphic": 0.066,
+    "helmet": 0.066,
+    "fielding": 0.057,
+    "studio": 0.045,
+    "logo": 0.037,
+    "floodlights": 0.037,
+    "gear": 0.02,
+    "arrival": 0.012,
+    "feet": 0.012,
+    "stadium": 0.008,
+    "sunset": 0.008,
+    "celebration": 0.008,
+    "aerial": 0.004,
+    "warmup": 0.004,
+    "crowd": 0.004
+   },
+   "opens_on": [
+    "stadium",
+    "aerial",
+    "gear",
+    "portrait"
+   ],
+   "closes_on": [
+    "graphic",
+    "nets",
+    "graphic",
+    "logo"
+   ]
+  },
+  "matchday": {
+   "renders": 1,
+   "duration_s": {
+    "median": 56.72,
+    "p10": 56.72,
+    "p90": 56.72
+   },
+   "cuts_per_min": 83.6,
+   "shot_length_s": {
+    "median": 0.42,
+    "p10": 0.04,
+    "p90": 1.96
+   },
+   "held_shot_s": {
+    "median": 0.56,
+    "p10": 0.56,
+    "p90": 0.56
+   },
+   "flicker_per_min": 3.17,
+   "flicker_shots": {
+    "median": 5.0,
+    "p10": 5.0,
+    "p90": 5.0
+   },
+   "pace_curve": [
+    2.28,
+    2.7,
+    1.52,
+    0.16,
+    0.38,
+    0.52,
+    0.06,
+    1.44,
+    0.7,
+    0.08
+   ],
+   "first_shot_s": 2.64,
+   "last_shot_s": 0.52,
+   "transitions": {
+    "cut": 0.747,
+    "black": 0.101,
+    "whip": 0.063,
+    "flash": 0.038,
+    "spin": 0.025,
+    "overlay": 0.025
+   },
+   "transition_frames": {
+    "median": 2.0,
+    "p10": 1.0,
+    "p90": 4.8
+   },
+   "bw_share": 0.0,
+   "bw_runs_per_min": 0.0,
+   "turns_bw_per_min": 0.0,
+   "moves": {
+    "push-in": 0.338,
+    "shake": 0.075,
+    "pull-out": 0.062,
+    "spin": 0.05
+   },
+   "grade": {
+    "sat": 118.55,
+    "contrast": 40.75,
+    "warmth": 3.0,
+    "vignette": 0.968
+   },
+   "beat_fit": {
+    "on_beat": 0.18,
+    "near_beat": 0.3,
+    "on_half_beat": 0.48,
+    "chance_on_beat": 0.22,
+    "median_lead_s": 0.001
+   },
+   "tempo_bpm": {
+    "median": 107.67,
+    "p10": 107.67,
+    "p90": 107.67
+   },
+   "hits_per_min": 76.2,
+   "hits_on_cut": 0.31,
+   "accent": 1.24,
+   "shows": {
+    "walk": 0.225,
+    "portrait": 0.212,
+    "helmet": 0.15,
+    "bowling": 0.087,
+    "nets": 0.075,
+    "batting": 0.075,
+    "floodlights": 0.037,
+    "stadium": 0.025,
+    "sunset": 0.025,
+    "warmup": 0.025,
+    "feet": 0.025,
+    "studio": 0.013,
+    "logo": 0.013,
+    "graphic": 0.013
+   },
+   "opens_on": [
+    "stadium"
+   ],
+   "closes_on": [
+    "graphic"
+   ]
+  },
+  "reel": {
+   "renders": 1,
+   "duration_s": {
+    "median": 27.68,
+    "p10": 27.68,
+    "p90": 27.68
+   },
+   "cuts_per_min": 93.2,
+   "shot_length_s": {
+    "median": 0.3,
+    "p10": 0.12,
+    "p90": 1.072
+   },
+   "held_shot_s": {
+    "median": 0.3,
+    "p10": 0.3,
+    "p90": 0.3
+   },
+   "flicker_per_min": 0.0,
+   "flicker_shots": {},
+   "pace_curve": [
+    3.16,
+    0.22,
+    0.24,
+    0.2,
+    0.58,
+    0.08,
+    0.4,
+    0.6,
+    0.8,
+    1.04
+   ],
+   "first_shot_s": 3.16,
+   "last_shot_s": 0.24,
+   "transitions": {
+    "cut": 0.488,
+    "flash": 0.302,
+    "static": 0.209
+   },
+   "transition_frames": {
+    "median": 4.5,
+    "p10": 2.0,
+    "p90": 12.0
+   },
+   "bw_share": 0.136,
+   "bw_runs_per_min": 17.34,
+   "turns_bw_per_min": 0.0,
+   "moves": {
+    "push-in": 0.386,
+    "spin": 0.068,
+    "pull-out": 0.045
+   },
+   "grade": {
+    "sat": 131.3,
+    "contrast": 45.55,
+    "warmth": 3.1,
+    "vignette": 0.824
+   },
+   "beat_fit": {
+    "on_beat": 0.33,
+    "near_beat": 0.56,
+    "on_half_beat": 0.56,
+    "chance_on_beat": 0.34,
+    "median_lead_s": -0.035
+   },
+   "tempo_bpm": {
+    "median": 172.27,
+    "p10": 172.27,
+    "p90": 172.27
+   },
+   "hits_per_min": 82.4,
+   "hits_on_cut": 0.39,
+   "accent": 1.0,
+   "shows": {
+    "batting": 0.295,
+    "graphic": 0.159,
+    "walk": 0.136,
+    "helmet": 0.091,
+    "portrait": 0.068,
+    "bowling": 0.045,
+    "studio": 0.045,
+    "feet": 0.023,
+    "floodlights": 0.023,
+    "celebration": 0.023,
+    "fielding": 0.023,
+    "arrival": 0.023,
+    "gear": 0.023,
+    "aerial": 0.023
+   },
+   "opens_on": [
+    "batting"
+   ],
+   "closes_on": [
+    "graphic"
+   ]
+  },
+  "wrap": {
+   "renders": 2,
+   "duration_s": {
+    "median": 25.44,
+    "p10": 23.424,
+    "p90": 27.456
+   },
+   "cuts_per_min": 71.95,
+   "shot_length_s": {
+    "median": 0.58,
+    "p10": 0.244,
+    "p90": 1.58
+   },
+   "held_shot_s": {
+    "median": 0.54,
+    "p10": 0.492,
+    "p90": 0.588
+   },
+   "flicker_per_min": 0.0,
+   "flicker_shots": {},
+   "pace_curve": [
+    0.6,
+    0.55,
+    0.93,
+    0.92,
+    1.18,
+    0.59,
+    0.56,
+    1.31,
+    1.11,
+    2.48
+   ],
+   "first_shot_s": 0.96,
+   "last_shot_s": 2.48,
+   "transitions": {
+    "cut": 0.617,
+    "flash": 0.183,
+    "overlay": 0.117,
+    "static": 0.05,
+    "spin": 0.017,
+    "whip": 0.017
+   },
+   "transition_frames": {
+    "median": 3.0,
+    "p10": 2.0,
+    "p90": 4.0
+   },
+   "bw_share": 0.077,
+   "bw_runs_per_min": 4.72,
+   "turns_bw_per_min": 3.54,
+   "moves": {
+    "push-in": 0.274,
+    "pull-out": 0.129,
+    "spin": 0.081,
+    "shake": 0.065
+   },
+   "grade": {
+    "sat": 75.6,
+    "contrast": 33.45,
+    "warmth": 1.5,
+    "vignette": 0.941
+   },
+   "beat_fit": {
+    "on_beat": 0.335,
+    "near_beat": 0.575,
+    "on_half_beat": 0.465,
+    "chance_on_beat": 0.255,
+    "median_lead_s": 0.025
+   },
+   "tempo_bpm": {
+    "median": 126.725,
+    "p10": 119.305,
+    "p90": 134.145
+   },
+   "hits_per_min": 79.9,
+   "hits_on_cut": 0.35,
+   "accent": 1.505,
+   "shows": {
+    "walk": 0.274,
+    "batting": 0.242,
+    "nets": 0.194,
+    "bowling": 0.065,
+    "portrait": 0.065,
+    "gear": 0.032,
+    "arrival": 0.032,
+    "feet": 0.016,
+    "warmup": 0.016,
+    "fielding": 0.016,
+    "logo": 0.016,
+    "floodlights": 0.016,
+    "stadium": 0.016
+   },
+   "opens_on": [
+    "gear",
+    "arrival"
+   ],
+   "closes_on": [
+    "walk",
+    "nets"
+   ]
+  }
+ },
+ "renders": [
+  {
+   "label": "hype-1",
+   "duration_s": 30.72,
+   "shots": 60,
+   "cuts_per_min": 115.2,
+   "shot_length_s": {
+    "median": 0.22,
+    "p10": 0.04,
+    "p90": 1.184
+   },
+   "held_shot_s": {
+    "median": 0.48,
+    "p10": 0.08,
+    "p90": 1.824
+   },
+   "flicker_per_min": 3.91,
+   "flicker_shots": {
+    "median": 8.5,
+    "p10": 4.9,
+    "p90": 12.1
+   },
+   "pace_curve": [
+    0.44,
+    1.08,
+    0.44,
+    0.52,
+    1.84,
+    0.08,
+    0.24,
+    0.52,
+    1.76,
+    0.08
+   ],
+   "first_shot_s": 0.84,
+   "last_shot_s": 1.88,
+   "transitions": {
+    "cut": 0.881,
+    "black": 0.068,
+    "whip": 0.051
+   },
+   "transition_frames": {
+    "median": 1.5,
+    "p10": 1.0,
+    "p90": 3.4
+   },
+   "bw_share": 0.169,
+   "bw_runs": 4,
+   "turns_bw": 0,
+   "moves": {
+    "pull-out": 0.117,
+    "push-in": 0.2,
+    "shake": 0.067,
+    "spin": 0.017
+   },
+   "grade": {
+    "sat": 114.9,
+    "contrast": 37.0,
+    "warmth": -6.4,
+    "vignette": 0.904
+   },
+   "beat_fit": {
+    "on_beat": 0.29,
+    "near_beat": 0.54,
+    "on_half_beat": 0.47,
+    "chance_on_beat": 0.26,
+    "median_lead_s": 0.034
+   },
+   "hits_per_min": 89.8,
+   "hits_on_cut": 0.33,
+   "accent": 1.1,
+   "opens_on": [
+    "portrait",
+    "bowling"
+   ],
+   "closes_on": [
+    "logo",
+    "logo"
+   ],
+   "shows": {
+    "portrait": 0.417,
+    "studio": 0.167,
+    "logo": 0.117,
+    "helmet": 0.117,
+    "bowling": 0.05,
+    "walk": 0.05,
+    "floodlights": 0.033,
+    "celebration": 0.017,
+    "gear": 0.017,
+    "feet": 0.017
+   },
+   "shows_by_third": [
+    {
+     "studio": 0.33,
+     "portrait": 0.2,
+     "helmet": 0.13,
+     "bowling": 0.13,
+     "logo": 0.07
+    },
+    {
+     "portrait": 0.62,
+     "studio": 0.21,
+     "celebration": 0.04,
+     "helmet": 0.04,
+     "gear": 0.04
+    },
+    {
+     "portrait": 0.33,
+     "logo": 0.29,
+     "helmet": 0.19,
+     "floodlights": 0.1,
+     "bowling": 0.05
+    }
+   ]
+  },
+  {
+   "label": "hype-2",
+   "duration_s": 35.44,
+   "shots": 40,
+   "cuts_per_min": 66.0,
+   "shot_length_s": {
+    "median": 0.4,
+    "p10": 0.04,
+    "p90": 2.02
+   },
+   "held_shot_s": {
+    "median": 0.68,
+    "p10": 0.28,
+    "p90": 2.52
+   },
+   "flicker_per_min": 1.69,
+   "flicker_shots": {
+    "median": 14.0,
+    "p10": 14.0,
+    "p90": 14.0
+   },
+   "pace_curve": [
+    0.32,
+    null,
+    4.32,
+    null,
+    0.68,
+    1.16,
+    0.44,
+    0.66,
+    0.96,
+    0.04
+   ],
+   "first_shot_s": 2.2,
+   "last_shot_s": 2.0,
+   "transitions": {
+    "cut": 0.641,
+    "flash": 0.154,
+    "spin": 0.077,
+    "static": 0.051,
+    "overlay": 0.051,
+    "whip": 0.026
+   },
+   "transition_frames": {
+    "median": 6.5,
+    "p10": 3.0,
+    "p90": 7.0
+   },
+   "bw_share": 0.143,
+   "bw_runs": 1,
+   "turns_bw": 1,
+   "moves": {
+    "push-in": 0.25,
+    "pull-out": 0.125,
+    "spin": 0.1
+   },
+   "grade": {
+    "sat": 142.2,
+    "contrast": 43.7,
+    "warmth": -19.0,
+    "vignette": 0.927
+   },
+   "beat_fit": {
+    "on_beat": 0.23,
+    "near_beat": 0.41,
+    "on_half_beat": 0.49,
+    "chance_on_beat": 0.26,
+    "median_lead_s": 0.038
+   },
+   "hits_per_min": 64.3,
+   "hits_on_cut": 0.24,
+   "accent": 1.22,
+   "opens_on": [
+    "aerial",
+    "walk"
+   ],
+   "closes_on": [
+    "portrait",
+    "nets"
+   ],
+   "shows": {
+    "batting": 0.225,
+    "walk": 0.225,
+    "portrait": 0.1,
+    "fielding": 0.1,
+    "floodlights": 0.1,
+    "bowling": 0.075,
+    "helmet": 0.05,
+    "studio": 0.025,
+    "aerial": 0.025,
+    "celebration": 0.025,
+    "nets": 0.025,
+    "gear": 0.025
+   },
+   "shows_by_third": [
+    {
+     "walk": 0.29,
+     "studio": 0.14,
+     "aerial": 0.14,
+     "portrait": 0.14,
+     "batting": 0.14
+    },
+    {
+     "helmet": 0.22,
+     "walk": 0.22,
+     "celebration": 0.11,
+     "portrait": 0.11,
+     "batting": 0.11
+    },
+    {
+     "batting": 0.29,
+     "walk": 0.21,
+     "fielding": 0.17,
+     "floodlights": 0.17,
+     "portrait": 0.08
+    }
+   ]
+  },
+  {
+   "label": "hype-3",
+   "duration_s": 44.0,
+   "shots": 57,
+   "cuts_per_min": 76.4,
+   "shot_length_s": {
+    "median": 0.48,
+    "p10": 0.064,
+    "p90": 1.696
+   },
+   "held_shot_s": {
+    "median": 0.52,
+    "p10": 0.28,
+    "p90": 1.72
+   },
+   "flicker_per_min": 1.36,
+   "flicker_shots": {
+    "median": 6.0,
+    "p10": 6.0,
+    "p90": 6.0
+   },
+   "pace_curve": [
+    2.36,
+    0.36,
+    1.08,
+    0.72,
+    0.64,
+    1.0,
+    0.36,
+    0.04,
+    0.48,
+    0.08
+   ],
+   "first_shot_s": 3.08,
+   "last_shot_s": 0.6,
+   "transitions": {
+    "cut": 0.732,
+    "static": 0.089,
+    "flash": 0.089,
+    "spin": 0.036,
+    "whip": 0.036,
+    "overlay": 0.018
+   },
+   "transition_frames": {
+    "median": 3.0,
+    "p10": 3.0,
+    "p90": 5.0
+   },
+   "bw_share": 0.032,
+   "bw_runs": 2,
+   "turns_bw": 0,
+   "moves": {
+    "push-in": 0.228,
+    "spin": 0.228,
+    "shake": 0.053,
+    "pull-out": 0.105
+   },
+   "grade": {
+    "sat": 132.8,
+    "contrast": 42.0,
+    "warmth": -3.3,
+    "vignette": 0.989
+   },
+   "beat_fit": {
+    "on_beat": 0.43,
+    "near_beat": 0.55,
+    "on_half_beat": 0.59,
+    "chance_on_beat": 0.27,
+    "median_lead_s": 0.02
+   },
+   "hits_per_min": 83.2,
+   "hits_on_cut": 0.34,
+   "accent": 1.52,
+   "opens_on": [
+    "stadium",
+    "sunset"
+   ],
+   "closes_on": [
+    "graphic",
+    "graphic"
+   ],
+   "shows": {
+    "batting": 0.193,
+    "bowling": 0.158,
+    "nets": 0.123,
+    "walk": 0.123,
+    "portrait": 0.088,
+    "graphic": 0.053,
+    "fielding": 0.035,
+    "gear": 0.035,
+    "arrival": 0.035,
+    "sunset": 0.035,
+    "stadium": 0.035,
+    "floodlights": 0.035,
+    "feet": 0.035,
+    "logo": 0.018
+   },
+   "shows_by_third": [
+    {
+     "walk": 0.2,
+     "portrait": 0.13,
+     "arrival": 0.13,
+     "sunset": 0.13,
+     "stadium": 0.13
+    },
+    {
+     "batting": 0.22,
+     "nets": 0.22,
+     "bowling": 0.22,
+     "gear": 0.11,
+     "walk": 0.11
+    },
+    {
+     "batting": 0.25,
+     "bowling": 0.17,
+     "portrait": 0.12,
+     "nets": 0.12,
+     "floodlights": 0.08
+    }
+   ]
+  },
+  {
+   "label": "hype-4",
+   "duration_s": 47.6,
+   "shots": 87,
+   "cuts_per_min": 108.4,
+   "shot_length_s": {
+    "median": 0.32,
+    "p10": 0.04,
+    "p90": 1.136
+   },
+   "held_shot_s": {
+    "median": 0.44,
+    "p10": 0.08,
+    "p90": 1.24
+   },
+   "flicker_per_min": 2.52,
+   "flicker_shots": {
+    "median": 8.0,
+    "p10": 4.8,
+    "p90": 11.2
+   },
+   "pace_curve": [
+    2.78,
+    0.6,
+    0.14,
+    0.32,
+    0.46,
+    0.08,
+    0.1,
+    0.52,
+    1.12,
+    1.32
+   ],
+   "first_shot_s": 3.44,
+   "last_shot_s": 0.28,
+   "transitions": {
+    "cut": 0.512,
+    "flash": 0.244,
+    "static": 0.105,
+    "overlay": 0.07,
+    "spin": 0.047,
+    "black": 0.012,
+    "whip": 0.012
+   },
+   "transition_frames": {
+    "median": 3.0,
+    "p10": 2.0,
+    "p90": 6.0
+   },
+   "bw_share": 0.068,
+   "bw_runs": 8,
+   "turns_bw": 0,
+   "moves": {
+    "pull-out": 0.057,
+    "push-in": 0.264,
+    "shake": 0.057,
+    "spin": 0.069
+   },
+   "grade": {
+    "sat": 88.15,
+    "contrast": 47.6,
+    "warmth": 11.2,
+    "vignette": 0.89
+   },
+   "beat_fit": {
+    "on_beat": 0.16,
+    "near_beat": 0.33,
+    "on_half_beat": 0.37,
+    "chance_on_beat": 0.19,
+    "median_lead_s": 0.007
+   },
+   "hits_per_min": 90.8,
+   "hits_on_cut": 0.31,
+   "accent": 1.17,
+   "opens_on": [
+    "gear",
+    "walk"
+   ],
+   "closes_on": [
+    "floodlights",
+    "graphic"
+   ],
+   "shows": {
+    "graphic": 0.149,
+    "walk": 0.149,
+    "batting": 0.138,
+    "portrait": 0.126,
+    "bowling": 0.103,
+    "fielding": 0.092,
+    "nets": 0.092,
+    "helmet": 0.08,
+    "logo": 0.011,
+    "crowd": 0.011,
+    "arrival": 0.011,
+    "floodlights": 0.011,
+    "warmup": 0.011,
+    "gear": 0.011
+   },
+   "shows_by_third": [
+    {
+     "walk": 0.21,
+     "portrait": 0.18,
+     "fielding": 0.18,
+     "helmet": 0.18,
+     "batting": 0.06
+    },
+    {
+     "graphic": 0.32,
+     "batting": 0.21,
+     "bowling": 0.13,
+     "nets": 0.11,
+     "portrait": 0.08
+    },
+    {
+     "walk": 0.25,
+     "nets": 0.19,
+     "portrait": 0.12,
+     "batting": 0.12,
+     "bowling": 0.12
+    }
+   ]
+  },
+  {
+   "label": "matchday-1",
+   "duration_s": 56.72,
+   "shots": 80,
+   "cuts_per_min": 83.6,
+   "shot_length_s": {
+    "median": 0.42,
+    "p10": 0.04,
+    "p90": 1.96
+   },
+   "held_shot_s": {
+    "median": 0.56,
+    "p10": 0.16,
+    "p90": 2.024
+   },
+   "flicker_per_min": 3.17,
+   "flicker_shots": {
+    "median": 5.0,
+    "p10": 4.2,
+    "p90": 7.4
+   },
+   "pace_curve": [
+    2.28,
+    2.7,
+    1.52,
+    0.16,
+    0.38,
+    0.52,
+    0.06,
+    1.44,
+    0.7,
+    0.08
+   ],
+   "first_shot_s": 2.64,
+   "last_shot_s": 0.52,
+   "transitions": {
+    "cut": 0.747,
+    "black": 0.101,
+    "whip": 0.063,
+    "flash": 0.038,
+    "spin": 0.025,
+    "overlay": 0.025
+   },
+   "transition_frames": {
+    "median": 2.0,
+    "p10": 1.0,
+    "p90": 4.8
+   },
+   "bw_share": 0.0,
+   "bw_runs": 0,
+   "turns_bw": 0,
+   "moves": {
+    "push-in": 0.338,
+    "pull-out": 0.062,
+    "shake": 0.075,
+    "spin": 0.05
+   },
+   "grade": {
+    "sat": 118.55,
+    "contrast": 40.75,
+    "warmth": 3.0,
+    "vignette": 0.968
+   },
+   "beat_fit": {
+    "on_beat": 0.18,
+    "near_beat": 0.3,
+    "on_half_beat": 0.48,
+    "chance_on_beat": 0.22,
+    "median_lead_s": 0.001
+   },
+   "hits_per_min": 76.2,
+   "hits_on_cut": 0.31,
+   "accent": 1.24,
+   "opens_on": [
+    "stadium",
+    "floodlights"
+   ],
+   "closes_on": [
+    "helmet",
+    "graphic"
+   ],
+   "shows": {
+    "walk": 0.225,
+    "portrait": 0.212,
+    "helmet": 0.15,
+    "bowling": 0.087,
+    "batting": 0.075,
+    "nets": 0.075,
+    "floodlights": 0.037,
+    "sunset": 0.025,
+    "stadium": 0.025,
+    "warmup": 0.025,
+    "feet": 0.025,
+    "graphic": 0.013,
+    "studio": 0.013,
+    "logo": 0.013
+   },
+   "shows_by_third": [
+    {
+     "walk": 0.36,
+     "portrait": 0.27,
+     "stadium": 0.18,
+     "sunset": 0.09,
+     "floodlights": 0.09
+    },
+    {
+     "portrait": 0.29,
+     "walk": 0.22,
+     "nets": 0.12,
+     "bowling": 0.12,
+     "batting": 0.05
+    },
+    {
+     "helmet": 0.39,
+     "walk": 0.18,
+     "batting": 0.14,
+     "portrait": 0.07,
+     "bowling": 0.07
+    }
+   ]
+  },
+  {
+   "label": "reel-1",
+   "duration_s": 27.68,
+   "shots": 44,
+   "cuts_per_min": 93.2,
+   "shot_length_s": {
+    "median": 0.3,
+    "p10": 0.12,
+    "p90": 1.072
+   },
+   "held_shot_s": {
+    "median": 0.3,
+    "p10": 0.12,
+    "p90": 1.072
+   },
+   "flicker_per_min": 0.0,
+   "flicker_shots": {},
+   "pace_curve": [
+    3.16,
+    0.22,
+    0.24,
+    0.2,
+    0.58,
+    0.08,
+    0.4,
+    0.6,
+    0.8,
+    1.04
+   ],
+   "first_shot_s": 3.16,
+   "last_shot_s": 0.24,
+   "transitions": {
+    "cut": 0.488,
+    "flash": 0.302,
+    "static": 0.209
+   },
+   "transition_frames": {
+    "median": 4.5,
+    "p10": 2.0,
+    "p90": 12.0
+   },
+   "bw_share": 0.136,
+   "bw_runs": 8,
+   "turns_bw": 0,
+   "moves": {
+    "push-in": 0.386,
+    "spin": 0.068,
+    "pull-out": 0.045
+   },
+   "grade": {
+    "sat": 131.3,
+    "contrast": 45.55,
+    "warmth": 3.1,
+    "vignette": 0.824
+   },
+   "beat_fit": {
+    "on_beat": 0.33,
+    "near_beat": 0.56,
+    "on_half_beat": 0.56,
+    "chance_on_beat": 0.34,
+    "median_lead_s": -0.035
+   },
+   "hits_per_min": 82.4,
+   "hits_on_cut": 0.39,
+   "accent": 1.0,
+   "opens_on": [
+    "batting",
+    "graphic"
+   ],
+   "closes_on": [
+    "aerial",
+    "graphic"
+   ],
+   "shows": {
+    "batting": 0.295,
+    "graphic": 0.159,
+    "walk": 0.136,
+    "helmet": 0.091,
+    "portrait": 0.068,
+    "studio": 0.045,
+    "bowling": 0.045,
+    "aerial": 0.023,
+    "celebration": 0.023,
+    "fielding": 0.023,
+    "gear": 0.023,
+    "arrival": 0.023,
+    "floodlights": 0.023,
+    "feet": 0.023
+   },
+   "shows_by_third": [
+    {
+     "graphic": 0.28,
+     "batting": 0.28,
+     "helmet": 0.17,
+     "portrait": 0.11,
+     "floodlights": 0.06
+    },
+    {
+     "batting": 0.31,
+     "studio": 0.12,
+     "walk": 0.12,
+     "celebration": 0.06,
+     "fielding": 0.06
+    },
+    {
+     "batting": 0.3,
+     "walk": 0.3,
+     "graphic": 0.1,
+     "aerial": 0.1,
+     "bowling": 0.1
+    }
+   ]
+  },
+  {
+   "label": "wrap-1",
+   "duration_s": 22.92,
+   "shots": 33,
+   "cuts_per_min": 83.8,
+   "shot_length_s": {
+    "median": 0.48,
+    "p10": 0.112,
+    "p90": 1.384
+   },
+   "held_shot_s": {
+    "median": 0.48,
+    "p10": 0.112,
+    "p90": 1.384
+   },
+   "flicker_per_min": 0.0,
+   "flicker_shots": {},
+   "pace_curve": [
+    0.76,
+    0.56,
+    0.08,
+    1.04,
+    1.92,
+    0.34,
+    0.56,
+    0.38,
+    1.4,
+    2.24
+   ],
+   "first_shot_s": 1.32,
+   "last_shot_s": 2.24,
+   "transitions": {
+    "cut": 0.594,
+    "flash": 0.219,
+    "overlay": 0.188
+   },
+   "transition_frames": {
+    "median": 3.0,
+    "p10": 2.0,
+    "p90": 3.0
+   },
+   "bw_share": 0.021,
+   "bw_runs": 2,
+   "turns_bw": 0,
+   "moves": {
+    "push-in": 0.212,
+    "pull-out": 0.152,
+    "shake": 0.03,
+    "spin": 0.03
+   },
+   "grade": {
+    "sat": 25.0,
+    "contrast": 21.0,
+    "warmth": 2.4,
+    "vignette": 1.005
+   },
+   "beat_fit": {
+    "on_beat": 0.28,
+    "near_beat": 0.44,
+    "on_half_beat": 0.47,
+    "chance_on_beat": 0.27,
+    "median_lead_s": 0.008
+   },
+   "hits_per_min": 65.4,
+   "hits_on_cut": 0.36,
+   "accent": 1.48,
+   "opens_on": [
+    "arrival",
+    "logo"
+   ],
+   "closes_on": [
+    "batting",
+    "nets"
+   ],
+   "shows": {
+    "batting": 0.303,
+    "walk": 0.212,
+    "nets": 0.182,
+    "portrait": 0.091,
+    "arrival": 0.061,
+    "bowling": 0.061,
+    "logo": 0.03,
+    "stadium": 0.03,
+    "floodlights": 0.03
+   },
+   "shows_by_third": [
+    {
+     "batting": 0.2,
+     "walk": 0.2,
+     "portrait": 0.13,
+     "arrival": 0.13,
+     "logo": 0.07
+    },
+    {
+     "walk": 0.44,
+     "batting": 0.33,
+     "nets": 0.11,
+     "bowling": 0.11
+    },
+    {
+     "nets": 0.44,
+     "batting": 0.44,
+     "portrait": 0.11
+    }
+   ]
+  },
+  {
+   "label": "wrap-2",
+   "duration_s": 27.96,
+   "shots": 29,
+   "cuts_per_min": 60.1,
+   "shot_length_s": {
+    "median": 0.6,
+    "p10": 0.32,
+    "p90": 2.296
+   },
+   "held_shot_s": {
+    "median": 0.6,
+    "p10": 0.32,
+    "p90": 2.296
+   },
+   "flicker_per_min": 0.0,
+   "flicker_shots": {},
+   "pace_curve": [
+    0.44,
+    0.54,
+    1.78,
+    0.8,
+    0.44,
+    0.84,
+    null,
+    2.24,
+    0.82,
+    2.72
+   ],
+   "first_shot_s": 0.6,
+   "last_shot_s": 2.72,
+   "transitions": {
+    "cut": 0.643,
+    "flash": 0.143,
+    "static": 0.107,
+    "overlay": 0.036,
+    "spin": 0.036,
+    "whip": 0.036
+   },
+   "transition_frames": {
+    "median": 3.0,
+    "p10": 2.4,
+    "p90": 4.6
+   },
+   "bw_share": 0.133,
+   "bw_runs": 2,
+   "turns_bw": 3,
+   "moves": {
+    "pull-out": 0.103,
+    "push-in": 0.345,
+    "shake": 0.103,
+    "spin": 0.138
+   },
+   "grade": {
+    "sat": 126.2,
+    "contrast": 45.9,
+    "warmth": 0.6,
+    "vignette": 0.877
+   },
+   "beat_fit": {
+    "on_beat": 0.39,
+    "near_beat": 0.71,
+    "on_half_beat": 0.46,
+    "chance_on_beat": 0.24,
+    "median_lead_s": 0.041
+   },
+   "hits_per_min": 94.4,
+   "hits_on_cut": 0.34,
+   "accent": 1.53,
+   "opens_on": [
+    "gear",
+    "bowling"
+   ],
+   "closes_on": [
+    "batting",
+    "walk"
+   ],
+   "shows": {
+    "walk": 0.345,
+    "nets": 0.207,
+    "batting": 0.172,
+    "gear": 0.069,
+    "bowling": 0.069,
+    "portrait": 0.034,
+    "fielding": 0.034,
+    "warmup": 0.034,
+    "feet": 0.034
+   },
+   "shows_by_third": [
+    {
+     "walk": 0.54,
+     "gear": 0.08,
+     "batting": 0.08,
+     "nets": 0.08,
+     "bowling": 0.08
+    },
+    {
+     "nets": 0.33,
+     "batting": 0.25,
+     "walk": 0.17,
+     "portrait": 0.08,
+     "bowling": 0.08
+    },
+    {
+     "walk": 0.25,
+     "nets": 0.25,
+     "fielding": 0.25,
+     "batting": 0.25
+    }
+   ]
+  }
+ ]
+}

@@ -55,6 +55,24 @@ def load_or_track(path: str | Path, cache_dir: Path) -> dict:
     return data
 
 
+def accents(path: str | Path, cache_dir: Path, top: float = 0.9, sr: int = 22050) -> list[float]:
+    """The music's strong onsets (hits, snares, drops: the top 10% of onset peaks), seconds, cached as
+    cache/beats/<name>.accents.json. The user's sports reels cut on these more than on the beat grid (kb/render.py)."""
+    out = Path(cache_dir) / (Path(path).stem + ".accents.json")
+    if out.exists():
+        return json.loads(out.read_text())
+    import librosa
+
+    y, sr = librosa.load(str(path), sr=sr, mono=True)
+    env = librosa.onset.onset_strength(y=y, sr=sr)
+    peaks = librosa.util.peak_pick(env, pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.5, wait=5)
+    times = librosa.frames_to_time(peaks, sr=sr)
+    keep = [round(float(t), 3) for t, p in zip(times, peaks) if env[p] >= np.quantile(env[peaks], top)] if len(peaks) else []
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(keep) + "\n")
+    return keep
+
+
 def beat_lengths(beats_s: list[float], start_s: float, target_s: float, max_beats: int = 8) -> tuple[float, float]:
     """The cut after `start_s` that best matches `target_s`: (length to the chosen beat, that beat's time).
 

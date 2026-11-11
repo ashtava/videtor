@@ -8,7 +8,6 @@ Examples (delete these and write your own):
 
 - [talking-head] Never dissolve between two shots of the same speaker; cut or cover with B-roll.
 - [brand-film] Open on the widest shot available; hold it at least 3 seconds before the first cut.
-- [sports-promo] Hits land on the beat; whooshes lead a cut by 2–3 frames.
 - Music never sits above -14 dB under speech.
 
 ## Learned from your Diwali Party edit (2026-10-31; observations from one edit, edit freely)
@@ -22,3 +21,14 @@ Examples (delete these and write your own):
 - [event] Music is a medley from the brief's music folder, joined on drops and hits (Karan Aujla intro, Jogi riff and drop, Rock tha Party finale).
 - [event] Sound: a crowd-cheering bed under the party, a riser into each drop, whooshes on section changes, click bursts (4 clicks 0.12-0.2 s apart) on the card flicker and the photo stack, a 2-3 frame flash overlay (sfx Ref/SnapInsta...AQOuV3PDe64) on most cuts.
 - [event] Prism-filter shots are wanted (about a third of the finale); the photographer's stills can go in.
+
+## Learned from your sports reels (2026-11-11; eight rendered reels, read from the picture: edit freely)
+
+- [sports-promo] Three kinds: the pre-match hype reel (30-48 s, fastest: median shot 0.36 s), the practice-day wrap (23-28 s, median 0.58 s) and the match-day reel (about 57 s, a stadium build-up into the players).
+- [sports-promo] Pace: an opening hold of about 2 s (an aerial or the empty stadium, floodlights, or a tight detail such as an eye or gloves), then held shots of about 0.5 s, flicker bursts of 6-10 sub-shots of 1-3 frames on one player (about one a minute), and a 1-2.5 s hold to close.
+- [sports-promo] Cuts follow the music's accents (hits, snares, whooshes), not a strict beat grid: half of them sit on a strong onset; use "cut_on": "accents".
+- [sports-promo] Between shots: mostly hard cuts; a 3-frame white exposure flash on about one cut in six, a 3-frame grey film-scan static on about one in fifteen (more at section changes), now and then a whip or a spin with motion blur.
+- [sports-promo] Looks: short black-and-white runs of 2-3 shots (about 10% of the runtime), sometimes a colour shot turning black and white; a warm, saturated grade with deep blues (teal and gold), soft vignette; fisheye and vignette on stadium establishers.
+- [sports-promo] Moves: about a quarter of the shots push in, a tenth pull out; low angles, wide lenses, Dutch tilts, golden-hour flares.
+- [sports-promo] Content: players walking to camera, portraits looking into the lens, batting and bowling in the nets, warm-ups, gear (helmets, gloves, pads, bat, ball, spikes on the grass) in close-up; close on the team logo (often a helmet badge), floodlights or a walk-off.
+- [sports-promo] Text: one short uppercase line per section, small, bottom centre ("THE FOCUS.", "LOCKED IN.", "FIRED UP."); silhouette and title animations are made outside the edit.

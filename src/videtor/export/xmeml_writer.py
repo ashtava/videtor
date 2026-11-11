@@ -204,13 +204,16 @@ class _Writer:
 
     def basic_motion_el(self, parent: ET.Element, scale: float, rotation: float = 0.0, center: tuple[float, float] = (0.0, 0.0),
                         scale_keys: list[tuple[int, float]] | None = None,
-                        steady_keys: list[tuple[int, float, float, float]] | None = None) -> None:
+                        steady_keys: list[tuple[int, float, float, float]] | None = None,
+                        rotation_keys: list[tuple[int, float]] | None = None,
+                        center_keys: list[tuple[int, float, float]] | None = None) -> None:
         """Premiere's Basic Motion block as its own exports write it: scale (%), rotation (degrees, clockwise), centre.
 
         `scale_keys` animate the scale: (when, value) with `when` in the clipitem's in/out frames, as in the
         user's exports (a zoom from in to out is a key at the clip's in and one at its out). `steady_keys`
         (when, dx, dy sequence pixels, degrees) move the centre and the rotation away from their values on
-        every frame they name: a steadied shot (plan/stabilize.py).
+        every frame they name: a steadied shot (plan/stabilize.py). `rotation_keys` (when, degrees) and `center_keys`
+        (when, horiz, vert in centre units) animate those directly: the effects of plan/fx.py (spin, whip, shake).
         """
         long, short = 2 * max(self.width, self.height), 2 * min(self.width, self.height)  # centre units (fill.centre_offset)
         flt = ET.SubElement(parent, "filter")
@@ -238,6 +241,11 @@ class _Writer:
                     kf = ET.SubElement(p, "keyframe")
                     _text(kf, "when", int(when))
                     _text(kf, "value", round(value + da, 3))
+            elif pid == "rotation" and rotation_keys:
+                for when, v in rotation_keys:
+                    kf = ET.SubElement(p, "keyframe")
+                    _text(kf, "when", int(when))
+                    _text(kf, "value", round(v, 3))
         for pid, name, (h, v) in (("center", "Center", center), ("centerOffset", "Anchor Point", (0.0, 0.0))):
             p = ET.SubElement(effect, "parameter", authoringApp="PremierePro")
             _text(p, "parameterid", pid)
@@ -252,6 +260,13 @@ class _Writer:
                     kv = ET.SubElement(kf, "value")
                     _text(kv, "horiz", round(h + dx / long, 6))
                     _text(kv, "vert", round(v + dy / short, 6))
+            elif pid == "center" and center_keys:
+                for when, kh, kv_ in center_keys:
+                    kf = ET.SubElement(p, "keyframe")
+                    _text(kf, "when", int(when))
+                    kv = ET.SubElement(kf, "value")
+                    _text(kv, "horiz", round(kh, 6))
+                    _text(kv, "vert", round(kv_, 6))
 
     def audio_levels_el(self, parent: ET.Element, gain_db: float) -> None:
         """A clip's volume as Premiere's own exports write it: Audio Levels with a linear level (1 = 0 dB, at most +12 dB)."""
@@ -269,6 +284,53 @@ class _Writer:
         _text(p, "valuemin", 0)
         _text(p, "valuemax", 3.98109)
         _text(p, "value", f"{min(10 ** (gain_db / 20), 3.98109):.6g}")
+
+    @staticmethod
+    def _param(effect: ET.Element, pid: str, name: str, value, lo=None, hi=None, keys: list[tuple[int, float]] | None = None) -> None:
+        p = ET.SubElement(effect, "parameter", authoringApp="PremierePro")
+        _text(p, "parameterid", pid)
+        _text(p, "name", name)
+        if lo is not None:
+            _text(p, "valuemin", lo)
+            _text(p, "valuemax", hi)
+        _text(p, "value", value)
+        for when, v in keys or []:
+            kf = ET.SubElement(p, "keyframe")
+            _text(kf, "when", int(when))
+            _text(kf, "value", round(v, 3))
+
+    @staticmethod
+    def _effect(parent: ET.Element, name: str, effectid: str, category: str, effecttype: str = "filter") -> ET.Element:
+        effect = ET.SubElement(ET.SubElement(parent, "filter"), "effect")
+        _text(effect, "name", name)
+        _text(effect, "effectid", effectid)
+        _text(effect, "effectcategory", category)
+        _text(effect, "effecttype", effecttype)
+        _text(effect, "mediatype", "video")
+        _text(effect, "pproBypass", "false")
+        return effect
+
+    def gaussian_blur_el(self, parent: ET.Element, radius: float, keys: list[tuple[int, float]] | None = None) -> None:
+        """Gaussian Blur as the user's Gujarat Giants export writes it (radius 0-100), with radius keyframes."""
+        effect = self._effect(parent, "Gaussian Blur", "Gaussian Blur", "Blur", "motion")
+        self._param(effect, "radius", "Radius", round(radius, 3), 0, 100, keys)
+
+    def opacity_el(self, parent: ET.Element, value: float, keys: list[tuple[int, float]] | None = None) -> None:
+        """Opacity (0-100) as the user's exports write it."""
+        effect = self._effect(parent, "Opacity", "opacity", "motion", "motion")
+        self._param(effect, "opacity", "opacity", round(value, 3), 0, 100, keys)
+
+    def desaturate_el(self, parent: ET.Element, variant: str = "3way") -> None:
+        """Black and white, NOT YET VERIFIED in Premiere. "3way": FCP's Color Corrector 3-way at saturation 0, which
+        Premiere's FCP import names in its translation table (its parameters are not known here); "black-white" and
+        "ae-black-white": Premiere's own Black & White by display name and by match name, in case its import restores
+        its own effects. `videtor fx-test` puts one clip of each in a sequence to see which survives. Clips that ask
+        for black and white also carry the Iris label, so a run can be found and set by hand if the filter is dropped."""
+        if variant == "3way":
+            effect = self._effect(parent, "Color Corrector 3-way", "Color Corrector 3-way", "Color Correction")
+            self._param(effect, "saturation", "Sat", 0, 0, 500)
+        else:
+            self._effect(parent, "Black & White", "Black & White" if variant == "black-white" else "AE.ADBE Black&White", "Image Control")
 
     def fade_out_el(self, parent: ET.Element, end: int, frames: int) -> None:
         """A one-sided audio Cross Fade (+3dB) to silence at `end`, the way Premiere exports a fade-out."""
@@ -313,6 +375,9 @@ class _Writer:
         _text(el, "end", end)
         _text(el, "in", in_frame)
         _text(el, "out", out_frame)
+        fx = meta.get("fx") or {}
+        if media_type == "video" and fx.get("composite"):
+            _text(el, "compositemode", fx["composite"])
         self.file_el(el, info)
         if media_type == "audio":
             st = ET.SubElement(el, "sourcetrack")
@@ -323,14 +388,31 @@ class _Writer:
         else:
             if abs(speed - 1.0) > 1e-6:
                 self.time_remap_el(el, speed)
-            if meta.get("motion"):
-                m = meta["motion"]
+            if meta.get("motion") or fx.get("scale") or fx.get("rotation") or fx.get("center"):
+                m = meta.get("motion") or {"scale": 100.0}
                 keys = None
                 if m.get("zoom"):  # {"from": scale at the clip's in, "to": scale at its out}
                     keys = [(in_frame, m["zoom"]["from"]), (out_frame, m["zoom"]["to"])]
                 # steadying: [k, dx, dy, degrees] for the clip's k-th frame on the timeline
                 steady = [(in_frame + int(k), float(dx), float(dy), float(da)) for k, dx, dy, da in m["keys"]] if m.get("keys") else None
-                self.basic_motion_el(el, m.get("scale", 100), m.get("rotation", 0), tuple(m.get("center", (0.0, 0.0))), keys, steady)
+                # effects (plan/fx.py): [k, value] or [k, horiz, vert] for the clip's k-th frame on the timeline
+                if fx.get("scale"):
+                    keys = [(in_frame + int(k), float(v)) for k, v in fx["scale"]]
+                rot = [(in_frame + int(k), float(v)) for k, v in fx["rotation"]] if fx.get("rotation") else None
+                cen = [(in_frame + int(k), float(h), float(v)) for k, h, v in fx["center"]] if fx.get("center") else None
+                self.basic_motion_el(el, m.get("scale", 100), m.get("rotation", 0), tuple(m.get("center", (0.0, 0.0))), keys, steady, rot, cen)
+            if fx.get("blur"):
+                self.gaussian_blur_el(el, 0.0, [(in_frame + int(k), float(v)) for k, v in fx["blur"]])
+            if fx.get("opacity") is not None:
+                op = fx["opacity"]
+                if isinstance(op, list):
+                    self.opacity_el(el, float(op[0][1]), [(in_frame + int(k), float(v)) for k, v in op])
+                else:
+                    self.opacity_el(el, float(op))
+            if fx.get("bw"):
+                self.desaturate_el(el, fx["bw"] if isinstance(fx["bw"], str) else "3way")
+        if fx.get("label"):
+            _text(ET.SubElement(el, "labels"), "label2", fx["label"])
         return el
 
     @staticmethod
@@ -446,6 +528,12 @@ class _Writer:
             _text(track_el, "locked", "FALSE")
             _text(track_el, "outputchannelindex", 1)
 
+        for mk in (tl.metadata.get("videtor") or {}).get("markers") or []:  # [{name, at_s, comment}]
+            marker = ET.SubElement(seq, "marker")
+            _text(marker, "comment", mk.get("comment", ""))
+            _text(marker, "name", mk["name"])
+            _text(marker, "in", int(round(float(mk["at_s"]) * self.fps)))
+            _text(marker, "out", -1)
         _timecode_el(seq, self.fps)
         return root
 

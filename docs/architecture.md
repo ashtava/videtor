@@ -44,6 +44,7 @@ translation, the music choice when none is given, reading contact sheets, and th
 | | `kb/footage.py`, `kb/selects.py` | Indexes the raw footage behind an edit (used ranges, duplicates, consolidated copies); used vs unused |
 | | `kb/sfx.py` | The user's SFX habits mined from their edits (snippets, offsets from the cut, levels) → `kb/sfx.json` |
 | | `kb/breakdown.py` | An edit in numbers and words (medley, pauses, pace per stretch, ramps, stacks, flashes, SFX): the material for bucket cards |
+| | `kb/render.py` | A finished reel read from its render alone: cuts, the frames between shots (recurring static overlay, white flash, black), each shot's length, look and move, the grade, beat fit and accents, CLIP labels (`SHOTS`); `summarize` → `kb/renders/<bucket>.json` (no file names), each reel in `out/references/<bucket>/` |
 | | `kb/readback.py` | Reads a fixed cut back (xmeml or live over prpr), aligns it to the picks, labels each slot kept/slipped/trimmed/swapped/removed |
 | | `kb/js/` | Premiere UXP scripts: `read_sequence.js` (read-only) and `finish_interview.js` (writes effects; only with `--force-bridge`) |
 | Analysis | `analyze/frames.py`, `audio.py`, `motion.py` | Per clip: sharpness, exposure, colour; loudness, silence, speech; motion and in-clip cuts |
@@ -64,12 +65,15 @@ translation, the music choice when none is given, reading contact sheets, and th
 | | `plan/sfx.py` | Places risers, impacts, whooshes, shutters and clicks the way the user does |
 | | `plan/stabilize.py` | Keyframe steadying (below); the shots are measured side by side |
 | | `plan/library.py` | A shoot sorted into wide / close-up / talking-head / interview-bite / b-roll folders from the sparse map: rules first, then a model learnt from the user's moves (`kb/library/`); the bites as a Premiere sequence |
+| | `plan/fx.py` | Effects drawn at a bucket's rates (`kb/policy/`, else `kb/renders/`): flash and static overlays (generated in `cache/assets`, or the user's), whip, spin, blur, push-in, pull-out, punch, shake, echo, black and white (Iris label); `fx-test` sequence |
+| | `plan/gym.py` | Learning a cutting style from reels alone: each reel's shots as stand-in footage, a policy that cuts them, a reward against the real reel, cross-entropy search, leave-one-out evaluation → `kb/policy/<bucket>.json` |
+| | `plan/draft.py` | A first shot map for new footage from a bucket's policy (`videtor draft`) |
 | | `plan/interview.py` | A-roll paper edit (`aroll.json`), B-roll by region, voice levelling, music dips, finishing pass (ramps, zooms, Warp flags) |
 | | `plan/musicvideo.py` | Beat-grid lip-sync cut with shares per singer, cutaways moved by whole bars, beam search (`mv.json`) |
 | | `plan/second_look.py`, `sheets.py`, `overview.py` | Contact sheets for Claude or the user; `look` applies choices |
 | | `plan/build.py` | Picks → OpenTimelineIO timeline (tracks, levels, music pieces, steadied clips) |
 | | `plan/rules.py`, `structure.py`, `rerank.py`, `benchmark.py` | Rounds 1-3: rule-based planner v0, the hook/opening model, a learned reranker, scoring against a real edit |
-| Export | `export/xmeml_writer.py` | Our own Premiere xmeml writer (Basic Motion, keyframes, Time Remap, levels, links, disabled alternates) |
+| Export | `export/xmeml_writer.py` | Our own Premiere xmeml writer (Basic Motion with scale, rotation and centre keyframes, Time Remap, Gaussian Blur, Opacity, blend modes, labels, sequence markers, levels, links, disabled alternates) |
 
 ## Files on disk
 
@@ -127,6 +131,15 @@ These were checked against the user's own exports and projects; don't re-derive 
   scale that fills the frame.
 - **Can't travel in xmeml:** Lumetri (its LUT lives in a blob), Warp Stabilizer. Adjustment layers re-import as
   a black slug.
+- **What the FCP XML import translates** (read from the strings of Premiere 26's own binary, 2026-11-11; its
+  behaviour on our files is not yet checked, which is what `videtor fx-test` is for): Basic Motion (with
+  `motionblur`, `dropshadow`), Distort (`deformation`), Crop, Opacity with blend modes (`<compositemode>`:
+  screen, lighten, darken, softlight, hardlight, ...), Time Remap, Gaussian Blur (`radius` → Blurriness), Luma Key,
+  Four/Eight-Point Garbage Matte, Color Corrector 3-way, Cross/Additive/Film Dissolve, Dip to Color/White/Black,
+  Edge Wipe, colour mattes (`fillcolor`), slugs, bars and tone, the text generators. Anything else is "flushed -
+  unsupported". The user's exports write Gaussian Blur, Luma Key, Distort and Opacity in exactly the FCP form, and
+  Guru's has `<compositemode>lighten</compositemode>` right after `<out>`; labels sit at the clipitem's end
+  (`<labels><label2>Iris</label2></labels>`). No desaturate filter is in the table.
 - **Paths:** pathurls keep `/,[]()#` raw, like Premiere. Readers must not use `urlparse` (`#` would cut file
   names).
 - **Transitions:** a −1 start/end next to a transition resolves via `cutPointTicks`.

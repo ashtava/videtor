@@ -39,6 +39,12 @@ for a shoot unlike the bucket's edits.
 `scale`, `face`, `hands` and `camera` are soft filters: a shot that misses one
 loses points but can still win. `speed` below 1 asks for slow motion and is
 honoured only on high-frame-rate takes.
+`effects` on the map ("sports-promo", or {"style": "sports-promo", "seed": 2, "rates": {"flash": 0.3}}) draws
+effects for every cut and shot at the rates your rendered reels of that bucket show (plan/fx.py); a slot's own
+`effects` list (flash, static, whip, spin, blur on the cut into it; push-in, pull-out, punch, shake, echo, bw on the
+shot) replaces the draw for that slot, and [] leaves it plain.
+`"cut_on": "accents"` moves each cut onto the music's nearest strong onset within a third of a beat (your sports
+reels cut on the hits more than on the grid).
 `classes` (on the map) and a slot's `class` name the library's shot types the cut may draw on
 (`videtor library`: wide, close-up, talking-head, interview-bite, b-roll). After a sparse `prep`
 only those takes (and the ones slots name in `takes`) are decoded in full; without them, every take is.
@@ -55,6 +61,7 @@ SCALES = {"detail", "close", "medium", "wide"}
 FACES = {"none", "partial", "full", "any"}
 CAMERAS = {"steady", "moving", "any"}
 LIBRARY_CLASSES = {"wide", "close-up", "talking-head", "interview-bite", "b-roll"}  # plan/library.py's CLASSES
+FX = ("flash", "static", "whip", "spin", "blur", "push-in", "pull-out", "punch", "shake", "echo", "bw")  # plan/fx.py's FX
 
 
 def slots(m: dict) -> list[dict]:
@@ -78,6 +85,9 @@ def validate(m: dict) -> list[str]:
         out.append("no slots")
     if set(m.get("classes") or []) - LIBRARY_CLASSES:
         out.append(f"classes must be among {sorted(LIBRARY_CLASSES)}")
+    e = m.get("effects")
+    if e is not None and not (isinstance(e, str) or (isinstance(e, dict) and isinstance(e.get("style", ""), str))):
+        out.append("effects is a bucket name (\"sports-promo\") or {style, seed, rates}")
     seen = set()
     for s in slots(m):
         sid = s.get("id")
@@ -95,6 +105,8 @@ def validate(m: dict) -> list[str]:
             out.append(f"{sid}: flicker is the frames of each sub-shot, a whole number from 1")
         if s.get("byte") and not any("@" in t for t in s.get("takes") or []):
             out.append(f"{sid}: a byte names its moment in takes, e.g. \"A011C045*@12.3-14.6\"")
+        if s.get("effects") is not None and (not isinstance(s["effects"], list) or set(s["effects"]) - set(FX)):
+            out.append(f"{sid}: effects must be a list among {list(FX)}")
         if not (s.get("beats") or s.get("length_s")):
             out.append(f"{sid}: needs beats or length_s")
         if set(s.get("scale") or []) - SCALES:
@@ -114,13 +126,15 @@ def load(path: str | Path) -> dict:
     return m
 
 
-def timing(m: dict, beats_rel: list[float] | None, fps: float) -> list[tuple[float, float]]:
+def timing(m: dict, beats_rel: list[float] | None, fps: float, accents_rel: list[float] | None = None) -> list[tuple[float, float]]:
     """(start_s, length_s) of every slot on the timeline, frame-exact.
 
     With music, each slot runs for its `beats` and the cut that ends it lands
     `beat_lead_s` before the closing beat (your cuts lead the beat); the first
     slot starts at 0 and the last one ends at `length_s`. `beats_rel` are beat
     times relative to the music's in-point, which should sit on a beat.
+    With `"cut_on": "accents"` and `accents_rel` (the music's strong onsets, relative to its in-point), a cut
+    within a third of a beat of one moves onto it, as the user's sports reels cut (kb/render.py).
     """
     lead = float(m.get("beat_lead_s", 0.12))
     total = float(m["length_s"])
@@ -139,6 +153,16 @@ def timing(m: dict, beats_rel: list[float] | None, fps: float) -> list[tuple[flo
         for s in ss[:-1]:
             k += float(s.get("beats") or max(1, round(float(s["length_s"]) / period)))
             cuts.append(beat(k) - lead)
+        if m.get("cut_on") == "accents" and accents_rel:
+            acc = np.asarray(sorted(accents_rel), float)
+            snapped, prev = [], 0.0
+            for c in cuts:
+                near = acc[np.abs(acc - c) <= period / 3]
+                c2 = float(near[np.abs(near - c).argmin()]) if len(near) else c
+                c2 = c2 if c2 >= prev + 2 / fps else c  # never squeeze a slot under two frames
+                snapped.append(c2)
+                prev = c2
+            cuts = snapped
     else:
         t = 0.0
         for s in ss[:-1]:

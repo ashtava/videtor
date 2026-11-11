@@ -54,7 +54,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 295 tests, about 20 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 330 tests, about 20 s, no drive needed
 ```
 
 - **Machine:** M2 Pro, 16 GB, macOS 26.3.1. Premiere Pro 26.0.2 (UXP), Resolve 19.1.4 Studio.
@@ -75,6 +75,10 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   (`uv sync --extra analyze --extra ui`), which the app installs on its first run; without it the page opens in
   the browser. The user chose this over the MCP server, and it is for a non-technical end user: keep its words
   plain and its steps few.
+- **Styles from renders** (2026-11-11): `videtor kb renders <folder> --bucket <b>` learns a bucket from finished
+  reels alone and `videtor kb train <b>` a cutting policy from them (`plan/gym.py`); `videtor draft` drafts a shot
+  map from it; a shot map's `"effects": "<b>"` adds the learnt effects (`plan/fx.py`) and `"cut_on": "accents"`
+  cuts on the music's hits. The sports reels' file names (a client's) stay in `out/references/`, never in kb/.
 - **Claude Code desktop** (set up 2026-11-04) reads the same `~/.claude` and project settings as the CLI.
   - `scripts/setup-claude-code.sh` links the skill into `~/.claude/skills/`, so `/cut-from-brief` works from
     any folder (checked in a session opened outside the repo), and makes sure the auto-push hook is set up.
@@ -89,7 +93,7 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 ```
 src/videtor/  cli.py · mcp_server.py · kb/ (past edits, read-back) · analyze/ (per clip, per second)
               plan/ (shot map → picks; moves, music, SFX, steadying, interview, music video) · export/ (xmeml writer)
-kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ library/ ...
+kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ library/ renders/ policy/ ...
 .xml-exports/ the user's Premiere exports: the knowledge base's source
 cache/        derived data, about 5 GB (footage maps took hours with the drives connected: don't delete); sparse/ holds the keyframe maps
 out/<name>/   one folder per cut: brief.md, shotmap.json, picks.json, <name>.xml, sheets, report.md, work/

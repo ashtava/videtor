@@ -1,6 +1,6 @@
 # Videtor status
 
-Checkpoint 2026-11-07 (first written 2026-11-01). Update this file after every delivery, verdict or build.
+Checkpoint 2026-11-11 (first written 2026-11-01). Update this file after every delivery, verdict or build.
 The user is switching Claude accounts. A new session starts with `docs/handoff.md`; the history up to now is
 in `private/` (local only).
 
@@ -18,6 +18,11 @@ On 2026-11-07 the user asked for two things, both built the same day (see Builds
 a shoot into wide / close-up / talking-head / interview-bite / b-roll folders offline and in parallel, and the
 slow single-threaded passes behind `/cut-from-brief` made parallel. The TPL library is built and waits for the
 user's sorting pass.
+
+On 2026-11-10 the user gave eight of their rendered sports reels (an IPL team's hype reels, practice-day wraps
+and a match-day reel; `~/Downloads/Exports/Videos`, no raw footage, no projects) and asked for a sports library
+learnt "in a reinforcement-based environment", so that raw media of a sports event can be cut like them, with
+some of the special effects added in the output. Built on 2026-11-11 (see Builds).
 
 The repo has been on GitHub since 2026-11-01 (`ashtava/videtor`, `main`, public). Every Claude turn's
 changes are committed and pushed by a Stop hook; `out/` and `cache/` stay local.
@@ -49,6 +54,7 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
 
 | Date | What | Code | Result |
 |---|---|---|---|
+| 11-11 | **The sports library** (the user: learn sports content from these reels "in a reinforcement-based environment" and add a few of the Premiere special effects to the output). `videtor kb renders <folder> --bucket sports-promo` reads finished renders alone (cuts, static/flash/black transition frames, shot lengths, black and white, moves, grade, beats and accents, CLIP labels); `videtor kb train sports-promo` learns a cutting policy in an environment made from the reels (each reel's shots as stand-in footage, a reward against the real reel, cross-entropy search, leave-one-out check); `videtor draft` writes a first shot map from it; `"effects": "sports-promo"` on a shot map draws flash and static overlays, whip, spin, blur, push-in, pull-out, punch, shake, echo and black and white at the learnt rates; `"cut_on": "accents"` moves cuts onto the music's strong onsets; `videtor fx-test` writes a sequence with one clip per effect for checking in Premiere | `kb/render.py`, `plan/fx.py`, `plan/gym.py`, `plan/draft.py`, `analyze/beats.accents`, `plan/shotmap.py` (`effects`, `cut_on`), `export/xmeml_writer.py` (rotation/centre keys, Gaussian Blur, Opacity, blend modes, labels, markers), `plan/build.py` (effects, echo track) | Eight reels read in 61 s on 8 workers. 83.7 cuts a minute, held shots 0.5 s, transitions: cut 66%, flash 14%, static 7%, overlay 4%, whip/spin/black 3% each; black and white 10% of the runtime; push-in 28%; cuts sit on the beat at chance (28% v 26%) but on louder onsets (1.23×): they follow accents. Held-out reward (0 = the reel's own style; one real reel scores about -8 against another): old XML profile -13.25, the reels' medians -8.46, trained -8.01 (better than the medians on 5 of 8). Policy: held 0.50 s, open 2.05 s, close 1.04 s, 1.2 flicker bursts a minute, 51% of cuts on accents. End to end: the Diwali v2 map re-cut from the cache with `"effects": "sports-promo"` (scratch folder, not the delivery) drew 23 push-ins, 14 flashes, 5 statics, 4 whips, 3 spins, 4 black-and-white clips, all keyframes inside their clips, XML parses. 330 tests. **Not yet checked in Premiere**: `out/fx-test/fx-test.xml` |
 | 11-07 | **The footage library**, `videtor library build \| learn \| status`: a shoot sorted into wide / close-up / talking-head / interview-bite / b-roll folders (links to the clips), a contact sheet per class, every interview bite as a Premiere sequence (`interview-bite/bites.xml` + `bites.md`), `library.md` with the reasons and the clips worth a look. Rules first; `learn` reads the user's folder moves back as labels and fits a model the next build uses. Keyframes only, every core, no Claude at run time | `plan/library.py`, `analyze/sparse.py` (the keyframe-only map, `cache/sparse/`), `analyze/parallel.py`, `kb/library/` | TPL, both folders the user named (786 clips, 5.9 h): the scan took 11 min 15 s on 8 workers, none failed; Whisper on the 159 speaker clips (136 min of audio) 12 min 45 s the first time; a rebuild with the caches 5 min 49 s. Sorted: 77 wide, 158 close-up, 83 talking-head, 68 interview-bite, 400 b-roll; 903 bites (132 min, 751 with clean edges); 115 clips flagged for a look; 58 of the 61 Master Cam takes read as talking heads (the other 3 have no speech or a walk-in). 15 clips are copies (Sam's Card 3 holds Master Cam files). `out/library/tpl/` |
 | 11-07 | **The UI reorganised around the user's journey** (the user found the UI confusing and asked for the journey): screens renamed (Projects, New project, Library, Activity; steps Footage → Brief & plan → Music & search → Cut → Review & export), project cards with a status line, a stepper with one "Next" action from the furthest step reached, a new project opens at once (brief while the footage is read), progress as words + bar + time left (raw logs under Details), the plan shown as a shot list (JSON under Edit the plan), a copyable request for Claude Code, drive checks before a cut, "Read the footage again" after a failure, Mac notifications when long work ends, advanced options folded away, an export box in Review | `ui/jobs.py` (`note`, `eta`, `on_finish`), `ui/server.py` (`_status`, `_steps`, `_cut_needs`, `api_scan`, `api_reprep`), `ui/static/` | 318 tests; the page script parses under JavaScriptCore; checked on the real smoke project (a terminal-made project with a cut reads "Cut ready for Premiere"). The journey map with the proposal and decisions D1-D5: https://claude.ai/artifact/Sfuj5WCoBeKHtEoidt4wxX |
 | 11-07 | **Sparse-first prep and cut** (after the user closed the decisions): `prep` now reads a shoot from its keyframes (the library's pass), sorts the takes into the library's classes (`out/<name>/classes.json`) and writes the overview in minutes; `cut` narrows the pool to the shot map's `classes` / a slot's `class` (plus named takes and the speech classes for bytes) and decodes only those takes in full, then fills as before. `search` falls back to the keyframe map. `--dense` keeps the old way | `cli.py` (`prep`, `_takes_for_cut`, `search`), `analyze/sparse.py` (`as_takes`, `copy_overview_stills`), `plan/library.py` (`classes_for`, `candidates`), `plan/shotmap.py` (`classes`, `class`) | Smoke test on Jatin's Card 1 (68 takes, 18 min): `prep` 17 s with the scan cached; a 4-slot map with `classes: ["close-up"]` decoded 52 of 68 takes (8.4 min of HEVC) in 107 s on 8 hardware sessions and filled every slot; XML written. The drive now stays connected until the cut |
@@ -111,6 +117,14 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    - D3 where projects live: the repo's `out/`, `~/Movies/Videtor` (recommended) or next to the footage;
    - D4 the day-to-day user: Paritosh, an assistant (recommended to design for) or a client;
    - D5 the hand-off: import by hand (recommended until the bridge is proven) or one click over the bridge.
+
+9. **The effects check in Premiere** (asked 2026-11-11): import `out/fx-test/fx-test.xml` (File ▸ Import; the
+   media is one of their reels in Downloads) and say which of the 14 markers look wrong: plain, push-in,
+   pull-out, punch, shake, whip, spin, blur, flash, static, echo, and three black-and-white variants (only one
+   may survive the import). Until then the effects are built from what Premiere's own exports and translation
+   table show, not seen in Premiere. Also: their own static and flash overlay clips, if they have them (the
+   reels reuse one 3-frame static), to use instead of the generated ones; and whether speed ramps and the text
+   cards should be learnt too (neither can be read from a render reliably).
 
 ## The offline proposal (2026-11-01, approved 2026-11-07)
 
@@ -176,7 +190,7 @@ Buckets are the edit types in `kb/manifest.json`. The skill reads `kb/buckets/<b
 | Bucket | The user's edits in it | Profile | Keeper | Card |
 |---|---|---|---|---|
 | brand-social | Adidas, Coca-Cola, Guru, JW, Vivo 1, Vivo 2, Zomato | `kb/profile/brand-social.json` | none | none |
-| sports-promo | Gujarat Giants, TPL/Leander | `kb/profile/sports-promo.json` | none | none |
+| sports-promo | Gujarat Giants, TPL/Leander; eight rendered reels (2026-11-11) | `kb/profile/sports-promo.json`, `kb/renders/sports-promo.json`, `kb/policy/sports-promo.json` | none | `kb/buckets/sports-promo.md` |
 | event | Diwali Party | `kb/profile/event.json` | `kb/keeper/event.json` (cross-validated AUC 0.76) | `kb/buckets/event.md` |
 | wedding | none (the engagement cut has no user edit yet) | none | none | none |
 | interview, music-video | none (their colourstone and Check exports would seed them) | none | none | none |
@@ -187,6 +201,12 @@ footage mapped) and `videtor kb bucket <bucket>`.
 ## Known gaps and backlog
 
 Not built; the source is in brackets.
+- Black and white can't be written for sure: no desaturate filter in Premiere's FCP import table; Iris labels and
+  a finishing list cover it until `fx-test` shows a variant that survives. [sports]
+- From a render, speed ramps, text cards, graphics (silhouettes, title animations) and the grade's LUT can't be
+  learnt; the notes carry them. A colour shot turning black and white is measured but not yet a cut effect. [sports]
+- The gym's reward measures style, not storytelling; with eight reels, the trained policy beats the plain medians
+  by little (-8.01 v -8.46). More reels, or the user's verdicts on sports cuts, should move it. [sports]
 - Grade, LUT, Warp Stabilizer and the "Flash 2" Lumetri flashes can't travel in xmeml. The grade is applied by
   hand with an adjustment layer; `videtor finish` over the bridge is unsafe. [B1, B3, B4]
 - Keyframe steadying removes about 50-65% of shake, below Warp Stabilizer quality. [B4]

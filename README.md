@@ -230,6 +230,38 @@ the frames (drive connected) and cancelled with a Position and Rotation keyframe
 small zoom (at most 10%) that keeps the edges out; delete the keyframes to undo. A file the index marks
 `"excluded"` (another shoot left on the same card) stays out of the pool.
 
+### Learning a style from rendered reels (the sports library)
+
+When only the finished renders exist (no Premiere project, no raw footage), Videtor learns a bucket's style from
+the picture and sound alone, offline:
+
+```sh
+uv run videtor kb renders ~/Downloads/Exports/Videos --bucket sports-promo   # about a minute for eight reels, every core
+#   kb/renders/sports-promo.json        the style: pace, transitions, black and white, moves, grade, beats, what is shown where (no file names)
+#   out/references/sports-promo/        each reel read in full (shots, transitions, beats) and a contact sheet of its shots (local)
+uv run videtor kb train sports-promo    # the cutting policy, tested on each reel held out in turn: kb/policy/sports-promo.json
+uv run videtor draft hype-30 --length 30 --music "<track>"   # a first shot map for new footage from that policy: edit it, then cut
+uv run videtor fx-test "<any video>"    # out/fx-test/fx-test.xml: one clip per effect, a marker naming each, to check them in Premiere
+```
+
+`kb renders` finds every cut and the frames between shots that belong to none (a recurring static overlay, a
+white flash, black), each shot's length, look (black and white) and move (push-in, pull-out, spin, whip,
+shake), the grade, the beat grid and how the cuts sit on it (on accents, not the grid), and names what each
+shot shows with CLIP (`src/videtor/kb/render.py`). `kb train` (`src/videtor/plan/gym.py`) uses each reel's own
+shots as stand-in footage: a policy (shot lengths through the runtime, holds, flicker bursts, snapping cuts to
+the music's accents, effect rates, black-and-white runs, what is shown where) cuts a reel from them; a reward
+scores how close the cut's style is to the real reel; the cross-entropy method tunes the policy, and each reel
+held out in turn shows how well it does on a reel it has not seen. A shot map then asks for effects with
+`"effects": "sports-promo"` and cuts on accents with `"cut_on": "accents"`.
+
+The effects (`src/videtor/plan/fx.py`) use only what Premiere's FCP XML import translates: Basic Motion keyframes
+(push-in, pull-out, punch, shake, the slide of a whip, the turn of a spin), Gaussian Blur keyframes (whip, spin,
+blur-in), Opacity and blend modes (an echo three frames behind on a track above, lighten), and overlay clips over
+the cut (a 3-frame white flash with its own alpha, 3 frames of film-scan static: generated in `cache/assets`, or
+your own clips via `"effects": {"style": "sports-promo", "assets": {"static": "...", "flash": "..."}}`). Black and
+white has no filter known to survive the import: the clips carry the Iris label and the cut prints the runs to
+set by hand; `fx-test` tries three variants.
+
 ### Interview pieces
 
 ```sh
