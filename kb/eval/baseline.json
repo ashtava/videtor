@@ -1,0 +1,97 @@
+{
+ "saved": "2026-11-11T20:37:27",
+ "note": "before phase 0: the cut as delivered on 2026-11-11",
+ "summary": {
+  "filled": 1.0,
+  "match": 2.69,
+  "sharp": 0.186,
+  "repeats": 0.286,
+  "lookalikes": 0.857,
+  "light_jumps": 0.286,
+  "keeper": 0.958,
+  "right_take": 0.325,
+  "right_second": 0.11,
+  "in_top3": 0.681
+ },
+ "projects": {
+  "guru-25s-brief": {
+   "slots": 31,
+   "filled": 1.0,
+   "match": 2.915,
+   "sharp": 0.421,
+   "keeper": null,
+   "repeats": 0,
+   "lookalikes": 0,
+   "light_jumps": 1,
+   "right_take": 0.581,
+   "right_second": 0.194,
+   "in_top3": 0.968
+  },
+  "diwali-party": {
+   "slots": 55,
+   "filled": 1.0,
+   "match": 2.766,
+   "sharp": 0.559,
+   "keeper": null,
+   "repeats": 0,
+   "lookalikes": 1,
+   "light_jumps": 0,
+   "right_take": 0.109,
+   "right_second": 0.036,
+   "in_top3": 0.418
+  },
+  "diwali-party-v2": {
+   "slots": 70,
+   "filled": 1.0,
+   "match": 2.214,
+   "sharp": 0.419,
+   "keeper": 1.433,
+   "repeats": 0,
+   "lookalikes": 0,
+   "light_jumps": 0,
+   "right_take": 0.286,
+   "right_second": 0.1,
+   "in_top3": 0.657
+  },
+  "alpha-summit": {
+   "slots": 56,
+   "filled": 1.0,
+   "match": 3.201,
+   "sharp": -0.177,
+   "keeper": 0.483,
+   "repeats": 0,
+   "lookalikes": 0,
+   "light_jumps": 0
+  },
+  "engagement": {
+   "slots": 38,
+   "filled": 1.0,
+   "match": 2.805,
+   "sharp": 0.366,
+   "keeper": null,
+   "repeats": 1,
+   "lookalikes": 3,
+   "light_jumps": 0
+  },
+  "sports-practice-a": {
+   "slots": 41,
+   "filled": 1.0,
+   "match": 2.858,
+   "sharp": -0.217,
+   "keeper": null,
+   "repeats": 0,
+   "lookalikes": 2,
+   "light_jumps": 1
+  },
+  "sports-matchday-b": {
+   "slots": 44,
+   "filled": 1.0,
+   "match": 2.073,
+   "sharp": -0.072,
+   "keeper": null,
+   "repeats": 1,
+   "lookalikes": 0,
+   "light_jumps": 0
+  }
+ }
+}

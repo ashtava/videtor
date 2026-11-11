@@ -1,7 +1,8 @@
 /* Videtor UI: plain JavaScript over the local API (ui/server.py). No build step, no framework. */
 const $ = (id) => document.getElementById(id);
+const TOKEN = document.querySelector('meta[name="videtor-token"]')?.content || "";  // the server refuses a POST without it
 const api = async (path, body) => {
-  const r = await fetch(path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const r = await fetch(path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json", "X-Videtor-Token": TOKEN }, body: JSON.stringify(body) });
   return r.json();
 };
 const fileUrl = (p) => "/file?path=" + encodeURIComponent(p);

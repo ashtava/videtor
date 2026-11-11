@@ -176,8 +176,15 @@ class CandidateTests(unittest.TestCase):
     def test_a_byte_slot_admits_the_speech_classes_and_named_takes_always_pass(self):
         m = {"classes": ["wide"], "sections": [{"name": "s", "slots": [{"id": "b-1", "show": "x", "byte": True, "takes": ["C0003*@1-3"]}]}]}
         self.assertEqual(library.wanted_classes(m), {"wide", "talking-head", "interview-bite"})
-        m2 = {"classes": ["wide"], "sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x", "takes": ["C0002*"]}]}]}
+        m2 = {"classes": ["wide"], "sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x", "takes": ["C0002*"]}, {"id": "s-2", "show": "y"}]}]}
         self.assertEqual([e["fid"] for e in library.candidates(self.entries, self.classes, m2)], ["a", "b", "d"])
+
+    def test_a_cut_decodes_no_take_the_map_skips_and_only_the_named_ones_when_every_slot_names_its_takes(self):
+        slots = [{"id": "s-1", "show": "x", "takes": ["C0002*", "C0003*@1-2"]}, {"id": "s-2", "show": "y", "takes": ["C0004*"]}, {"id": "s-3", "black": True}]
+        m = {"classes": ["wide"], "sections": [{"name": "s", "slots": slots}]}
+        self.assertEqual([e["fid"] for e in library.candidates(self.entries, self.classes, m)], ["b", "c", "d"])
+        m = {"skip": ["/V/C0001*", "*/C0004.MP4"], "sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x"}]}]}
+        self.assertEqual([e["fid"] for e in library.candidates(self.entries, self.classes, m)], ["b", "c"])
 
     def test_the_shot_map_validator_knows_the_classes(self):
         from videtor.plan import shotmap

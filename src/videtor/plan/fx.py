@@ -69,8 +69,11 @@ def rates_from_style(a: dict) -> dict:
 
 
 def _plain(slot: dict) -> bool:
-    """A slot that takes effects: a picked shot that is not a byte, a black slot, a flicker or a stack."""
-    return bool(slot.get("pick")) and not (slot.get("byte") or slot.get("black") or slot.get("flicker") or slot.get("stack"))
+    """A slot that takes effects: a picked shot that is not a byte, a black slot, a flicker or a stack (in the picks
+    a flicker is a pick in `pieces` and a stack carries `layers`; a shot map says `flicker` and `stack`)."""
+    pick = slot.get("pick")
+    return bool(pick) and not (slot.get("byte") or slot.get("black") or slot.get("flicker") or slot.get("stack")
+                               or (isinstance(pick, dict) and pick.get("pieces")) or slot.get("layers"))
 
 
 def assign(slots: list[dict], rates: dict, length_s: float, seed: int = 0) -> dict[str, list[str]]:

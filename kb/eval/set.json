@@ -1,0 +1,36 @@
+{
+ "note": "Past projects `videtor eval` cuts again from the cache. `real` is the user's own edit of the same footage, where there is one. Shot maps live in out/ (local).",
+ "projects": [
+  {
+   "name": "guru-25s-brief",
+   "shotmap": "out/guru-25s-brief/shotmap.json",
+   "real": ".xml-exports/Guru.xml"
+  },
+  {
+   "name": "diwali-party",
+   "shotmap": "out/diwali-party/shotmap.json",
+   "real": ".xml-exports/Diwali Party.xml"
+  },
+  {
+   "name": "diwali-party-v2",
+   "shotmap": "out/diwali-party-v2/shotmap.json",
+   "real": ".xml-exports/Diwali Party.xml"
+  },
+  {
+   "name": "alpha-summit",
+   "shotmap": "out/alpha-summit/shotmap.json"
+  },
+  {
+   "name": "engagement",
+   "shotmap": "out/engagement/shotmap.json"
+  },
+  {
+   "name": "sports-practice-a",
+   "shotmap": "out/sports-practice-a/shotmap.json"
+  },
+  {
+   "name": "sports-matchday-b",
+   "shotmap": "out/sports-matchday-b/shotmap.json"
+  }
+ ]
+}

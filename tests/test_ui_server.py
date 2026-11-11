@@ -28,13 +28,28 @@ class ServerTests(unittest.TestCase):
         with urllib.request.urlopen(self.base + path) as r:
             return r.status, r.headers.get("Content-Type", ""), r.read()
 
-    def post(self, path: str, body: dict):
-        req = urllib.request.Request(self.base + path, data=json.dumps(body).encode(), headers={"Content-Type": "application/json"}, method="POST")
+    def post(self, path: str, body: dict, headers: dict | None = None):
+        headers = {"Content-Type": "application/json", "X-Videtor-Token": self.app.token} if headers is None else headers
+        req = urllib.request.Request(self.base + path, data=json.dumps(body).encode(), headers=headers, method="POST")
         try:
             with urllib.request.urlopen(req) as r:
                 return r.status, json.loads(r.read())
         except urllib.error.HTTPError as e:
             return e.code, json.loads(e.read())
+
+    def test_only_the_apps_own_page_may_change_anything(self):
+        token = {"Content-Type": "application/json", "X-Videtor-Token": self.app.token}
+        self.assertEqual(self.post("/api/validate", {"shotmap": "{}"}, {"Content-Type": "application/json"})[0], 403)  # no token
+        self.assertEqual(self.post("/api/validate", {"shotmap": "{}"}, {**token, "X-Videtor-Token": "guess"})[0], 403)
+        self.assertEqual(self.post("/api/validate", {"shotmap": "{}"}, {**token, "Content-Type": "text/plain"})[0], 403)  # a form post from elsewhere
+        self.assertEqual(self.post("/api/validate", {"shotmap": "{}"}, {**token, "Origin": "http://evil.example"})[0], 403)
+        self.assertEqual(self.post("/api/validate", {"shotmap": "{}"}, {**token, "Host": "evil.example"})[0], 403)  # a name pointed at this Mac
+        self.assertEqual(self.post("/api/validate", {"shotmap": "{}"}, token)[0], 200)
+        req = urllib.request.Request(self.base + "/api/state", headers={"Host": "evil.example"})
+        with self.assertRaises(urllib.error.HTTPError) as ctx:
+            urllib.request.urlopen(req)
+        self.assertEqual(ctx.exception.code, 403)
+        self.assertIn(f'content="{self.app.token}"', self.get("/")[2].decode())  # the page is handed the token
 
     def test_the_page_and_its_assets_are_served(self):
         status, ctype, body = self.get("/")

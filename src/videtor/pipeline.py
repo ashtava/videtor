@@ -103,9 +103,10 @@ def takes_for(index: dict, key: str, footmap_dir: Path, sparse_dir: Path | None 
     return takes, len(entries)
 
 
-def takes_for_cut(index: dict, m: dict, out: Path, paths: Paths, ev: Events) -> tuple[list, int]:
+def takes_for_cut(index: dict, m: dict, out: Path, paths: Paths, ev: Events, decode: bool = True) -> tuple[list, int]:
     """The takes a cut scores: the pool narrowed to what the shot map can use (its classes, the takes its slots
-    name, none it skips), decoded in full now when they aren't yet (drive connected)."""
+    name, none it skips), decoded in full now when they aren't yet (drive connected; `decode` False loads only
+    what the cache already holds, as the evaluation does)."""
     from videtor.analyze import footmap
     from videtor.plan import fill, library
 
@@ -117,7 +118,7 @@ def takes_for_cut(index: dict, m: dict, out: Path, paths: Paths, ev: Events) -> 
     cands = library.candidates(entries, classes or {}, m)
     if len(cands) < len(entries):
         ev.stage("narrow", f"{len(cands)} of {len(entries)} takes can serve this map", "Choosing the takes the plan can use")
-    todo = [e for e in cands if not footmap.is_done(e, paths.footmap)]
+    todo = [e for e in cands if not footmap.is_done(e, paths.footmap)] if decode else []
     if todo:
         ev.stage("decode", f"footage map: decoding {len(todo)} takes in full ({sum(e['media']['duration_s'] for e in todo) / 60:.1f} min of footage); "
                            "keep the drive connected", "Reading those takes in full")
@@ -403,7 +404,7 @@ def replay(picks: dict, decisions: dict) -> tuple[list[str], list[str]]:
 
 
 def cut(shotmap_path: Path, out: Path | None = None, mount: Path | None = None, sheets: bool = True, sfx: bool = True,
-        paths: Paths = Paths(), ev: Events | None = None, fresh: bool = False) -> dict:
+        paths: Paths = Paths(), ev: Events | None = None, fresh: bool = False, embed_texts=None) -> dict:
     """Cut from a shot map: fill every slot from the footage map; writes picks.json, the second-look sheets and
     the Premiere XML. After a sparse prep it first decodes in full the takes the map can use (drive connected).
     The second-look swaps of earlier cuts (decisions.json) are applied again unless `fresh`."""
@@ -422,7 +423,7 @@ def cut(shotmap_path: Path, out: Path | None = None, mount: Path | None = None, 
     if not takes:
         raise PipelineError(f"No footage map for {m['key']!r} ({n} takes in the pool). Connect the drive and cut again.")
     ev.stage("fill", f"choosing a shot for each of {len(shotmap.slots(m))} slots from {len(takes)} takes", "Choosing the shots")
-    picks, music = cut_picks(m, takes, paths, ev, sfx=sfx)
+    picks, music = cut_picks(m, takes, paths, ev, sfx=sfx, embed_texts=embed_texts)
     decisions = load_decisions(out) if not fresh else {"swaps": {}}
     if decisions["swaps"]:
         done, missed = replay(picks, decisions)

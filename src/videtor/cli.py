@@ -690,6 +690,39 @@ def cut_mv(
     _step(pipeline.cut_mv, spec_path, paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir, beats=beats_dir), ev=_events())
 
 
+@app.command("eval")
+def eval_cmd(
+    only: list[str] = typer.Option([], "--only", help="A project of the set by name (repeatable); default all."),
+    save: bool = typer.Option(False, "--save", help="Keep this run as the baseline later runs are held to."),
+    note: str = typer.Option("", "--note", help="What changed, kept with a saved baseline."),
+    second_look: bool = typer.Option(True, "--second-look/--no-second-look", help="With or without the automatic second look."),
+    taste: bool = typer.Option(True, "--taste/--no-taste", help="With or without the corrections learnt from your fixes."),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Cut every past project of kb/eval/set.json again from the cache (no drive, nothing written) and measure the
+    cuts: against your own edit where there is one, and on their own (repeats, look-alike neighbours, jumps in
+    light, how well the picks match). Fails when a guarded measure is worse than the saved baseline."""
+    from videtor.plan import evaluate
+
+    projects = evaluate.load_set(kb_dir)
+    if not projects:
+        console.print(f"No evaluation set at {evaluate.set_path(kb_dir)}.")
+        raise typer.Exit(1)
+    results = evaluate.run(projects, pipeline.Paths(kb=kb_dir), only=only or None, log=console.print, second_look=second_look, taste=taste)
+    for line in evaluate.table(results):
+        console.print(line, markup=False, soft_wrap=True)
+    rows, ok = evaluate.compare(results, evaluate.load_baseline(kb_dir))
+    for r in rows:
+        console.print(f"  {r['project']}: {r['measure']} {r['was']} -> {r['now']} ({r['verdict']})", markup=False)
+    if not rows:
+        console.print("no guarded measure moved against the baseline" if evaluate.load_baseline(kb_dir) else "no baseline yet: run with --save to keep this one")
+    if save:
+        console.print(f"baseline saved: {evaluate.save_baseline(results, kb_dir, note)}")
+    elif not ok:
+        console.print("FAILED: a guarded measure is worse than the baseline (see the rows marked worse)")
+        raise typer.Exit(1)
+
+
 @app.command()
 def look(
     picks_path: Path = typer.Argument(..., help="picks.json from `videtor cut`."),

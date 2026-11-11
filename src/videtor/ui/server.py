@@ -14,6 +14,7 @@ import json
 import mimetypes
 import os
 import re
+import secrets
 import subprocess
 import threading
 import time
@@ -90,6 +91,7 @@ class App:
         self.window = None  # pywebview window, when there is one
         self.lock = threading.Lock()
         self.notify = False  # macOS notifications when a long job ends (main() turns them on)
+        self.token = secrets.token_urlsafe(18)  # handed to the page with index.html; every POST must carry it
         self.jobs.on_finish = self._finished
 
     def _finished(self, job) -> None:
@@ -573,6 +575,33 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args) -> None:  # quiet; the console shows jobs, not requests
         pass
 
+    def _refused(self, post: bool) -> str | None:
+        """Why this request is turned away, or None. The server is for the app's own page on this Mac: the Host must
+        be its own address (a web page elsewhere cannot point a name at it), a request another page's script sent
+        carries that page's Origin, and anything that changes state needs the token only our page was given."""
+        port = self.server.server_address[1]
+        if (self.headers.get("Host") or "").lower() not in (f"127.0.0.1:{port}", f"localhost:{port}"):
+            return "this is not the app's own address"
+        origin = self.headers.get("Origin")
+        if origin and origin.lower() not in (f"http://127.0.0.1:{port}", f"http://localhost:{port}"):
+            return "requests from other pages are refused"
+        if post:
+            if not secrets.compare_digest(self.headers.get("X-Videtor-Token") or "", self.app.token):
+                return "this request does not come from the app's page"
+            if not (self.headers.get("Content-Type") or "").lower().startswith("application/json"):
+                return "the body must be JSON"
+        return None
+
+    def _page(self) -> None:
+        """index.html with the token in a meta tag: only a page this server served can read it."""
+        body = (STATIC / "index.html").read_text().replace("</head>", f'<meta name="videtor-token" content="{self.app.token}">\n</head>', 1).encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+
     def _json(self, obj, status: int = 200) -> None:
         body = json.dumps(obj).encode()
         self.send_response(status)
@@ -607,8 +636,10 @@ class Handler(BaseHTTPRequestHandler):
         url = urlsplit(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         path = url.path
+        if why := self._refused(post=False):
+            return self._json({"error": why}, 403)
         if path in ("/", "/index.html"):
-            return self._file(STATIC / "index.html")
+            return self._page()
         if path.startswith("/static/"):
             target = (STATIC / path[len("/static/"):]).resolve()
             return self._file(target) if str(target).startswith(str(STATIC.resolve())) else self._json({"error": "no"}, 403)
@@ -634,6 +665,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:  # noqa: N802
         path = urlsplit(self.path).path
+        if why := self._refused(post=True):
+            return self._json({"error": why}, 403)
         body = self._body()
         routes = {"/api/prep": self.app.api_prep, "/api/cut": self.app.api_cut, "/api/look": self.app.api_look, "/api/music": self.app.api_music,
                   "/api/search": self.app.api_search, "/api/library/build": self.app.api_library_build, "/api/library/learn": self.app.api_library_learn,

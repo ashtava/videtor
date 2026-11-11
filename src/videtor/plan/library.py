@@ -719,23 +719,23 @@ def wanted_classes(m: dict) -> set[str]:
 
 
 def candidates(entries: list[dict], classes: dict[str, dict], m: dict) -> list[dict]:
-    """The pool's takes a shot map can use: every take when the map names no class; else the takes of the
-    wanted classes, the takes a slot names by pattern, and takes with no class (never scanned)."""
+    """The pool's takes a shot map can use, so a cut decodes no more than it needs: never a take the map skips;
+    when every slot names its takes, those takes alone; else every take when the map names no class, or the takes
+    of the wanted classes, the takes a slot names by pattern, and takes with no class (never scanned)."""
     import fnmatch
 
     from videtor.plan import shotmap
 
+    entries = [e for e in entries if not any(fnmatch.fnmatch(e["path"], p) for p in m.get("skip") or [])]
+    picking = [s for s in shotmap.slots(m) if not s.get("black")]
+    patterns = [t.split("@", 1)[0] for s in picking for t in s.get("takes") or []]
+    named = lambda e: any(fnmatch.fnmatch(e.get("basename") or os.path.basename(e["path"]), p) for p in patterns)  # noqa: E731
+    if picking and all(s.get("takes") for s in picking):
+        return [e for e in entries if named(e)]
     wanted = wanted_classes(m)
     if not wanted:
-        return list(entries)
-    patterns = [t.split("@", 1)[0] for s in shotmap.slots(m) for t in s.get("takes") or []]
-    out = []
-    for e in entries:
-        c = (classes.get(e["fid"]) or {}).get("class")
-        name = e.get("basename") or os.path.basename(e["path"])
-        if c is None or c in wanted or any(fnmatch.fnmatch(name, p) for p in patterns):
-            out.append(e)
-    return out
+        return entries
+    return [e for e in entries if (classes.get(e["fid"]) or {}).get("class") in wanted | {None} or named(e)]
 
 
 def run_build(folders: list[Path], out: Path, cache_dir: Path = sparse.CACHE_DIR, kb_dir: Path = Path("kb"), workers: int | None = None,
