@@ -403,6 +403,40 @@ function renderReview(p) {
   if (rv) rv.onclick = () => api("/api/reveal", { path: p.xml });
   $("cut-sheet").innerHTML = p.cut_sheet ? `<img class="sheet" src="${fileUrl(p.cut_sheet)}&t=${Date.now()}">` : "";
   renderSlots(p);
+  renderTeach(p);
+}
+/* ---- when the job is finished: a verdict, and the finished video read back ---- */
+function renderTeach(p) {
+  const el = $("teach");
+  if (!p.picks) { el.innerHTML = ""; return; }
+  const f = p.feedback || {}, v = f.verdict, s = f.summary;
+  const said = v ? `<span class="chip">You said: ${v.good ? "good" : "not good"}${v.note ? " · " + esc(v.note) : ""}</span>` : "";
+  const read = s ? `<div class="muted">Last read: ${s.kept} kept, ${s.slipped + s.trimmed} moved, ${s.swapped_to_alternate + s.swapped} swapped, ${s.removed} removed of ${s.slots} shots.</div>` : "";
+  el.innerHTML = `<div class="exportcard"><div><b>When you have finished it</b></div>
+    <div class="row"><span>Was this cut a good start?</span><button class="btn" id="verdict-good">Good</button><button class="btn" id="verdict-not">Not good</button>
+      <input type="text" id="verdict-note" placeholder="why, in a line (optional)" style="min-width:280px">${said}</div>
+    <div class="row"><span>Your finished video:</span><span class="muted" id="final-path">${esc(f.final ? f.final.split("/").pop() : "none in the project's folder yet")}</span>
+      <button class="btn" id="final-choose">Choose…</button><button class="btn primary" id="final-read">Read my finished video</button></div>
+    ${read}
+    <div class="row"><button class="btn" id="learn-run">Learn from my feedback</button>
+      <span class="muted">${f.choices || 0} of your swaps kept so far. Learning is tried on your past cuts first and kept only if they get no worse.</span></div></div>`;
+  let video = f.final || null;
+  const verdict = async (good) => { await api("/api/verdict", { project: p.dir, good, note: $("verdict-note").value.trim() }); loadProject(); };
+  $("verdict-good").onclick = () => verdict(true);
+  $("verdict-not").onclick = () => verdict(false);
+  $("final-choose").onclick = async () => {
+    const r = await api("/api/pick-video", { start: p.dir });
+    if (r.path) { video = r.path; $("final-path").textContent = r.path.split("/").pop(); }
+  };
+  $("final-read").onclick = async () => {
+    const r = await api("/api/readback", { project: p.dir, video });
+    if (r.error) { $("project-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+    watch(r.job.id, { log: "teach-log", showLog: true, onDone: () => loadProject() });
+  };
+  $("learn-run").onclick = async () => {
+    const r = await api("/api/learn", {});
+    if (!r.error) watch(r.job.id, { log: "teach-log", showLog: true });
+  };
 }
 function renderSlots(p) {
   const el = $("slots");

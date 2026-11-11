@@ -151,6 +151,28 @@ class ServerTests(unittest.TestCase):
         status = next(x["status"] for x in json.loads(self.get("/api/state")[2])["projects"] if x["dir"] == str(d))
         self.assertEqual(status, {"text": "Needs the plan", "tone": "todo"})
 
+    def test_a_verdict_a_finished_video_and_a_swap_by_the_user_are_feedback(self):
+        d = self.tmp / "out" / "judged"
+        d.mkdir(parents=True, exist_ok=True)
+        _, r = self.post("/api/project/add", {"dir": str(d)})
+        d = Path(r["project"]["dir"])
+        self.assertIn("no cut yet", self.post("/api/verdict", {"project": str(d), "good": True})[1]["error"])
+        pick = {"path": "/V/a.mp4", "name": "a.mp4", "in_s": 0.0, "out_s": 1.0, "fid": "a"}
+        (d / "picks.json").write_text(json.dumps({"version": 1, "name": "judged", "key": "judged::footage", "fps": 25, "width": 1080, "height": 1920,
+                                                  "slots": [{"id": "s1", "show": "x", "start_s": 0.0, "length_s": 1.0, "pick": pick, "alternates": []}]}))
+        self.assertEqual(self.post("/api/verdict", {"project": str(d), "good": False, "note": "too slow"})[1], {"ok": True})
+        self.assertEqual(json.loads((self.tmp / "kb" / "feedback" / "judged.json").read_text())["verdict"]["note"], "too slow")
+        self.assertIn("No finished video", self.post("/api/readback", {"project": str(d)})[1]["error"])
+        (d / "preview.mp4").write_bytes(b"x")  # Videtor's own preview is not the finished job
+        self.assertIn("No finished video", self.post("/api/readback", {"project": str(d)})[1]["error"])
+        (d / "final export.mp4").write_bytes(b"x")
+        _, r = self.post("/api/readback", {"project": str(d)})
+        self.assertEqual(r["job"]["args"], ["readback", str(d / "picks.json"), "--render", str(d / "final export.mp4")])
+        _, r = self.post("/api/look", {"project": str(d), "choices": {"s1": 1}})
+        self.assertEqual(r["job"]["args"][:4], ["look", str(d / "picks.json"), "--by", "you"])  # a person chose: it teaches
+        fb = json.loads(self.get(f"/api/project?dir={d}")[2])["feedback"]
+        self.assertEqual((fb["verdict"]["good"], fb["final"]), (False, str(d / "final export.mp4")))
+
     def test_scan_counts_the_video_files_under_a_folder(self):
         d = self.tmp / "scan" / "Card 1"
         d.mkdir(parents=True)

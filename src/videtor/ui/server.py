@@ -56,6 +56,22 @@ def choose_folder_native(prompt: str, start: str | None = None) -> str | None:
     return path.rstrip("/") or "/" if run.returncode == 0 and path else None
 
 
+def choose_video_native(prompt: str, start: str | None = None) -> str | None:
+    """macOS's own file dialog for one video file; None when the user cancels."""
+    where = f' default location ((POSIX file "{start}") as alias)' if start and Path(start).is_dir() else ""
+    lines = ['tell application "Finder"', "activate",
+             f'POSIX path of (choose file with prompt "{prompt.replace(chr(34), "")}" of type {{"public.movie"}}{where})', "end tell"]
+    cmd = ["osascript"]
+    for line in lines:
+        cmd += ["-e", line]
+    try:
+        run = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    path = run.stdout.strip()
+    return path if run.returncode == 0 and path else None
+
+
 def notify(text: str, title: str = "Videtor") -> None:
     try:
         subprocess.run(["osascript", "-e", f'display notification "{text}" with title "{title}"'], capture_output=True, timeout=10)
@@ -365,12 +381,45 @@ class App:
         if not picks.exists():
             return {"error": "no picks.json yet: cut first"}
         choices = body.get("choices") or {}
-        args = ["look", str(picks)] + [f"{sid}={v}" for sid, v in choices.items()]
+        args = ["look", str(picks), "--by", "you"] + [f"{sid}={v}" for sid, v in choices.items()]  # a person clicked: it teaches (kb/feedback.py)
         for sid, note in (body.get("notes") or {}).items():
             if note:
                 args += ["--note", f"{sid}={note}"]
         job = self.jobs.submit("look", f"Review swap · {p['name']}: " + ", ".join(f"{k}={v}" for k, v in choices.items()), args, project=p["dir"])
         return {"job": job.to_dict()}
+
+    def api_verdict(self, body: dict) -> dict:
+        """The user's word on the cut as a whole: good or not, and a line of why."""
+        from videtor import pipeline
+
+        p = self._project(body.get("project", ""))
+        picks = Path(p["dir"]) / "picks.json" if p else None
+        if not picks or not picks.exists():
+            return {"error": "no cut yet"}
+        pipeline.verdict(picks, bool(body.get("good")), str(body.get("note") or ""), pipeline.Paths(kb=self.root / "kb"))
+        return {"ok": True}
+
+    def api_readback(self, body: dict) -> dict:
+        """Read the finished video against the picks (a job): the one named, else the newest in the project's folder."""
+        from videtor import pipeline
+
+        p = self._project(body.get("project", ""))
+        picks = Path(p["dir"]) / "picks.json" if p else None
+        if not picks or not picks.exists():
+            return {"error": "no cut yet"}
+        video = body.get("video") or pipeline.find_render(Path(p["dir"]))
+        if not video or not Path(video).is_file():
+            return {"error": "No finished video yet: save your export in the project's folder, or choose it."}
+        job = self.jobs.submit("readback", f"Read the finished video · {p['name']}", ["readback", str(picks), "--render", str(video)], project=p["dir"])
+        return {"job": job.to_dict()}
+
+    def api_learn(self, body: dict) -> dict:
+        job = self.jobs.submit("learn", "Learn from your feedback", ["learn"])
+        return {"job": job.to_dict()}
+
+    def api_pick_video(self, body: dict) -> dict:
+        path = choose_video_native(body.get("prompt") or "Choose your finished video", body.get("start"))
+        return {"path": path, "cancelled": path is None}
 
     def api_music(self, body: dict) -> dict:
         folder = Path(body.get("folder", "")).expanduser()
@@ -470,6 +519,7 @@ class App:
             out["picks"] = self._picks_view(json.loads(picks_p.read_text()))
             xml = d / f"{p['name']}.xml"
             out["xml"] = str(xml) if xml.exists() else next((str(x) for x in d.glob("*.xml")), None)
+        out["feedback"] = self._feedback(p, d)
         job = self._active_job(p["dir"])
         out["drive"] = self._drive(p.get("folder", ""))
         out["status"] = self._status(p)
@@ -480,6 +530,17 @@ class App:
         out["cut_needs"] = self._cut_needs(p) if out["shotmap"].strip() and not out["errors"] else None
         out["steps"], out["next"] = self._steps(p, out, job)
         return out
+
+    def _feedback(self, p: dict, d: Path) -> dict:
+        """What the user has told Videtor about this cut: the verdict, the finished video found, the last read-back."""
+        from videtor import pipeline
+        from videtor.kb import feedback
+
+        verdict = json.loads((d / "verdict.json").read_text()) if (d / "verdict.json").exists() else None
+        final = pipeline.find_render(d) if d.is_dir() else None
+        doc = feedback.load(p["name"], self.root / "kb")
+        return {"verdict": verdict, "final": str(final) if final else None, "summary": doc.get("summary") if feedback.is_final(doc) else None,
+                "read_at": doc.get("read_at"), "choices": len(doc.get("choices") or [])}
 
     def _picks_view(self, picks: dict) -> dict:
         from videtor.plan import second_look
@@ -672,7 +733,8 @@ class Handler(BaseHTTPRequestHandler):
                   "/api/search": self.app.api_search, "/api/library/build": self.app.api_library_build, "/api/library/learn": self.app.api_library_learn,
                   "/api/library/move": self.app.api_library_move, "/api/project/save": self.app.api_project_save, "/api/validate": self.app.api_validate,
                   "/api/reveal": self.app.api_reveal, "/api/pick-folder": self.app.api_pick_folder, "/api/project/add": self.app.api_project_add,
-                  "/api/library/add": self.app.api_library_add, "/api/reprep": self.app.api_reprep}
+                  "/api/library/add": self.app.api_library_add, "/api/reprep": self.app.api_reprep, "/api/verdict": self.app.api_verdict,
+                  "/api/readback": self.app.api_readback, "/api/learn": self.app.api_learn, "/api/pick-video": self.app.api_pick_video}
         if path in routes:
             try:
                 return self._json(routes[path](body))
