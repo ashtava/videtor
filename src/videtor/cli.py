@@ -12,6 +12,7 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
+from videtor import events, pipeline
 from videtor.kb import footage, metrics, profile, selects, xmeml
 
 app = typer.Typer(
@@ -29,6 +30,20 @@ console = Console()
 
 KB_DIR_DEFAULT = Path("kb")
 KB_OPTION = typer.Option(KB_DIR_DEFAULT, "--kb", help="Knowledge base folder.")
+
+
+def _events() -> events.Events:
+    """The terminal's sentences, or JSON lines when the app started this command (VIDETOR_EVENTS=json)."""
+    return events.from_env(console.print)
+
+
+def _step(fn, *args, **kwargs):
+    """Run a pipeline step; what it cannot do is said in words and ends the command."""
+    try:
+        return fn(*args, **kwargs)
+    except pipeline.PipelineError as exc:
+        _events().emit("error", str(exc))
+        raise typer.Exit(1) from exc
 
 
 def _slug(text: str) -> str:
@@ -360,7 +375,7 @@ def kb_learn(
 
     def pool_for_key(key: str | None) -> list:
         if key and key not in pools:
-            pools[key] = _takes_for(_index_for_key(key, kb_dir), key, footmap_dir)[0]
+            pools[key] = pipeline.takes_for(_step(pipeline.index_for_key, key, kb_dir), key, footmap_dir)[0]
         return pools.get(key) or []
 
     out = taste.learn(files, pool_for_key, tags.embed_texts, kb_dir)
@@ -368,13 +383,6 @@ def kb_learn(
     for term, w in sorted(out["weights"].items(), key=lambda kv: -abs(kv[1])):
         if abs(w) >= 0.01:
             console.print(f"  {term:13} {w:+.3f}")
-
-
-@app.command()
-def ingest(folder: Path) -> None:
-    """Index a folder of raw media. Phase 1."""
-    console.print("[yellow]ingest arrives in Phase 1 (needs ffprobe).[/]")
-    raise typer.Exit(2)
 
 
 @app.command()
@@ -397,7 +405,7 @@ def analyze(
         raise typer.Exit(1)
     index = json.loads(index_path.read_text())
     if key:
-        pool = _pool_for(index, key)
+        pool = pipeline.pool_for(index, key)
         if not pool:
             console.print(f"No footage roots for {key!r} on {mount}; known keys: {list(index['roots'])}")
             raise typer.Exit(1)
@@ -415,210 +423,10 @@ def analyze(
     console.print(f"coverage: {cov['have']} of {cov['clips']} clips  →  {out_dir}")
 
 
-def _pool_for(index: dict, key: str) -> list[dict]:
-    """Every file under the sequence's footage roots, used flags ignored: the planner must not peek. Files the
-    index marks `excluded` (another shoot on the same card) stay out."""
-    roots = index["roots"].get(key) or []
-    roots = [roots] if isinstance(roots, str) else roots
-    return [f for f in index["files"] if any(f["path"].startswith(r.rstrip("/") + "/") for r in roots) and not f.get("excluded")]
-
-
-@app.command()
-def plan(
-    mount: Path = typer.Argument(..., help="A drive indexed by `kb footage` that holds the project's footage."),
-    key: str = typer.Option(..., "--key", help='Sequence key whose footage pool to cut, e.g. "Guru.xml::Sequence 01".'),
-    edit_type: str = typer.Option(..., "--type", help="Edit type whose profile sets the pace, e.g. brand-social."),
-    duration: float = typer.Option(..., "--duration", help="Target length in seconds."),
-    name: str = typer.Option("Videtor cut", "--name", help="Sequence name in the NLE."),
-    out_dir: Path = typer.Option(Path("out/plan"), "--out"),
-    kb_dir: Path = KB_OPTION,
-    analysis_dir: Path = typer.Option(Path("cache/analysis"), "--analysis"),
-    seed: int = typer.Option(0, "--seed"),
-    music: Path | None = typer.Option(None, "--music", help="Music track: cuts land on its beats and it goes on its own audio track."),
-    opening: str = typer.Option(
-        "glimpse", "--opening",
-        help="glimpse (subject in part → details → zoom-out reveal) | tease (details → reveal) | subject (open on the subject) | top (strongest shot) | none (shoot order).",
-    ),
-    pace: str = typer.Option("normal", "--pace", help="normal | fast (quicker half of your shot lengths) | slow"),
-    beat_lead: float = typer.Option(0.12, "--beat-lead", help="Seconds each cut lands ahead of the beat (your habit: ~0.14 s)."),
-    speech: str = typer.Option("favor", "--speech", help="favor | avoid | neutral: whether talking clips belong in this piece."),
-) -> None:
-    """Rule-based planner: pick, cut and order shots from the footage pool in the edit type's pace; writes plan.json and Premiere XML."""
-    from videtor.analyze import beats as beats_mod
-    from videtor.export import xmeml_writer
-    from videtor.plan import build, rules
-
-    index_path = kb_dir / "footage" / f"{_slug(mount.name or str(mount))}.json"
-    profile_path = kb_dir / "profile" / f"{edit_type}.json"
-    for p in (index_path, profile_path):
-        if not p.exists():
-            console.print(f"Missing {p}")
-            raise typer.Exit(1)
-    index = json.loads(index_path.read_text())
-    prof = json.loads(profile_path.read_text())
-    pool = _pool_for(index, key)
-    if not pool:
-        console.print(f"No footage roots for {key!r} on {mount}; known keys: {list(index['roots'])}")
-        raise typer.Exit(1)
-    samples = rules.shot_length_samples(kb_dir, edit_type)
-    in_samples = rules.in_point_samples(kb_dir, edit_type) or rules.in_point_samples(kb_dir)
-    beats = music_info = None
-    if music:
-        cached = Path("cache/beats") / (music.stem + ".beats.json")
-        if not music.exists() and not cached.exists():
-            console.print(f"Music track not found and no cached beats for it: {music}")
-            raise typer.Exit(1)
-        if not music.exists():
-            console.print(f"[yellow]{music} is offline; using its cached beats. Premiere will show it offline until the drive is back.[/]")
-        tracked = beats_mod.load_or_track(music, Path("cache/beats"))
-        beats = tracked["beats_s"]
-        music_info = {"path": str(music), "duration_s": tracked["duration_s"], "tempo_bpm": tracked["tempo_bpm"]}
-        console.print(f"music: {music.name} · {tracked['tempo_bpm']:.0f} BPM · {len(beats)} beats")
-    fps = float(prof.get("fps") or 25.0)
-    width, height = prof.get("frame_size") or [1080, 1920]
-    if opening not in ("glimpse", "tease", "subject", "top", "none"):
-        console.print("--opening must be glimpse, tease, subject, top or none")
-        raise typer.Exit(1)
-    shots = rules.plan(
-        pool, analysis_dir, prof, samples, duration, seed=seed, in_samples=in_samples, beats=beats, hook_first=opening == "top",
-        fps=fps, pace=pace, beat_lead_s=beat_lead, speech_weight={"favor": 0.4, "avoid": -0.4, "neutral": 0.0}.get(speech, 0.4),
-        opening=opening if opening in ("glimpse", "tease", "subject") else None,
-    )
-    if not shots:
-        console.print("Nothing to cut: no usable video clips in the pool.")
-        raise typer.Exit(1)
-    settings = {
-        "key": key, "edit_type": edit_type, "target_s": duration, "fps": fps, "frame_size": [width, height], "name": name,
-        "seed": seed, "mount": index["mount"], "music": music_info, "opening": opening, "pace": pace, "beat_lead_s": beat_lead, "speech": speech,
-    }
-    out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "plan.json").write_text(json.dumps(rules.plan_to_json(shots, settings), indent=1) + "\n")
-    xml_path = xmeml_writer.write_xmeml(build.build_timeline(shots, name, fps, music_info), out_dir / f"{_slug(name)}.xml", fps, width, height)
-
-    table = Table(title=f"{name}: {len(shots)} shots, {sum(s.length_s for s in shots):.1f} s of {duration:.0f} s")
-    for col in ("#", "clip", "in", "slot", "score", "why"):
-        table.add_column(col, justify="right" if col in ("#", "in", "slot", "score") else "left")
-    for i, s in enumerate(shots, start=1):
-        table.add_row(str(i), s.name[:28], f"{s.in_s:.1f}s", f"{s.length_s:.2f}s", f"{s.score:+.2f}", "; ".join(s.reasons[:2])[:70])
-    console.print(table)
-    console.print(f"plan: {out_dir / 'plan.json'}  ·  Premiere XML: {xml_path}")
-
-
-@app.command()
-def export(
-    plan_path: Path = typer.Argument(Path("out/plan/plan.json"), help="A plan.json written by `videtor plan`."),
-    to: str = typer.Option("premiere", "--to", help="premiere | otio"),
-    out: Path | None = typer.Option(None, "--out", help="Output file; defaults next to the plan."),
-) -> None:
-    """Write a plan as Premiere XML (our writer) or .otio (for Resolve)."""
-    import opentimelineio as otio
-
-    from videtor.export import xmeml_writer
-    from videtor.plan import build, rules
-
-    data = json.loads(plan_path.read_text())
-    shots, st = rules.shots_from_json(data), data["settings"]
-    timeline = build.build_timeline(shots, st["name"], st["fps"], st.get("music"))
-    if to == "premiere":
-        path = out or plan_path.with_name(f"{_slug(st['name'])}.xml")
-        xmeml_writer.write_xmeml(timeline, path, st["fps"], *st["frame_size"])
-    elif to == "otio":
-        path = out or plan_path.with_name(f"{_slug(st['name'])}.otio")
-        otio.adapters.write_to_file(timeline, str(path))
-    else:
-        console.print("--to must be premiere or otio")
-        raise typer.Exit(1)
-    console.print(f"wrote {path}")
-
-
-@kb_app.command("rerank-eval")
-def kb_rerank_eval(kb_dir: Path = KB_OPTION, analysis_dir: Path = typer.Option(Path("cache/analysis"), "--analysis")) -> None:
-    """Leave-one-project-out: does a reranker trained on your other edits pick this edit's clips better than the hand rules?"""
-    from videtor.plan import rerank
-
-    projects = rerank.load_projects(kb_dir, analysis_dir)
-    if len(projects) < 3:
-        console.print("Need at least three indexed edits with used and unused clips.")
-        raise typer.Exit(1)
-    result = rerank.leave_one_project_out(projects)
-    (kb_dir / "rerank-eval.json").write_text(json.dumps(result, indent=2) + "\n")
-    table = Table(title="Take selection, leave-one-project-out (precision among the top-k picks, k = clips you used)")
-    for col in ("edit", "pool", "used", "chance", "hand rules", "learned", "+content", "hand AP", "learned AP", "+content AP"):
-        table.add_column(col, justify="left" if col == "edit" else "right")
-    for key, r in result.items():
-        if key.startswith("_"):
-            continue
-        table.add_row(
-            key.split(".xml")[0], str(r["pool"]), str(r["used"]), f"{r['chance']:.0%}", f"{r['hand_p@k']:.0%}", f"{r['learned_p@k']:.0%}",
-            f"{r['content_p@k']:.0%}", f"{r['hand_ap']:.2f}", f"{r['learned_ap']:.2f}", f"{r['content_ap']:.2f}",
-        )
-    console.print(table)
-    console.print("weights (all projects): " + ", ".join(f"{k} {v:+.2f}" for k, v in result["_weights"].items()))
-
-
-@kb_app.command("benchmark")
-def kb_benchmark(
-    mount: Path = typer.Argument(..., help="The drive whose index holds the real edit's used clips."),
-    key: str = typer.Option(..., "--key"),
-    plan_path: Path = typer.Option(Path("out/plan/plan.json"), "--plan"),
-    kb_dir: Path = KB_OPTION,
-) -> None:
-    """Score a plan against the real edit of the same footage: clips, moments, pace."""
-    from videtor.plan import benchmark, rules
-
-    index = json.loads((kb_dir / "footage" / f"{_slug(mount.name or str(mount))}.json").read_text())
-    data = json.loads(plan_path.read_text())
-    shots = rules.shots_from_json(data)
-    real = benchmark.load_real_metrics(kb_dir, key)
-    result = benchmark.score_plan(shots, index, key, real)
-    opening = data["settings"].get("opening")
-    if real and opening in ("glimpse", "tease", "subject"):
-        result["opening"] = benchmark.opening_comparison(shots, index, real, Path("cache/analysis"), opening)
-    (plan_path.with_name("benchmark.json")).write_text(json.dumps(result, indent=2) + "\n")
-    c, m, p = result["clips"], result["moments"], result["pace"]
-    console.print(f"clips: planned {c['planned']}, you used {c['real']}, shared {c['shared']}  →  precision {c['precision']}, recall {c['recall']}")
-    console.print(f"moments: {m['inside_your_used_ranges_s']} of {m['planned_s']} planned seconds fall inside ranges you used ({m['share']})")
-    console.print(f"pace: planned {p['planned_shots']} shots, median {p['planned_median_shot_s']} s; real {p.get('real_shots')} shots, median {p.get('real_median_shot_s')} s over {p.get('real_duration_s')} s")
-    if o := result.get("opening"):
-        console.print(f"opening ({' → '.join(o['template'])}): plan {o['plan']:.2f}, your edit {o['real']:.2f} ({', '.join(o['real_beats'])})")
-
-
 # --- cutting from a brief ------------------------------------------------------------
 
 FOOTMAP_OPTION = typer.Option(Path("cache/footmap"), "--footmap", help="Footage map folder (videtor footmap).")
 SPARSE_OPTION = typer.Option(Path("cache/sparse"), "--cache", help="Where the keyframe scan of every clip is kept (videtor.analyze.sparse).")
-
-
-def _index_for(mount: Path, kb_dir: Path) -> dict:
-    index_path = kb_dir / "footage" / f"{_slug(mount.name or str(mount))}.json"
-    if not index_path.exists():
-        console.print(f"No index at {index_path}. Run: videtor kb footage {mount}")
-        raise typer.Exit(1)
-    return json.loads(index_path.read_text())
-
-
-def _index_for_key(key: str, kb_dir: Path, mount: Path | None = None) -> dict:
-    """The footage index whose roots hold `key`: the drive's own index when given, else any index that lists it
-    (a folder prepared with `videtor prep` has an index of its own)."""
-    candidates = []
-    if mount:
-        candidates.append(kb_dir / "footage" / f"{_slug(mount.name or str(mount))}.json")
-    candidates += sorted(p for p in (kb_dir / "footage").glob("*.json") if not p.name.endswith((".summary.json", ".selects.json")))
-    for p in candidates:
-        if p.exists():
-            index = json.loads(p.read_text())
-            if index.get("roots", {}).get(key):
-                return index
-    console.print(f"No footage index lists {key!r}. For a new folder run: videtor prep <folder> --name <name>")
-    raise typer.Exit(1)
-
-
-def _index_path_for_key(key: str, kb_dir: Path) -> Path:
-    for p in sorted((kb_dir / "footage").glob("*.json")):
-        if not p.name.endswith((".summary.json", ".selects.json")) and json.loads(p.read_text()).get("roots", {}).get(key):
-            return p
-    console.print(f"No footage index lists {key!r}.")
-    raise typer.Exit(1)
 
 
 @app.command()
@@ -641,7 +449,7 @@ def orient(
         console.print("--rotate must be -90, 90, 180 or 0")
         raise typer.Exit(1)
     key = name if "::" in name else f"{name}::footage"
-    index_path = _index_path_for_key(key, kb_dir)
+    index_path = _step(pipeline.index_path_for_key, key, kb_dir)
     index = json.loads(index_path.read_text())
     pool = footmap.pool(index, key)
     wanted = {t.lower() for t in take}
@@ -661,12 +469,6 @@ def orient(
         console.print(f"  overview rewritten: {md} · {len(sheets)} sheet(s)")
 
 
-def _mount_of(folder: Path) -> Path:
-    """The drive a folder sits on (/Volumes/<name>), or its parent folder on the internal disk."""
-    parts = folder.parts
-    return Path(*parts[:3]) if len(parts) > 2 and parts[1] == "Volumes" else folder.parent
-
-
 @app.command()
 def prep(
     folder: Path = typer.Argument(..., help="A folder of raw footage on any drive, never edited before."),
@@ -683,123 +485,8 @@ def prep(
     the library's shot types), turn sideways cameras upright and write an overview of what it holds, in minutes on
     every core. The cut then decodes in full only the takes the shot map can use (drive connected). `--dense` maps
     every second of every take now instead, as before, and says when the drive can be unplugged."""
-    from collections import Counter
-
-    from videtor.analyze import footmap, parallel
-    from videtor.plan import fill, overview
-
-    folder = folder.expanduser().resolve()
-    if not folder.is_dir():
-        console.print(f"Not a folder: {folder}")
-        raise typer.Exit(1)
-    mount, key = _mount_of(folder), f"{name}::footage"
-    index_path = kb_dir / "footage" / f"{_slug(name)}.json"
-    index_path.parent.mkdir(parents=True, exist_ok=True)
-    if index_path.exists():
-        index = json.loads(index_path.read_text())
-        console.print(f"[1/5] index: reusing {index_path} ({len(index['files'])} files)")
-    else:
-        console.print(f"[1/5] index: scanning {folder}")
-        index = footage.scan(str(mount), [], {key: [str(folder)]}, log=lambda s: console.print(f"      {s}"))
-        index["project"] = {"name": name, "folder": str(folder), "key": key}
-        index_path.write_text(json.dumps(index, indent=1) + "\n")
-    pool = footmap.pool(index, key)
-    console.print(f"      {len(pool)} takes in the pool, {sum((e['media'] or {}).get('duration_s', 0) for e in pool) / 60:.1f} min")
-    if sparse:
-        from videtor.analyze import sparse as sparse_mod
-
-        console.print("[2/5] keyframe map: stills, faces, hands, speech and CLIP from every take's keyframes, on every core")
-        sparse_mod.scan(pool, sparse_dir, workers=workers, log=lambda s: console.print(f"      {s}"))
-        sparse_mod.copy_overview_stills(pool, sparse_dir, frames_dir)
-    else:
-        console.print("[2/5] stills: 3 per take")
-        footage.extract_frames({**index, "files": pool}, frames_dir, workers=max(4, parallel.workers()), log=lambda s: None)
-    try:
-        from videtor.analyze import orientation
-    except ImportError:
-        orientation = None
-    if orientation:
-        console.print("[3/5] orientation: faces found only when a take is turned mark a sideways camera")
-        result = orientation.orient_takes(pool, frames_dir)
-        console.print(f"      {result.get('counts', result)}")
-        for cam in result.get("cameras") or []:
-            if cam.get("check"):
-                console.print(f"      [yellow]check[/]: camera {cam['camera']} — {cam['decided']} of its {cam['takes']} takes turned by their faces, "
-                              f"the rest left as shot. If the overview shows them sideways: videtor orient {name} --camera <prefix> --rotate <turn>")
-        by_fid = {e["fid"]: e for e in pool}
-        for f in index["files"]:
-            if f["fid"] in by_fid and "orientation" in by_fid[f["fid"]]:
-                f["orientation"] = by_fid[f["fid"]]["orientation"]
-        index_path.write_text(json.dumps(index, indent=1) + "\n")
-    else:
-        console.print("[3/5] orientation: detector not installed; sideways cameras stay as shot")
-    if sparse:
-        from videtor.plan import library
-
-        console.print("[4/5] shot types: the library's classes for every take (kb/library: your labels and model, else the rules)")
-        classes = library.classes_for(pool, sparse_dir, kb_dir)
-        (out_root / name).mkdir(parents=True, exist_ok=True)
-        (out_root / name / "classes.json").write_text(json.dumps(classes, indent=1) + "\n")
-        counts = Counter(c["class"] for c in classes.values())
-        console.print("      " + ", ".join(f"{counts.get(c, 0)} {c}" for c in library.CLASSES) + f"  →  {out_root / name / 'classes.json'}")
-        takes = sparse_mod.as_takes(pool, sparse_dir)
-        md, sheets = overview.write(takes, fill.Pool(takes), sparse_dir / "frames", out_root / name, name)
-        console.print(f"[5/5] overview: {md}  ·  {len(sheets)} contact sheet(s)")
-        console.print(f"Shot-map key: {key!r}. Next: write {out_root / name / 'shotmap.json'} from the brief, naming the classes it draws on "
-                      f"(\"classes\" or a slot's \"class\"), then videtor cut it with {mount} connected: the cut decodes in full only the takes the map can use.")
-        return
-    console.print("[4/5] footage map: 2 samples a second of every take")
-    result = footmap.build_pool(index, key, workers=workers, cache_dir=footmap_dir, log=lambda s: console.print(f"      {s}"))
-    console.print(f"      {result.get('built', 0)} built, {result.get('already_done', 0)} already mapped, {len(result.get('failed') or {})} failed")
-    console.print(f"      {mount} can be unplugged now: everything below runs from the cache")
-    takes = fill.load_takes([e for e in pool if (e.get("media") or {}).get("duration_s")], footmap_dir)
-    md, sheets = overview.write(takes, fill.Pool(takes), footmap_dir / "frames", out_root / name, name)
-    console.print(f"[5/5] overview: {md}  ·  {len(sheets)} contact sheet(s)")
-    console.print(f"Shot-map key: {key!r}. Next: write {out_root / name / 'shotmap.json'} from the brief, then videtor cut it.")
-
-
-def _pool_entries(index: dict, key: str) -> list[dict]:
-    """The pool's video takes: what a cut may draw on."""
-    return [
-        f for f in _pool_for(index, key)
-        if f["kind"] == "video" and not f.get("duplicate_of") and not footage.is_render(f["path"]) and (f.get("media") or {}).get("duration_s")
-    ]
-
-
-def _takes_for(index: dict, key: str, footmap_dir: Path, sparse_dir: Path | None = None) -> tuple[list, int]:
-    """The pool's takes that have a footage map, and how many takes the pool has. With `sparse_dir`, takes
-    without a footage map come from the keyframe map instead (search and the overview, not a cut)."""
-    from videtor.plan import fill
-
-    entries = _pool_entries(index, key)
-    takes = fill.load_takes(entries, footmap_dir)
-    if sparse_dir is not None:
-        from videtor.analyze import sparse
-
-        have = {t.fid for t in takes}
-        takes += sparse.as_takes([e for e in entries if e["fid"] not in have], sparse_dir)
-    return takes, len(entries)
-
-
-def _takes_for_cut(index: dict, m: dict, out: Path, footmap_dir: Path, sparse_dir: Path, kb_dir: Path) -> tuple[list, int]:
-    """The takes a cut scores: the pool narrowed to the shot map's classes (after a sparse prep), decoded in
-    full now when they aren't yet (drive connected)."""
-    from videtor.analyze import footmap
-    from videtor.plan import fill, library
-
-    entries = _pool_entries(index, m["key"])
-    cands = entries
-    wanted = library.wanted_classes(m)
-    if wanted:
-        classes_p = out / "classes.json"
-        classes = json.loads(classes_p.read_text()) if classes_p.exists() else library.classes_for(entries, sparse_dir, kb_dir)
-        cands = library.candidates(entries, classes, m)
-        console.print(f"classes {', '.join(sorted(wanted))}: {len(cands)} of {len(entries)} takes can serve this map")
-    todo = [e for e in cands if not footmap.is_done(e, footmap_dir)]
-    if todo:
-        console.print(f"footage map: decoding {len(todo)} takes in full ({sum(e['media']['duration_s'] for e in todo) / 60:.1f} min of footage); keep the drive connected")
-        footmap.build_pool({**index, "files": cands}, m["key"], cache_dir=footmap_dir, log=lambda s: console.print(f"      {s}"))
-    return fill.load_takes(cands, footmap_dir), len(entries)
+    _step(pipeline.prepare, folder, name, workers=workers, sparse=sparse, out_root=out_root,
+          paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir, sparse=sparse_dir, frames=frames_dir), ev=_events())
 
 
 @app.command()
@@ -840,7 +527,7 @@ def search(
     from videtor.analyze import tags
     from videtor.plan import fill
 
-    takes, n = _takes_for(_index_for_key(key, kb_dir, mount), key, footmap_dir, sparse_dir)
+    takes, n = pipeline.takes_for(_step(pipeline.index_for_key, key, kb_dir, mount), key, footmap_dir, sparse_dir)
     if not takes:
         console.print(f"No footage map for {key!r} yet ({n} takes in the pool). Run: videtor prep, or python -m videtor.analyze.footmap {mount} --key {key!r}")
         raise typer.Exit(1)
@@ -855,110 +542,6 @@ def search(
     k = sum(1 for t in takes if getattr(t, "sparse", False))
     console.print(f"{len(takes)} of {n} takes mapped" + (f" ({k} on the keyframe map only: moments to the nearest keyframe, camera unknown)" if k else ""))
     console.print(table)
-
-
-def _write_cut(picks: dict, out: Path, music: dict | None, footmap_dir: Path = Path("cache/footmap")) -> Path:
-    from videtor.export import xmeml_writer as w
-    from videtor.plan import second_look
-    from videtor.plan.build import build_from_picks
-
-    if picks.get("stabilize"):  # steady the handheld picks with Motion keyframes (plan/stabilize.py; drive connected)
-        from videtor.plan import stabilize
-
-        stabilize.plan(picks, log=console.print)
-    (out / "picks.json").write_text(json.dumps(picks, indent=1) + "\n")
-    tl = build_from_picks(picks, music, sfx=picks.get("sfx"))
-    second_look.cut_sheet(picks, footmap_dir / "frames", out / "cut-sheet.jpg")
-    second_look.match_sheet(picks, footmap_dir / "frames", out / "match-cuts.jpg")
-    return w.write_xmeml(tl, out / f"{picks['name']}.xml", fps=picks["fps"], width=picks["width"], height=picks["height"])
-
-
-def _level_bytes(picks: dict, target_lufs: float) -> None:
-    """Each byte's voice gain (pick["gain_db"]) so the bytes sit at one loudness; the music dips under them in the build."""
-    from videtor.plan import interview
-
-    for s in picks["slots"]:
-        p = s.get("pick")
-        if not s.get("byte") or not p:
-            continue
-        lufs = interview.segment_lufs(p["path"], float(p["in_s"]), float(p["out_s"])) if Path(p["path"]).exists() else None
-        p["gain_db"] = round(float(min(12.0, max(-12.0, target_lufs - lufs))), 1) if lufs is not None and lufs > -70 else 0.0
-
-
-def _place_sfx(picks: dict, kb_dir: Path, beats_dir: Path, footmap_dir: Path) -> list[dict] | None:
-    """Your SFX habits (kb/sfx.json) placed on the cut; None when the habits have not been mined yet."""
-    from videtor.analyze import beats as beats_mod
-    from videtor.kb import sfx as sfx_kb
-    from videtor.plan import sfx as sfx_plan
-
-    habits = sfx_kb.load(kb_dir)
-    if not habits:
-        return None
-    mu = picks.get("music") or {}
-    data = beats_mod.load_or_track(Path(mu["path"]), beats_dir) if mu.get("path") and Path(mu["path"]).exists() else None
-    skip = set(picks.get("sfx_skip") or [])  # kinds the shot map leaves out, e.g. shutters when the flashes are party lights
-    return _clear_bytes([s for s in sfx_plan.place(picks, habits, music_data=data, footmap_dir=footmap_dir) if s["kind"] not in skip],
-                        picks["slots"])
-
-
-def _clear_bytes(sfx: list[dict], slots: list[dict]) -> list[dict]:
-    """The SFX around the bytes: none starts on one; one running into one (a whoosh peaking on the cut) ends on the
-    cut, fading over two frames."""
-    talk = [(s["start_s"], s["start_s"] + s["length_s"]) for s in slots if s.get("byte")]
-    out = [s for s in sfx if not any(a - 0.05 < s["start_s"] < b - 0.05 for a, b in talk)]
-    for s in out:
-        for a, _ in talk:
-            if s["start_s"] < a < s["start_s"] + (s["out_s"] - s["in_s"]):
-                s["out_s"], s["fade_out_s"] = round(s["in_s"] + (a - s["start_s"]) + 0.04, 3), 0.08
-    return out
-
-
-def _medley(segments: list[dict], cache_dir: Path) -> tuple[dict, list[float]]:
-    """Music as a medley: each segment ({path, in_s, beats | length_s}) plays after the last, from a beat of its own
-    grid; {gap_beats | gap_s} is silence, its beats continuing the last tempo. Returns the builder's music
-    ({segments: [{path, duration_s, in_s, start_s, length_s}], fade_out_s}) and the beats on the cut's clock."""
-    import numpy as np
-
-    from videtor.analyze import beats as beats_mod
-
-    out, beats, t, period = [], [], 0.0, 0.5
-    for g in segments:
-        if not g.get("path"):
-            length = float(g.get("gap_s") or float(g.get("gap_beats") or 0) * period)
-            beats += [round(t + k * period, 3) for k in range(int(length / period - 0.05) + 1)]
-            t += length
-            continue
-        data = beats_mod.load_or_track(Path(g["path"]).expanduser(), cache_dir)
-        in_s = float(g.get("in_s") or 0.0)
-        grid = [round(b - in_s, 3) for b in data["beats_s"] if b >= in_s - 0.05]
-        if len(grid) > 1:
-            period = float(np.median(np.diff(grid)))
-        if g.get("beats") is not None:
-            n = int(g["beats"])
-            length = grid[n] if n < len(grid) else grid[-1] + (n - len(grid) + 1) * period
-        elif g.get("length_s"):
-            length = float(g["length_s"])
-        else:
-            length = data["duration_s"] - in_s
-        beats += [round(t + b, 3) for b in grid if b < length - 0.05]
-        out.append({"path": str(Path(g["path"]).expanduser()), "duration_s": data["duration_s"], "in_s": in_s,
-                    "start_s": round(t, 4), "length_s": round(length, 4)})
-        t += length
-    return {"segments": out, "fade_out_s": float(segments[-1].get("fade_out_s", 1.0))}, beats
-
-
-def _music_for(m: dict, cache_dir: Path) -> tuple[dict | None, list[float] | None]:
-    from videtor.analyze import beats as beats_mod
-
-    mu = m.get("music") or {}
-    if isinstance(mu, list):
-        return _medley(mu, cache_dir)
-    if not mu.get("path"):
-        return None, None
-    data = beats_mod.load_or_track(Path(mu["path"]).expanduser(), cache_dir)
-    in_s = float(mu.get("in_s") or 0.0)
-    rel = [round(b - in_s, 3) for b in data["beats_s"] if b >= in_s - 0.05]
-    return {"path": str(Path(mu["path"]).expanduser()), "duration_s": data["duration_s"], "in_s": in_s, "fade_out_s": mu.get("fade_out_s", 1.0)}, rel
 
 
 @app.command("fx-test")
@@ -1006,111 +589,17 @@ def cut(
     out: Path = typer.Option(None, "--out", help="Output folder (default: next to the shot map)."),
     sheets: bool = typer.Option(True, "--sheets/--no-sheets", help="Write second-look contact sheets."),
     sfx: bool = typer.Option(True, "--sfx/--no-sfx", help="Place SFX in your style (kb/sfx.json) on their own tracks."),
+    fresh: bool = typer.Option(False, "--fresh", help="Forget the second-look swaps kept from earlier cuts (decisions.json)."),
     footmap_dir: Path = FOOTMAP_OPTION,
     sparse_dir: Path = SPARSE_OPTION,
     kb_dir: Path = KB_OPTION,
     beats_dir: Path = typer.Option(Path("cache/beats"), "--beats"),
 ) -> None:
     """Cut from a shot map: fill every slot from the footage map; writes picks.json, the second-look sheets and the
-    Premiere XML. After a sparse prep it first decodes in full the takes the map's classes allow (drive connected)."""
-    from videtor.analyze import tags
-    from videtor.plan import benchmark, fill, second_look, shotmap
-
-    m = shotmap.load(shotmap_path)
-    out = out or shotmap_path.parent
-    out.mkdir(parents=True, exist_ok=True)
-    takes, n = _takes_for_cut(_index_for_key(m["key"], kb_dir, mount), m, out, footmap_dir, sparse_dir, kb_dir)
-    if not takes:
-        console.print(f"No footage map for {m['key']!r} ({n} takes in the pool). Connect the drive and cut again, or: python -m videtor.analyze.footmap {mount} --key {m['key']!r}")
-        raise typer.Exit(1)
-    music, beats_rel = _music_for(m, beats_dir)
-    accents_rel = None
-    if m.get("cut_on") == "accents" and music and music.get("path"):
-        from videtor.analyze import beats as beats_mod
-
-        accents_rel = [round(a - music["in_s"], 3) for a in beats_mod.accents(music["path"], beats_dir) if a >= music["in_s"]]
-        console.print(f"cutting on the music's accents: {len(accents_rel)} strong onsets")
-    times = shotmap.timing(m, beats_rel, float(m.get("fps", 25)), accents_rel)
-    real = benchmark.load_real_metrics(kb_dir, m["key"])
-    habits = fill.motion_habits(real["source_xml"]) if real and os.path.exists(real.get("source_xml", "")) else None
-    from videtor.plan import taste as taste_mod
-
-    learnt = taste_mod.load(kb_dir)
-    if learnt and learnt.get("pairs"):
-        console.print(f"applying your taste from {learnt['pairs']} fixes ({kb_dir / 'taste.json'})")
-    keep = None
-    if m.get("bucket"):
-        from videtor.plan import keeper as keeper_mod
-
-        model = keeper_mod.load(m["bucket"], kb_dir)
-        if model:
-            keep = keeper_mod.scores(model, takes, fill.Pool(takes), tags.embed_texts, kb_dir)
-            console.print(f"keeper: what your {m['bucket']} edits keep (cv AUC {model['cv_auc']}, from {len(model['edits'])} edit(s))")
-        else:
-            console.print(f"keeper: no model for bucket {m['bucket']!r} yet (videtor kb keeper {m['bucket']})")
-    picks = fill.fill(m, takes, times, tags.embed_texts, habits, taste=learnt, frames_dir=footmap_dir / "frames", keeper=keep)
-    if m.get("sfx_skip"):
-        picks["sfx_skip"] = list(m["sfx_skip"])
-    for key in ("stabilize", "under_db"):
-        if m.get(key) is not None:
-            picks[key] = m[key]
-    _level_bytes(picks, float(m.get("voice_lufs", -14.0)))
-    if m.get("beds"):
-        picks["beds"] = m["beds"]
-    if m.get("flash"):
-        from videtor.plan import moves
-
-        picks["flashes"] = moves.flashes(picks["slots"], m["flash"], picks["fps"], picks["width"], picks["height"])
-        console.print(f"flash frames: {len(picks['flashes'])} over the cuts" if picks["flashes"] else f"flash frames: cannot read {m['flash'].get('path')}")
-    if m.get("effects"):
-        from videtor.plan import fx as fx_mod
-
-        eff = fx_mod.apply(picks, m["effects"], kb_dir)
-        counts = {}
-        for names in eff.values():
-            for e in names:
-                counts[e] = counts.get(e, 0) + 1
-        console.print("effects: " + (", ".join(f"{k} x{v}" for k, v in sorted(counts.items(), key=lambda kv: -kv[1])) or "none"))
-        for step in fx_mod.finishing(picks):
-            console.print(f"  finishing: {step}")
-    if music:
-        picks["music"] = {**(m["music"] if isinstance(m.get("music"), dict) else {}), **music}
-    if sfx:
-        picks["sfx"] = _place_sfx(picks, kb_dir, beats_dir, footmap_dir)
-        if picks["sfx"] is not None:
-            console.print(f"SFX: {len(picks['sfx'])} placed in your style ({', '.join(sorted({s['kind'] for s in picks['sfx']})) or 'none'})")
-    path = _write_cut(picks, out, music, footmap_dir)
-    filled = sum(1 for s in picks["slots"] if s["pick"])
-    console.print(f"{filled} of {len(picks['slots'])} slots filled from {len(takes)} mapped takes ({n} in the pool), {sum(l for _, l in times):.2f} s")
-    if sheets:
-        for p in second_look.sheets(picks, footmap_dir / "frames", out):
-            console.print(f"second look: {p}")
-        if (p := out / "match-cuts.jpg").exists():
-            console.print(f"match cuts: {p}")
-    console.print(f"Premiere XML: {path}")
-
-
-def _write_interview(picks: dict, aroll: dict, m: dict, takes: list, out: Path, sfx: bool, kb_dir: Path, footmap_dir: Path) -> Path:
-    """picks.json, the cut sheet and the Premiere XML of an interview piece (SFX placed again on every write)."""
-    from videtor.export import xmeml_writer as w
-    from videtor.kb import sfx as sfx_kb
-    from videtor.plan import fill, interview, second_look
-
-    placed = interview.layout(aroll)
-    if aroll.get("finish", True):  # stabilise flags, ramps and zooms (plan/interview.finish_fx)
-        interview.finish_fx(picks, m, {t.fid: t for t in takes}, fill.Pool(takes))
-    habits = sfx_kb.load(kb_dir) if sfx else None
-    picks["sfx"] = interview.place_sfx(m, picks, aroll, placed, habits) if habits else []
-    gains = interview.voice_gains(placed, {t.fid: t.path for t in takes})
-    W, H = int(aroll["width"]), int(aroll["height"])
-    motion_for = lambda take, seg: fill.framing(take, W, H, None, (int(seg["in_s"] // 0.5), max(1, int(round((seg["out_s"] - seg["in_s"]) / 0.5)))))  # noqa: E731
-    music = picks.get("music") if (picks.get("music") or {}).get("levels") else None
-    tl = interview.build(aroll, placed, picks, m, {t.fid: t for t in takes}, music, picks["sfx"], gains, motion_for)
-    picks["aroll"] = [{**s, "gain_db": gains.get(s["id"])} for s in placed]
-    (out / "picks.json").write_text(json.dumps(picks, indent=1) + "\n")
-    second_look.cut_sheet(picks, footmap_dir / "frames", out / "cut-sheet.jpg")
-    second_look.match_sheet(picks, footmap_dir / "frames", out / "match-cuts.jpg")
-    return w.write_xmeml(tl, out / f"{aroll['name']}.xml", fps=float(aroll["fps"]), width=W, height=H)
+    Premiere XML. After a sparse prep it first decodes in full the takes the map can use (drive connected). Swaps
+    made by an earlier second look are applied again."""
+    _step(pipeline.cut, shotmap_path, out=out, mount=mount, sheets=sheets, sfx=sfx, fresh=fresh,
+          paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir, sparse=sparse_dir, beats=beats_dir), ev=_events())
 
 
 @app.command("cut-interview")
@@ -1124,37 +613,7 @@ def cut_interview(
 ) -> None:
     """Cut an interview piece: the A-roll from the paper edit, B-roll filled over it and around it, the music
     dipped under the voice, SFX; writes picks.json, the second-look sheets, the cut sheet and the Premiere XML."""
-    from videtor.analyze import tags
-    from videtor.export import xmeml_writer as w
-    from videtor.kb import sfx as sfx_kb
-    from videtor.plan import fill, interview, second_look, shotmap
-    from videtor.plan import taste as taste_mod
-
-    aroll = json.loads(aroll_path.read_text())
-    m = json.loads(shotmap_path.read_text())
-    out = aroll_path.parent
-    takes, n = _takes_for(_index_for_key(aroll["key"], kb_dir), aroll["key"], footmap_dir)
-    by_fid = {t.fid: t for t in takes}
-    interview_takes = set(aroll.get("interview_takes") or []) | {s["name"] for s in aroll["segments"]}
-    broll = [t for t in takes if t.name not in interview_takes]
-    placed = interview.layout(aroll)
-    music, beats_rel = _music_for(m, beats_dir)
-    times = interview.slot_times(m, aroll, placed, beats_rel)
-    picks = fill.fill(m, broll, times, tags.embed_texts, None, taste=taste_mod.load(kb_dir), frames_dir=footmap_dir / "frames")
-    spans = interview.regions(aroll, placed)
-    if music:
-        mu = m.get("music") or {}
-        music["levels"] = interview.music_levels(float(aroll["length_s"]), spans["hook"][1], spans["end"][0], fps=float(aroll["fps"]),
-                                                 up=float(mu.get("up_db", interview.MUSIC_UP_DB)), under=float(mu.get("under_db", interview.MUSIC_UNDER_DB)))
-        picks["music"] = {**(m.get("music") or {}), **music}
-    picks["source"] = {"aroll": str(aroll_path), "shotmap": str(shotmap_path), "sfx": sfx}
-    path = _write_interview(picks, aroll, m, takes, out, sfx, kb_dir, footmap_dir)
-    for p in second_look.sheets(picks, footmap_dir / "frames", out):
-        console.print(f"second look: {p}")
-    voice = sum(s["length_s"] for s in interview.layout(aroll))
-    console.print(f"A-roll {len(placed)} segments, {voice:.1f} s of voice ({sum(1 for s in placed if s.get('visible'))} on screen) · "
-                  f"B-roll {sum(1 for s in picks['slots'] if s['pick'])} of {len(picks['slots'])} slots from {len(broll)} takes · SFX {len(picks['sfx'])}")
-    console.print(f"Premiere XML: {path}")
+    _step(pipeline.cut_interview, aroll_path, shotmap_path, sfx=sfx, paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir, beats=beats_dir), ev=_events())
 
 
 @app.command()
@@ -1228,38 +687,7 @@ def cut_mv(
     """Cut a lip-synced music video: every take lined up with the song from its camera audio, a cut on the beat
     grid, each slot the best synced take for the section's singer; writes picks.json, contact sheets of the cut
     and the Premiere XML (the song on A1 from its start, alternates on V2-V3)."""
-    from videtor.analyze import beats as beats_mod
-    from videtor.analyze import sync as sync_mod
-    from videtor.plan import musicvideo
-
-    spec = json.loads(spec_path.read_text())
-    out = spec_path.parent
-    takes, n = _takes_for(_index_for_key(spec["key"], kb_dir), spec["key"], footmap_dir)
-    data = beats_mod.load_or_track(Path(spec["music"]), beats_dir)
-    synced = sync_mod.load_or_sync([{"fid": t.fid, "path": t.path, "basename": t.name} for t in takes if t.audio_channels], spec["music"], log=console.print)
-    picks = musicvideo.plan(spec, takes, synced, data, log=console.print)
-    picks["source"] = {"spec": str(spec_path)}
-    path = _write_mv(picks, out, footmap_dir)
-    used = {s["pick"]["fid"] for s in picks["slots"] if s.get("pick")}
-    off = [s["pick"] for s in picks["slots"] if s.get("pick") and not s["pick"].get("synced", True)]
-    away = sum(1 for p in off if p.get("filmed_at_song_s") is not None)
-    console.print(f"{len(picks['slots'])} cuts on {data['tempo_bpm']:.0f} BPM ({len(used)} of {n} takes used; {len(picks['slots']) - len(off)} lip-synced, "
-                  f"{away} cutaways of the performer not singing, moved by whole bars, {len(off) - away} inserts without playback)")
-    for sec, d in picks["shares"].items():
-        console.print(f"  {sec:10} {d['slots']:3} cuts  " + "  ".join(f"{k} {v:.0%}" for k, v in d.items() if k != "slots"))
-    console.print(f"Premiere XML: {path}")
-
-
-def _write_mv(picks: dict, out: Path, footmap_dir: Path = Path("cache/footmap")) -> Path:
-    from videtor.export import xmeml_writer as w
-    from videtor.plan import musicvideo
-    from videtor.plan.build import build_from_picks
-
-    picks["shares"] = musicvideo.shares(picks)
-    (out / "picks.json").write_text(json.dumps(picks, indent=1) + "\n")
-    for p in musicvideo.pages(picks, footmap_dir / "frames", out):
-        console.print(f"cut sheet: {p}")
-    return w.write_xmeml(build_from_picks(picks, picks["music"]), out / f"{picks['name']}.xml", fps=picks["fps"], width=picks["width"], height=picks["height"])
+    _step(pipeline.cut_mv, spec_path, paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir, beats=beats_dir), ev=_events())
 
 
 @app.command()
@@ -1267,34 +695,14 @@ def look(
     picks_path: Path = typer.Argument(..., help="picks.json from `videtor cut`."),
     choices: list[str] = typer.Argument(None, help='Slot choices as id=k (runner-up 1..3), id=<take> (the runner-up from that take) or id=other-id:k (borrow), e.g. "details-3=2" "match-7=C1590" "reveal-2=reveal-1:1"; none rewrites the XML as is.'),
     note: list[str] = typer.Option([], "--note", help='Why, as id=text, e.g. "details-3=face sharper".'),
+    by: str = typer.Option("second look", "--by", help="Who chose (kept in decisions.json and the feedback): second look, you, app."),
 ) -> None:
-    """Apply second-look choices to picks.json and rewrite the Premiere XML."""
-    from videtor.plan import second_look
-
-    picks = json.loads(picks_path.read_text())
+    """Apply second-look choices to picks.json and rewrite the Premiere XML. The choices are kept in decisions.json
+    next to it, so cutting the shot map again keeps them."""
     parse = lambda v: (v.rsplit(":", 1)[0], int(v.rsplit(":", 1)[1])) if ":" in v else int(v) if v.isdigit() else v  # noqa: E731
     chosen = {c.split("=", 1)[0]: parse(c.split("=", 1)[1]) for c in (choices or [])}
     notes = {c.split("=", 1)[0]: c.split("=", 1)[1] for c in note}
-    if picks.get("kind") == "music-video" and any(isinstance(v, tuple) for v in chosen.values()):
-        console.print("A music video only swaps to a slot's own runners-up (id=k): a shot borrowed from another slot would be out of sync.")
-        raise typer.Exit(1)
-    second_look.apply(picks, chosen, notes)
-    if picks.get("kind") == "music-video":
-        path = _write_mv(picks, picks_path.parent)
-        console.print(f"{len(chosen)} slots swapped · Premiere XML: {path}")
-        return
-    if (picks.get("source") or {}).get("aroll"):  # an interview piece: rebuild it the interview way
-        src = picks["source"]
-        aroll, m = json.loads(Path(src["aroll"]).read_text()), json.loads(Path(src["shotmap"]).read_text())
-        takes, _ = _takes_for(_index_for_key(aroll["key"], KB_DIR_DEFAULT), aroll["key"], Path("cache/footmap"))
-        path = _write_interview(picks, aroll, m, takes, picks_path.parent, src.get("sfx", True), KB_DIR_DEFAULT, Path("cache/footmap"))
-        console.print(f"{len(chosen)} slots swapped · Premiere XML: {path}")
-        return
-    mu = picks.get("music")
-    if picks.get("sfx") is not None:  # shutter clicks follow the picked shots' flashes: place again
-        picks["sfx"] = _place_sfx(picks, KB_DIR_DEFAULT, Path("cache/beats"), Path("cache/footmap"))
-    path = _write_cut(picks, picks_path.parent, mu if mu and (mu.get("duration_s") or mu.get("segments")) else None)
-    console.print(f"{len(chosen)} slots swapped · Premiere XML: {path}")
+    _step(pipeline.look, picks_path, chosen, notes, ev=_events(), by=by)
 
 
 @app.command()

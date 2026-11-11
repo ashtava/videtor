@@ -298,6 +298,7 @@ def scan(
     log: Log = print,
     embed: Callable | None = None,
     detect: Callable | None = None,
+    progress: Callable[[int, int], None] | None = None,
 ) -> dict:
     """The sparse map of every entry not yet done, decoded in parallel; CLIP runs here as each clip lands.
 
@@ -323,6 +324,8 @@ def scan(
     order = sorted(todo, key=lambda e: -float((e.get("media") or {}).get("duration_s") or 0))
 
     def on_done(entry: dict, res: dict | None, error: str | None, k: int, n: int) -> None:
+        if progress:
+            progress(k, n)
         if error or not res or not res["ok"]:
             summary["failed"][entry["fid"]] = error or (res or {}).get("error") or "unknown"
             log(f"  {k}/{n} FAILED {entry.get('basename', entry['fid'])}: {summary['failed'][entry['fid']]}")

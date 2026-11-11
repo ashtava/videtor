@@ -70,9 +70,18 @@ def fit(diffs: list[np.ndarray], l2: float = 5.0, iters: int = 600, lr: float = 
     return w
 
 
-def load(kb_dir: Path = Path("kb")) -> dict | None:
-    p = kb_dir / "taste.json"
-    return json.loads(p.read_text()) if p.exists() else None
+def path_for(kb_dir: Path, bucket: str | None = None) -> Path:
+    """kb/taste/<bucket>.json for a bucket's own corrections, kb/taste.json for the ones learnt across all cuts."""
+    return kb_dir / "taste" / f"{bucket}.json" if bucket else kb_dir / "taste.json"
+
+
+def load(kb_dir: Path = Path("kb"), bucket: str | None = None) -> dict | None:
+    """The corrections for `bucket` when it has its own (an interview and a hype reel reward different things),
+    else the ones learnt across all your cuts; None before any fix was read back."""
+    for p in ([path_for(kb_dir, bucket)] if bucket else []) + [path_for(kb_dir)]:
+        if p.exists():
+            return json.loads(p.read_text())
+    return None
 
 
 def learn(feedback_paths: list[Path], pool_for_key, embed_texts, kb_dir: Path = Path("kb")) -> dict:

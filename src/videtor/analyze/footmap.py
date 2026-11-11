@@ -111,11 +111,20 @@ def _log(msg: str) -> None:
 
 
 def pool(index: dict, key: str, analysis_dir: Path = Path("cache/analysis")) -> list[dict]:
-    """The index entries of a sequence's footage pool, as the reranker selects them (rerank.pool_rows)."""
-    from videtor.plan.rerank import pool_rows
+    """The index entries of a sequence's footage pool: the video takes under its roots (or that its edit used),
+    without copies, renders or files the index marks `excluded`."""
+    from videtor.kb.footage import is_render
 
-    fids = {r["fid"] for r in pool_rows(index, key, Path(analysis_dir))}
-    return [f for f in index["files"] if f["fid"] in fids]
+    roots = index["roots"].get(key) or []
+    roots = [roots] if isinstance(roots, str) else roots
+    out = []
+    for f in index["files"]:
+        media = f.get("media") or {}
+        in_pool = any(f["path"].startswith(r.rstrip("/") + "/") for r in roots) or key in (f.get("used_by") or {})
+        if in_pool and f["kind"] == "video" and media.get("video") and media.get("duration_s") and not f.get("duplicate_of") \
+                and not f.get("excluded") and not is_render(f["path"]):
+            out.append(f)
+    return out
 
 
 def find_index(mount: Path, kb_dir: Path = Path("kb")) -> dict:
@@ -725,6 +734,7 @@ def build_pool(
     embed: Callable | None = None,
     detect: Callable | None = None,
     content_workers: int | None = None,
+    progress: Callable[[int, int], None] | None = None,
 ) -> dict:
     """Footage map for every take in a sequence's pool. stage: 'decode' (drive), 'content' (no drive) or 'all'.
 
@@ -823,6 +833,8 @@ def build_pool(
 
         def finished(res: dict, k: int) -> None:
             e = by_fid[res["fid"]]
+            if progress:
+                progress(k, len(order))
             summary["seconds"]["decode"] += res["seconds"]
             if res["ok"]:
                 summary["decoded"] += 1

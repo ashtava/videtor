@@ -115,7 +115,7 @@ class ClickBedTests(unittest.TestCase):
 
 class MedleyTests(unittest.TestCase):
     def test_segments_play_one_after_the_other_on_their_own_beats_with_a_silent_gap(self):
-        from videtor.cli import _medley
+        from videtor.pipeline import medley as _medley
 
         with tempfile.TemporaryDirectory() as d:
             cache = Path(d)

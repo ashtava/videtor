@@ -1,11 +1,10 @@
-"""Turn a list of planned shots into an OpenTimelineIO timeline the writers understand."""
+"""Turn the picks of a cut into an OpenTimelineIO timeline the writers understand."""
 
 from __future__ import annotations
 
 import opentimelineio as otio
 
 from videtor.export import xmeml_writer as w
-from videtor.plan.rules import Shot
 
 
 DIP_RAMP_S = 0.24  # the music steps down over this long before a byte (whole frames at 25 fps)
@@ -251,38 +250,3 @@ def build_from_picks(picks: dict, music: dict | None = None, alternates: int = 2
         tl.tracks.append(track)
     return tl
 
-
-def build_timeline(shots: list[Shot], name: str, fps: float, music: dict | None = None) -> otio.schema.Timeline:
-    """V1 holds the shots; with `music` ({path, duration_s}) the track sits on its own audio track from 0."""
-    tl = otio.schema.Timeline(name=name)
-    v1 = otio.schema.Track(name="V1", kind=otio.schema.TrackKind.Video)
-    tl.tracks.append(v1)
-    if music:
-        total = sum(s.length_s for s in shots)
-        a = otio.schema.Track(name="music", kind=otio.schema.TrackKind.Audio)
-        ref = w.media_reference(music["path"], fps, music["duration_s"], None, None, 2)
-        a.append(
-            otio.schema.Clip(
-                name=music["path"].rsplit("/", 1)[-1],
-                media_reference=ref,
-                source_range=otio.opentime.TimeRange(
-                    otio.opentime.RationalTime(0, fps), otio.opentime.RationalTime(max(1, round(min(total, music["duration_s"]) * fps)), fps)
-                ),
-            )
-        )
-        tl.tracks.append(a)
-    for s in shots:
-        ref = w.media_reference(s.path, s.file_fps, s.file_duration_s, s.width, s.height, s.audio_channels)
-        clip = otio.schema.Clip(
-            name=s.name,
-            media_reference=ref,
-            source_range=otio.opentime.TimeRange(
-                otio.opentime.RationalTime(round(s.in_s * s.file_fps), s.file_fps),
-                otio.opentime.RationalTime(max(1, round(s.length_s * s.file_fps)), s.file_fps),
-            ),
-        )
-        if abs(s.speed - 1.0) > 1e-6:
-            clip.effects.append(otio.schema.LinearTimeWarp(time_scalar=s.speed))
-        clip.metadata["videtor"] = {"score": s.score, "reasons": s.reasons}
-        v1.append(clip)
-    return tl

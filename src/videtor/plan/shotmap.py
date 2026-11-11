@@ -62,6 +62,13 @@ FACES = {"none", "partial", "full", "any"}
 CAMERAS = {"steady", "moving", "any"}
 LIBRARY_CLASSES = {"wide", "close-up", "talking-head", "interview-bite", "b-roll"}  # plan/library.py's CLASSES
 FX = ("flash", "static", "whip", "spin", "blur", "push-in", "pull-out", "punch", "shake", "echo", "bw")  # plan/fx.py's FX
+# every key the cut reads or a writer leaves for the reader; anything else is reported by `warnings`, not ignored in silence
+MAP_KEYS = {"version", "name", "key", "bucket", "type", "length_s", "fps", "width", "height", "beat_lead_s", "music", "avoid", "skip", "sfx_skip",
+            "sfx_note", "flash", "beds", "stabilize", "voice_lufs", "under_db", "keeper_w", "repeat_take", "classes", "effects", "cut_on",
+            "second_look", "notes", "drafted_from", "brief", "sections"}
+SECTION_KEYS = {"name", "match", "slots", "note", "over", "region"}
+SLOT_KEYS = {"id", "beats", "length_s", "show", "shows", "scale", "face", "hands", "camera", "speed", "role", "takes", "ramp", "flicker", "stack",
+             "black", "byte", "stabilize", "clicks", "effects", "class", "note"}
 
 
 def slots(m: dict) -> list[dict]:
@@ -115,6 +122,26 @@ def validate(m: dict) -> list[str]:
             out.append(f"{sid}: face must be one of {sorted(FACES)}")
         if s.get("camera", "any") not in CAMERAS:
             out.append(f"{sid}: camera must be one of {sorted(CAMERAS)}")
+    return out
+
+
+def warnings(m: dict) -> list[str]:
+    """Keys the cut does not know, each with the known key it most resembles: a misspelt option is said, not dropped."""
+    from difflib import get_close_matches
+
+    def unknown(keys, known: set[str], where: str) -> list[str]:
+        out = []
+        for k in keys:
+            if k not in known:
+                near = get_close_matches(k, sorted(known), n=1, cutoff=0.7)
+                out.append(f"{where} has an unknown key {k!r}" + (f" (did you mean {near[0]!r}?)" if near else "") + "; it is ignored")
+        return out
+
+    out = unknown(m, MAP_KEYS, "the map")
+    for sec in m.get("sections") or []:
+        out += unknown(sec, SECTION_KEYS, f"section {sec.get('name')!r}")
+        for s in sec.get("slots") or []:
+            out += unknown(s, SLOT_KEYS, str(s.get("id")))
     return out
 
 

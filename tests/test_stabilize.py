@@ -138,7 +138,7 @@ class ByteTests(unittest.TestCase):
         self.assertEqual(len(set(ins)), 1)  # the song runs on underneath: every piece follows from the last
 
     def test_sfx_keep_off_the_voice(self):
-        from videtor.cli import _clear_bytes
+        from videtor.pipeline import clear_bytes as _clear_bytes
 
         slots = [{"start_s": 0.0, "length_s": 2.0}, {"start_s": 2.0, "length_s": 1.5, "byte": True}]
         sfx = [{"kind": "whoosh", "start_s": 1.0, "in_s": 0.0, "out_s": 2.7}, {"kind": "click", "start_s": 2.5, "in_s": 0.0, "out_s": 0.1},

@@ -129,7 +129,7 @@ class PoolTests(unittest.TestCase):
         ]}
         with tempfile.TemporaryDirectory() as tmp:
             self.assertEqual([e["fid"] for e in footmap.pool(index, KEY, Path(tmp))], ["a", "g"])
-        from videtor.cli import _pool_for
+        from videtor.pipeline import pool_for as _pool_for
 
         self.assertNotIn("h", [e["fid"] for e in _pool_for(index, KEY)])
 
