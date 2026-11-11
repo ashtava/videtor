@@ -31,8 +31,8 @@ PICKS_VERSION = 1
 CARRY = ("sfx_skip", "stabilize", "under_db", "beds")
 DECISIONS = "decisions.json"
 MACHINE = {"second look", "auto", "claude"}  # who a swap is `by` when no person made it
-AUTOLOOK = False  # the automatic second look (plan/autolook.py)
-INVENTORY = False  # what the shoot holds, written by prepare (plan/inventory.py)
+AUTOLOOK = True  # the automatic second look (plan/autolook.py)
+INVENTORY = True  # what the shoot holds, written by prepare (plan/inventory.py)
 
 
 class PipelineError(RuntimeError):

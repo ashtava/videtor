@@ -43,6 +43,13 @@ CREW_WORDS = ("crew", "person", "people", "photographer", "stylist")
 MATCH_K, MATCH_W, MATCH_BEAM = 12, 2.0, 256
 KEEP_W = 0.6  # what one sd of the bucket's keeper score (plan/keeper.py: the moments your edits keep) is worth
 LAYOUT = (48, 27)  # a still's composition is compared at this size
+ORDER_W = 1.2  # `"order": "shoot"`: what a take from the other end of the shoot costs a slot, in sd of its score
+# what a viewer sees at a cut, as costs against the two shots' scores (in sd): the same take on both sides, two takes of
+# one setup (their pictures' CLIP cosine at ALIKE or more), a jump in light inside a section (day to night)
+REPEAT_W, ALIKE_W, LIGHT_W = 1.5, 0.5, 0.8
+ALIKE, LIGHT_JUMP = 0.87, 70.0  # as plan/evaluate.py counts them
+NEIGHBOUR_K = 10  # how many of a slot's best takes are tried in place of one that sits badly with its neighbours
+FLICKER_MARGIN = 1.5  # a flicker's sub-shots are takes within this many sd of its pick; fewer sub-shots when there are fewer
 
 
 def centre_offset(dx_px: float, dy_px: float, width: int, height: int) -> list[float]:
@@ -427,6 +434,76 @@ def _reasons(slot: dict, take: Take, i: int, m: int, terms: dict, speed: float, 
     return out
 
 
+def _window_look(take: Take, d: tuple) -> tuple[np.ndarray, float]:
+    """(mean picture embedding as a unit vector, mean brightness) of a take's window, from fill's detail row."""
+    sl = slice(d[2], d[2] + d[3])
+    e = take.a["emb"][sl].astype(np.float32).mean(axis=0)
+    return e / (np.linalg.norm(e) or 1.0), float(np.nanmean(take.a["bright"][sl]))
+
+
+def _settle_neighbours(chosen: dict[int, int], S: np.ndarray, detail: dict, takes: list[Take], slots: list[dict], times: list, fixed: set[int]) -> int:
+    """Where two shots sit badly at a cut (the same take twice, two takes of one setup, day cut to night inside a
+    section), give one of the two slots another of its good takes, when that loses less than the cut costs.
+    The assignment before this scores every slot alone; this is the part of a second look that is about
+    neighbours. Slots in `fixed` (match-cut runs, chosen together), bytes and black slots stay. Returns the swaps."""
+    look: dict[tuple[int, int], tuple] = {}
+
+    def at(j: int, k: int) -> tuple:
+        if (j, k) not in look:
+            look[(j, k)] = _window_look(takes[k], detail[(j, k)])
+        return look[(j, k)]
+
+    def cost(ja: int | None, ka: int | None, jb: int | None, kb: int | None) -> float:
+        if ja is None or jb is None or ka is None or kb is None:
+            return 0.0
+        (ea, la), (eb, lb) = at(ja, ka), at(jb, kb)
+        c = REPEAT_W if ka == kb else ALIKE_W if float(ea @ eb) >= ALIKE else 0.0
+        return c + (LIGHT_W if abs(la - lb) >= LIGHT_JUMP and slots[ja]["section"] == slots[jb]["section"] else 0.0)
+
+    def free(j: int, k: int, before: int | None, after: int | None) -> bool:
+        """Whether slot j may take k: no other slot plays it, or one far from j plays another stretch of it."""
+        a0 = detail[(j, k)][0]
+        a1 = a0 + times[j][1] * detail[(j, k)][1]
+        for jj, kk in chosen.items():
+            if jj == j or kk != k:
+                continue
+            if jj in (before, after) or (jj, k) not in detail:
+                return False
+            b0 = detail[(jj, k)][0]
+            if a0 < b0 + times[jj][1] * detail[(jj, k)][1] + 1.0 and b0 < a1 + 1.0:  # the same second, or within one of it
+                return False
+        return True
+
+    order = sorted(chosen, key=lambda j: times[j][0])
+    swaps = 0
+    for _ in range(3):
+        changed = False
+        for n, j in enumerate(order):
+            if j in fixed or slots[j].get("byte") or slots[j].get("takes") and len(slots[j]["takes"]) == 1:
+                continue
+            before, after = (order[n - 1] if n else None), (order[n + 1] if n + 1 < len(order) else None)
+            kb, ka = chosen.get(before), chosen.get(after)
+            cur = chosen[j]
+            cur_cost = cost(before, kb, j, cur) + cost(j, cur, after, ka)
+            if cur_cost <= 0:
+                continue
+            best, best_val = cur, S[j, cur] - cur_cost
+            for k in np.argsort(-S[j])[:NEIGHBOUR_K]:
+                k = int(k)
+                if S[j, k] < -1e5 or (j, k) not in detail or not free(j, k, before, after):
+                    continue
+                val = S[j, k] - cost(before, kb, j, k) - cost(j, k, after, ka)
+                if val > best_val + 1e-6:
+                    best, best_val = k, val
+            if best != cur:
+                chosen[j] = best
+                swaps += 1
+                changed = True
+        if not changed:
+            break
+    return swaps
+
+
 def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_texts, habits: dict | None = None, taste: dict | None = None,
          frames_dir: Path | None = None, keeper: dict[str, np.ndarray] | None = None) -> dict:
     """picks.json for shot map `m`: every slot's pick and runners-up, each with in/out, speed, framing, reasons.
@@ -482,6 +559,16 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
             win = max(1, int(round(length * speed / HOP)))
             hit = qs[0] if per_query is None else qs[int(np.argmax([float(np.mean(pq[k][i : i + win])) for pq in per_query]))]
             detail[(j, k)] = (in_s, speed, i, win, terms, hit)
+    if m.get("order") == "shoot" and n_t > 1:  # lean on the order of the day: file names count up through a shoot
+        rank = {k: r / (n_t - 1) for r, k in enumerate(sorted(range(n_t), key=lambda k: takes[k].name))}
+        total = sum(ln for _, ln in times) or 1.0
+        for j, slot in enumerate(slots):
+            if slot.get("takes") or slot.get("black"):
+                continue
+            at = (times[j][0] + times[j][1] / 2) / total
+            for k in range(n_t):
+                if S[j, k] > -1e5:
+                    S[j, k] -= ORDER_W * abs(rank[k] - at)
     # every take to at most one slot (a second copy of each take only when the pool is smaller than the map)
     copies = 1 if (m.get("repeat_take") is False and n_t >= n_s) else 2
     big = np.tile(S, (1, copies)) - np.repeat(np.arange(copies) * 0.5, n_t)[None, :]
@@ -555,7 +642,11 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
             chosen[j] = k
             if j != js[0]:
                 matched[j] = mm
+    _settle_neighbours(chosen, S, detail, takes, slots, times, {j for js in by_section.values() for j in js if slots[j]["section"] in match_sections})
     used = set(chosen.values())
+
+    def light(j: int, k: int) -> float:
+        return _window_look(takes[k], detail[(j, k)])[1]
 
     out_slots = []
     for j, slot in enumerate(slots):
@@ -582,6 +673,8 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
             free = [k for k in order if k not in used]
             pats = slot.get("takes") or []
             rank = lambda k: next((n for n, p in enumerate(pats) if allowed_span([p], takes[k].name)), len(pats))  # noqa: E731
+            if not pats:  # takes that show what the pick shows, in the pick's light: a flicker of four good shots beats six with two strays
+                free = [k for k in free if S[j, k] >= S[j, chosen[j]] - FLICKER_MARGIN and abs(light(j, k) - light(j, chosen[j])) < LIGHT_JUMP / 2]
             more = sorted(free, key=lambda k: (rank(k), -S[j, k]))
             if slot.get("flicker"):
                 lengths = moves.sub_lengths(length, fps, int(slot["flicker"]))

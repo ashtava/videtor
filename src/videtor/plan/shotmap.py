@@ -45,6 +45,9 @@ effects for every cut and shot at the rates your rendered reels of that bucket s
 shot) replaces the draw for that slot, and [] leaves it plain.
 `"cut_on": "accents"` moves each cut onto the music's nearest strong onset within a third of a beat (your sports
 reels cut on the hits more than on the grid).
+`"order": "shoot"` leans the cut on the order of the day: a slot early in the piece prefers takes from early in the
+shoot (by file name), worth fill.ORDER_W across the whole shoot; slots that name their `takes` are left alone.
+`"second_look": false` switches off the automatic second look (plan/autolook.py).
 `classes` (on the map) and a slot's `class` name the library's shot types the cut may draw on
 (`videtor library`: wide, close-up, talking-head, interview-bite, b-roll). After a sparse `prep`
 only those takes (and the ones slots name in `takes`) are decoded in full; without them, every take is.
@@ -65,7 +68,7 @@ FX = ("flash", "static", "whip", "spin", "blur", "push-in", "pull-out", "punch",
 # every key the cut reads or a writer leaves for the reader; anything else is reported by `warnings`, not ignored in silence
 MAP_KEYS = {"version", "name", "key", "bucket", "type", "length_s", "fps", "width", "height", "beat_lead_s", "music", "avoid", "skip", "sfx_skip",
             "sfx_note", "flash", "beds", "stabilize", "voice_lufs", "under_db", "keeper_w", "repeat_take", "classes", "effects", "cut_on",
-            "second_look", "notes", "drafted_from", "brief", "sections"}
+            "second_look", "order", "notes", "drafted_from", "brief", "sections"}
 SECTION_KEYS = {"name", "match", "slots", "note", "over", "region"}
 SLOT_KEYS = {"id", "beats", "length_s", "show", "shows", "scale", "face", "hands", "camera", "speed", "role", "takes", "ramp", "flicker", "stack",
              "black", "byte", "stabilize", "clicks", "effects", "class", "note"}

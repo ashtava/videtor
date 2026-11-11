@@ -548,14 +548,39 @@ def draft_cmd(
     music: Path = typer.Option(None, "--music", help="The track: slots are counted on its beats and cut on its accents."),
     music_in: float = typer.Option(0.0, "--music-in", help="Where in the track the cut starts (seconds, on a beat)."),
     seed: int = typer.Option(0, "--seed", help="Another seed, another draft."),
+    use_inventory: bool = typer.Option(True, "--inventory/--no-inventory", help="Give slots only to what the shoot holds (read from its footage map or keyframe map)."),
+    skip: list[str] = typer.Option([], "--skip", help="Leave out takes whose path matches (repeatable), e.g. another shoot in the same folder; kept in the shot map."),
+    order: str = typer.Option("style", "--order", help="style: what each slot asks for decides; shoot: also lean on the order of the day (early slots prefer early takes)."),
     out: Path = typer.Option(Path("out"), "--out"),
     kb_dir: Path = KB_OPTION,
 ) -> None:
-    """Draft a shot map offline from a bucket's learnt style (pace, what is shown where, effects): edit it, then cut."""
-    from videtor.plan import draft
+    """Draft a shot map offline from a bucket's learnt style (pace, what is shown where, effects) and from what the
+    shoot holds: edit it, then cut."""
+    from fnmatch import fnmatch
+
+    from videtor.plan import draft, inventory
 
     mu = {"path": str(music.expanduser()), "in_s": music_in, "fade_out_s": 1.0} if music else None
-    m = draft.draft(name, bucket, length, key or f"{name}::footage", mu, seed=seed, kb_dir=kb_dir)
+    key = key or f"{name}::footage"
+    inv = None
+    if use_inventory:
+        try:  # what the shoot holds: from the footage map, else the keyframe map prep made
+            takes, _ = pipeline.takes_for(pipeline.index_for_key(key, kb_dir), key, Path("cache/footmap"), Path("cache/sparse"))
+        except pipeline.PipelineError:
+            takes = []
+        takes = [t for t in takes if not any(fnmatch(t.path, pat) for pat in skip)]
+        if takes:
+            (out / name).mkdir(parents=True, exist_ok=True)
+            inventory.write(takes, out / name, bucket)
+            inv = inventory.load(out / name)
+            console.print(f"the shoot holds ({len(takes)} takes):", markup=False)
+            for line in inventory.text(inv, 10):
+                console.print(f"  {line}", markup=False)
+        else:
+            console.print(f"no footage read for {key!r} yet (videtor prep): drafting from the style alone")
+    m = draft.draft(name, bucket, length, key, mu, seed=seed, kb_dir=kb_dir, inventory=inv, order=order)
+    if skip:
+        m["skip"] = list(skip)
     path = draft.write(m, out)
     for sec in m["sections"]:
         console.print(f"{sec['name']}: " + ", ".join(f"{s['shows']} {s['beats']:g}b" + (" flicker" if s.get("flicker") else "") for s in sec["slots"]))
