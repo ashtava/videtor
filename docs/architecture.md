@@ -1,4 +1,4 @@
-# How Videtor works (as built, 2026-11-01)
+# How Videtor works (as built; last rewritten 2026-11-11 for the pipeline and the feedback loop)
 
 This describes the code as it stands. The original design page from 2026-10-28/29 (GitHub survey, phased plan,
 Round 4 design) is `docs/architecture.html`; it's also published as an artifact
@@ -25,18 +25,28 @@ stands, see `docs/status.md`.
                         → picks.json, second-look sheets, cut-sheet.jpg, <name>.xml
                         └─ Claude's second look → videtor look <id>=<take> → the XML again
                              └─ the user imports into Premiere and fixes the cut
-                                  └─ kb.readback (--live / --xml) → kb/feedback → kb learn → kb/taste.json → next cut
+                                  └─ videtor readback (the finished video, or --xml / --live) + verdict + the user's swaps
+                                       → kb/feedback/<name>.json → videtor learn (taste, keeper) → videtor eval gate → next cut
 ```
 
 Everything after the shot map is deterministic code on the Mac. Claude's part is the brief → shot map
-translation, the music choice when none is given, reading contact sheets, and the second look.
+translation, the music choice when none is given, reading contact sheets, and the second look for what needs
+eyes. `videtor draft` writes a first shot map with no Claude (the bucket's style, the shoot's inventory), and the
+cut itself settles neighbours and runs an automatic second look.
+
+**One home for the steps** (2026-11-11): `pipeline.py` holds `prepare`, `cut`, `look`, `cut_interview`, `cut_mv`,
+`read_back`, `verdict` and `learn`. The terminal (`cli.py`) and the app (`ui/`) call them and hold no step of their
+own. A step reports through `events.Events` (sentences in the terminal; JSON lines when `VIDETOR_EVENTS=json`,
+which the app sets) and raises `PipelineError` for what it cannot do. `videtor eval` cuts the past projects through
+the same `pipeline.cut_picks`, so a measure is always a measure of the real cut.
 
 ## Modules (`src/videtor/`)
 
 | Area | Module | What it does |
 |---|---|---|
-| CLI | `cli.py` | `videtor <command>` (typer): `prep orient music search cut look cut-interview cut-mv finish plan export analyze ingest`, `kb ...` and `library ...`. `prep` is sparse by default; `cut` narrows the pool to the map's classes (`library.candidates`) and decodes those takes in full before filling |
-| | `mcp_server.py` | The brief-to-cut steps as MCP tools (registered in `.mcp.json`); superseded by the UI for the user's own use |
+| Steps | `pipeline.py` | The steps of a job (above). `cut_picks` is the cut without files (the evaluation's entry); `carry` is the one place a shot map's settings cross to the picks; `decisions.json` keeps second-look swaps and `replay` puts them back on the next cut; `read_back` reads the finished job; `learn` fits candidates and keeps them only when the evaluation passes |
+| | `events.py` | `Events` (stage, progress, artifact, info, warning, error), a text sink and a JSON-lines sink, `parse` for the app |
+| CLI | `cli.py` | `videtor <command>` (typer), thin: `prep orient music search draft cut look cut-interview cut-mv readback verdict learn eval preview finish analyze fx-test ui`, `kb ...` and `library ...`. `prep` is sparse by default; `cut` narrows the pool to what the map can use (`library.candidates`: its classes, the takes its slots name, never a skipped take) and decodes those in full before filling |
 | UI | `ui/server.py` | `videtor ui`: a standard-library HTTP server on 127.0.0.1 with JSON endpoints (prep, cut, look, music, search, library build/learn/move, projects, jobs, files from allowed roots) and the static page in `ui/static/`; a pywebview window when installed |
 | | `ui/jobs.py` | Background jobs, each `videtor <command>` in its own process group with a polled log ring; a cut pauses (SIGSTOP) running preps and library builds and resumes them after, a prep submitted during a cut waits, a paused prep that ends with failures is rerun once |
 | Knowledge base | `kb/xmeml.py` | Reads Premiere FCP7 xmeml exports into dataclasses (stdlib only). Nests, Time Remap, transitions' −1 ends |
@@ -46,6 +56,8 @@ translation, the music choice when none is given, reading contact sheets, and th
 | | `kb/breakdown.py` | An edit in numbers and words (medley, pauses, pace per stretch, ramps, stacks, flashes, SFX): the material for bucket cards |
 | | `kb/render.py` | A finished reel read from its render alone: cuts, the frames between shots (recurring static overlay, white flash, black), each shot's length, look and move, the grade, beat fit and accents, CLIP labels (`SHOTS`); `summarize` → `kb/renders/<bucket>.json` (no file names), each reel in `out/references/<bucket>/` |
 | | `kb/readback.py` | Reads a fixed cut back (xmeml or live over prpr), aligns it to the picks, labels each slot kept/slipped/trimmed/swapped/removed |
+| | `kb/renderback.py` | The same from the finished video alone: shots split (and split again at the cuts the picks proposed), each found in the footage map (CLIP proposes takes, the frame is laid over cached stills at a few sizes with normalised correlation), turned into the clip rows `readback.diff` labels. Source times are known to about a quarter second; a shot found near its slot's pick is that pick |
+| | `kb/feedback.py` | The one store, `kb/feedback/<name>.json`: the latest read-back, the choices a person made in a second look, the verdict. `teaching_rows` feeds the taste, `used_ranges` the keeper |
 | | `kb/js/` | Premiere UXP scripts: `read_sequence.js` (read-only) and `finish_interview.js` (writes effects; only with `--force-bridge`) |
 | Analysis | `analyze/frames.py`, `audio.py`, `motion.py` | Per clip: sharpness, exposure, colour; loudness, silence, speech; motion and in-clip cuts |
 | | `analyze/faces.py`, `tags.py` | MediaPipe faces, hands and shot scale; CLIP ViT-B/32 tags and embeddings |
@@ -57,9 +69,9 @@ translation, the music choice when none is given, reading contact sheets, and th
 | | `analyze/speech.py` | Local Whisper (mlx-whisper large-v3-turbo) with word timings; a fumble finder |
 | | `analyze/sync.py` | Lip-sync: each take's camera audio matched to the master by onset envelopes, stretch by stretch, 2× playback included |
 | Planning | `plan/shotmap.py` | The shot-map schema (docstring) and `validate` |
-| | `plan/fill.py` | Scores every half-second of every take against every slot (CLIP z-score, avoid, soft filters, keeper, taste, crop penalties), then one assignment over all slots with 3 runners-up each |
+| | `plan/fill.py` | Scores every half-second of every take against every slot (CLIP z-score, avoid, soft filters, keeper, taste, crop penalties), then one assignment over all slots with 3 runners-up each; `_settle_neighbours` then gives a slot another of its good takes where a cut shows the same take twice, two takes of one setup, or day cut to night inside a section; a flicker's sub-shots stay within 1.5 sd of its pick and in its light; `"order": "shoot"` leans on the order of the day |
 | | `plan/keeper.py` | Per bucket: balanced logistic regression on generic CLIP concepts plus footmap measures, kept vs left-out samples; out-of-fold scores for seen takes |
-| | `plan/taste.py` | Corrections to the filler's term weights, learnt from read-backs |
+| | `plan/taste.py` | Corrections to the filler's term weights, learnt from the feedback store: `kb/taste.json` across all cuts (from 12 choices), `kb/taste/<bucket>.json` per bucket (from 20) |
 | | `plan/moves.py` | Ramps (arrival, punch), flicker, stack, black, flash frames, beds, medley music |
 | | `plan/music.py` | Library scan, best window, ranking for fast cuts (`videtor music`) |
 | | `plan/sfx.py` | Places risers, impacts, whooshes, shutters and clicks the way the user does |
@@ -67,13 +79,17 @@ translation, the music choice when none is given, reading contact sheets, and th
 | | `plan/library.py` | A shoot sorted into wide / close-up / talking-head / interview-bite / b-roll folders from the sparse map: rules first, then a model learnt from the user's moves (`kb/library/`); the bites as a Premiere sequence |
 | | `plan/fx.py` | Effects drawn at a bucket's rates (`kb/policy/`, else `kb/renders/`): flash and static overlays (generated in `cache/assets`, or the user's), whip, spin, blur, push-in, pull-out, punch, shake, echo, black and white (Iris label); `fx-test` sequence |
 | | `plan/gym.py` | Learning a cutting style from reels alone: each reel's shots as stand-in footage, a policy that cuts them, a reward against the real reel, cross-entropy search, leave-one-out evaluation → `kb/policy/<bucket>.json` |
-| | `plan/draft.py` | A first shot map for new footage from a bucket's policy (`videtor draft`) |
+| | `plan/draft.py` | A first shot map for new footage (`videtor draft`): the bucket's policy for pace, effects and accents; the shoot's inventory for what to ask for (half the style's share of each kind of shot, half the shoot's own). A bucket with no reels drafts on its edits' pace with the general vocabulary and no effects |
 | | `plan/interview.py` | A-roll paper edit (`aroll.json`), B-roll by region, voice levelling, music dips, finishing pass (ramps, zooms, Warp flags) |
 | | `plan/musicvideo.py` | Beat-grid lip-sync cut with shares per singer, cutaways moved by whole bars, beam search (`mv.json`) |
 | | `plan/second_look.py`, `sheets.py`, `overview.py` | Contact sheets for Claude or the user; `look` applies choices |
 | | `plan/build.py` | Picks → OpenTimelineIO timeline (tracks, levels, music pieces, steadied clips) |
-| | `plan/rules.py`, `structure.py`, `rerank.py`, `benchmark.py` | Rounds 1-3: rule-based planner v0, the hook/opening model, a learned reranker, scoring against a real edit |
-| Export | `export/xmeml_writer.py` | Our own Premiere xmeml writer (Basic Motion with scale, rotation and centre keyframes, Time Remap, Gaussian Blur, Opacity, blend modes, labels, sequence markers, levels, links, disabled alternates) |
+| | `plan/evaluate.py` | `videtor eval`: the projects of `kb/eval/set.json` cut again from the cache and measured against the user's own edit (right take, right second, in top 3) and on their own (filled, match, sharp, repeats, look-alikes, light jumps, keeper); `compare` against `kb/eval/baseline.json` with a tolerance per guarded measure |
+| | `plan/inventory.py` | What a shoot holds by kind of shot (a vocabulary of labels with phrasings; seconds, takes and a capped share per label): `inventory.json`, written by `prep` and read by `draft` |
+| | `plan/autolook.py` | The automatic second look: a soft, badly lit or shaking pick swapped for a runner-up that passes and scores within 0.6 sd |
+| | `plan/benchmark.py` | `score_picks` against an index's used ranges, `load_real_metrics`. The rounds 1-3 planner (`rules.py`, `structure.py`, `rerank.py`) is in `scripts/archive/rounds-1-3/` |
+| Export | `export/preview.py` | `videtor preview`: a half-size video of what V1 plays, framed as the XML frames it, with the music (ffmpeg; drive connected) |
+| | `export/xmeml_writer.py` | Our own Premiere xmeml writer (Basic Motion with scale, rotation and centre keyframes, Time Remap, Gaussian Blur, Opacity, blend modes, labels, sequence markers, levels, links, disabled alternates) |
 
 ## Files on disk
 
@@ -86,7 +102,10 @@ translation, the music choice when none is given, reading contact sheets, and th
 | `kb/footage/` | Indexes: `<drive>.json` (+ `.summary`, `.selects`) for past edits; `<name>.json` per `prep` pool | A file can carry `"excluded": true` (another shoot on the same card) |
 | `kb/sfx.json` | SFX habits | From the exports |
 | `kb/keeper/`, `kb/buckets/` | Keeper models; bucket cards | event only so far |
-| `kb/briefs/`, `kb/marks/`, `kb/feedback/` | Briefs written for past edits; Source Monitor marks; read-back labels | feedback is empty |
+| `kb/briefs/`, `kb/marks/` | Briefs written for past edits; Source Monitor marks | |
+| `kb/feedback/<name>.json` | Per project: the latest read-back (render, XML or live), the user's choices, the verdict | Empty until the first finished job is read back |
+| `kb/taste.json`, `kb/taste/<bucket>.json` | Corrections to the filler's weights | Written by `videtor learn` when the evaluation passes |
+| `kb/eval/set.json`, `baseline.json` | The evaluation set (shot maps in `out/`, the user's edit where there is one) and the numbers runs are held to | `videtor eval --save` |
 | `cache/footmap/` (2.0 GB) | Per take: `<fid>.json`, `.npz`, `.decode.npz`, `frames/<fid>_<i>.jpg` | Hours of decoding with the drives connected. Don't delete |
 | `cache/frames/` (1.0 GB) | Sampled stills per clip (`<fid>_N.jpg`) | |
 | `cache/analysis/`, `beats/`, `transcripts/`, `sync/`, `stab/`, `probe/` | Per-clip analyses, beat grids, Whisper transcripts, synced camera audio, stabiliser measurements, probe frames | All rebuildable, but slowly |
@@ -94,7 +113,7 @@ translation, the music choice when none is given, reading contact sheets, and th
 | `cache/sparse/` | Per clip: `<fid>.json`, `<fid>.npz` (stills' arrays and CLIP), `frames/<fid>_<i>.jpg` (keyframe stills, 480 px) | `videtor library build`; minutes per shoot, resumable |
 | `kb/library/` | `labels.json` (path → class, read from the user's folder moves), `model.json` (the logistic regression) | `videtor library learn` |
 | `out/library/<name>/` | One folder per class holding links to the clips, `sheets/<class>-N.jpg`, `interview-bite/bites.xml` + `bites.md`, `library.json`, `library.md`, `index.json` | The user sorts by moving links |
-| `out/<name>/` | Per cut: `brief.md`, `shotmap.json` (or `aroll.json`/`mv.json`), `picks.json`, `<name>.xml`, `overview*`, `second-look-*.jpg`, `cut-sheet.jpg`, `report.md`, `work/` | `report.md` is the record of what was delivered |
+| `out/<name>/` | Per cut: `brief.md`, `inventory.json`, `shotmap.json` (or `aroll.json`/`mv.json`), `picks.json`, `decisions.json` (second-look swaps, replayed by the next cut), `<name>.xml`, `overview*`, `second-look-*.jpg`, `cut-sheet.jpg`, `preview.mp4`, `verdict.json`, `report.md`, `work/`, and the finished video when the user saves it there | `report.md` is the record of what was delivered |
 
 `cache/` and `out/` are gitignored, so that media and derived data never get committed.
 
@@ -102,13 +121,15 @@ translation, the music choice when none is given, reading contact sheets, and th
 
 - **Shot map:** the schema is the docstring of `plan/shotmap.py`; the skill explains how to write one.
   - Map level: `name key bucket length_s fps width height beat_lead_s music avoid skip sfx_skip flash beds
-    stabilize voice_lufs under_db keeper_w`.
+    stabilize voice_lufs under_db keeper_w repeat_take classes effects cut_on order second_look notes`. `shotmap.warnings`
+    names any key it doesn't know (a misspelt option is said, not dropped).
   - `sections[]`: `name match slots[]`.
   - Each slot: `id beats show scale face hands camera speed role takes ramp flicker stack black byte stabilize`.
   - Examples: `out/guru-25s-brief/` (plain), `out/diwali-party-v2/` (moves, medley), `out/alpha-summit/`
     (bytes, stabilise, keeper_w), `out/engagement/` (cinematic 16:9, pinned moments).
-- **picks.json:** the map's settings plus `slots[]`, each with `id section role show start_s length_s` and
-  `pick`/`alternates[]`. A pick has `fid path name in_s out_s speed display_w display_h score reasons motion
+- **picks.json:** the map's settings (`pipeline.carry`) plus `slots[]`, each with `id section role show start_s length_s`,
+  the slot's own `effects` and filters (`scale face hands camera`) and `pick`/`alternates[]`. `pipeline.check_picks`
+  reads it. A pick has `fid path name in_s out_s speed display_w display_h score reasons motion
   stab`. A swapped slot has `second_look: {chose | borrowed_from, why}`.
 - **Footage index:** `files[]` entries have `fid path basename dir kind media{duration_s video audio ...}
   orientation used_by duplicate_of` and optionally `excluded`.

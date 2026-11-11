@@ -89,9 +89,10 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    the bucket's card shows the user using them, not by default.
    **Sports** (a hype reel, a practice-day wrap, a match-day reel; bucket `sports-promo`): read
    `kb/buckets/sports-promo.md` (learnt from eight of the user's rendered reels and a policy trained on them).
-   Start from `videtor draft <name> --length <s> --music "<track>"` (pace, holds, flicker bursts, what is
-   shown where, effects, accents from `kb/policy/sports-promo.json`) and rewrite its `show` lines and order
-   against the brief and the overview; keep `"effects": "sports-promo"` (flash and static overlays, whips,
+   Start from `videtor draft <name> --length <s> --music "<track>"` (pace, holds, flicker bursts, effects,
+   accents from `kb/policy/sports-promo.json`; it reads the shoot's inventory, `out/<name>/inventory.json`, and
+   asks only for kinds of shot the footage holds; `--skip` leaves another shoot in the folder out) and rewrite
+   its `show` lines and order against the brief and the overview; keep `"effects": "sports-promo"` (flash and static overlays, whips,
    spins, push-ins, black-and-white runs at the learnt rates; a slot's own `"effects": [...]` overrides) and
    `"cut_on": "accents"`. Effects are not yet confirmed in Premiere (`out/fx-test/fx-test.xml` waits for the
    user); report the black-and-white runs the cut prints as finishing steps, and the text cards from the
@@ -131,21 +132,27 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    crew at the frame edges and in the foreground), the move resolving inside the window, no empty
    frame. Apply: `videtor look out/<name>/picks.json details-3=2 match-7=C1590 reveal-2=reveal-1:1
    --note "details-3=why"` (`id=k` takes runner-up k, `id=<take>` the runner-up from that take, which
-   survives a re-cut that reorders them, `id=other:k` borrows a neighbour's). A re-cut drops earlier
-   swaps: apply them again. Look across slots too: two takes of one group at one table (consecutive
+   survives a re-cut that reorders them, `id=other:k` borrows a neighbour's). Swaps are kept in
+   `decisions.json` and the next cut puts them back (`cut --fresh` forgets them). The cut has already
+   settled repeats, look-alike neighbours and day-to-night cuts and swapped soft or shaking picks (it
+   prints them as "second look:"), so look for what needs eyes. Look across slots too: two takes of one group at one table (consecutive
    file numbers) read as a repeat. When a slot's runners-up are all wrong, improve its `show`
    wording, filters or `takes` and cut again instead.
 9. **Check** with one sheet of the final cut in order (build it like `cut-sheet.jpg` in
    `out/guru-25s-brief/`), and `videtor.plan.benchmark.score_picks` when the project has a real
-   edit to compare with.
+   edit to compare with. `videtor preview out/<name>/picks.json` renders a half-size video of the cut
+   (drive connected) when watching it helps.
 10. **Report** the XML path (Premiere: File ▸ Import; the drive must be connected to play), the
     track and in-point, the cut section by section, what the second look changed and why, and the
     judgment calls you made on the brief. Alternates sit on V2-V3. Save the same report as
     `out/<name>/report.md` (examples in `out/engagement/`, `out/alpha-summit/`). Include the commands
     that rebuild the cut: prep, cut, and `look` with every swap and its note. Then update
     `docs/status.md` (the delivery row, what you're waiting on, any gaps you noted).
-11. **After the user fixes the cut**, read it back: `.venv/bin/python -m videtor.kb.readback
-    out/<name>/picks.json --live` (or `--xml <export>`); the labels land in `kb/feedback/`.
+11. **After the job is finished**, read it back. Ask the user to save the finished export in
+    `out/<name>/` (or to say where it is), then `videtor readback out/<name>/picks.json [--render <file>]`
+    (also `--xml <export>` or `--live`): every slot is labelled kept, slipped, swapped or removed in
+    `kb/feedback/`. Record their verdict (`videtor verdict out/<name>/picks.json good|not --note "..."`),
+    then `videtor learn`: what it learns is kept only if `videtor eval` says past cuts got no worse.
 
 ## When the brief is a music video (performers lip-syncing to a song)
 
@@ -171,6 +178,6 @@ Steps 1-3 as above; then, instead of a shot map:
 5. **Cut**: `videtor cut-mv out/<name>/mv.json`. It prints shares per section; read every `cut-*.jpg`
    (outlined = the other performer; `away` = a cutaway moved by whole bars; `ins` = no playback).
    Swap weak shots with `videtor look out/<name>/picks.json <id>=k` (a slot's own runner-ups only: they stay
-   in sync); a re-cut drops earlier swaps, so apply them again. Check the XML: start − in = the take's offset
+   in sync); swaps are kept in `decisions.json` and a re-cut puts them back. Check the XML: start − in = the take's offset
    (within a frame) for every lip-synced clip.
 6. **Report** as in step 10, plus where each singer's part is and how you found it.

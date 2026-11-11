@@ -59,6 +59,8 @@ project memory.
 | `boxes.py`, `kp.py`, `kpstats.py`, `clipver.py`, `evalpipe*.py`, `evalrule.py`, `groups.py`, `look*.py`, `probe*.py`, `score.py`, `orient_check.py`, `runall.py`, `sheet*.py` | Orientation detection: face boxes and keypoints per turn, rule sweeps against known rotations, sheets of turned takes (10-29) |
 | `survey.py` | xmeml reader survey: clips with −1 starts/ends next to transitions (10-29) |
 | `stdio_check.py`, `stdio_music.py` | Smoke tests of `videtor.mcp_server` over stdio (10-29) |
+| `mcp_server.py`, `test_mcp_server.py` | Videtor's MCP server and its test, retired 2026-11-11 (a Round 4 copy of the cut; the app replaced it) |
+| `rounds-1-3/` | The rule-based planner before the shot map (`rules.py`, `structure.py`, `rerank.py`) and its tests; see its README |
 | `pull_meta.py`, `seq_names.js` | Early Premiere reads: per-item project metadata (slow, about 5-9 s each) and sequence names |
 | `motion_probe.js` | First version of `premiere/motion_probe.js` |
 | `finish_check.js`, `finish_probe*.js` | Scratch versions of the `videtor finish` bridge script (the kept one is `src/videtor/kb/js/finish_interview.js`) |

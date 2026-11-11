@@ -56,6 +56,7 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
 
 | Date | What | Code | Result |
 |---|---|---|---|
+| 11-11 | **The pipeline, the evaluation, the feedback loop and the automatic judgement** (the user, after the architecture review: "proceed with 0-4. let other things be as it is. take a call on mcp. leave the plan for app unanswered"). **Phase 0:** a slot's own `effects` reach the cut and flickers draw none; the app's server checks Host and Origin and needs a per-launch token on every POST; a cut never decodes a skipped take, and only the named takes when every slot names its takes. **Phase 1:** `videtor eval` cuts seven past projects from the cache and measures them against the user's own edits and on their own; `kb/eval/baseline.json`. **Phase 2:** every step in `pipeline.py` (prepare, cut, look, cut-interview, cut-mv); steps report events (the app reads JSON lines, not sentences); `decisions.json` keeps second-look swaps across cuts; unknown shot-map keys are reported; the rounds 1-3 planner archived; **the MCP server retired** (my call: a Round 4 copy nobody uses; the app replaced it). **Phase 3:** `videtor readback` reads the finished video against the picks (no export), `videtor verdict`, the user's swaps as feedback, one store in `kb/feedback/`, taste per bucket, the keeper learns from finished jobs, `videtor learn` keeps a candidate only when the evaluation passes; the app's Review step has the verdict, the finished video and Learn. **Phase 4:** `inventory.json` (what the shoot holds), `videtor draft` asks only for that, the filler settles neighbours (repeats, look-alikes, day cut to night) and keeps flickers in their light, an automatic second look swaps soft, badly lit or shaking picks; `videtor preview` renders the cut to watch without Premiere | `pipeline.py`, `events.py`, `plan/evaluate.py`, `kb/feedback.py`, `kb/renderback.py`, `plan/inventory.py`, `plan/autolook.py`, `export/preview.py`, `plan/fill.py`, `plan/draft.py`, `plan/taste.py`, `plan/keeper.py`, `ui/` | 328 tests. The move was checked by cutting seven past projects before and after: identical `picks.json` and XML. The evaluation puts numbers on the verdicts: the first Diwali cut matched 11% of the takes the user used (4% of the seconds), Guru 58%. After phase 4 Guru is at 61% with its day-to-night cut gone and nothing worse anywhere. The render read-back on a real 28 s reel: 41 of 41 shots kept on an untouched preview render; 8 of 8 known changes right (2 runner-up swaps, 2 other takes, 3 slips, 1 removed) through a grade, a 10% push-in and a black-and-white stretch, with no untouched slot mislabelled. `videtor learn` end to end on a scratch knowledge base: candidates fitted from nonsense edits were refused by the evaluation, as they should be. Not yet seen by the user: the app's new Review controls. Not yet happened: a real finished job read back (the loop has only run on test renders) |
 | 11-11 | **The sports library** (the user: learn sports content from these reels "in a reinforcement-based environment" and add a few of the Premiere special effects to the output). `videtor kb renders <folder> --bucket sports-promo` reads finished renders alone (cuts, static/flash/black transition frames, shot lengths, black and white, moves, grade, beats and accents, CLIP labels); `videtor kb train sports-promo` learns a cutting policy in an environment made from the reels (each reel's shots as stand-in footage, a reward against the real reel, cross-entropy search, leave-one-out check); `videtor draft` writes a first shot map from it; `"effects": "sports-promo"` on a shot map draws flash and static overlays, whip, spin, blur, push-in, pull-out, punch, shake, echo and black and white at the learnt rates; `"cut_on": "accents"` moves cuts onto the music's strong onsets; `videtor fx-test` writes a sequence with one clip per effect for checking in Premiere | `kb/render.py`, `plan/fx.py`, `plan/gym.py`, `plan/draft.py`, `analyze/beats.accents`, `plan/shotmap.py` (`effects`, `cut_on`), `export/xmeml_writer.py` (rotation/centre keys, Gaussian Blur, Opacity, blend modes, labels, markers), `plan/build.py` (effects, echo track) | Eight reels read in 61 s on 8 workers. 83.7 cuts a minute, held shots 0.5 s, transitions: cut 66%, flash 14%, static 7%, overlay 4%, whip/spin/black 3% each; black and white 10% of the runtime; push-in 28%; cuts sit on the beat at chance (28% v 26%) but on louder onsets (1.23×): they follow accents. Held-out reward (0 = the reel's own style; one real reel scores about -8 against another): old XML profile -13.25, the reels' medians -8.46, trained -8.01 (better than the medians on 5 of 8). Policy: held 0.50 s, open 2.05 s, close 1.04 s, 1.2 flicker bursts a minute, 51% of cuts on accents. End to end: the Diwali v2 map re-cut from the cache with `"effects": "sports-promo"` (scratch folder, not the delivery) drew 23 push-ins, 14 flashes, 5 statics, 4 whips, 3 spins, 4 black-and-white clips, all keyframes inside their clips, XML parses. 330 tests. **Not yet checked in Premiere**: `out/fx-test/fx-test.xml` |
 | 11-07 | **The footage library**, `videtor library build \| learn \| status`: a shoot sorted into wide / close-up / talking-head / interview-bite / b-roll folders (links to the clips), a contact sheet per class, every interview bite as a Premiere sequence (`interview-bite/bites.xml` + `bites.md`), `library.md` with the reasons and the clips worth a look. Rules first; `learn` reads the user's folder moves back as labels and fits a model the next build uses. Keyframes only, every core, no Claude at run time | `plan/library.py`, `analyze/sparse.py` (the keyframe-only map, `cache/sparse/`), `analyze/parallel.py`, `kb/library/` | TPL, both folders the user named (786 clips, 5.9 h): the scan took 11 min 15 s on 8 workers, none failed; Whisper on the 159 speaker clips (136 min of audio) 12 min 45 s the first time; a rebuild with the caches 5 min 49 s. Sorted: 77 wide, 158 close-up, 83 talking-head, 68 interview-bite, 400 b-roll; 903 bites (132 min, 751 with clean edges); 115 clips flagged for a look; 58 of the 61 Master Cam takes read as talking heads (the other 3 have no speech or a walk-in). 15 clips are copies (Sam's Card 3 holds Master Cam files). `out/library/tpl/` |
 | 11-07 | **The UI reorganised around the user's journey** (the user found the UI confusing and asked for the journey): screens renamed (Projects, New project, Library, Activity; steps Footage → Brief & plan → Music & search → Cut → Review & export), project cards with a status line, a stepper with one "Next" action from the furthest step reached, a new project opens at once (brief while the footage is read), progress as words + bar + time left (raw logs under Details), the plan shown as a shot list (JSON under Edit the plan), a copyable request for Claude Code, drive checks before a cut, "Read the footage again" after a failure, Mac notifications when long work ends, advanced options folded away, an export box in Review | `ui/jobs.py` (`note`, `eta`, `on_finish`), `ui/server.py` (`_status`, `_steps`, `_cut_needs`, `api_scan`, `api_reprep`), `ui/static/` | 318 tests; the page script parses under JavaScriptCore; checked on the real smoke project (a terminal-made project with a cut reads "Cut ready for Premiere"). The journey map with the proposal and decisions D1-D5: https://claude.ai/artifact/Sfuj5WCoBeKHtEoidt4wxX |
@@ -128,11 +129,13 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    reels reuse one 3-frame static), to use instead of the generated ones; and whether speed ramps and the text
    cards should be learnt too (neither can be read from a render reliably).
 
-10. **The architecture review** (2026-11-11, asked by the user): `docs/review-2026-11-11.md`. Nine findings, a
-   target shape and a six-phase order of work; nothing was changed in the code. Waiting on: go on phase 0 (slot
-   `effects`, the app server's request guards, `skip` when decoding); whether the final render will be saved in
-   the project folder (feedback without an export); the workspace folder (D3); the MCP server's fate; who writes
-   the plan from the app (D1).
+10. **The architecture review** (2026-11-11): `docs/review-2026-11-11.md`. Phases 0-4 are built (the row above).
+   The user left two things as they are: phase 5 (a workspace outside the repo, content ids) and D1 (who writes
+   the plan from the app; "will revisit"). **What the loop now needs from the user:** for each finished job, the
+   export saved in its `out/<name>/` folder (or chosen in the app), so `videtor readback` and `videtor learn` have
+   something to learn from; and a verdict per cut (the app's Good / Not good, or `videtor verdict`). The two
+   sports reels (S1, S2) were cut before this build: a re-cut would add the effects the bug dropped, the settled
+   neighbours and the automatic second look, and was offered, not done (the user is reviewing those XMLs).
 
 ## The offline proposal (2026-11-01, approved 2026-11-07)
 
@@ -210,9 +213,25 @@ footage mapped) and `videtor kb bucket <bucket>`.
 ## Known gaps and backlog
 
 Not built; the source is in brackets.
-- A slot's own `effects` list in a shot map never reaches the cut: `fill` doesn't copy it into picks, so
-  `fx.apply` draws for every slot. Copy it in `fill` (or read the map's slots in `apply`) and test through `cut`. [S1]
-- Flicker slots draw sub-shots from any take: give them `takes` to keep them in their section. [S2]
+- **The loop has not turned on a real job yet** [11-11]: read-back, feedback and learning are tested on preview renders with
+  known edits and on synthetic footage. The first finished export will show how a real grade, titles, speed ramps and
+  Warp Stabilizer read. Limits already known: a slip inside a take that looks the same throughout reads as kept; source
+  times are good to about a quarter second (the footage map's spacing), so a few frames of slip is not seen; a flicker
+  counts as one choice.
+- The inventory's labels are CLIP's: concrete kinds of shot read well, but an action camera's sky read as "sunset" and
+  drills as "bowling" on the sports shoot. A draft is a first plan, not a brief read. `"order": "shoot"` uses file
+  names as the order of the day (wrong across two cameras) and made neighbours worse on the one draft tried: off by
+  default. [11-11]
+- The evaluation set has two projects with the user's own edit (Guru, Diwali twice). The guarded measures against a
+  real edit rest on those; every finished job read back should be added to `kb/eval/set.json` with its feedback as
+  the truth (not built: `evaluate` reads an XML, not a feedback file). [11-11]
+- Neighbour settling cannot move a slot whose map names one take, and in a pool about the size of the map there may be
+  no free take to move to. [11-11]
+- The commands not yet on events: `library build/learn/status`, `music`, `search`, `orient`, `finish` still print
+  sentences (the app matches the library's). `orient`, `finish`, `kb ...` are still written in `cli.py`. [11-11]
+- Not done from the review, by the user's choice: phase 5 (workspace outside the repo; take ids from content, so a
+  renamed drive keeps its cache) and D1. Also open: the per-slot decode shortlist from the keyframe map, hand-set
+  weights in one table per bucket, the embedding width read from the map, tests run by the push hook. [11-11]
 - Black and white can't be written for sure: no desaturate filter in Premiere's FCP import table; Iris labels and
   a finishing list cover it until `fx-test` shows a variant that survives. [sports]
 - From a render, speed ramps, text cards, graphics (silhouettes, title animations) and the grade's LUT can't be
@@ -252,23 +271,12 @@ Not built; the source is in brackets.
   still read as a setup.
 - `cut` itself: `fill` is single-threaded numpy (90 s on Alpha Summit) and the sheets and SFX placement are
   serial; small next to the footage map. [11-07]
-- **The MCP server lags the CLI** (found 2026-11-01; on 2026-11-07 the user chose a UI instead: "this can replace
-  mcp", so the server stays as is unless Desktop chat is wanted again). `mcp_server.cut` and `apply_look` are Round 4 copies of
-  the CLI code.
-  - Missing: SFX placement, steadying, byte levelling, the bucket keeper, taste corrections, `sfx_skip`,
-    beds, flash frames, the cut and match sheets.
-  - A medley `music` list fails: its `_music_for` only reads a single track.
-  - `apply_look` takes runner-up numbers only; no `id=<take>` or `other:k`.
-  - No tools for `prep`, `orient`, `cut-interview`, `cut-mv`, transcription, cinematic music ranking, or the
-    library.
-  - Fix: have the MCP tools call the CLI's functions (one code path), and add `prep` as a background job
-    with a status tool.
 - **The app can't cut an interview piece** [cls-test, 11-07]: its Cut runs `videtor cut <shotmap>` only, so a
   brief with B-roll layered over the voice (`aroll.json` + a region shot map, `cut-interview`) runs from the
   terminal, and Cut on that `shotmap.json` would give B-roll with no voice. The app could run `cut-interview`
-  when an `aroll.json` sits beside the shot map. `cut-interview` also skips the sparse prep's full decode
-  (`_takes_for`, not `_takes_for_cut`); cls-test worked only because colourstone-mia had mapped every take.
-- Regression check: re-cut past projects after each change, and compare picks.
+  when an `aroll.json` sits beside the shot map (`pipeline.cut_interview` is there to call; not wired). `cut-interview` also
+  skips the sparse prep's full decode (`takes_for`, not `takes_for_cut`); cls-test worked only because colourstone-mia had mapped every take.
+- Regression check: `videtor eval` (built 11-11) re-cuts the past projects after each change.
 
 ## Drives
 

@@ -49,21 +49,9 @@ Work out which one you are in. Can you run shell commands? Which folder is the s
 
 **Claude Desktop chat** (no shell):
 - The skill needs a shell, so it can't run here. Tell the user to use the Code tab.
-- To use Videtor's MCP tools from chat anyway, the user adds the snippet below to Settings ▸ Developer ▸
-  Edit Config, next to the existing keys, then quits (⌘Q) and reopens Desktop. Don't edit that file
-  yourself.
-- Those tools lag the CLI: no SFX, steadying or keeper in `cut`, a medley fails, no `prep`. See
-  `docs/status.md`.
+- Videtor's MCP server was retired on 2026-11-11 (the app replaced it; `scripts/archive/mcp_server.py`). If the
+  user's Desktop config still lists a `videtor` server, tell them to remove that entry; don't edit the file yourself.
 
-```json
-"mcpServers": {
-  "videtor": {
-    "command": "/Users/paritoshsrivastava/workspace/videtor/.venv/bin/python",
-    "args": ["-m", "videtor.mcp_server"],
-    "env": { "PATH": "/opt/homebrew/bin:/Users/paritoshsrivastava/.local/bin:/usr/bin:/bin" }
-  }
-}
-```
 
 **A cloud session** (claude.ai/code on the web) or another machine: the footage drives, `cache/` and `out/`
 aren't there. You can read and change code and docs only. Say so before planning a cut.

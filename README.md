@@ -18,8 +18,9 @@ Docs:
 
 ```
 src/videtor/
-  cli.py            videtor <command>
-  mcp_server.py     the brief-to-cut steps as MCP tools (Claude Desktop, Claude Code)
+  cli.py            videtor <command>: thin callers of the pipeline
+  pipeline.py       the steps of a job in one place: prepare, cut, look, read back, learn (every front door calls these)
+  events.py         what a running step reports: sentences in the terminal, JSON lines for the app
   kb/               past edits: xmeml reader (stdlib only), metrics, profiles per bucket, footage index
                     (used vs unused), selects, SFX habits, edit breakdowns, read-back of a fixed cut;
                     js/ holds the Premiere bridge scripts
@@ -134,27 +135,17 @@ kept out; byte-identical copies, files saved twice with a `(1)` or ` copy` suffi
 Premiere's trimmed consolidated copies are flagged as duplicates and never counted twice. `kb footage <drive> --rematch` recomputes
 used/unused and duplicates from the saved index without the drive.
 
-## Analysis, planning, benchmark
+## Analysis
 
 ```sh
 uv run videtor analyze /Volumes/Paritosh_1 --features frames,audio,motion   # per clip, cached in cache/analysis/
 uv run videtor analyze /Volumes/Paritosh_1 --features faces,tags            # from the sampled frames; no drive needed
-uv run videtor plan /Volumes/Paritosh_1 --key "Guru.xml::Sequence 01" --type brand-social \
-    --duration 20 --pace fast --music ~/Music/track.wav --speech favor --out out/guru
-uv run videtor kb benchmark /Volumes/Paritosh_1 --key "Guru.xml::Sequence 01" --plan out/guru/plan.json
 uv run videtor kb selects /Volumes/Paritosh_1     # used vs unused clips, feature medians
-uv run videtor kb rerank-eval                      # learned reranker vs hand rules, leave-one-project-out
-uv run videtor export out/guru/plan.json --to otio # .otio for Resolve; Premiere XML is written by plan
 ```
 
-`plan` writes `plan.json` (a reason per shot) and the Premiere XML; cuts land 120 ms
-ahead of the music's beats (`--beat-lead`), `--opening` builds the first beats from
-face and tag features (`glimpse`: the subject in part, two detail teases, the
-zoom-out reveal; `tease`: details then the reveal; `subject`: open on the subject;
-`top`: the strongest shot; `none`: shoot order), and `--speech favor|avoid|neutral`
-says whether talking clips belong in the piece. `kb benchmark` scores the plan's
-opening against your real edit's under the same template. A Premiere Pro MCP (`prpr`, bridge plugin inside Premiere) is registered
-in `.mcp.json` for inspecting sequences from Claude Code.
+A Premiere Pro MCP (`prpr`, bridge plugin inside Premiere) is registered in `.mcp.json` for inspecting sequences
+from Claude Code. The rule-based planner of rounds 1-3 (`videtor plan`, `export`, `kb benchmark`, `kb rerank-eval`)
+is archived in `scripts/archive/rounds-1-3/`.
 
 ## Cutting from a brief
 
@@ -186,15 +177,31 @@ otherwise the scale that fills the frame. Camera audio stays out; the music sits
 from its in-point with a fade-out. `kb/briefs/` holds briefs written for past edits
 (the benchmark), `kb/marks/` your Source Monitor in/out marks read from the project.
 
-After you fix a cut in Premiere, read it back (live over the bridge, or from an XML
-export) and every slot is labelled kept, slipped, trimmed, swapped to an alternate,
-swapped or removed in `kb/feedback/`; `kb learn` turns those fixes into corrections
-to the filler's weights (`kb/taste.json`), which the next `videtor cut` applies:
+### After the job: feedback, learning and the evaluation
+
+When the job is finished, read it back. The finished video is enough: save the export in the project's folder
+(or name it) and every slot is labelled kept, slipped, trimmed, swapped to a runner-up, swapped or removed. An XML
+export or Premiere live work too. It all lands in `kb/feedback/<name>.json`, with the runners-up you chose in a
+second look (`videtor look ... --by you`, or a click in the app) and your verdict on the cut:
 
 ```sh
-.venv/bin/python -m videtor.kb.readback out/guru-25s-brief/picks.json --live
-uv run videtor kb learn
+uv run videtor readback out/<name>/picks.json                    # the newest video in out/<name>/ (not preview.mp4)
+uv run videtor readback out/<name>/picks.json --render ~/Movies/final.mp4   # or --xml <export>, or --live
+uv run videtor verdict out/<name>/picks.json not --note "too slow in the middle"
+uv run videtor learn                                             # taste and keeper, tried on the evaluation set first
+uv run videtor eval                                              # the past projects cut again from the cache and measured
+uv run videtor preview out/<name>/picks.json                     # a half-size video of the cut to watch without Premiere
 ```
+
+- `learn` fits your taste (the windows you chose over the picks; from 12 choices on, per bucket from 20) and, for
+  every bucket with a finished job read back, what you keep. A candidate is kept only when `eval` says no guarded
+  measure got worse on the past projects (`--force` keeps it anyway).
+- `eval` cuts every project of `kb/eval/set.json` exactly as `videtor cut` does (no drive, nothing written) and
+  measures it against your own edit where there is one (right take, right second, in the top 3) and on its own
+  (repeats, look-alike neighbours, jumps in light, how well the picks match). `--save` keeps the run as the
+  baseline in `kb/eval/baseline.json`. Run it after any change to how shots are chosen.
+- A second look is remembered: `videtor look` writes `decisions.json` next to the picks and the next
+  `videtor cut` puts the swaps back (`--fresh` forgets them).
 
 ### Buckets: what each kind of work is like
 
@@ -240,7 +247,8 @@ uv run videtor kb renders ~/Downloads/Exports/Videos --bucket sports-promo   # a
 #   kb/renders/sports-promo.json        the style: pace, transitions, black and white, moves, grade, beats, what is shown where (no file names)
 #   out/references/sports-promo/        each reel read in full (shots, transitions, beats) and a contact sheet of its shots (local)
 uv run videtor kb train sports-promo    # the cutting policy, tested on each reel held out in turn: kb/policy/sports-promo.json
-uv run videtor draft hype-30 --length 30 --music "<track>"   # a first shot map for new footage from that policy: edit it, then cut
+uv run videtor draft hype-30 --length 30 --music "<track>"   # a first shot map from that policy and from what the shoot holds
+                                                             # (inventory.json, written by prep): edit it, then cut
 uv run videtor fx-test "<any video>"    # out/fx-test/fx-test.xml: one clip per effect, a marker naming each, to check them in Premiere
 ```
 
@@ -358,9 +366,8 @@ Helpers for reading a big shoot sit in `scripts/`:
   Claude;
 - `transcribe_bytes.py` transcribes an interview camera for people bytes.
 
-`videtor.mcp_server` exposes the same steps as MCP tools (projects, music, search, shot
-map check, cut, second look, score, read-back) for Claude Desktop and Claude Code; the
-repo's `.mcp.json` registers it next to `prpr`.
+The MCP server (`videtor.mcp_server`) was retired on 2026-11-11: it was a Round 4 copy of the cut that the app
+replaced. It is in `scripts/archive/` with its test.
 
 ## Tests
 

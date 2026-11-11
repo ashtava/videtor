@@ -54,7 +54,8 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 330 tests, about 20 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 328 tests, about 30 s, no drive needed
+.venv/bin/videtor eval                                           # the past projects re-cut from the cache and measured (about 1 min)
 ```
 
 - **Machine:** M2 Pro, 16 GB, macOS 26.3.1. Premiere Pro 26.0.2 (UXP), Resolve 19.1.4 Studio.
@@ -79,6 +80,17 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   reels alone and `videtor kb train <b>` a cutting policy from them (`plan/gym.py`); `videtor draft` drafts a shot
   map from it; a shot map's `"effects": "<b>"` adds the learnt effects (`plan/fx.py`) and `"cut_on": "accents"`
   cuts on the music's hits. The sports reels' file names (a client's) stay in `out/references/`, never in kb/.
+- **The pipeline and the loop** (2026-11-11, after `docs/review-2026-11-11.md`):
+  - Every step lives in `src/videtor/pipeline.py`; the terminal and the app only call it. A new step goes there,
+    with a test in `tests/test_pipeline.py` that runs it end to end. Steps report through `events.py`, never `print`.
+  - **After any change to how shots are chosen, run `videtor eval`.** It fails when a guarded measure is worse
+    than `kb/eval/baseline.json`; `--save` only when the change is meant and the numbers are better or equal.
+  - Feedback: `videtor readback <picks.json>` reads the finished video (or `--xml`, `--live`) against the picks,
+    `videtor verdict`, and a swap made by a person (`look --by you`, the app) all go to `kb/feedback/<name>.json`.
+    `videtor learn` fits taste and keeper from it and keeps them only if `eval` passes.
+  - `prep` writes `inventory.json` (what the shoot holds); `videtor draft` asks only for that. The cut settles
+    neighbours (repeats, look-alikes, day cut to night) and runs an automatic second look (`plan/autolook.py`);
+    Claude's second look is for what needs eyes.
 - **Claude Code desktop** (set up 2026-11-04) reads the same `~/.claude` and project settings as the CLI.
   - `scripts/setup-claude-code.sh` links the skill into `~/.claude/skills/`, so `/cut-from-brief` works from
     any folder (checked in a session opened outside the repo), and makes sure the auto-push hook is set up.
@@ -86,17 +98,21 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   - A Worktree session (`.claude/worktrees/<name>`, gitignored) still runs every Videtor command from the
     main checkout, and the hook pushes its own edits to its branch.
   - Hooks wait for the folder-trust prompt.
-  - The project's `.mcp.json` servers (prpr, videtor) need approving per session; the skill doesn't use them.
+  - The project's `.mcp.json` server (prpr) needs approving per session; the skill doesn't use it. Videtor's own MCP
+    server was retired on 2026-11-11 (`scripts/archive/`).
 
 ## Layout
 
 ```
-src/videtor/  cli.py · mcp_server.py · kb/ (past edits, read-back) · analyze/ (per clip, per second)
+src/videtor/  cli.py (thin) · pipeline.py (the steps: prepare, cut, look, read back, learn) · events.py · ui/
+              kb/ (past edits, read-backs, feedback) · analyze/ (per clip, per second)
               plan/ (shot map → picks; moves, music, SFX, steadying, interview, music video) · export/ (xmeml writer)
-kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ library/ renders/ policy/ ...
+kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ library/ renders/ policy/
+              eval/ (the evaluation set and baseline) · feedback/ (read-backs, choices, verdicts) · taste.json, taste/<bucket>.json
 .xml-exports/ the user's Premiere exports: the knowledge base's source
 cache/        derived data, about 5 GB (footage maps took hours with the drives connected: don't delete); sparse/ holds the keyframe maps
-out/<name>/   one folder per cut: brief.md, shotmap.json, picks.json, <name>.xml, sheets, report.md, work/
+out/<name>/   one folder per cut: brief.md, shotmap.json, inventory.json, picks.json, decisions.json, <name>.xml, sheets, report.md,
+              verdict.json, the finished video when the user saves it there, work/
 out/library/<name>/  a shoot sorted by shot type (videtor library): wide/ close-up/ talking-head/ interview-bite/ b-roll/ (links), sheets/, bites.xml, library.md
 scripts/      helpers and archived experiments (not imported by the CLI)
 docs/         handoff.md · status.md · architecture.md · architecture.html (the original 10-29 design page)
@@ -110,7 +126,7 @@ private/      local-only context: the first session's messages and reports, a me
 - **Plain JSON files, no database.** xmeml is read with the stdlib (`kb/xmeml.py`) and written by our own
   writer (`export/xmeml_writer.py`). Not OTIO's `fcp_xml` adapter: it fails on 100 fps media.
 - **Determinism:** Claude writes the shot map (or `aroll.json`/`mv.json`); everything after it is
-  deterministic code. A re-cut drops `look` swaps, so apply them again.
+  deterministic code. A re-cut keeps `look` swaps (`decisions.json` next to the picks; `cut --fresh` forgets them).
 - **Tests:** `unittest` with synthetic fixtures. Every module opens with a docstring saying what it is for, in
   plain words. Match the surrounding code: compact Python, few comments, the same naming.
 - **Writing to the user:** short and plain. Lead with the XML path and how to import it (File ▸ Import, drive
