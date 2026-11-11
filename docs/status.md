@@ -42,6 +42,8 @@ verdict.
 | B4 | 10-31 | `alpha-summit/` | event, `keeper_w` 0.3 | `alpha-summit.xml` (30.5 s, 9:16, bytes, steadied) | **Awaiting** |
 | B5 | 11-01 | `engagement/` | wedding (new) | `engagement.xml` (60 s, 16:9, steadied, music only) | **Awaiting** |
 | A1 | 11-07 | `~/Desktop/diwali_test/diwali-test/` (an app project, not under `out/`) | event, the first brief through the app; the Diwali footage again, so not blind | Shot map only (49.7 s, 9:16, 91 slots); the user cuts it from the app | **Awaiting the cut** |
+| S1 | 11-11 | `sports-practice-a/` | sports-promo, the first raw sports footage (Paritosh_2 `videos`, prep `sports-raw`; `untitled folder` left out unopened); no written brief | `sports-practice-a.xml` (28.4 s, 9:16, a practice-day wrap, effects at the learnt rates) | **Awaiting** (the user reviews it alongside `fx-test`) |
+| S2 | 11-11 | `sports-matchday-b/` | sports-promo, the same footage's second shoot (another team, log footage) | `sports-matchday-b.xml` (36.5 s, 9:16, a match-day reel) | **Awaiting** |
 
 Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past projects. Their outputs:
 - `out/guru-v0`, `guru-v1`, `guru-v2`: benchmarks against the real Guru edit;
@@ -172,6 +174,7 @@ A middle ground: Claude sees text only (the brief, local captions, numbers), and
   - colourstone_2: `main-16x9.mp4`, `9x16_4K_1.mp4`, `pf/`, `render/`, `A Beam of Light.mp3`;
   - Check: `pf/`, `DCIM`;
   - Diwali Party: `pf/`, `untitled folder`;
+  - Paritosh_2 `videos` (sports): `untitled folder`;
   - Paritosh_3: `TPL/pf`, `DP World 2026/pf`, `Me/...` were not opened.
 - **Premiere.** Say so before reading it live; the user may be working in another project. Never bulk-insert
   effects over the prpr bridge (it crashed Premiere 26.0.2 twice on 2026-10-30).
@@ -201,6 +204,9 @@ footage mapped) and `videtor kb bucket <bucket>`.
 ## Known gaps and backlog
 
 Not built; the source is in brackets.
+- A slot's own `effects` list in a shot map never reaches the cut: `fill` doesn't copy it into picks, so
+  `fx.apply` draws for every slot. Copy it in `fill` (or read the map's slots in `apply`) and test through `cut`. [S1]
+- Flicker slots draw sub-shots from any take: give them `takes` to keep them in their section. [S2]
 - Black and white can't be written for sure: no desaturate filter in Premiere's FCP import table; Iris labels and
   a finishing list cover it until `fx-test` shows a variant that survives. [sports]
 - From a render, speed ramps, text cards, graphics (silhouettes, title animations) and the grade's LUT can't be
@@ -266,7 +272,7 @@ The memory has more detail. Footage indexes are in `kb/footage/<drive>.json` for
 | Drive | Holds |
 |---|---|
 | Paritosh_1 | Guru (`/Volumes/Paritosh_1/Guru `, trailing space), Vivo 1, Vivo 2; `JW 2/17 sep/cc` (the prep smoke test) |
-| Paritosh_2 | Recent projects, each with the user's `pf/` project: Check, colourstone, colourstone_2, Dikkat, Extra, mia, Mia 2, TPL Promo, Diwali Party |
+| Paritosh_2 | Recent projects, each with the user's `pf/` project: Check, colourstone, colourstone_2, Dikkat, Extra, mia, Mia 2, TPL Promo, Diwali Party; `videos` (sports raw footage, two shoots, prep `sports-raw`) |
 | Paritosh_3 | TPL/Leander (`TPL/Videos`), Engagement (blind test 5), `Me/{lego,philips,meta,itc,Photos}`, `DP World 2026` |
 | Paritosh_4 | Coca-Cola (`coca cola`; the XML points at `Copied_Khanna Fish`), `Copied_Rigo` |
 | AMAZONSSD | Gujarat Giants (`WPL Gujarat Giants`) |
