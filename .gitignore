@@ -32,3 +32,4 @@ media/
 
 # Local-only context: session history, memory snapshot (never pushed; the repo is public)
 private/
+.session

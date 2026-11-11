@@ -128,6 +128,12 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    reels reuse one 3-frame static), to use instead of the generated ones; and whether speed ramps and the text
    cards should be learnt too (neither can be read from a render reliably).
 
+10. **The architecture review** (2026-11-11, asked by the user): `docs/review-2026-11-11.md`. Nine findings, a
+   target shape and a six-phase order of work; nothing was changed in the code. Waiting on: go on phase 0 (slot
+   `effects`, the app server's request guards, `skip` when decoding); whether the final render will be saved in
+   the project folder (feedback without an export); the workspace folder (D3); the MCP server's fate; who writes
+   the plan from the app (D1).
+
 ## The offline proposal (2026-11-01, approved 2026-11-07)
 
 The user asked how much is pushed to Claude, whether frames are sent, and why the code keeps changing. The
