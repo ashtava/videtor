@@ -104,6 +104,27 @@ class JobTests(unittest.TestCase):
         self.assertEqual(cut.result["xml"], "/x/out/my shoot/my shoot.xml")
         self.assertIsNone(jobs.eta({"done": 5, "total": 5, "t0": t}, now=t + 60))
 
+    def test_events_are_read_as_data_however_the_sentence_is_worded(self):
+        t = 1000.0
+        cut = jobs.Job(id="z", kind="cut", title="t", args=[])
+        jobs.note_event(cut, {"event": "stage", "stage": "decode", "label": "Reading those takes in full", "text": "any wording at all"}, now=t)
+        jobs.note_event(cut, {"event": "progress", "done": 12, "total": 52, "text": ""}, now=t + 5)
+        self.assertEqual((cut.progress["stage"], cut.progress["done"], cut.progress["total"], cut.progress["t0"]), ("Reading those takes in full", 12, 52, t))
+        jobs.note_event(cut, {"event": "artifact", "kind": "xml", "path": "/x/out/my shoot/my shoot.xml", "text": "worded another way"}, now=t + 9)
+        jobs.note_event(cut, {"event": "warning", "text": "shot map: the map has an unknown key 'efects'"})
+        self.assertEqual(cut.result["xml"], "/x/out/my shoot/my shoot.xml")
+        self.assertEqual(cut.result["warnings"], ["shot map: the map has an unknown key 'efects'"])
+        # a job's output: event lines are read as data and logged as their sentence, other lines pass as they are
+        script = ("import json; print(json.dumps({'event': 'stage', 'stage': 'fill', 'label': 'Choosing the shots', 'text': 'choosing'}), flush=True); "
+                  "print('a library warning', flush=True); "
+                  "print(json.dumps({'event': 'artifact', 'kind': 'xml', 'path': '/x/a.xml', 'text': 'Premiere XML: /x/a.xml'}), flush=True)")
+        m = jobs.Manager([sys.executable, "-u", "-c", script], cwd=".")
+        self.assertEqual(m.env["VIDETOR_EVENTS"], "json")
+        job = m.submit("cut", "events", [])
+        self.assertTrue(wait_for(lambda: job.status == "done"))
+        self.assertEqual(m.tail(job)[0][1:4], ["choosing", "a library warning", "Premiere XML: /x/a.xml"])
+        self.assertEqual((job.progress["stage"], job.result["xml"]), ("Choosing the shots", "/x/a.xml"))
+
     def test_the_job_list_carries_progress_and_the_finish_hook_runs(self):
         ended = []
         self.m.on_finish = ended.append

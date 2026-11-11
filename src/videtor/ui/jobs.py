@@ -21,6 +21,8 @@ from collections import deque
 from dataclasses import dataclass, field
 from typing import Callable
 
+from videtor import events
+
 BACKGROUND = {"prep", "library"}  # paused by a cut, queued behind one
 FOREGROUND = {"cut"}  # gets the machine
 LOG_LINES = 6000
@@ -28,7 +30,9 @@ SPOILT = re.compile(r"\bFAILED\b|timeout|not decoded|(?<!0 )failed\b")
 _ids = itertools.count(1)
 Log = Callable[[str], None]
 
-# What the page says while a job runs: the CLI's own progress lines, matched and put in plain words.
+# What the page says while a job runs. A command on the pipeline reports events (videtor/events.py: the app starts
+# every job with VIDETOR_EVENTS=json) and `note_event` reads them as data. The commands not on it yet (the library)
+# still print sentences, which `note` matches here and puts in plain words.
 STAGES = [
     (re.compile(r"\[1/5\] index|^\s*index: \d+ video files"), "Finding the clips"),
     (re.compile(r"\[2/5\] (keyframe map|stills)|sparse map: \d+ of \d+ clips to scan"), "Reading the footage"),
@@ -66,6 +70,28 @@ def note(job: "Job", line: str, now: float | None = None) -> None:
     m = XML_LINE.search(line)
     if m:
         job.result["xml"] = m.group(1)
+
+
+def note_event(job: "Job", e: dict, now: float | None = None) -> None:
+    """Read one event into the job's progress: its stage in plain words, k of n, the XML it wrote, what went wrong."""
+    now = now or time.time()
+    p = job.progress
+    if (e.get("text") or "").strip():
+        p["last"] = e["text"].strip()[:300]
+    kind = e["event"]
+    if kind == "stage":
+        label = e.get("label") or e.get("stage")
+        if p.get("stage") != label:
+            p.update(stage=label, done=None, total=None, t0=now)
+    elif kind == "progress":
+        p["done"], p["total"] = int(e.get("done") or 0), int(e.get("total") or 0)
+        p.setdefault("t0", now)
+    elif kind == "artifact" and e.get("kind") == "xml":
+        job.result["xml"] = e["path"]
+    elif kind == "error":
+        job.result["error"] = e.get("text", "")
+    elif kind == "warning" and len(job.result.setdefault("warnings", [])) < 20:
+        job.result["warnings"].append(e.get("text", ""))
 
 
 def eta(progress: dict, now: float | None = None) -> int | None:
@@ -119,7 +145,7 @@ class Manager:
     def __init__(self, videtor: list[str], cwd: str, log: Log | None = None, env: dict | None = None):
         self.videtor, self.cwd, self.log_fn = list(videtor), cwd, log or (lambda s: None)
         # COLUMNS: rich wraps piped output at 80 columns, which splits paths and progress lines
-        self.env = {**os.environ, **(env or {}), "PYTHONUNBUFFERED": "1", "COLUMNS": "240", "PATH": "/opt/homebrew/bin:" + os.environ.get("PATH", "")}
+        self.env = {**os.environ, **(env or {}), "PYTHONUNBUFFERED": "1", "COLUMNS": "240", "VIDETOR_EVENTS": "json", "PATH": "/opt/homebrew/bin:" + os.environ.get("PATH", "")}
         self.jobs: dict[str, Job] = {}
         self.lock = threading.RLock()
         self.on_finish: Callable[[Job], None] | None = None  # e.g. a macOS notification when a long job ends
@@ -157,12 +183,17 @@ class Manager:
         assert job.proc and job.proc.stdout
         for raw in iter(job.proc.stdout.readline, b""):
             line = raw.decode("utf-8", "replace").rstrip("\r\n")
-            if line.strip():
-                with self.lock:
+            e = events.parse(line)
+            text = e.get("text", "") if e else line
+            with self.lock:
+                if e:
+                    note_event(job, e)
+                if text.strip():
                     if len(job.log) == job.log.maxlen:
                         job.seen += 1
-                    job.log.append(line)
-                    note(job, line)
+                    job.log.append(text)
+                    if not e:
+                        note(job, line)
         rc = job.proc.wait()
         self._finished(job, rc)
         if self.on_finish and job.status in ("done", "failed"):

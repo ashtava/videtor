@@ -2,11 +2,13 @@
   "mcpServers": {
     "prpr": {
       "command": "/Users/paritoshsrivastava/.local/bin/prpr",
-      "args": ["--no-launch", "--timeout", "5", "mcp", "serve"]
-    },
-    "videtor": {
-      "command": "/Users/paritoshsrivastava/workspace/videtor/.venv/bin/python",
-      "args": ["-m", "videtor.mcp_server"]
+      "args": [
+        "--no-launch",
+        "--timeout",
+        "5",
+        "mcp",
+        "serve"
+      ]
     }
   }
 }

@@ -16,7 +16,6 @@ dependencies = [
   "mediapipe>=0.10",
   "open-clip-torch>=2.24",
   "torch>=2.3",
-  "mcp>=1.2",
 ]
 
 [project.optional-dependencies]
@@ -36,7 +35,6 @@ analyze = [
 
 [project.scripts]
 videtor = "videtor.cli:app"
-videtor-mcp = "videtor.mcp_server:main"
 
 [build-system]
 requires = ["hatchling"]
