@@ -359,30 +359,12 @@ def kb_bucket(
 
 @kb_app.command("learn")
 def kb_learn(
+    force: bool = typer.Option(False, "--force", help="Keep what was learnt even when the evaluation set says the cuts got worse."),
     kb_dir: Path = KB_OPTION,
     footmap_dir: Path = typer.Option(Path("cache/footmap"), "--footmap"),
 ) -> None:
-    """Learn your taste from every read-back in kb/feedback/: the windows you chose over the ones Videtor
-    picked become corrections to the filler's weights (kb/taste.json), applied by the next `videtor cut`."""
-    from videtor.analyze import tags
-    from videtor.plan import taste
-
-    files = sorted((kb_dir / "feedback").glob("*.json"))
-    if not files:
-        console.print("No read-backs yet. Fix a cut in Premiere, then: python -m videtor.kb.readback <picks.json> --live")
-        raise typer.Exit(1)
-    pools: dict[str, list] = {}
-
-    def pool_for_key(key: str | None) -> list:
-        if key and key not in pools:
-            pools[key] = pipeline.takes_for(_step(pipeline.index_for_key, key, kb_dir), key, footmap_dir)[0]
-        return pools.get(key) or []
-
-    out = taste.learn(files, pool_for_key, tags.embed_texts, kb_dir)
-    console.print(f"{out['pairs']} fixes from {len(out['from'])} read-back(s) → {kb_dir / 'taste.json'}")
-    for term, w in sorted(out["weights"].items(), key=lambda kv: -abs(kv[1])):
-        if abs(w) >= 0.01:
-            console.print(f"  {term:13} {w:+.3f}")
+    """The same as `videtor learn`."""
+    _step(pipeline.learn, pipeline.Paths(kb=kb_dir, footmap=footmap_dir), _events(), force=force)
 
 
 @app.command()
@@ -688,6 +670,65 @@ def cut_mv(
     grid, each slot the best synced take for the section's singer; writes picks.json, contact sheets of the cut
     and the Premiere XML (the song on A1 from its start, alternates on V2-V3)."""
     _step(pipeline.cut_mv, spec_path, paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir, beats=beats_dir), ev=_events())
+
+
+@app.command()
+def learn(
+    force: bool = typer.Option(False, "--force", help="Keep what was learnt even when the evaluation set says the cuts got worse."),
+    kb_dir: Path = KB_OPTION,
+    footmap_dir: Path = FOOTMAP_OPTION,
+) -> None:
+    """Learn from all the feedback in kb/feedback: your taste from the shots you chose over the picks, and what
+    you keep from every finished job read back. What is learnt is tried on the evaluation set first and kept only
+    when the cuts got no worse."""
+    _step(pipeline.learn, pipeline.Paths(kb=kb_dir, footmap=footmap_dir), _events(), force=force)
+
+
+@app.command()
+def readback(
+    picks_path: Path = typer.Argument(..., help="picks.json of the cut that was finished."),
+    render: Path = typer.Option(None, "--render", help="The finished video (any export of the cut). Default: the newest video in the project's folder."),
+    xml: Path = typer.Option(None, "--xml", help="An XML exported from Premiere instead."),
+    live: bool = typer.Option(False, "--live", help="Read the open Premiere sequence over the bridge instead."),
+    sequence: str = typer.Option(None, "--sequence", help="The sequence to read (XML or live)."),
+    force: bool = typer.Option(False, "--force", help="Keep it even when it does not look like this cut."),
+    kb_dir: Path = KB_OPTION,
+    footmap_dir: Path = FOOTMAP_OPTION,
+) -> None:
+    """Read a finished job back against its picks: which shots you kept, slipped, swapped or removed. From the
+    finished video alone (nothing to export), or from an XML or Premiere live. Kept in kb/feedback for `videtor learn`."""
+    _step(pipeline.read_back, picks_path, render=render, xml=xml, live=live, sequence=sequence, force=force,
+          paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir), ev=_events())
+
+
+@app.command()
+def verdict(
+    picks_path: Path = typer.Argument(..., help="picks.json of the cut."),
+    word: str = typer.Argument(..., help="good or not."),
+    note: str = typer.Option("", "--note", help="Why, in a line."),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Keep your verdict on a cut as a whole: good or not, and a line of why (kb/feedback and verdict.json)."""
+    if word.lower() not in ("good", "not"):
+        console.print("The verdict is good or not.")
+        raise typer.Exit(1)
+    _step(pipeline.verdict, picks_path, word.lower() == "good", note, pipeline.Paths(kb=kb_dir), _events())
+
+
+@app.command()
+def preview(
+    picks_path: Path = typer.Argument(..., help="picks.json from `videtor cut`."),
+    scale: float = typer.Option(0.5, "--scale", help="Size against the sequence (0.5 = half)."),
+) -> None:
+    """A small video of the cut (what V1 plays, framed as the XML frames it, with the music) to watch without
+    Premiere: preview.mp4 next to the picks. Needs the footage drive; no effects, SFX or alternates."""
+    from videtor.export import preview as preview_mod
+
+    try:
+        preview_mod.render(pipeline.check_picks(json.loads(picks_path.read_text())), picks_path.parent / "preview.mp4", scale, log=console.print)
+    except (FileNotFoundError, pipeline.PipelineError) as exc:
+        console.print(str(exc))
+        raise typer.Exit(1) from exc
 
 
 @app.command("eval")

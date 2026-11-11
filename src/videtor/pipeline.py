@@ -30,6 +30,7 @@ PICKS_VERSION = 1
 # what the picks take from the shot map as it stands: the build, the SFX placer and the steadying pass read these
 CARRY = ("sfx_skip", "stabilize", "under_db", "beds")
 DECISIONS = "decisions.json"
+MACHINE = {"second look", "auto", "claude"}  # who a swap is `by` when no person made it
 AUTOLOOK = False  # the automatic second look (plan/autolook.py)
 INVENTORY = False  # what the shoot holds, written by prepare (plan/inventory.py)
 
@@ -257,11 +258,12 @@ def place_sfx(picks: dict, paths: Paths) -> list[dict] | None:
 
 
 def cut_picks(m: dict, takes: list, paths: Paths = Paths(), ev: Events | None = None, sfx: bool = True, embed_texts=None,
-              taste: dict | None | bool = True, second_look: bool = True) -> tuple[dict, dict | None]:
+              taste=True, second_look: bool = True, keeper_dir: Path | None = None) -> tuple[dict, dict | None]:
     """The picks for shot map `m` from `takes`, with everything a cut adds to them (levels, moves, effects, music,
     SFX), and the music for the build. Nothing is written: the evaluation calls this as the cut does.
-    `taste`: True loads the learnt corrections for the map's bucket, a dict uses those, None or False none.
-    `second_look`: the automatic second look (plan/autolook.py) after the fill."""
+    `taste`: True loads the learnt corrections for the map's bucket, a dict uses those, a function is asked for
+    the bucket's (a candidate being tried), None or False uses none. `keeper_dir`: where the keeper models are
+    read from (a candidate's folder). `second_look`: the automatic second look (plan/autolook.py) after the fill."""
     from videtor.plan import benchmark, fill, shotmap
 
     ev = ev or Events()
@@ -281,16 +283,17 @@ def cut_picks(m: dict, takes: list, paths: Paths = Paths(), ev: Events | None = 
     habits = fill.motion_habits(real["source_xml"]) if real and os.path.exists(real.get("source_xml", "")) else None
     from videtor.plan import taste as taste_mod
 
-    learnt = taste_mod.load(paths.kb, m.get("bucket")) if taste is True else (taste or None)
+    learnt = taste_mod.load(paths.kb, m.get("bucket")) if taste is True else taste(m.get("bucket")) if callable(taste) else (taste or None)
     if learnt and learnt.get("pairs"):
         ev.info(f"applying your taste from {learnt['pairs']} fixes ({learnt.get('scope', 'all your cuts')})")
     keep = None
     if m.get("bucket"):
         from videtor.plan import keeper as keeper_mod
 
-        model = keeper_mod.load(m["bucket"], paths.kb)
+        model = keeper_mod.load(m["bucket"], paths.kb, keeper_dir) or keeper_mod.load(m["bucket"], paths.kb)
         if model:
-            keep = keeper_mod.scores(model, takes, fill.Pool(takes), embed_texts, paths.kb)
+            in_dir = keeper_dir if keeper_dir and (keeper_dir / f"{m['bucket']}.json").exists() else None
+            keep = keeper_mod.scores(model, takes, fill.Pool(takes), embed_texts, paths.kb, in_dir)
             ev.info(f"keeper: what your {m['bucket']} edits keep (cv AUC {model['cv_auc']}, from {len(model['edits'])} edit(s))")
         else:
             ev.info(f"keeper: no model for bucket {m['bucket']!r} yet (videtor kb keeper {m['bucket']})")
@@ -563,6 +566,7 @@ def look(picks_path: Path, choices: dict, notes: dict[str, str] | None = None, p
     ev = ev or Events()
     picks = check_picks(json.loads(picks_path.read_text()))
     out = picks_path.parent
+    before = {s["id"]: s.get("pick") for s in picks["slots"]}
     if picks.get("kind") == "music-video" and any(isinstance(v, tuple) for v in choices.values()):
         raise PipelineError("A music video only swaps to a slot's own runners-up (id=k): a shot borrowed from another slot would be out of sync.")
     try:
@@ -583,8 +587,152 @@ def look(picks_path: Path, choices: dict, notes: dict[str, str] | None = None, p
         path = write_cut(picks, out, mu if mu and (mu.get("duration_s") or mu.get("segments")) else None, paths, ev)
     if choices:
         record_swaps(out, picks, list(choices), by)
+        if by not in MACHINE:  # a person chose: that teaches (kb/feedback.py); Claude's and the automatic second look do not
+            from videtor.kb import feedback
+
+            feedback.record_choices(picks, before, list(choices), by, paths.kb, picks_path)
     ev.wrote("xml", path, f"{len(choices)} slots swapped · Premiere XML: {path}")
     return {"picks": picks, "xml": path}
+
+
+def find_render(out: Path) -> Path | None:
+    """The finished video saved in a project's folder: the newest video file there that Videtor did not make."""
+    from videtor.kb.render import VIDEO_EXT
+
+    ours = {"preview.mp4"}
+    found = [p for d in (out, out / "final", out / "render") if d.is_dir() for p in d.iterdir()
+             if p.suffix.lower() in VIDEO_EXT and p.name not in ours and not p.name.startswith(".")]
+    return max(found, key=lambda p: p.stat().st_mtime) if found else None
+
+
+def read_back(picks_path: Path, render: Path | None = None, xml: Path | None = None, live: bool = False, sequence: str | None = None,
+              save: bool = True, force: bool = False, paths: Paths = Paths(), ev: Events | None = None, embed_images=None) -> dict:
+    """What became of the cut: the finished job read against the picks, slot by slot, and kept as feedback
+    (kb/feedback/<name>.json). From the render (any finished video of the cut; with none named, the newest video
+    in the project's folder), from an XML exported from Premiere, or from Premiere live."""
+    from videtor.kb import feedback, readback
+
+    ev = ev or Events()
+    picks = check_picks(json.loads(picks_path.read_text()))
+    if not (render or xml or live):
+        render = find_render(picks_path.parent)
+        if not render:
+            raise PipelineError(f"No finished video in {picks_path.parent}: save the export there, or name one with --render (or --xml, --live).")
+    try:
+        if render:
+            from videtor.kb import renderback
+
+            if not Path(render).is_file():
+                raise PipelineError(f"No such video: {render}")
+            ev.stage("readback", f"reading {Path(render).name} against the picks", "Reading your finished video")
+            takes, _ = takes_for(index_for_key(picks["key"], paths.kb), picks["key"], paths.footmap)
+            if not takes:
+                raise PipelineError(f"No footage map for {picks['key']!r} in the cache.")
+            result = renderback.read(picks_path, render, takes, paths.footmap / "frames", paths.kb, embed_images, log=ev.info)
+        else:
+            ev.stage("readback", "reading the edited sequence against the picks", "Reading your edit")
+            result = readback.readback(picks_path, xml=xml, live=live, sequence=sequence, kb_dir=paths.kb)
+        s = result["summary"]
+        ev.info(f"{s['slots']} slots: {s['kept']} kept, {s['trimmed']} trimmed, {s['slipped']} slipped, {s['swapped_to_alternate']} swapped to a runner-up, "
+                f"{s['swapped']} swapped to another take, {s['removed']} removed; {s['added']} shots added")
+        if save:
+            path = feedback.record_readback(result, picks, paths.kb, force)
+            ev.wrote("feedback", path, f"feedback kept: {path} (videtor learn uses it)")
+    except readback.ReadbackError as exc:
+        raise PipelineError(str(exc)) from exc
+    return result
+
+
+def verdict(picks_path: Path, good: bool, note: str = "", paths: Paths = Paths(), ev: Events | None = None, by: str = "you") -> Path:
+    """Keep the user's word on a cut as a whole (kb/feedback/<name>.json and verdict.json in its folder)."""
+    from videtor.kb import feedback
+
+    picks = check_picks(json.loads(picks_path.read_text()))
+    path = feedback.record_verdict(picks, good, note, paths.kb, picks_path, by)
+    (picks_path.parent / "verdict.json").write_text(json.dumps({"good": bool(good), "note": note, "by": by, "at": time.strftime("%Y-%m-%dT%H:%M:%S")}, indent=1) + "\n")
+    (ev or Events()).wrote("feedback", path, f"verdict kept: {'good' if good else 'not good'}" + (f" ({note})" if note else ""))
+    return path
+
+
+def learn(paths: Paths = Paths(), ev: Events | None = None, force: bool = False, embed_texts=None) -> dict:
+    """Learn from everything in kb/feedback: your taste (the windows you chose over the picks) and, per bucket
+    with a finished job read back, what you keep. Each candidate is tried on the evaluation set first
+    (plan/evaluate.py) and kept only when no guarded measure got worse, unless `force`."""
+    import shutil
+
+    from videtor.kb import feedback
+    from videtor.plan import evaluate, keeper as keeper_mod, taste as taste_mod
+
+    ev = ev or Events()
+    if embed_texts is None:
+        from videtor.analyze import tags
+
+        embed_texts = tags.embed_texts
+    docs = feedback.all_docs(paths.kb)
+    st = feedback.state(paths.kb)
+    ev.info(f"feedback: {st['projects']} project(s), {st['finals']} finished job(s) read back, {st['rows']} choices, "
+            f"verdicts {st['verdicts']['good']} good / {st['verdicts']['not']} not")
+    out: dict = {"state": st, "taste": {}, "keeper": {}, "kept": [], "refused": []}
+    if not docs:
+        ev.info("nothing to learn from yet: read a finished cut back (videtor readback <picks.json>), or choose runners-up in the app")
+        return out
+    pools: dict[str, list] = {}
+
+    def pool_for_key(key: str | None) -> list:
+        if key and key not in pools:
+            try:
+                pools[key] = takes_for(index_for_key(key, paths.kb), key, paths.footmap)[0]
+            except PipelineError:
+                pools[key] = []
+        return pools.get(key) or []
+
+    ev.stage("fit", "fitting what the feedback teaches", "Learning from your fixes")
+    tastes = taste_mod.candidates(docs, pool_for_key, embed_texts)
+    cand_dir = paths.kb / "keeper" / "candidate"
+    shutil.rmtree(cand_dir, ignore_errors=True)
+    keepers = {}
+    for bucket in sorted({d.get("bucket") for d in docs if d.get("bucket") and feedback.is_final(d)}):
+        model = keeper_mod.train(bucket, embed_texts, paths.kb, footmap_dir=paths.footmap, log=ev.line("  "), model_dir=cand_dir)
+        if model:
+            keepers[bucket] = model
+    for bucket, m in tastes.items():
+        ev.info(f"taste ({m['scope']}): {m['pairs']} choices; " + ", ".join(f"{t} {w:+.2f}" for t, w in sorted(m["weights"].items(), key=lambda kv: -abs(kv[1]))[:4]))
+    for bucket, m in keepers.items():
+        ev.info(f"keeper ({bucket}): cv AUC {m['cv_auc']} from {len(m['edits'])} edit(s)")
+    out["taste"], out["keeper"] = {str(k): v for k, v in tastes.items()}, keepers
+    if not tastes and st["rows"]:
+        ev.info(f"taste: {st['rows']} choice(s) so far; corrections are fitted from {taste_mod.MIN_PAIRS} on")
+    if not tastes and not keepers:
+        ev.info("nothing new to keep yet: the taste needs more choices, the keeper a finished job read back in a bucket")
+        return out
+    projects = evaluate.load_set(paths.kb)
+    ok, rows = True, []
+    if projects:
+        ev.stage("evaluate", "trying the candidates on the evaluation set", "Checking the cuts got no worse")
+        quiet = lambda s: None  # noqa: E731
+        now = evaluate.run(projects, paths, log=quiet, embed_texts=embed_texts)
+        then = evaluate.run(projects, paths, log=quiet, embed_texts=embed_texts, keeper_dir=cand_dir if keepers else None,
+                            taste=(lambda b: tastes.get(b) or tastes.get(None)) if tastes else True)
+        rows, ok = evaluate.compare(then, {"projects": now})
+        for r in rows:
+            ev.info(f"  {r['project']}: {r['measure']} {r['was']} -> {r['now']} ({r['verdict']})")
+        out["evaluation"] = {"rows": rows, "passed": ok, "before": evaluate.summary(now), "after": evaluate.summary(then)}
+    else:
+        ev.warn("no evaluation set (kb/eval/set.json): the candidates are kept unchecked")
+    if ok or force:
+        out["kept"] += [str(p) for p in taste_mod.save(tastes, paths.kb)]
+        for bucket in keepers:
+            for name in (f"{bucket}.json", f"{bucket}.oof.npz"):
+                if (cand_dir / name).exists():
+                    shutil.copy2(cand_dir / name, paths.kb / "keeper" / name)
+            out["kept"].append(str(paths.kb / "keeper" / f"{bucket}.json"))
+        shutil.rmtree(cand_dir, ignore_errors=True)
+        ev.info(("kept" if ok else "kept anyway (--force)") + ": " + ", ".join(out["kept"]) + "; the next cut uses them")
+    else:
+        out["refused"] = [f"taste ({m['scope']})" for m in tastes.values()] + [f"keeper ({b})" for b in keepers]
+        ev.warn("not kept: a guarded measure got worse on the evaluation set (rows marked worse above). The models in use stay; "
+                f"the candidates are in {cand_dir} and --force keeps them anyway.")
+    return out
 
 
 def mount_of(folder: Path) -> Path:

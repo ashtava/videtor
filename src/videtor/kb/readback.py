@@ -469,6 +469,7 @@ def diff(
             "section": slot.get("section"),
             "role": slot.get("role"),
             "show": slot.get("show"),
+            **{k: slot[k] for k in ("scale", "face", "hands", "camera") if slot.get(k) is not None},
             "start_s": slot["start_s"],
             "length_s": slot["length_s"],
             "status": "removed",

@@ -607,6 +607,7 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
             **({"byte": True} if slot.get("byte") else {}),
             **({"stabilize": False} if slot.get("stabilize") is False else {}),
             **({"effects": list(slot["effects"])} if isinstance(slot.get("effects"), list) else {}),  # the slot's own: plan/fx.py draws for the rest
+            **{k: slot[k] for k in ("scale", "face", "hands", "camera") if slot.get(k) is not None},  # what it asked for: plan/taste.py scores against it
             **extra,
         })
     return {

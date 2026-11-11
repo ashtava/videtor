@@ -29,7 +29,8 @@ HOP = 0.5
 LOOKALIKE = 0.87  # cosine of two shots' CLIP embeddings above which they read as one setup (the top 1% of the cuts in seven past projects)
 LIGHT_JUMP = 70.0  # a change in mean brightness (0-255) across a cut inside a section that reads as another time of day
 # measure -> (direction that is better, how much worse than the baseline is still a pass)
-GUARDS = {"right_take": (+1, 0.03), "right_second": (+1, 0.03), "in_top3": (+1, 0.03), "filled": (+1, 0.0), "match": (+1, 0.08),
+# (`match` has room: a keeper or a taste trades a little of it for what you keep; a large drop means the picks stopped showing what was asked)
+GUARDS = {"right_take": (+1, 0.03), "right_second": (+1, 0.03), "in_top3": (+1, 0.05), "filled": (+1, 0.0), "match": (+1, 0.4),
           "repeats": (-1, 0.0), "lookalikes": (-1, 1.0), "light_jumps": (-1, 0.0)}
 MEASURES = ("filled", "match", "sharp", "repeats", "lookalikes", "light_jumps", "keeper", "right_take", "right_second", "in_top3")
 

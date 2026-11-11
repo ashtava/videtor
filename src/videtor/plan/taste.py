@@ -7,8 +7,12 @@ its samples' terms (`fill.TERMS`: how well it matches, what the brief avoids, sh
 scale, face, hands, camera moving or steady, shake, sharpness, jumps, exposure, the
 take's start and end, a landscape crop). A logistic regression on the differences,
 with no intercept and a strong pull toward zero, says which terms you weigh more or
-less than the hand-set score; `kb/taste.json` keeps the corrections and `videtor cut`
-adds them. With a handful of fixes they stay small; with many they reshape the picks.
+less than the hand-set score. `kb/taste.json` keeps the corrections learnt across all
+your cuts and `kb/taste/<bucket>.json` a bucket's own once it has enough fixes (an
+interview and a hype reel reward different things); `videtor cut` adds the bucket's,
+else the general ones. With a handful of fixes they stay small; with many they reshape
+the picks. `videtor learn` fits them and keeps them only when the evaluation set
+(plan/evaluate.py) says the cuts got no worse.
 """
 
 from __future__ import annotations
@@ -23,7 +27,8 @@ from videtor.plan import fill
 from videtor.plan import shotmap as sm
 
 HOP = 0.5
-CHOSEN = {"swapped", "swapped_to_alternate", "slipped"}
+MIN_PAIRS = 12  # choices before any correction is fitted: a handful says more about those shots than about your taste
+BUCKET_MIN = 20  # choices before a bucket gets corrections of its own; under that it uses the ones from all your cuts
 
 
 def window_terms(take: fill.Take, slot: dict, in_s: float, out_s: float, match_z, avoid_z, pool: fill.Pool, landscape: bool) -> np.ndarray:
@@ -34,25 +39,28 @@ def window_terms(take: fill.Take, slot: dict, in_s: float, out_s: float, match_z
     return T[i0:i1].mean(axis=0)
 
 
-def pairs(feedback: dict, picks: dict, takes: dict[str, fill.Take], pool: fill.Pool, embed_texts) -> list[np.ndarray]:
-    """chosen − picked term differences for every slot the editor changed (see kb/readback.py for statuses)."""
-    by_id = {s["id"]: s for s in picks["slots"]}
+def pairs(feedback: dict, picks: dict | None, takes: dict[str, fill.Take], pool: fill.Pool, embed_texts) -> list[np.ndarray]:
+    """chosen − picked term differences for every slot where the user chose another window (kb/feedback.py's
+    teaching rows: read-backs and choices made in the app). `picks` fills in what an older feedback file lacks."""
+    from videtor.kb import feedback as fb
+
+    by_id = {s["id"]: s for s in (picks or {}).get("slots") or []}
+    doc = {**feedback, "slots": [{**r, "pick": r.get("pick") or (by_id.get(r.get("id")) or {}).get("pick")} for r in feedback.get("slots") or []]}
     order = [t.fid for t in pool.takes]
-    avoid = picks.get("avoid") or []
+    avoid = feedback.get("avoid") or (picks or {}).get("avoid") or []
     avoid_z = dict(zip(order, pool.similarity(embed_texts(avoid)))) if avoid else {}
-    width, height = int(picks.get("width", 1080)), int(picks.get("height", 1920))
+    width = int(feedback.get("width") or (picks or {}).get("width") or 1080)
+    height = int(feedback.get("height") or (picks or {}).get("height") or 1920)
     out = []
-    for row in feedback.get("slots", []):
-        slot = by_id.get(row.get("id"))
-        visible, pick = row.get("visible") or {}, (slot or {}).get("pick")
-        if row.get("status") not in CHOSEN or not slot or not pick or not visible.get("fid"):
-            continue
-        a, b = takes.get(visible["fid"]), takes.get(pick["fid"])
-        if a is None or b is None:
+    for row in fb.teaching_rows(doc):
+        slot = {**(by_id.get(row.get("id")) or {}), **{k: row[k] for k in fb.SLOT_KEYS if row.get(k) is not None}}
+        chosen, picked = row["chosen"], row["picked"]
+        a, b = takes.get(chosen.get("fid")), takes.get(picked.get("fid"))
+        if a is None or b is None or not slot.get("show"):
             continue
         z = dict(zip(order, pool.similarity(embed_texts(sm.queries(slot)))))
-        ta = window_terms(a, slot, visible["in_s"], visible["out_s"], z[a.fid], avoid_z.get(a.fid), pool, fill.is_landscape(a, width, height))
-        tb = window_terms(b, slot, pick["in_s"], pick["out_s"], z[b.fid], avoid_z.get(b.fid), pool, fill.is_landscape(b, width, height))
+        ta = window_terms(a, slot, chosen["in_s"], chosen["out_s"], z[a.fid], avoid_z.get(a.fid), pool, fill.is_landscape(a, width, height))
+        tb = window_terms(b, slot, picked["in_s"], picked["out_s"], z[b.fid], avoid_z.get(b.fid), pool, fill.is_landscape(b, width, height))
         out.append(ta - tb)
     return out
 
@@ -84,24 +92,42 @@ def load(kb_dir: Path = Path("kb"), bucket: str | None = None) -> dict | None:
     return None
 
 
-def learn(feedback_paths: list[Path], pool_for_key, embed_texts, kb_dir: Path = Path("kb")) -> dict:
-    """Fit on every feedback file; `pool_for_key(key)` returns the project's takes. Writes kb/taste.json."""
-    diffs, used = [], []
-    for path in feedback_paths:
-        fb = json.loads(Path(path).read_text())
-        picks_path = Path(fb.get("picks") or "")
-        if not picks_path.exists():
-            continue
-        picks = json.loads(picks_path.read_text())
-        takes = pool_for_key(picks.get("key"))
+def model(diffs: list[np.ndarray], used: list[str], scope: str) -> dict:
+    w = fit(diffs)
+    return {"weights": {t: round(float(v), 4) for t, v in zip(fill.TERMS, w)}, "pairs": len(diffs), "from": used, "scope": scope,
+            "updated": time.strftime("%Y-%m-%dT%H:%M:%S")}
+
+
+def candidates(docs: list[dict], pool_for_key, embed_texts) -> dict[str | None, dict]:
+    """The corrections every feedback file teaches: {None: from all your cuts, bucket: from that bucket's cuts
+    alone, once it has BUCKET_MIN pairs}. Nothing is written: `videtor learn` tries them on the evaluation set
+    first and `save` keeps the ones that pass. `pool_for_key(key)` returns the project's takes."""
+    by_bucket: dict[str | None, tuple[list, list]] = {}
+    for doc in docs:
+        picks_path = Path(str(doc.get("picks") or ""))
+        picks = json.loads(picks_path.read_text()) if picks_path.is_file() else None
+        takes = pool_for_key(doc.get("key") or (picks or {}).get("key"))
         if not takes:
             continue
-        found = pairs(fb, picks, {t.fid: t for t in takes}, fill.Pool(takes), embed_texts)
-        if found:
+        found = pairs(doc, picks, {t.fid: t for t in takes}, fill.Pool(takes), embed_texts)
+        if not found:
+            continue
+        for bucket in {None, doc.get("bucket") or (picks or {}).get("type")}:
+            diffs, used = by_bucket.setdefault(bucket, ([], []))
             diffs += found
-            used.append(str(path))
-    w = fit(diffs)
-    out = {"weights": {t: round(float(v), 4) for t, v in zip(fill.TERMS, w)}, "pairs": len(diffs), "from": used,
-           "updated": time.strftime("%Y-%m-%dT%H:%M:%S")}
-    (kb_dir / "taste.json").write_text(json.dumps(out, indent=1) + "\n")
+            used.append(str(doc.get("_path") or doc.get("name")))
+    out = {}
+    for bucket, (diffs, used) in by_bucket.items():
+        if len(diffs) >= (MIN_PAIRS if bucket is None else BUCKET_MIN):
+            out[bucket] = model(diffs, used, f"your {bucket} cuts" if bucket else "all your cuts")
+    return out
+
+
+def save(models: dict[str | None, dict], kb_dir: Path = Path("kb")) -> list[Path]:
+    out = []
+    for bucket, m in models.items():
+        p = path_for(kb_dir, bucket)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(m, indent=1) + "\n")
+        out.append(p)
     return out

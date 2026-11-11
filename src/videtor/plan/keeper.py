@@ -143,6 +143,13 @@ def edits_of(bucket: str, kb_dir: Path = Path("kb"), exports: Path = Path(".xml-
     return out
 
 
+def feedback_edits(bucket: str, kb_dir: Path = Path("kb")) -> list[dict]:
+    """The bucket's finished jobs that were read back (render, XML or live): each is an edit the keeper learns from."""
+    from videtor.kb import feedback as fb
+
+    return [d for d in fb.all_docs(kb_dir) if d.get("bucket") == bucket and d.get("key") and fb.is_final(d)]
+
+
 def pool_for(folders: list[str], kb_dir: Path, footmap_dir: Path) -> list:
     """The mapped takes under `folders`, from whichever footage index holds them."""
     from videtor.kb import footage
@@ -191,14 +198,39 @@ def training_set(bucket: str, embed_texts, kb_dir: Path = Path("kb"), exports: P
             G.extend([t.fid] * len(y))
         report.append({"edit": key, "takes": len(takes), "kept_takes": kept_takes, "files_in_edit": len(by_base)})
         log(f"  {key}: {len(takes)} mapped takes, {kept_takes} of them used")
+    seen = set(G)
+    for doc in feedback_edits(bucket, kb_dir):  # finished jobs read back (kb/feedback.py): what the final cut plays is kept
+        from videtor import pipeline
+        from videtor.kb import feedback as fb
+
+        try:
+            takes, _ = pipeline.takes_for(pipeline.index_for_key(doc["key"], kb_dir), doc["key"], footmap_dir)
+        except pipeline.PipelineError:
+            continue
+        takes = [t for t in takes if t.fid not in seen]  # footage an export already covers is learnt from the export
+        ranges = fb.used_ranges(doc)
+        if not takes or not any(t.fid in ranges for t in takes):
+            continue
+        pool = fill.Pool(takes)
+        kept_takes = 0
+        for t in takes:
+            y = labels(t, ranges.get(t.fid, []))
+            kept_takes += int(y.any())
+            X.append(features(t, concept_emb, pool))
+            Y.append(y)
+            G.extend([t.fid] * len(y))
+        seen.update(t.fid for t in takes)
+        report.append({"edit": f"feedback:{doc.get('name')}", "takes": len(takes), "kept_takes": kept_takes, "files_in_edit": len(ranges)})
+        log(f"  {doc.get('name')} (read back): {len(takes)} mapped takes, {kept_takes} of them in the finished job")
     if not X:
         return None
     return np.concatenate(X), np.concatenate(Y), np.array(G), report
 
 
 def train(bucket: str, embed_texts, kb_dir: Path = Path("kb"), exports: Path = Path(".xml-exports"),
-          footmap_dir: Path = Path("cache/footmap"), folds: int = 5, log=print) -> dict | None:
-    """Fit and save the bucket's keeper model; returns its summary (None without training data)."""
+          footmap_dir: Path = Path("cache/footmap"), folds: int = 5, log=print, model_dir: Path | None = None) -> dict | None:
+    """Fit and save the bucket's keeper model; returns its summary (None without training data). `model_dir`
+    is where it is written (default kb/keeper): `videtor learn` trains a candidate beside the one in use."""
     from sklearn.linear_model import LogisticRegression
     from sklearn.metrics import roc_auc_score
     from sklearn.model_selection import GroupKFold
@@ -227,7 +259,7 @@ def train(bucket: str, embed_texts, kb_dir: Path = Path("kb"), exports: Path = P
         "edits": report, "keeps": [[names[i], round(float(w[i]), 3)] for i in order[:8]],
         "drops": [[names[i], round(float(w[i]), 3)] for i in order[::-1][:8]],
     }
-    d = kb_dir / "keeper"
+    d = model_dir or kb_dir / "keeper"
     d.mkdir(parents=True, exist_ok=True)
     (d / f"{bucket}.json").write_text(json.dumps(out, indent=1) + "\n")
     fids = sorted(set(groups))
@@ -235,16 +267,16 @@ def train(bucket: str, embed_texts, kb_dir: Path = Path("kb"), exports: Path = P
     return out
 
 
-def load(bucket: str, kb_dir: Path = Path("kb")) -> dict | None:
-    p = kb_dir / "keeper" / f"{bucket}.json"
+def load(bucket: str, kb_dir: Path = Path("kb"), model_dir: Path | None = None) -> dict | None:
+    p = (model_dir or kb_dir / "keeper") / f"{bucket}.json"
     return json.loads(p.read_text()) if p.exists() else None
 
 
-def scores(model: dict, takes: list, pool, embed_texts, kb_dir: Path = Path("kb")) -> dict[str, np.ndarray]:
+def scores(model: dict, takes: list, pool, embed_texts, kb_dir: Path = Path("kb"), model_dir: Path | None = None) -> dict[str, np.ndarray]:
     """Keeper z-score of every sample of every take (z over the pool), out-of-fold for takes the model learnt from."""
     concept_emb = embed_texts(list(model["concepts"]))
     mu, sd, w = np.array(model["mean"]), np.array(model["std"]), np.array(model["coef"])
-    oof_path = kb_dir / "keeper" / f"{model['bucket']}.oof.npz"
+    oof_path = (model_dir or kb_dir / "keeper") / f"{model['bucket']}.oof.npz"
     oof = dict(np.load(oof_path)) if oof_path.exists() else {}
     raw = {}
     for t in takes:
