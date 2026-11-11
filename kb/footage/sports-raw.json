@@ -1,0 +1,4034 @@
+{
+ "mount": "/Volumes/Paritosh_2",
+ "scanned_at": "2026-11-11T17:35:57",
+ "dirs": [
+  "/Volumes/Paritosh_2/videos"
+ ],
+ "roots": {
+  "sports-raw::footage": [
+   "/Volumes/Paritosh_2/videos"
+  ]
+ },
+ "top_level": [
+  "Check",
+  "Dikkat",
+  "Diwali Party",
+  "Extra",
+  "Mia 2",
+  "TPL Promo",
+  "colourstone",
+  "colourstone 2",
+  "colourstone_2",
+  "mia",
+  "videos"
+ ],
+ "files": [
+  {
+   "fid": "af78e50d34eb",
+   "path": "/Volumes/Paritosh_2/videos/SC_0741-013.MP4",
+   "dir": "/Volumes/Paritosh_2/videos",
+   "basename": "SC_0741-013.MP4",
+   "kind": "video",
+   "size": 2684548188,
+   "inode": 751302,
+   "mtime": 1794387159,
+   "media": {
+    "duration_s": 101.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 212049619,
+    "created": "2026-08-14T19:03:58.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7997baa4cdbd",
+   "path": "/Volumes/Paritosh_2/videos/SC_1541-004.MP4",
+   "dir": "/Volumes/Paritosh_2/videos",
+   "basename": "SC_1541-004.MP4",
+   "kind": "video",
+   "size": 2617438574,
+   "inode": 754886,
+   "mtime": 1794387139,
+   "media": {
+    "duration_s": 99.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 209730654,
+    "created": "2026-07-13T04:21:22.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "63472eace4bc",
+   "path": "/Volumes/Paritosh_2/videos/VID_20260602_130222_00_031_02_12-005.MP4",
+   "dir": "/Volumes/Paritosh_2/videos",
+   "basename": "VID_20260602_130222_00_031_02_12-005.MP4",
+   "kind": "video",
+   "size": 2455463471,
+   "inode": 751580,
+   "mtime": 1794387062,
+   "media": {
+    "duration_s": 625.992,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 31380124,
+    "created": "2026-06-02T07:32:22.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 29.97,
+     "pix_fmt": "yuvj420p",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "aac",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/VID_* h264 1920x1080 portrait dm-90"
+   }
+  },
+  {
+   "fid": "a1f3c62c3d47",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_1506.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC",
+   "basename": "SC_1506.MP4",
+   "kind": "video",
+   "size": 201473060,
+   "inode": 1004677,
+   "mtime": 1783894300,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 258298794,
+    "created": "2026-07-13T00:11:33.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "c5a181f27cad",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_1524.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC",
+   "basename": "SC_1524.MP4",
+   "kind": "video",
+   "size": 134362489,
+   "inode": 1004537,
+   "mtime": 1783894852,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 203579528,
+    "created": "2026-07-13T00:20:46.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "faces in 1 still turned -90, too weak alone (best 0.63) and no camera majority",
+    "votes": {
+     "0": 0,
+     "-90": 1,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f11fe0ec40be",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_1525.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC",
+   "basename": "SC_1525.MP4",
+   "kind": "video",
+   "size": 67252909,
+   "inode": 1004461,
+   "mtime": 1783894856,
+   "media": {
+    "duration_s": 2.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 224176363,
+    "created": "2026-07-13T00:20:53.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "6dd6af056686",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_1530.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC",
+   "basename": "SC_1530.MP4",
+   "kind": "video",
+   "size": 268581853,
+   "inode": 1005375,
+   "mtime": 1783895028,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186515175,
+    "created": "2026-07-13T00:23:36.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f33e3939cfb6",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_1539.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC",
+   "basename": "SC_1539.MP4",
+   "kind": "video",
+   "size": 1006790365,
+   "inode": 1001197,
+   "mtime": 1783895260,
+   "media": {
+    "duration_s": 53.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 151169724,
+    "created": "2026-07-13T00:26:46.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "835127e6296d",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 2/SC_1512.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 2",
+   "basename": "SC_1512.MP4",
+   "kind": "video",
+   "size": 201472820,
+   "inode": 1007574,
+   "mtime": 1783894574,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 279823361,
+    "created": "2026-07-13T00:16:07.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 2/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9f21c61f22f7",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 2/SC_1519.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 2",
+   "basename": "SC_1519.MP4",
+   "kind": "video",
+   "size": 268582357,
+   "inode": 1008418,
+   "mtime": 1783894778,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 159870450,
+    "created": "2026-07-13T00:19:23.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 2/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "3252cad6662a",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 2/SC_1538.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 2",
+   "basename": "SC_1538.MP4",
+   "kind": "video",
+   "size": 134362279,
+   "inode": 1007058,
+   "mtime": 1783895188,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 248819035,
+    "created": "2026-07-13T00:26:23.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 2/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "8c99a7b1fe80",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 2/SC_1547.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 2",
+   "basename": "SC_1547.MP4",
+   "kind": "video",
+   "size": 1476559341,
+   "inode": 1001196,
+   "mtime": 1783911358,
+   "media": {
+    "duration_s": 79.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 148248929,
+    "created": "2026-07-13T04:54:37.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 2/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ae1cdc92816c",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 3/SC_1520.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 3",
+   "basename": "SC_1520.MP4",
+   "kind": "video",
+   "size": 201471981,
+   "inode": 1007509,
+   "mtime": 1783894788,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 209866646,
+    "created": "2026-07-13T00:19:40.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 3/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7e1ad0bfeb5c",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 3/SC_1521.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 3",
+   "basename": "SC_1521.MP4",
+   "kind": "video",
+   "size": 67252867,
+   "inode": 1006406,
+   "mtime": 1783894798,
+   "media": {
+    "duration_s": 2.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 224176223,
+    "created": "2026-07-13T00:19:55.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 3/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "a098a301af42",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 3/SC_1535.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 3",
+   "basename": "SC_1535.MP4",
+   "kind": "video",
+   "size": 201472109,
+   "inode": 1006861,
+   "mtime": 1783895098,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 197521675,
+    "created": "2026-07-13T00:24:49.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 3/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f7bf156e38da",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 3/SC_1540.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 3",
+   "basename": "SC_1540.MP4",
+   "kind": "video",
+   "size": 1208124752,
+   "inode": 1001198,
+   "mtime": 1783909248,
+   "media": {
+    "duration_s": 44.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 218863179,
+    "created": "2026-07-13T04:20:03.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 3/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "abb99cac973a",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_1511.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 4",
+   "basename": "SC_1511.MP4",
+   "kind": "video",
+   "size": 201473296,
+   "inode": 1005762,
+   "mtime": 1783894564,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 239849161,
+    "created": "2026-07-13T00:15:56.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "d18d2ed21d3a",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_1516.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 4",
+   "basename": "SC_1516.MP4",
+   "kind": "video",
+   "size": 134363035,
+   "inode": 1005245,
+   "mtime": 1783894730,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 149292261,
+    "created": "2026-07-13T00:18:43.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "2aaafc8d4111",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_1528.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 4",
+   "basename": "SC_1528.MP4",
+   "kind": "video",
+   "size": 67252739,
+   "inode": 1004971,
+   "mtime": 1783894956,
+   "media": {
+    "duration_s": 1.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 280219745,
+    "created": "2026-07-13T00:22:33.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "72690a5fec3b",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_1537.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 4",
+   "basename": "SC_1537.MP4",
+   "kind": "video",
+   "size": 469912015,
+   "inode": 1006536,
+   "mtime": 1783895132,
+   "media": {
+    "duration_s": 24.96,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 150612825,
+    "created": "2026-07-13T00:25:07.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "37e07f055067",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_1544.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 4",
+   "basename": "SC_1544.MP4",
+   "kind": "video",
+   "size": 872570493,
+   "inode": 1001244,
+   "mtime": 1783910476,
+   "media": {
+    "duration_s": 45.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 154711080,
+    "created": "2026-07-13T04:40:31.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 4/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "cd369495579d",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_1515.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 5",
+   "basename": "SC_1515.MP4",
+   "kind": "video",
+   "size": 335693644,
+   "inode": 1010944,
+   "mtime": 1783894682,
+   "media": {
+    "duration_s": 12.0,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 223795762,
+    "created": "2026-07-13T00:17:49.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7d7cb488b537",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_1518.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 5",
+   "basename": "SC_1518.MP4",
+   "kind": "video",
+   "size": 201472023,
+   "inode": 1010515,
+   "mtime": 1783894758,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 209866690,
+    "created": "2026-07-13T00:19:11.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "de5c501611c9",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_1526.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 5",
+   "basename": "SC_1526.MP4",
+   "kind": "video",
+   "size": 537021763,
+   "inode": 1012230,
+   "mtime": 1783894898,
+   "media": {
+    "duration_s": 28.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 151701062,
+    "created": "2026-07-13T00:21:09.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "692d365f5a51",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_1531.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 5",
+   "basename": "SC_1531.MP4",
+   "kind": "video",
+   "size": 134362655,
+   "inode": 1009976,
+   "mtime": 1783895036,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186614798,
+    "created": "2026-07-13T00:23:49.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f3faecce83b7",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_1545.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 5",
+   "basename": "SC_1545.MP4",
+   "kind": "video",
+   "size": 872570703,
+   "inode": 1007122,
+   "mtime": 1783910570,
+   "media": {
+    "duration_s": 46.08,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 151487969,
+    "created": "2026-07-13T04:42:04.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 5/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "6629f0837cc1",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 6/SC_1523.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 6",
+   "basename": "SC_1523.MP4",
+   "kind": "video",
+   "size": 134362865,
+   "inode": 1014943,
+   "mtime": 1783894832,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 159955791,
+    "created": "2026-07-13T00:20:24.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 6/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "c4665a1e8c85",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 6/SC_1529.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 6",
+   "basename": "SC_1529.MP4",
+   "kind": "video",
+   "size": 201472023,
+   "inode": 1015122,
+   "mtime": 1783894978,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 209866690,
+    "created": "2026-07-13T00:22:50.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 6/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "eea8ae5d057e",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 6/SC_1542.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 6",
+   "basename": "SC_1542.MP4",
+   "kind": "video",
+   "size": 1745006206,
+   "inode": 1008878,
+   "mtime": 1783909454,
+   "media": {
+    "duration_s": 65.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 213848799,
+    "created": "2026-07-13T04:23:08.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 6/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "0914587b7cab",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 7/SC_1517.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 7",
+   "basename": "SC_1517.MP4",
+   "kind": "video",
+   "size": 201472361,
+   "inode": 1014107,
+   "mtime": 1783894744,
+   "media": {
+    "duration_s": 9.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 176730141,
+    "created": "2026-07-13T00:18:54.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 7/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9e163f4053eb",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 7/SC_1534.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 7",
+   "basename": "SC_1534.MP4",
+   "kind": "video",
+   "size": 134362237,
+   "inode": 1013567,
+   "mtime": 1783895088,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 248818957,
+    "created": "2026-07-13T00:24:43.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 7/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "08042c246d0f",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 7/SC_1543.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 7",
+   "basename": "SC_1543.MP4",
+   "kind": "video",
+   "size": 1409449427,
+   "inode": 1008943,
+   "mtime": 1783910330,
+   "media": {
+    "duration_s": 75.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 148676099,
+    "created": "2026-07-13T04:37:33.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 7/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "b6938905a6b7",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 8/SC_1509.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 8",
+   "basename": "SC_1509.MP4",
+   "kind": "video",
+   "size": 671243678,
+   "inode": 1013434,
+   "mtime": 1783894512,
+   "media": {
+    "duration_s": 23.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 228314176,
+    "created": "2026-07-13T00:14:49.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 8/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "b8b69ffbfc06",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 8/SC_1513.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 8",
+   "basename": "SC_1513.MP4",
+   "kind": "video",
+   "size": 402804172,
+   "inode": 1011847,
+   "mtime": 1783894594,
+   "media": {
+    "duration_s": 15.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 209793839,
+    "created": "2026-07-13T00:16:18.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 8/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9983d99498cb",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 8/SC_1527.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 8",
+   "basename": "SC_1527.MP4",
+   "kind": "video",
+   "size": 268582105,
+   "inode": 1010750,
+   "mtime": 1783894944,
+   "media": {
+    "duration_s": 12.48,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 172168016,
+    "created": "2026-07-13T00:22:11.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 8/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ce66d25004dd",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 8/SC_1532.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 8",
+   "basename": "SC_1532.MP4",
+   "kind": "video",
+   "size": 134362613,
+   "inode": 1010278,
+   "mtime": 1783895052,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186614740,
+    "created": "2026-07-13T00:24:07.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 8/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "b52aff70cc77",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_1507.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 9",
+   "basename": "SC_1507.MP4",
+   "kind": "video",
+   "size": 469913276,
+   "inode": 1016305,
+   "mtime": 1783894450,
+   "media": {
+    "duration_s": 15.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 237329937,
+    "created": "2026-07-13T00:13:53.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ce91945c717a",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_1508.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 9",
+   "basename": "SC_1508.MP4",
+   "kind": "video",
+   "size": 201472584,
+   "inode": 1015738,
+   "mtime": 1783894462,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 305261490,
+    "created": "2026-07-13T00:14:17.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9494e1e49c3e",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_1514.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 9",
+   "basename": "SC_1514.MP4",
+   "kind": "video",
+   "size": 671244390,
+   "inode": 1018216,
+   "mtime": 1783894666,
+   "media": {
+    "duration_s": 24.96,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 215142432,
+    "created": "2026-07-13T00:17:20.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "fe0cdcf8bc93",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_1522.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 9",
+   "basename": "SC_1522.MP4",
+   "kind": "video",
+   "size": 335692399,
+   "inode": 1015410,
+   "mtime": 1783894816,
+   "media": {
+    "duration_s": 17.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 151212792,
+    "created": "2026-07-13T00:19:59.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ddf46ec5d29c",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_1533.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 9",
+   "basename": "SC_1533.MP4",
+   "kind": "video",
+   "size": 134362361,
+   "inode": 1015051,
+   "mtime": 1783895064,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 223937268,
+    "created": "2026-07-13T00:24:18.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ee07c5d56a17",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_1536.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 9",
+   "basename": "SC_1536.MP4",
+   "kind": "video",
+   "size": 67252909,
+   "inode": 1014113,
+   "mtime": 1783895104,
+   "media": {
+    "duration_s": 2.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 224176363,
+    "created": "2026-07-13T00:25:01.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 25.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 9/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "15e5560b064e",
+   "path": "/Volumes/Paritosh_2/videos/LAKR260712SC 10/SC_1510.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/LAKR260712SC 10",
+   "basename": "SC_1510.MP4",
+   "kind": "video",
+   "size": 671243678,
+   "inode": 1015800,
+   "mtime": 1783894548,
+   "media": {
+    "duration_s": 23.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 228314176,
+    "created": "2026-07-13T00:15:24.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": null,
+     "color_primaries": null
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/LAKR260712SC 10/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "c7d2e0e9a13a",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_0733.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam",
+   "basename": "SC_0733.MP4",
+   "kind": "video",
+   "size": 201472854,
+   "inode": 1020234,
+   "mtime": 1786726838,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 279823408,
+    "created": "2026-08-14T19:00:31.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "aea8dab69938",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_0748.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam",
+   "basename": "SC_0748.MP4",
+   "kind": "video",
+   "size": 402803494,
+   "inode": 1020525,
+   "mtime": 1786727318,
+   "media": {
+    "duration_s": 13.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 231496260,
+    "created": "2026-08-14T19:08:23.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "d429ad7f7606",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_0766.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam",
+   "basename": "SC_0766.MP4",
+   "kind": "video",
+   "size": 469913783,
+   "inode": 1021031,
+   "mtime": 1786728084,
+   "media": {
+    "duration_s": 16.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 223768468,
+    "created": "2026-08-14T19:21:07.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9ec7a586b71f",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_0768.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam",
+   "basename": "SC_0768.MP4",
+   "kind": "video",
+   "size": 939684637,
+   "inode": 1015802,
+   "mtime": 1786728172,
+   "media": {
+    "duration_s": 34.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 217519591,
+    "created": "2026-08-14T19:22:17.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "df07d55b7178",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_0770.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam",
+   "basename": "SC_0770.MP4",
+   "kind": "video",
+   "size": 67252939,
+   "inode": 1020116,
+   "mtime": 1786728246,
+   "media": {
+    "duration_s": 1.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373627438,
+    "created": "2026-08-14T19:24:04.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "df345a7b41ee",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam/SC_0726.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam",
+   "basename": "SC_0726.MP4",
+   "kind": "video",
+   "size": 201473528,
+   "inode": 1022909,
+   "mtime": 1786726686,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 223859475,
+    "created": "2026-08-14T18:57:59.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7d49da156779",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam/SC_0728.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam",
+   "basename": "SC_0728.MP4",
+   "kind": "video",
+   "size": 335693160,
+   "inode": 1023522,
+   "mtime": 1786726756,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 243255913,
+    "created": "2026-08-14T18:59:04.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "fa1101bc5ab4",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam/SC_0759.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam",
+   "basename": "SC_0759.MP4",
+   "kind": "video",
+   "size": 134362517,
+   "inode": 1022514,
+   "mtime": 1786727828,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373229213,
+    "created": "2026-08-14T19:17:03.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "02bb7423475d",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam/SC_0769.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam",
+   "basename": "SC_0769.MP4",
+   "kind": "video",
+   "size": 1275234909,
+   "inode": 1015973,
+   "mtime": 1786728228,
+   "media": {
+    "duration_s": 46.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 219112527,
+    "created": "2026-08-14T19:23:01.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 2/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "69649c72a46c",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Insta 360/VID_20260602_124741_00_029_02_12.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Insta 360",
+   "basename": "VID_20260602_124741_00_029_02_12.MP4",
+   "kind": "video",
+   "size": 1280330310,
+   "inode": 1019045,
+   "mtime": 1780339660,
+   "media": {
+    "duration_s": 324.858,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 31529611,
+    "created": "2026-06-02T07:17:41.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 29.97,
+     "pix_fmt": "yuvj420p",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "aac",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Insta 360/VID_* h264 1920x1080 portrait dm-90"
+   }
+  },
+  {
+   "fid": "eeedebbe56cd",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Cam/SC_0739.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Cam",
+   "basename": "SC_0739.MP4",
+   "kind": "video",
+   "size": 335693872,
+   "inode": 1024239,
+   "mtime": 1786727000,
+   "media": {
+    "duration_s": 12.48,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 215188379,
+    "created": "2026-08-14T19:03:08.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "1df584c06be9",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Cam/SC_0747.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Cam",
+   "basename": "SC_0747.MP4",
+   "kind": "video",
+   "size": 201473570,
+   "inode": 1023590,
+   "mtime": 1786727288,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 223859522,
+    "created": "2026-08-14T19:08:00.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "6fd4eea58e9f",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Cam/SC_0757.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Cam",
+   "basename": "SC_0757.MP4",
+   "kind": "video",
+   "size": 134362559,
+   "inode": 1023263,
+   "mtime": 1786727774,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373229330,
+    "created": "2026-08-14T19:16:10.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 3/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "b7fe89578cfb",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Insta 360/VID_20260602_124358_00_028_02_12.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Insta 360",
+   "basename": "VID_20260602_124358_00_028_02_12.MP4",
+   "kind": "video",
+   "size": 839647038,
+   "inode": 1020624,
+   "mtime": 1780339438,
+   "media": {
+    "duration_s": 218.985,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 30674078,
+    "created": "2026-06-02T07:13:58.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 29.97,
+     "pix_fmt": "yuvj420p",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "aac",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Insta 360/VID_* h264 1920x1080 portrait dm-90"
+   }
+  },
+  {
+   "fid": "3ed6795f788c",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam/SC_0729.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam",
+   "basename": "SC_0729.MP4",
+   "kind": "video",
+   "size": 469913268,
+   "inode": 1024977,
+   "mtime": 1786726774,
+   "media": {
+    "duration_s": 15.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 237329933,
+    "created": "2026-08-14T18:59:17.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "94096fc85146",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam/SC_0730.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam",
+   "basename": "SC_0730.MP4",
+   "kind": "video",
+   "size": 134362996,
+   "inode": 1023264,
+   "mtime": 1786726778,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 279922908,
+    "created": "2026-08-14T18:59:34.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ee96130bb863",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam/SC_0752.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam",
+   "basename": "SC_0752.MP4",
+   "kind": "video",
+   "size": 402803452,
+   "inode": 1024527,
+   "mtime": 1786727476,
+   "media": {
+    "duration_s": 13.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 231496236,
+    "created": "2026-08-14T19:11:02.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7fa73846ac22",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam/SC_0754.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam",
+   "basename": "SC_0754.MP4",
+   "kind": "video",
+   "size": 201473327,
+   "inode": 1023591,
+   "mtime": 1786727704,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 239849198,
+    "created": "2026-08-14T19:14:58.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 4/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9d18253111a3",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 5/Cam/SC_0753.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 5/Cam",
+   "basename": "SC_0753.MP4",
+   "kind": "video",
+   "size": 268583383,
+   "inode": 1030512,
+   "mtime": 1786727692,
+   "media": {
+    "duration_s": 9.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 235599458,
+    "created": "2026-08-14T19:14:43.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 5/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "27d4ec456a75",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 5/Cam/SC_0762.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 5/Cam",
+   "basename": "SC_0762.MP4",
+   "kind": "video",
+   "size": 1409455253,
+   "inode": 1022903,
+   "mtime": 1786727946,
+   "media": {
+    "duration_s": 51.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 217508526,
+    "created": "2026-08-14T19:18:13.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 5/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ef677a5b0a1e",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 5/Cam/SC_0778.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 5/Cam",
+   "basename": "SC_0778.MP4",
+   "kind": "video",
+   "size": 134362802,
+   "inode": 1029786,
+   "mtime": 1786728834,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319911433,
+    "created": "2026-08-14T19:33:50.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 5/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "159ab74d3344",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam/SC_0736.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam",
+   "basename": "SC_0736.MP4",
+   "kind": "video",
+   "size": 268582670,
+   "inode": 1030513,
+   "mtime": 1786726948,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 279773614,
+    "created": "2026-08-14T19:02:20.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "6b8e0c752acd",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam/SC_0742.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam",
+   "basename": "SC_0742.MP4",
+   "kind": "video",
+   "size": 335693438,
+   "inode": 1031529,
+   "mtime": 1786727204,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 233120443,
+    "created": "2026-08-14T19:06:33.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "df600646d6bd",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam/SC_0761.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam",
+   "basename": "SC_0761.MP4",
+   "kind": "video",
+   "size": 1073905461,
+   "inode": 1025025,
+   "mtime": 1786727880,
+   "media": {
+    "duration_s": 40.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 210569698,
+    "created": "2026-08-14T19:17:18.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ff8cff99c3e6",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam/SC_0782.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam",
+   "basename": "SC_0782.MP4",
+   "kind": "video",
+   "size": 134362926,
+   "inode": 1029787,
+   "mtime": 1786730164,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 279922762,
+    "created": "2026-08-14T19:56:00.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 6/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "0b221ea70bfc",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam/SC_0734.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam",
+   "basename": "SC_0734.MP4",
+   "kind": "video",
+   "size": 134362802,
+   "inode": 1029785,
+   "mtime": 1786726850,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319911433,
+    "created": "2026-08-14T19:00:46.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 3 of 3 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ba6db69d192e",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam/SC_0755.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam",
+   "basename": "SC_0755.MP4",
+   "kind": "video",
+   "size": 402803491,
+   "inode": 1031608,
+   "mtime": 1786727722,
+   "media": {
+    "duration_s": 13.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 231496259,
+    "created": "2026-08-14T19:15:07.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "1ee325bee3a4",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam/SC_0756.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam",
+   "basename": "SC_0756.MP4",
+   "kind": "video",
+   "size": 1073904269,
+   "inode": 1025358,
+   "mtime": 1786727766,
+   "media": {
+    "duration_s": 38.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 223730056,
+    "created": "2026-08-14T19:15:27.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "65d736a2fa6d",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam/SC_0783.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam",
+   "basename": "SC_0783.MP4",
+   "kind": "video",
+   "size": 268582670,
+   "inode": 1030419,
+   "mtime": 1786730174,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 279773614,
+    "created": "2026-08-14T19:56:06.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 7/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "bf801c56ae9d",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_0737.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam",
+   "basename": "SC_0737.MP4",
+   "kind": "video",
+   "size": 335693396,
+   "inode": 1030508,
+   "mtime": 1786726970,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 233120413,
+    "created": "2026-08-14T19:02:37.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "803418f9811c",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_0744.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam",
+   "basename": "SC_0744.MP4",
+   "kind": "video",
+   "size": 268583146,
+   "inode": 1029906,
+   "mtime": 1786727242,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 248688098,
+    "created": "2026-08-14T19:07:12.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "651912daf075",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_0745.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam",
+   "basename": "SC_0745.MP4",
+   "kind": "video",
+   "size": 201473288,
+   "inode": 1029221,
+   "mtime": 1786727260,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 239849152,
+    "created": "2026-08-14T19:07:33.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "dcac748b0184",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_0750.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam",
+   "basename": "SC_0750.MP4",
+   "kind": "video",
+   "size": 805463820,
+   "inode": 1026624,
+   "mtime": 1786727384,
+   "media": {
+    "duration_s": 28.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 227532152,
+    "created": "2026-08-14T19:09:14.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "faef878605ee",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_0775.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam",
+   "basename": "SC_0775.MP4",
+   "kind": "video",
+   "size": 402803212,
+   "inode": 1031615,
+   "mtime": 1786728690,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 239763816,
+    "created": "2026-08-14T19:31:16.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 8/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "1abe9b62d2db",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_0732.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam",
+   "basename": "SC_0732.MP4",
+   "kind": "video",
+   "size": 402803970,
+   "inode": 1033740,
+   "mtime": 1786726828,
+   "media": {
+    "duration_s": 14.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 216561274,
+    "created": "2026-08-14T19:00:14.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "567b8cac5921",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_0738.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam",
+   "basename": "SC_0738.MP4",
+   "kind": "video",
+   "size": 201473052,
+   "inode": 1032711,
+   "mtime": 1786726978,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 258298784,
+    "created": "2026-08-14T19:02:52.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "d6b1b5f18219",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_0751.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam",
+   "basename": "SC_0751.MP4",
+   "kind": "video",
+   "size": 537023362,
+   "inode": 1085670,
+   "mtime": 1786727404,
+   "media": {
+    "duration_s": 18.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 235536562,
+    "created": "2026-08-14T19:09:45.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9e4fe5f3c1cd",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_0767.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam",
+   "basename": "SC_0767.MP4",
+   "kind": "video",
+   "size": 604133417,
+   "inode": 1052190,
+   "mtime": 1786728118,
+   "media": {
+    "duration_s": 20.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 234160239,
+    "created": "2026-08-14T19:21:38.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "79ea3db4ca65",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_0772.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam",
+   "basename": "SC_0772.MP4",
+   "kind": "video",
+   "size": 67252981,
+   "inode": 1032633,
+   "mtime": 1786728286,
+   "media": {
+    "duration_s": 1.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373627672,
+    "created": "2026-08-14T19:24:44.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f6094243bd5e",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_0774.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam",
+   "basename": "SC_0774.MP4",
+   "kind": "video",
+   "size": 268582667,
+   "inode": 1033238,
+   "mtime": 1786728326,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 279773611,
+    "created": "2026-08-14T19:25:18.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 9/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "2865ba5653fa",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam/SC_0727.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam",
+   "basename": "SC_0727.MP4",
+   "kind": "video",
+   "size": 402803928,
+   "inode": 1049007,
+   "mtime": 1786726702,
+   "media": {
+    "duration_s": 14.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 216561251,
+    "created": "2026-08-14T18:58:08.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "097c3fac86f1",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam/SC_0743.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam",
+   "basename": "SC_0743.MP4",
+   "kind": "video",
+   "size": 402803970,
+   "inode": 1033772,
+   "mtime": 1786727230,
+   "media": {
+    "duration_s": 14.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 216561274,
+    "created": "2026-08-14T19:06:55.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "dd4374731f8f",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam/SC_0758.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam",
+   "basename": "SC_0758.MP4",
+   "kind": "video",
+   "size": 604134129,
+   "inode": 1032757,
+   "mtime": 1786727810,
+   "media": {
+    "duration_s": 22.08,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 218889177,
+    "created": "2026-08-14T19:16:27.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "default",
+    "reason": "no faces",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9cac43da9303",
+   "path": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam/SC_0765.MP4",
+   "dir": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam",
+   "basename": "SC_0765.MP4",
+   "kind": "video",
+   "size": 604133653,
+   "inode": 1085530,
+   "mtime": 1786728060,
+   "media": {
+    "duration_s": 21.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 228838504,
+    "created": "2026-08-14T19:20:38.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 3840,
+     "height": 2160,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 1 still",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_2/videos/TKR260814SC 10/Cam/SC_* h264 3840x2160 landscape dm0"
+   }
+  }
+ ],
+ "project": {
+  "name": "sports-raw",
+  "folder": "/Volumes/Paritosh_2/videos",
+  "key": "sports-raw::footage"
+ }
+}
