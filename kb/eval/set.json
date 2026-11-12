@@ -4,7 +4,8 @@
   {
    "name": "guru-25s-brief",
    "shotmap": "out/guru-25s-brief/shotmap.json",
-   "real": ".xml-exports/Guru.xml"
+   "real": ".xml-exports/Guru.xml",
+   "bucket": "brand-social"
   },
   {
    "name": "diwali-party",

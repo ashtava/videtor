@@ -84,6 +84,15 @@ def record_readback(result: dict, picks: dict, kb_dir: Path = Path("kb"), force:
     return _write(doc, kb_dir)
 
 
+def record_edit(name: str, key: str, bucket: str, rows: list[dict], source: str, kb_dir: Path = Path("kb"), report: dict | None = None) -> Path:
+    """Keep a job the user cut by hand: no picks to compare with, only the source ranges the finished video plays
+    (`rows`: clip rows with fid, in_s, out_s). The keeper learns from it as from any finished job."""
+    doc = {**load(name, kb_dir), "name": name, "key": key, "bucket": bucket, "source": source, "read_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+           "slots": [], "added": [{k: r.get(k) for k in ("fid", "path", "name", "start_s", "end_s", "in_s", "out_s", "match")} for r in rows],
+           "summary": {"slots": 0, "added": len(rows)}, "by_hand": True, "render": report}
+    return _write(doc, kb_dir)
+
+
 def record_choices(picks: dict, before: dict[str, dict | None], slot_ids: list[str], by: str, kb_dir: Path = Path("kb"),
                    picks_path: str | Path | None = None) -> Path | None:
     """Keep what the user chose in a second look: for each slot, the pick it had (`before`) and the pick it has now."""
@@ -131,7 +140,7 @@ def teaching_rows(doc: dict) -> list[dict]:
 
 def is_final(doc: dict) -> bool:
     """Whether the file holds a read-back of the finished job (not only choices or a verdict), read from the right cut."""
-    return str(doc.get("source") or "").startswith(FINAL) and bool(doc.get("slots")) and not (doc.get("guard") or {}).get("suspect")
+    return str(doc.get("source") or "").startswith(FINAL) and bool(doc.get("slots") or doc.get("added")) and not (doc.get("guard") or {}).get("suspect")
 
 
 def used_ranges(doc: dict) -> dict[str, list[tuple[float, float]]]:
@@ -147,6 +156,7 @@ def used_ranges(doc: dict) -> dict[str, list[tuple[float, float]]]:
 def state(kb_dir: Path = Path("kb")) -> dict:
     """What has been collected, for `videtor learn` to say."""
     docs = all_docs(kb_dir)
-    return {"projects": len(docs), "finals": sum(is_final(d) for d in docs), "rows": sum(len(teaching_rows(d)) for d in docs),
+    return {"projects": len(docs), "finals": sum(is_final(d) for d in docs), "by_hand": sum(1 for d in docs if d.get("by_hand")),
+            "rows": sum(len(teaching_rows(d)) for d in docs),
             "verdicts": {"good": sum(1 for d in docs if (d.get("verdict") or {}).get("good") is True),
                          "not": sum(1 for d in docs if (d.get("verdict") or {}).get("good") is False)}}

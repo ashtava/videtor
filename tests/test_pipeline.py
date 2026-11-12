@@ -21,9 +21,9 @@ KEY = "proj::footage"
 def write_project(root: Path, takes: list, m: dict) -> Path:
     """An index, a cached footage map for every take and the shot map, laid out as prep and a cut leave them."""
     kb, cache, out = root / "kb", root / "cache" / "footmap", root / "out" / m["name"]
-    (kb / "footage").mkdir(parents=True)
-    cache.mkdir(parents=True)
-    out.mkdir(parents=True)
+    (kb / "footage").mkdir(parents=True, exist_ok=True)
+    cache.mkdir(parents=True, exist_ok=True)
+    out.mkdir(parents=True, exist_ok=True)
     files = []
     for t in takes:
         files.append({"fid": t.fid, "path": t.path, "basename": t.name, "dir": "/Volumes/T", "kind": "video", "used_by": {},

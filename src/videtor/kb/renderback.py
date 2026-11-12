@@ -279,6 +279,40 @@ def _whole_slots(rows: list[dict], picks: dict) -> list[dict]:
     return rows
 
 
+def shortlist(video: str | Path, takes: list, per_shot: int = 5, embed_images=None) -> set[str]:
+    """The takes a finished video most likely plays, by CLIP alone: for each of its shots, the `per_shot` takes whose
+    samples look most like the shot's middle frame. `takes` may come from the keyframe map (minutes to make), so a
+    big shoot is mapped in full only where the video went (pipeline.teach_project)."""
+    from PIL import Image
+
+    info = render.probe(video)
+    portrait = info["height"] >= info["width"]
+    w, h = (render.W, render.H) if portrait else (render.H, render.W)
+    small = render.decode(video, w, h)
+    shots, _ = render.segment(render.frame_features(small), render.frame_motion(small), info["fps"])
+    big = render.decode(video, *((270, 480) if portrait else (480, 270)))
+    mids = [min(len(big) - 1, (sh["a"] + sh["b"]) // 2) for sh in shots if sh["b"] - sh["a"] >= 2]
+    if not mids or not takes:
+        return set()
+    if embed_images is None:
+        from videtor.analyze import tags
+
+        embed_images = tags._embed
+    emb = np.asarray(embed_images([Image.fromarray(big[m]) for m in mids]), np.float32)
+    emb /= np.linalg.norm(emb, axis=1, keepdims=True) + 1e-9
+    best = np.stack([(lambda e: (e / (np.linalg.norm(e, axis=1, keepdims=True) + 1e-9)) @ emb.T)(t.a["emb"].astype(np.float32)).max(axis=0) for t in takes])
+    out = set()
+    for col in best.T:  # one render shot: its best takes
+        out |= {takes[int(k)].fid for k in np.argsort(-col)[:per_shot]}
+    return out
+
+
+def read_by_hand(video: str | Path, takes: list, frames_dir: Path, embed_images=None, log=print) -> tuple[list[dict], dict]:
+    """A finished video with no picks behind it (a job the user cut by hand) found in the footage map: the clip
+    rows it plays (fid, in_s, out_s) and the report. Shots no take holds are left out."""
+    return clips_from_render(video, {"slots": []}, takes, frames_dir, embed_images, log)
+
+
 def read(picks_path: str | Path, video: str | Path, takes: list, frames_dir: Path, kb_dir: Path = Path("kb"), embed_images=None, log=print) -> dict:
     """The render diffed against the picks (readback.diff's result, with the render's report)."""
     picks = json.loads(Path(picks_path).read_text(encoding="utf-8"))

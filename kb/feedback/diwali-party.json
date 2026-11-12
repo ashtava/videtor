@@ -1,0 +1,20 @@
+{
+ "key": "diwali-party::footage",
+ "bucket": null,
+ "fps": 25.0,
+ "width": 1080,
+ "height": 1920,
+ "avoid": [
+  "a man holding a big video camera",
+  "a camera on a gimbal",
+  "a tripod and a light stand"
+ ],
+ "picks": "out/diwali-party/picks.json",
+ "name": "diwali-party",
+ "verdict": {
+  "good": false,
+  "note": "The shot selection was not good. The flow was also not good. (said 2026-10-31)",
+  "by": "you",
+  "at": "2026-11-12T23:37:43"
+ }
+}

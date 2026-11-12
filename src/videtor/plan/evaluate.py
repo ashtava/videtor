@@ -48,6 +48,24 @@ def load_set(kb_dir: Path = Path("kb")) -> list[dict]:
     return json.loads(p.read_text())["projects"] if p.exists() else []
 
 
+def add_project(name: str, shotmap_path: Path, kb_dir: Path = Path("kb"), **truth) -> bool:
+    """Put a finished job in the set (once): from then on every change is also held to what the user did with it.
+    `truth` is `real=<xml>` or `feedback=<name>`."""
+    p = set_path(kb_dir)
+    doc = json.loads(p.read_text()) if p.exists() else {"projects": []}
+    if any(x["name"] == name for x in doc["projects"]):
+        for x in doc["projects"]:
+            if x["name"] == name and not (x.get("real") or x.get("feedback")):
+                x.update(truth)
+                p.write_text(json.dumps(doc, indent=1) + "\n")
+                return True
+        return False
+    doc["projects"].append({"name": name, "shotmap": str(shotmap_path), **truth})
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(doc, indent=1) + "\n")
+    return True
+
+
 def _window(take, pick: dict) -> slice:
     n = len(take.a["t"])
     i0 = max(0, min(n - 1, int(float(pick["in_s"]) // HOP)))
@@ -158,6 +176,8 @@ def run(projects: list[dict], paths=None, only: list[str] | None = None, log=pri
             continue
         t0 = time.time()
         m = shotmap.load(sm_path)
+        if pr.get("bucket"):  # a map written before buckets: score it as the kind of work it is
+            m["bucket"] = pr["bucket"]
         try:
             index = pipeline.index_for_key(m["key"], paths.kb)
         except pipeline.PipelineError as exc:
@@ -171,6 +191,16 @@ def run(projects: list[dict], paths=None, only: list[str] | None = None, log=pri
         used = None
         if pr.get("real") and Path(pr["real"]).exists():
             used = keeper_mod.used_ranges(Path(pr["real"]))
+        elif pr.get("feedback"):  # the finished job, read back (kb/feedback.py): what it plays, by file name
+            from videtor.kb import feedback as fb
+
+            doc = fb.load(pr["feedback"], paths.kb)
+            names = {t.fid: t.name.lower() for t in takes}
+            if fb.is_final(doc):
+                used = {}
+                for fid, rs in fb.used_ranges(doc).items():
+                    if fid in names:
+                        used.setdefault(names[fid], []).extend(rs)
         pool = [t for t in takes if not any(fnmatch(t.path, p) for p in m.get("skip") or [])]  # the takes the fill scored
         keep = None
         if m.get("bucket") and (model := keeper_mod.load(m["bucket"], paths.kb)):

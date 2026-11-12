@@ -162,3 +162,19 @@ code { background: #0f1114; padding: 1px 5px; border-radius: 4px; font-size: 12.
   .form .field .hint { grid-column: 1; }
   .slot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Teach Videtor */
+.badge { display: inline-block; min-width: 18px; padding: 0 6px; border-radius: 9px; background: var(--accent); color: #111; font-size: 11px; font-weight: 700; line-height: 18px; text-align: center; }
+h2 { font-size: 15px; margin: 22px 0 6px; }
+.teachrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 8px 0; border-bottom: 1px solid var(--line); max-width: 980px; }
+.teachrow:last-child { border-bottom: 0; }
+.teachrow .who { width: 150px; font-weight: 600; overflow-wrap: anywhere; }
+.teachrow .what { flex: 1; min-width: 200px; }
+.teachrow .acts { display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
+.small { font-size: 12px; }
+.known { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; max-width: 980px; }
+.known .card h3 { margin: 0 0 6px; font-size: 14px; }
+.known .card ul { margin: 0; padding-left: 18px; }
+.rule { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; }
+.rule span { flex: 1; }
+video.preview { max-height: 420px; border-radius: 8px; background: #000; display: block; margin: 6px 0; }

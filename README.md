@@ -203,6 +203,26 @@ uv run videtor preview out/<name>/picks.json                     # a half-size v
 - A second look is remembered: `videtor look` writes `decisions.json` next to the picks and the next
   `videtor cut` puts the swaps back (`--fresh` forgets them).
 
+### Teach Videtor: the app is where it is given things to learn from
+
+The app's **Teach Videtor** page is the one place for every training input; each button runs one of these:
+
+```sh
+uv run videtor teach pending                          # read every finished video waiting in a project's folder, then learn
+uv run videtor teach project nike-launch --bucket brand-social --video final.mp4 --footage /Volumes/X/shoot
+                                                      # a job you cut yourself: its style, and (with the footage) what you kept
+uv run videtor teach project nike-launch --bucket brand-social --xml "Nike.xml" --footage /Volumes/X/shoot   # or its Premiere XML
+uv run videtor teach edit "Adidas.xml::Sequence 01"   # an edit given before: read its footage (drive connected), then learn
+uv run videtor teach style ~/reels --bucket sports-promo   # finished videos alone: pace, effects, the grade, cuts on the music
+uv run videtor teach status                           # what has been given and what was learnt, per kind of work
+```
+
+- A job cut by hand needs no picks: Videtor splits the finished video into shots, shortlists the takes it plays from
+  the keyframe map (minutes), reads those and a sample of the rest in full, and finds each shot's take and second.
+- A finished job of a Videtor cut joins the evaluation set, so every later change is also held to what you did with
+  that cut. How each learning went is in `kb/learning.json`, and on the page.
+- Rules in your own words are lines in `kb/notes.md` (`- [kind of work] ...`); the page adds and removes them.
+
 ### Buckets: what each kind of work is like
 
 Every edit in `kb/manifest.json` has a bucket (its edit type: `event`, `brand-social`, `sports-promo`, ...).

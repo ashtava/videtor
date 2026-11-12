@@ -13,6 +13,7 @@
     <button data-view="project">Projects</button>
     <button data-view="prep">New project</button>
     <button data-view="library">Library</button>
+    <button data-view="teach">Teach Videtor <span class="badge" id="teach-badge" hidden></span></button>
     <button data-view="jobs">Activity <span class="jobs-dot" id="jobs-dot"></span></button>
     <div style="flex:1"></div>
     <button class="mini" id="activity-mini" data-goto="jobs" hidden></button>
@@ -52,6 +53,12 @@
           <details class="logbox" id="overview-logbox" hidden><summary>Details</summary><pre class="log" id="overview-log">—</pre></details>
           <div class="counts" id="project-classes"></div>
           <div id="project-sheets"></div>
+          <details class="advanced"><summary>A camera's shots look sideways or upside down?</summary>
+            <p class="muted">Videtor turns sideways cameras by the faces in them. A camera that filmed only products or hands has none to read, so say which takes and which way.</p>
+            <div class="row"><label>Which takes</label><input type="text" id="orient-which" placeholder="a file name (C0123.MP4), or how a camera's file names start (M2U)">
+              <label>Turn them</label><select id="orient-turn"><option value="-90">a quarter turn left</option><option value="90">a quarter turn right</option><option value="180">upside down</option><option value="0">back to as shot</option></select>
+              <button class="btn" id="orient-run">Turn</button></div>
+          </details>
           <details class="advanced"><summary>The overview in numbers</summary><pre class="text" id="project-overview">—</pre></details>
         </div>
 
@@ -120,6 +127,8 @@
             </ol>
           </details>
           <div id="export"></div>
+          <div id="preview"></div>
+          <div class="status" id="preview-status" hidden></div>
           <div id="cut-sheet"></div>
           <div class="row"><label>Why (optional)</label><input type="text" id="look-note" placeholder="saved with the next swap, e.g. sharper face" style="min-width:320px"></div>
           <div id="slots"></div>
@@ -128,6 +137,58 @@
           <pre class="log" id="teach-log" hidden>—</pre>
         </div>
       </div>
+    </section>
+
+    <!-- ============ Teach Videtor: everything it learns from, given here ============ -->
+    <section class="view" id="view-teach">
+      <h1>Teach Videtor</h1>
+      <details class="guide" data-guide="teach">
+        <summary>How this works</summary>
+        <ol>
+          <li><b>Every job you finish teaches Videtor.</b> Save the finished video in the project's folder and it shows up below, ready to read. Videtor finds each of its shots in the footage and learns which picks you kept, moved or replaced.</li>
+          <li><b>Work you cut yourself counts too.</b> Give its finished video or Premiere XML, and the footage folder if you have it.</li>
+          <li><b>Finished videos alone teach a style</b>: pace, effects, the grade, how the cuts sit on the music.</li>
+          <li><b>Rules in your own words</b> are read every time a plan is written.</li>
+          <li>After each of these Videtor learns, tries what it learnt on your past cuts, and keeps it only if they get no worse. Nothing here leaves this Mac.</li>
+        </ol>
+      </details>
+      <div class="status" id="teach-status" hidden></div>
+      <details class="logbox" id="teach-logbox" hidden><summary>Details</summary><pre class="log" id="teach-job-log">—</pre></details>
+      <div id="teach-msg" class="muted"></div>
+
+      <h2>1 · Your finished jobs</h2>
+      <div id="teach-jobs"></div>
+
+      <h2>2 · Work you cut yourself</h2>
+      <div class="card">
+        <p class="muted">A job Videtor did not cut. With the footage folder, Videtor also learns which shots you kept and which you left (the drive must be connected; a big shoot takes a while and runs in the background).</p>
+        <div class="row"><label>Name</label><input type="text" id="tp-name" placeholder="e.g. nike-launch"><label>Kind of work</label><input type="text" id="tp-bucket" list="kinds" placeholder="choose or type a new one"></div>
+        <div class="row"><label>Finished video</label><input type="text" id="tp-video" placeholder="the export" style="min-width:380px"><button class="btn" data-pick="tp-video" data-kind="video">Choose…</button></div>
+        <div class="row"><label>or Premiere XML</label><input type="text" id="tp-xml" placeholder="File ▸ Export ▸ Final Cut Pro XML" style="min-width:380px"><button class="btn" data-pick="tp-xml" data-kind="xml">Choose…</button></div>
+        <div class="row"><label>Footage folder</label><input type="text" id="tp-footage" placeholder="optional: the raw footage it was cut from" style="min-width:380px"><button class="btn" data-browse="tp-footage">Choose…</button></div>
+        <div class="row"><button class="btn primary" id="tp-run">Learn from this job</button></div>
+      </div>
+      <div id="teach-edits"></div>
+
+      <h2>3 · A style, from finished videos</h2>
+      <div class="card">
+        <p class="muted">A folder of finished videos of one kind (reels you made, or references you like), with no footage. From two videos on, new plans and effects of that kind follow them.</p>
+        <div class="row"><label>Videos</label><input type="text" id="ts-source" placeholder="a folder of finished videos" style="min-width:380px"><button class="btn" data-browse="ts-source">Choose…</button>
+          <label>Kind of work</label><input type="text" id="ts-bucket" list="kinds" placeholder="choose or type a new one"></div>
+        <div class="row"><button class="btn primary" id="ts-run">Learn this style</button></div>
+      </div>
+
+      <h2>4 · Your rules</h2>
+      <div class="card">
+        <div class="row"><label>Kind of work</label><select id="rules-bucket"></select></div>
+        <div id="rules-list"></div>
+        <div class="row"><input type="text" id="rule-text" placeholder='one rule, in your words, e.g. "Never open on a wide shot"' style="min-width:480px"><button class="btn" id="rule-add">Add rule</button></div>
+      </div>
+
+      <h2>What Videtor knows</h2>
+      <div id="teach-known"></div>
+      <div class="row"><button class="btn" id="teach-learn">Learn again now</button><span class="muted" id="teach-last"></span></div>
+      <datalist id="kinds"></datalist>
     </section>
 
     <!-- ============ New project ============ -->

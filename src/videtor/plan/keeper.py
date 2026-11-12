@@ -132,15 +132,30 @@ def labels(take, ranges: list[tuple[float, float]]) -> np.ndarray:
 
 def edits_of(bucket: str, kb_dir: Path = Path("kb"), exports: Path = Path(".xml-exports")) -> list[tuple[str, Path, list[str]]]:
     """(key, export path, footage folders) of every edit of `bucket` that has its export on disk."""
-    m = json.loads((kb_dir / "manifest.json").read_text())
+    p = kb_dir / "manifest.json"
+    m = json.loads(p.read_text()) if p.exists() else {}  # a knowledge base with no edits given yet
     out = []
     for key, typ in (m.get("types") or {}).items():
         if typ != bucket:
             continue
         xml = exports / key.split("::", 1)[0]
         if xml.exists():
-            out.append((key, xml, list((m.get("footage") or {}).get(key) or [])))
+            out.append((key, xml, list((m.get("footage") or {}).get(key) or []) or index_roots(key, kb_dir)))
     return out
+
+
+def index_roots(key: str, kb_dir: Path = Path("kb")) -> list[str]:
+    """The footage folders a footage index lists for an edit's key (an edit whose folders the manifest does not name)."""
+    for p in sorted((kb_dir / "footage").glob("*.json")):
+        if p.name.endswith((".summary.json", ".selects.json")):
+            continue
+        try:
+            roots = json.loads(p.read_text()).get("roots", {}).get(key)
+        except (OSError, ValueError):
+            continue
+        if roots:
+            return [roots] if isinstance(roots, str) else list(roots)
+    return []
 
 
 def feedback_edits(bucket: str, kb_dir: Path = Path("kb")) -> list[dict]:

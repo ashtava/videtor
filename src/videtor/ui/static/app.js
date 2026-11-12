@@ -34,6 +34,7 @@ function showView(name) {
   if (name === "project") loadProject();
   if (name === "jobs") renderJobs();
   if (name === "library") loadLibrary();
+  if (name === "teach") loadTeach();
 }
 function showTab(name) {
   document.querySelectorAll("#project-tabs button").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
@@ -130,12 +131,15 @@ async function refreshState() {
     mini.innerHTML = `<b>${esc(j.title)}</b><span>${esc(stageText(j))}</span>` + (live.length > 1 ? `<span class="muted">and ${live.length - 1} more</span>` : "");
   } else mini.hidden = true;
   if ($("view-jobs").classList.contains("active")) renderJobs();
+  const badge = $("teach-badge");
+  badge.hidden = !state.pending;
+  badge.textContent = state.pending || "";
 }
 
 /* ---- folder choosing: the Mac's own dialog ---- */
 let browseTarget = null;
 let browsePath = "/Volumes";
-const PROMPTS = { "prep-folder": "Choose the footage folder", "prep-out": "Choose where the project goes", "music-folder": "Choose the music folder",
+const PROMPTS = { "tp-footage": "Choose the footage folder of that job", "ts-source": "Choose the folder of finished videos", "prep-folder": "Choose the footage folder", "prep-out": "Choose where the project goes", "music-folder": "Choose the music folder",
   "lib-folder": "Choose a footage folder", "lib-out": "Choose where the sorted footage goes", "project-add-dir": "Choose a project folder", "lib-add-dir": "Choose a library folder" };
 document.querySelectorAll("button[data-browse]").forEach((b) => b.addEventListener("click", () => browse(b.dataset.browse)));
 async function browse(targetId) {
@@ -397,13 +401,28 @@ function renderReview(p) {
   $("export").innerHTML = p.xml
     ? `<div class="exportcard"><div><b>Your timeline:</b> ${esc(p.xml.split("/").pop())}</div>
        <ol><li>Open your project in Premiere.</li><li>File ▸ Import…, and choose this file (or drag it in from Finder).</li><li>Keep ${esc(d.name || "the footage drive")} connected so the clips play.</li></ol>
-       <div class="row"><button class="btn primary" id="xml-reveal">Show in Finder</button><span class="muted">Picks on V1; runners-up on V2 and V3, switched off; music on A1.</span></div></div>`
+       <div class="row"><button class="btn primary" id="xml-reveal">Show in Finder</button><span class="muted">Picks on V1; runners-up on V2 and V3, switched off; music on A1.</span></div>
+       ${(p.finishing || []).length ? `<div><b>Left to do by hand in Premiere:</b><ul>${p.finishing.map((f) => `<li>${esc(f)}</li>`).join("")}</ul></div>` : ""}</div>`
     : `<div class="empty">No cut yet. <a href="#" data-goto="project:cut">Cut it</a> first.</div>`;
   const rv = $("xml-reveal");
   if (rv) rv.onclick = () => api("/api/reveal", { path: p.xml });
   $("cut-sheet").innerHTML = p.cut_sheet ? `<img class="sheet" src="${fileUrl(p.cut_sheet)}&t=${Date.now()}">` : "";
+  renderPreview(p);
   renderSlots(p);
   renderTeach(p);
+}
+/* ---- watch the cut without Premiere ---- */
+function renderPreview(p) {
+  const el = $("preview");
+  if (!p.picks) { el.innerHTML = ""; return; }
+  el.innerHTML = (p.preview ? `<video class="preview" controls preload="metadata" src="${fileUrl(p.preview)}&t=${Date.now()}"></video>` : "") +
+    `<div class="row"><button class="btn" id="preview-make">${p.preview ? "Make the preview again" : "Watch the cut here"}</button>
+     <span class="muted">A small video of the cut with its music, made from the footage (the drive must be connected; about a minute). No effects or sound effects in it.</span></div>`;
+  $("preview-make").onclick = async () => {
+    const r = await api("/api/preview", { project: p.dir });
+    if (r.error) { $("project-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+    watch(r.job.id, { status: "preview-status", onDone: () => loadProject() });
+  };
 }
 /* ---- when the job is finished: a verdict, and the finished video read back ---- */
 function renderTeach(p) {
@@ -553,8 +572,145 @@ async function renderJobs() {
   tb.querySelectorAll("button[data-act]").forEach((b) => b.addEventListener("click", async () => { await api(`/api/jobs/${b.dataset.id}/${b.dataset.act}`, {}); renderJobs(); }));
 }
 
+/* ---- a camera left sideways ---- */
+$("orient-run").onclick = async () => {
+  if (!current) return;
+  const r = await api("/api/orient", { project: current.dir, which: $("orient-which").value.trim(), rotate: Number($("orient-turn").value) });
+  if (r.error) { $("project-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+  watch(r.job.id, { status: "overview-status", log: "overview-log", logbox: "overview-logbox", onDone: () => loadProject() });
+};
+
+/* ---- one file: a finished video or a Premiere XML ---- */
+document.querySelectorAll("button[data-pick]").forEach((b) => b.addEventListener("click", async () => {
+  b.disabled = true;
+  try {
+    const r = await api("/api/pick-file", { kind: b.dataset.kind, start: state.home });
+    if (r.path) $(b.dataset.pick).value = r.path;
+  } finally { b.disabled = false; }
+}));
+
+/* ---- Teach Videtor: everything it learns from is given here ---- */
+let teach = null;
+const watchTeach = (id) => watch(id, { status: "teach-status", log: "teach-job-log", logbox: "teach-logbox", onDone: () => loadTeach() });
+async function teachPost(path, body) {
+  const r = await api(path, body);
+  $("teach-msg").innerHTML = r.error ? `<span class="bad">${esc(r.error)}</span>` : "";
+  if (r.job) watchTeach(r.job.id);
+  return r;
+}
+async function loadTeach() {
+  teach = await api("/api/teach");
+  $("kinds").innerHTML = teach.kinds.map((k) => `<option value="${esc(k)}">`).join("");
+  renderTeachJobs();
+  renderTeachEdits();
+  renderRules();
+  renderKnown();
+  if (teach.active) watchTeach(teach.active.id);
+}
+const day = (iso) => (iso || "").slice(0, 10);
+function renderTeachJobs() {
+  const el = $("teach-jobs"), jobs = teach.projects || [];
+  if (!jobs.length) { el.innerHTML = `<div class="empty">No cut yet. When a project has a cut, it appears here.</div>`; return; }
+  const rows = jobs.map((j) => {
+    const s = j.summary, v = j.verdict;
+    const what = j.unread ? `<b>Finished video found:</b> ${esc(j.unread.split("/").pop())}. Not read yet.`
+      : s ? `Read ${esc(day(j.read_at))}: ${s.kept} kept, ${s.slipped + s.trimmed} moved, ${s.swapped_to_alternate + s.swapped} swapped, ${s.removed} removed of ${s.slots} shots.`
+      : `<span class="muted">Waiting for your finished video: save the export in this project's folder, or choose it.</span>`;
+    return `<div class="teachrow" data-dir="${esc(j.dir)}"><div class="who">${esc(j.name)}</div><div class="what">${what}${v && v.note ? `<div class="muted small">You said: ${esc(v.note)}</div>` : ""}</div>
+      <span class="acts">${j.unread ? `<button class="btn primary" data-act="read">Read it</button>` : `<button class="btn" data-act="choose">Choose the video…</button>`}
+      <button class="btn" data-act="folder">Show folder</button></span>
+      <span class="acts"><span class="muted">Was the cut a good start?</span>
+      <button class="btn ${v && v.good ? "primary" : ""}" data-act="good">Good</button><button class="btn ${v && !v.good ? "primary" : ""}" data-act="not">Not good</button></span></div>`;
+  }).join("");
+  el.innerHTML = `<div class="card">` + (teach.pending ? `<div class="row"><button class="btn primary" id="teach-pending">Read ${teach.pending} finished video${teach.pending > 1 ? "s" : ""} and learn</button></div>` : "") + rows + `</div>`;
+  if ($("teach-pending")) $("teach-pending").onclick = () => teachPost("/api/teach/pending", {});
+  el.querySelectorAll("button[data-act]").forEach((b) => b.addEventListener("click", async () => {
+    const dir = b.closest(".teachrow").dataset.dir, act = b.dataset.act;
+    if (act === "read") return teachPost("/api/readback", { project: dir });
+    if (act === "folder") return api("/api/reveal", { path: dir + "/picks.json" });
+    if (act === "choose") {
+      const r = await api("/api/pick-file", { kind: "video", start: dir });
+      if (r.path) teachPost("/api/readback", { project: dir, video: r.path });
+      return;
+    }
+    const note = act === "not" ? (window.prompt("What was wrong, in a line? (optional)") || "") : "";
+    await api("/api/verdict", { project: dir, good: act === "good", note });
+    loadTeach();
+  }));
+}
+function renderTeachEdits() {
+  const edits = (teach.buckets || []).flatMap((b) => b.edits);
+  if (!edits.length) { $("teach-edits").innerHTML = ""; return; }
+  const row = (e) => {
+    const read = e.mapped_takes > 20;  // enough of its footage is already read to learn from, drive or no drive
+    const what = e.learnt ? `Videtor learnt what you kept from this (${e.kept_takes} takes).`
+      : read && e.tried ? `Its footage is read. Videtor tried what it learnt from it and did not keep it: on its own this edit made a past cut worse. More edits of this kind will help.`
+      : read ? `Its footage is read (${e.mapped_takes} takes). Not learnt from yet.`
+      : !e.folders.length ? `<span class="muted">Its footage folder is not known: add the job again above with the folder.</span>`
+      : !e.connected ? `<span class="muted">Its footage is on <b>${esc(e.drive || "a drive")}</b>, which is not connected. Connect it to learn which shots you kept.</span>`
+      : `Its footage is connected.`;
+    return `<div class="teachrow"><div class="who">${esc(e.name)}</div><div class="what"><span class="chip">${esc(e.bucket)}</span> ${what}</div>
+      ${!e.learnt && (e.connected || read) ? `<button class="btn ${e.tried ? "" : "primary"}" data-key="${esc(e.key)}">${read ? (e.tried ? "Try again" : "Learn from it") : "Read its footage and learn"}</button>` : ""}</div>`;
+  };
+  const waiting = edits.filter((e) => !e.learnt).length;
+  $("teach-edits").innerHTML = `<details class="advanced" ${waiting && edits.some((e) => !e.learnt && e.connected) ? "open" : ""}><summary>The ${edits.length} edits you gave before (${edits.length - waiting} learnt from, ${waiting} waiting for their footage)</summary><div class="card">${edits.map(row).join("")}</div></details>`;
+  $("teach-edits").querySelectorAll("button[data-key]").forEach((b) => b.addEventListener("click", () => teachPost("/api/teach/edit", { key: b.dataset.key })));
+}
+function renderRules() {
+  const sel = $("rules-bucket"), keep = sel.value;
+  sel.innerHTML = teach.kinds.map((k) => `<option value="${esc(k)}">${esc(k)}</option>`).join("");
+  if (keep && teach.kinds.includes(keep)) sel.value = keep;
+  const b = (teach.buckets || []).find((x) => x.bucket === sel.value) || { rules: [] };
+  $("rules-list").innerHTML = b.rules.length ? b.rules.map((r, i) => `<div class="rule"><span>${esc(r)}</span><button class="btn" data-rule="${i}">Remove</button></div>`).join("")
+    : `<div class="muted">No rules for this kind of work yet.</div>`;
+  $("rules-list").querySelectorAll("button[data-rule]").forEach((x) => x.addEventListener("click", async () => {
+    await api("/api/teach/rule", { bucket: sel.value, text: b.rules[Number(x.dataset.rule)], remove: true });
+    loadTeach();
+  }));
+}
+$("rules-bucket").onchange = () => renderRules();
+$("rule-add").onclick = async () => {
+  const r = await api("/api/teach/rule", { bucket: $("rules-bucket").value, text: $("rule-text").value });
+  $("teach-msg").innerHTML = r.error ? `<span class="bad">${esc(r.error)}</span>` : "";
+  if (!r.error) { $("rule-text").value = ""; loadTeach(); }
+};
+function renderKnown() {
+  const known = (teach.buckets || []).filter((b) => b.known);
+  const keeps = (k) => !k ? null : `Knows what you keep: ${k.auc >= 0.75 ? "well" : k.auc >= 0.65 ? "fairly" : "roughly"}, from ${k.edits} job${k.edits > 1 ? "s" : ""}` +
+    (k.keeps.length ? ` (leans to ${k.keeps.map((x) => esc(x.replace("concept: ", ""))).join("; ")})` : "");
+  $("teach-known").innerHTML = known.length ? `<div class="known">` + known.map((b) => {
+    const lines = [
+      b.edits.length ? `${b.edits.length} of your edits` : null,
+      b.reels ? `${b.reels} finished video${b.reels > 1 ? "s" : ""}${b.style ? ": pace, effects and cuts on the music learnt" : ""}` : null,
+      b.finished ? `${b.finished} finished job${b.finished > 1 ? "s" : ""} read back${b.by_hand ? ` (${b.by_hand} cut by hand)` : ""}` : null,
+      keeps(b.keeper) || (b.edits.length || b.finished ? `<span class="muted">Does not know what you keep yet: it needs a job with its footage read.</span>` : null),
+      b.taste ? `Your taste in shots: from ${b.taste.pairs} of your swaps` : b.choices ? `<span class="muted">${b.choices} of your swaps so far; your taste is learnt from ${teach.taste_from} on</span>` : null,
+      b.verdicts.good + b.verdicts.not ? `Your verdicts: ${b.verdicts.good} good, ${b.verdicts.not} not good` : null,
+      b.rules.length ? `${b.rules.length} rule${b.rules.length > 1 ? "s" : ""} in your words` : null,
+    ].filter(Boolean);
+    return `<div class="card"><h3>${esc(b.bucket)}</h3><ul>${lines.map((l) => `<li>${l}</li>`).join("")}</ul></div>`;
+  }).join("") + `</div>` : `<div class="empty">Nothing yet. Start with a finished job above.</div>`;
+  const last = teach.last, ev = teach.evaluation;
+  const said = !last ? "Videtor has not learnt from feedback yet."
+    : last.kept.length ? `Last learned ${day(last.at)}: kept (${last.kept.length} model${last.kept.length > 1 ? "s" : ""}); your past cuts got no worse.`
+    : last.refused.length ? `Last tried ${day(last.at)}: not kept, because it made a past cut worse (${esc((last.worse || [])[0] || "see Details")}). More examples of this kind of work will help.`
+    : `Last checked ${day(last.at)}: nothing new to learn from yet.`;
+  const measured = ev && ev.summary && ev.summary.right_take != null ? ` Measured on ${ev.projects} past cuts: where you edited the same footage, ${Math.round(100 * ev.summary.right_take)}% of Videtor's shots are takes you used.` : "";
+  $("teach-last").textContent = said + measured;
+}
+$("teach-learn").onclick = () => teachPost("/api/learn", {});
+$("tp-run").onclick = async () => {
+  const r = await teachPost("/api/teach/project", { name: $("tp-name").value, bucket: $("tp-bucket").value, video: $("tp-video").value, xml: $("tp-xml").value, footage: $("tp-footage").value });
+  if (!r.error) ["tp-name", "tp-video", "tp-xml", "tp-footage"].forEach((id) => { $(id).value = ""; });
+};
+$("ts-run").onclick = async () => {
+  const r = await teachPost("/api/teach/style", { source: $("ts-source").value, bucket: $("ts-bucket").value });
+  if (!r.error) $("ts-source").value = "";
+};
+
 /* ---- start ---- */
 refreshState().then(() => {
+  if (location.hash.length > 1) return goto(decodeURIComponent(location.hash.slice(1)));  // a link to one page: #teach, #project:look
   const v = store.get("videtor.view");
   showView(!state.projects.length ? "prep" : v && v !== "prep" ? v : "project");
 });

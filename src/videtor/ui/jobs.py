@@ -23,7 +23,7 @@ from typing import Callable
 
 from videtor import events
 
-BACKGROUND = {"prep", "library"}  # paused by a cut, queued behind one
+BACKGROUND = {"prep", "library", "teach"}  # paused by a cut, queued behind one
 FOREGROUND = {"cut"}  # gets the machine
 LOG_LINES = 6000
 SPOILT = re.compile(r"\bFAILED\b|timeout|not decoded|(?<!0 )failed\b")

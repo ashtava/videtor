@@ -30,7 +30,7 @@ STATIC = Path(__file__).with_name("static")
 STATE_FILE = Path("cache/ui-state.json")
 VIDEO_EXT = (".mp4", ".mov", ".mxf", ".mts", ".m4v", ".avi", ".braw", ".r3d", ".mpg")
 VERBS = {"prep": "Reading the footage", "cut": "Cutting", "look": "Updating the cut", "search": "Searching", "music": "Ranking music",
-         "library": "Sorting the footage", "learn": "Learning your sorting"}
+         "library": "Sorting the footage", "learn": "Learning your sorting", "teach": "Learning from your work", "preview": "Making the preview"}
 Log = Callable[[str], None]
 
 
@@ -56,11 +56,11 @@ def choose_folder_native(prompt: str, start: str | None = None) -> str | None:
     return path.rstrip("/") or "/" if run.returncode == 0 and path else None
 
 
-def choose_video_native(prompt: str, start: str | None = None) -> str | None:
-    """macOS's own file dialog for one video file; None when the user cancels."""
+def choose_video_native(prompt: str, start: str | None = None, types: str = '{"public.movie"}') -> str | None:
+    """macOS's own file dialog for one file (a video unless `types` says otherwise); None when the user cancels."""
     where = f' default location ((POSIX file "{start}") as alias)' if start and Path(start).is_dir() else ""
     lines = ['tell application "Finder"', "activate",
-             f'POSIX path of (choose file with prompt "{prompt.replace(chr(34), "")}" of type {{"public.movie"}}{where})', "end tell"]
+             f'POSIX path of (choose file with prompt "{prompt.replace(chr(34), "")}" of type {types}{where})', "end tell"]
     cmd = ["osascript"]
     for line in lines:
         cmd += ["-e", line]
@@ -109,13 +109,37 @@ class App:
         self.notify = False  # macOS notifications when a long job ends (main() turns them on)
         self.token = secrets.token_urlsafe(18)  # handed to the page with index.html; every POST must carry it
         self.jobs.on_finish = self._finished
+        self.discover()
+
+    def discover(self) -> int:
+        """List every project folder under the output folder that the app does not know yet (cuts made in the
+        terminal, or before the app): the app is where their verdicts and finished videos are given."""
+        root = self.out_root if self.out_root.is_absolute() else self.root / self.out_root
+        known = {p["dir"] for p in self.state["projects"]}
+        found = 0
+        for d in sorted(root.iterdir()) if root.is_dir() else []:
+            if not d.is_dir() or str(d.resolve()) in known or d.name in ("library", "references", "fx-test"):
+                continue
+            if not any((d / f).exists() for f in ("picks.json", "shotmap.json", "aroll.json", "mv.json")):
+                continue
+            folder = ""
+            index = self.root / "kb" / "footage" / f"{_slug(d.name)}.json"
+            if index.exists():
+                try:
+                    folder = (json.loads(index.read_text()).get("project") or {}).get("folder") or ""
+                except ValueError:
+                    pass
+            self.add_project(d.name, folder, str(d.resolve()))
+            found += 1
+        return found
 
     def _finished(self, job) -> None:
-        if not self.notify or job.kind not in ("prep", "cut", "library"):
+        if not self.notify or job.kind not in ("prep", "cut", "library", "teach"):
             return
         name = Path(job.project or "").name or "the project"
         text = {("prep", "done"): f"The footage of {name} is read. Next: the brief and the plan.",
                 ("cut", "done"): f"The cut of {name} is ready to review.",
+                ("teach", "done"): "Videtor has finished learning: see Teach Videtor for what it kept.",
                 ("library", "done"): f"The footage of {name} is sorted."}.get((job.kind, job.status), f"{job.title} stopped with an error: see Activity.")
         notify(text)
 
@@ -160,7 +184,17 @@ class App:
         volumes = sorted(str(p) for p in Path("/Volumes").glob("*") if p.is_dir() and not p.name.startswith(".")) if Path("/Volumes").is_dir() else []
         return {"repo": str(self.root), "out_root": str(self.out_root if self.out_root.is_absolute() else self.root / self.out_root),
                 "projects": [{**p, "status": self._status(p)} for p in self.state["projects"]], "libraries": self.state.get("libraries", []),
-                "jobs": self.jobs.list(), "volumes": volumes, "window": self.window is not None, "home": str(Path.home())}
+                "jobs": self.jobs.list(), "volumes": volumes, "window": self.window is not None, "home": str(Path.home()), "pending": self._pending()}
+
+    def _pending(self) -> int:
+        """How many finished videos wait to be read (the badge on Teach Videtor); looked up at most twice a minute."""
+        from videtor import pipeline
+
+        now = time.time()
+        if now - getattr(self, "_pending_at", 0) > 30:
+            self._pending_n = sum(1 for p in self.state["projects"] if pipeline.unread_final(Path(p["dir"]), self._kb()))
+            self._pending_at = now
+        return self._pending_n
 
     # --- where a project stands, in the user's words --------------------------------------------
 
@@ -206,17 +240,16 @@ class App:
     def _cut_needs(self, p: dict) -> dict | None:
         """How many takes the plan can use, and how many of those still need the drive (no full footage map yet)."""
         try:
+            from videtor import pipeline
             from videtor.analyze import footmap
-            from videtor.cli import _pool_entries
-            from videtor.cli import _slug as cli_slug
             from videtor.plan import library
 
             d = Path(p["dir"])
             m = json.loads((d / "shotmap.json").read_text())
-            index = json.loads((self.root / "kb" / "footage" / f"{cli_slug(p['name'])}.json").read_text())
-            entries = _pool_entries(index, m.get("key") or p["key"])
+            index = json.loads((self.root / "kb" / "footage" / f"{pipeline.slug(p['name'])}.json").read_text())
+            entries = pipeline.pool_entries(index, m.get("key") or p["key"])
             classes = json.loads((d / "classes.json").read_text()) if (d / "classes.json").exists() else {}
-            cands = library.candidates(entries, classes, m) if library.wanted_classes(m) else entries
+            cands = library.candidates(entries, classes, m)  # what the cut itself would read (pipeline.takes_for_cut)
             todo = sum(1 for e in cands if not footmap.is_done(e, self.root / "cache" / "footmap"))
             return {"takes": len(cands), "pool": len(entries), "to_decode": todo}
         except (OSError, ValueError, KeyError, TypeError):
@@ -353,9 +386,15 @@ class App:
         p = self._project(body.get("project", ""))
         if not p:
             return {"error": "unknown project"}
-        shotmap = Path(p["dir"]) / "shotmap.json"
+        d = Path(p["dir"])
+        if (d / "mv.json").exists():  # a music video: its own cut
+            return {"job": self.jobs.submit("cut", f"Cut (music video) · {p['name']}", ["cut-mv", str(d / "mv.json")], project=p["dir"]).to_dict()}
+        shotmap = d / "shotmap.json"
         if not shotmap.exists():
             return {"error": f"no shot map yet: write {shotmap} first"}
+        if (d / "aroll.json").exists():  # an interview piece: the voice from the paper edit, B-roll from the shot map
+            args = ["cut-interview", str(d / "aroll.json"), str(shotmap)] + (["--no-sfx"] if body.get("sfx") is False else [])
+            return {"job": self.jobs.submit("cut", f"Cut (interview) · {p['name']}", args, project=p["dir"]).to_dict()}
         from videtor.plan import shotmap as shotmap_mod
 
         try:
@@ -410,16 +449,116 @@ class App:
         video = body.get("video") or pipeline.find_render(Path(p["dir"]))
         if not video or not Path(video).is_file():
             return {"error": "No finished video yet: save your export in the project's folder, or choose it."}
-        job = self.jobs.submit("readback", f"Read the finished video · {p['name']}", ["readback", str(picks), "--render", str(video)], project=p["dir"])
+        job = self.jobs.submit("teach", f"Read the finished video · {p['name']}", ["readback", str(picks), "--render", str(video), "--learn"], project=p["dir"])
         return {"job": job.to_dict()}
 
     def api_learn(self, body: dict) -> dict:
-        job = self.jobs.submit("learn", "Learn from your feedback", ["learn"])
+        job = self.jobs.submit("teach", "Learn from your feedback", ["learn"])
         return {"job": job.to_dict()}
 
     def api_pick_video(self, body: dict) -> dict:
         path = choose_video_native(body.get("prompt") or "Choose your finished video", body.get("start"))
         return {"path": path, "cancelled": path is None}
+
+    def api_pick_file(self, body: dict) -> dict:
+        """The Mac's file dialog for one file: a finished video, or a Premiere XML export."""
+        kind = body.get("kind")
+        types = '{"public.movie"}' if kind == "video" else '{"public.xml", "xml"}'
+        path = choose_video_native(body.get("prompt") or ("Choose the finished video" if kind == "video" else "Choose the Premiere XML export"),
+                                   body.get("start"), types)
+        return {"path": path, "cancelled": path is None}
+
+    # --- teaching: the one place the user gives Videtor something to learn from ------------------
+
+    def _kb(self) -> Path:
+        return self.root / "kb"
+
+    def api_teach(self) -> dict:
+        """What Videtor has been given and has learnt, the finished jobs (and what waits to be read), the past
+        edits (and which drive each needs), and how the last learning went."""
+        from videtor import pipeline, teach
+
+        st = teach.state(self._kb(), self.root / ".xml-exports", self.root / "out" / "references", self.root / "cache" / "footmap")
+        jobs = []
+        for p in self.state["projects"]:
+            d = Path(p["dir"])
+            if not (d / "picks.json").exists():
+                continue
+            fb = self._feedback(p, d)
+            unread = pipeline.unread_final(d, self._kb())
+            jobs.append({"name": p["name"], "dir": p["dir"], "verdict": fb["verdict"], "final": fb["final"], "unread": str(unread) if unread else None,
+                         "summary": fb["summary"], "read_at": fb["read_at"], "choices": fb["choices"]})
+        with self.jobs.lock:
+            live = [j for j in self.jobs.jobs.values() if j.kind in ("teach", "learn", "readback") and j.alive]
+        return {**st, "projects": jobs, "pending": sum(1 for j in jobs if j["unread"]), "active": live[-1].to_dict() if live else None,
+                "kinds": teach.buckets(self._kb())}
+
+    def api_teach_project(self, body: dict) -> dict:
+        """A job the user cut by hand: its name, kind of work, and the finished video or the XML (footage optional)."""
+        video, xml, footage = (str(body.get(k) or "").strip() for k in ("video", "xml", "footage"))
+        if not str(body.get("name") or "").strip() or not str(body.get("bucket") or "").strip():
+            return {"error": "Give the job a name and say what kind of work it is."}
+        name, bucket = _slug(str(body["name"])), _slug(str(body["bucket"]))
+        if not video and not xml:
+            return {"error": "Choose the finished video or the Premiere XML export of the job (or both)."}
+        for what, path, is_ok in (("finished video", video, os.path.isfile), ("XML export", xml, os.path.isfile), ("footage folder", footage, os.path.isdir)):
+            if path and not is_ok(path):
+                return {"error": f"The {what} is not there: {path}" + (" (is the drive connected?)" if path.startswith("/Volumes/") else "")}
+        args = ["teach", "project", name, "--bucket", bucket]
+        for flag, value in (("--footage", footage), ("--video", video), ("--xml", xml)):
+            if value:
+                args += [flag, value]
+        job = self.jobs.submit("teach", f"Learn from {name}", args)
+        return {"job": job.to_dict()}
+
+    def api_teach_edit(self, body: dict) -> dict:
+        job = self.jobs.submit("teach", f"Learn from {str(body.get('key') or '').split('::')[0]}", ["teach", "edit", str(body.get("key") or "")])
+        return {"job": job.to_dict()}
+
+    def api_teach_style(self, body: dict) -> dict:
+        source = str(body.get("source") or "").strip()
+        if not source or not os.path.exists(source):
+            return {"error": "Choose a folder of finished videos (or one video)."}
+        if not str(body.get("bucket") or "").strip():
+            return {"error": "Say what kind of work these videos are."}
+        bucket = _slug(str(body["bucket"]))
+        job = self.jobs.submit("teach", f"Learn the {bucket} style", ["teach", "style", source, "--bucket", bucket])
+        return {"job": job.to_dict()}
+
+    def api_teach_pending(self, body: dict) -> dict:
+        job = self.jobs.submit("teach", "Read the finished videos and learn", ["teach", "pending", "--out", str(self.out_root if self.out_root.is_absolute() else self.root / self.out_root)])
+        return {"job": job.to_dict()}
+
+    def api_teach_rule(self, body: dict) -> dict:
+        from videtor import teach
+
+        bucket, text = _slug(str(body.get("bucket") or "")) if str(body.get("bucket") or "").strip() else "", str(body.get("text") or "")
+        try:
+            rules = teach.remove_rule(bucket, text, self._kb()) if body.get("remove") else teach.add_rule(bucket, text, self._kb())
+        except ValueError as exc:
+            return {"error": str(exc)}
+        return {"rules": rules}
+
+    def api_preview(self, body: dict) -> dict:
+        """A small video of the cut to watch in the app (a job; the footage drive must be connected)."""
+        p = self._project(body.get("project", ""))
+        picks = Path(p["dir"]) / "picks.json" if p else None
+        if not picks or not picks.exists():
+            return {"error": "no cut yet"}
+        drive = self._drive(p.get("folder", ""))
+        if p.get("folder") and not drive["connected"]:
+            return {"error": f"Plug in {drive['name'] or 'the footage drive'} first: the preview is made from the footage."}
+        return {"job": self.jobs.submit("preview", f"Preview · {p['name']}", ["preview", str(picks)], project=p["dir"]).to_dict()}
+
+    def api_orient(self, body: dict) -> dict:
+        """Turn a camera's takes (or one take) the detector left sideways."""
+        p = self._project(body.get("project", ""))
+        which, turn = str(body.get("which") or "").strip(), body.get("rotate")
+        if not p or not which or turn not in (-90, 90, 180, 0):
+            return {"error": "Say which takes (a file name, or the start of a camera's file names) and which way to turn them."}
+        flag = ["--take", which] if "." in which else ["--camera", which]
+        job = self.jobs.submit("prep", f"Turn {which} · {p['name']}", ["orient", p["name"], "--rotate", str(turn), *flag, "--out", str(Path(p["dir"]).parent)], project=p["dir"])
+        return {"job": job.to_dict()}
 
     def api_music(self, body: dict) -> dict:
         folder = Path(body.get("folder", "")).expanduser()
@@ -520,6 +659,9 @@ class App:
             xml = d / f"{p['name']}.xml"
             out["xml"] = str(xml) if xml.exists() else next((str(x) for x in d.glob("*.xml")), None)
         out["feedback"] = self._feedback(p, d)
+        out["preview"] = str(d / "preview.mp4") if (d / "preview.mp4").exists() else None
+        out["finishing"] = self._finishing(d)
+        out["kind"] = "music video" if (d / "mv.json").exists() else "interview" if (d / "aroll.json").exists() else "cut"
         job = self._active_job(p["dir"])
         out["drive"] = self._drive(p.get("folder", ""))
         out["status"] = self._status(p)
@@ -531,6 +673,31 @@ class App:
         out["steps"], out["next"] = self._steps(p, out, job)
         return out
 
+    def _cut_name(self, d: Path) -> str | None:
+        """The name a project's cut goes by (its picks' `name`, which the feedback is filed under); read once per change."""
+        picks = d / "picks.json"
+        try:
+            stamp = picks.stat().st_mtime
+        except OSError:
+            return None
+        cache = self.__dict__.setdefault("_cut_names", {})
+        if cache.get(str(d), (None, None))[0] != stamp:
+            try:
+                cache[str(d)] = (stamp, json.loads(picks.read_text()).get("name"))
+            except ValueError:
+                cache[str(d)] = (stamp, None)
+        return cache[str(d)][1]
+
+    @staticmethod
+    def _finishing(d: Path) -> list[str]:
+        """What is left to do by hand in Premiere after the import (black and white the XML cannot carry, ...)."""
+        try:
+            from videtor.plan import fx
+
+            return list(fx.finishing(json.loads((d / "picks.json").read_text())))
+        except (OSError, ValueError, KeyError, TypeError):
+            return []
+
     def _feedback(self, p: dict, d: Path) -> dict:
         """What the user has told Videtor about this cut: the verdict, the finished video found, the last read-back."""
         from videtor import pipeline
@@ -538,7 +705,7 @@ class App:
 
         verdict = json.loads((d / "verdict.json").read_text()) if (d / "verdict.json").exists() else None
         final = pipeline.find_render(d) if d.is_dir() else None
-        doc = feedback.load(p["name"], self.root / "kb")
+        doc = feedback.load(self._cut_name(d) or p["name"], self.root / "kb")
         return {"verdict": verdict, "final": str(final) if final else None, "summary": doc.get("summary") if feedback.is_final(doc) else None,
                 "read_at": doc.get("read_at"), "choices": len(doc.get("choices") or [])}
 
@@ -717,6 +884,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(self.app.api_project(q.get("dir", "")))
         if path == "/api/library":
             return self._json(self.app.api_library(q.get("dir", "")))
+        if path == "/api/teach":
+            return self._json(self.app.api_teach())
         if path == "/api/jobs":
             return self._json({"jobs": self.app.jobs.list()})
         m = re.fullmatch(r"/api/jobs/(j\d+)", path)
@@ -734,7 +903,10 @@ class Handler(BaseHTTPRequestHandler):
                   "/api/library/move": self.app.api_library_move, "/api/project/save": self.app.api_project_save, "/api/validate": self.app.api_validate,
                   "/api/reveal": self.app.api_reveal, "/api/pick-folder": self.app.api_pick_folder, "/api/project/add": self.app.api_project_add,
                   "/api/library/add": self.app.api_library_add, "/api/reprep": self.app.api_reprep, "/api/verdict": self.app.api_verdict,
-                  "/api/readback": self.app.api_readback, "/api/learn": self.app.api_learn, "/api/pick-video": self.app.api_pick_video}
+                  "/api/readback": self.app.api_readback, "/api/learn": self.app.api_learn, "/api/pick-video": self.app.api_pick_video,
+                  "/api/pick-file": self.app.api_pick_file, "/api/teach/project": self.app.api_teach_project, "/api/teach/edit": self.app.api_teach_edit,
+                  "/api/teach/style": self.app.api_teach_style, "/api/teach/pending": self.app.api_teach_pending, "/api/teach/rule": self.app.api_teach_rule,
+                  "/api/preview": self.app.api_preview, "/api/orient": self.app.api_orient}
         if path in routes:
             try:
                 return self._json(routes[path](body))

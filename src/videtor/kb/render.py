@@ -523,9 +523,16 @@ def read_folder(folder: Path, bucket: str, out_dir: Path = Path("out/references"
                 labels: bool = True, log=print) -> dict:
     """Every render in `folder`: read in parallel (CLIP in this process as each finishes), each one's JSON and contact
     sheet in out/references/<bucket>/ (local: file names stay off the public repo), the style in kb/renders/<bucket>.json."""
+    files = sorted(str(p) for p in Path(folder).iterdir() if p.suffix.lower() in VIDEO_EXT and not p.name.startswith("."))
+    return read_files(files, bucket, out_dir, kb_dir, labels, log)
+
+
+def read_files(files: list[str], bucket: str, out_dir: Path = Path("out/references"), kb_dir: Path = Path("kb"),
+               labels: bool = True, log=print) -> dict:
+    """Read these renders and add them to the bucket's style: the style is always the summary of every reel read
+    for the bucket so far (out/references/<bucket>/*.json), so a style grows one finished job at a time."""
     from videtor.analyze import parallel
 
-    files = sorted(str(p) for p in Path(folder).iterdir() if p.suffix.lower() in VIDEO_EXT and not p.name.startswith("."))
     dest = out_dir / bucket
     dest.mkdir(parents=True, exist_ok=True)
     renders = []
@@ -544,7 +551,11 @@ def read_folder(folder: Path, bucket: str, out_dir: Path = Path("out/references"
         s = d["summary"]
         log(f"  {k}/{n} {Path(item).name}: {s['shots']} shots, {s['cuts_per_min']} cuts a minute, median {s['shot_length_s'].get('median')} s ({timer})")
 
-    parallel.run(_read, files, workers_n=parallel.workers(len(files), per_worker_gb=1.5), on_done=done, log=log, label="render ")
+    if files:
+        parallel.run(_read, files, workers_n=parallel.workers(len(files), per_worker_gb=1.5), on_done=done, log=log, label="render ")
+    renders = [json.loads(p.read_text()) for p in sorted(dest.glob("*.json"))]
+    if not renders:
+        raise ValueError(f"no finished video could be read for {bucket}")
     style = {"bucket": bucket, **summarize(renders), "renders": anonymous(renders)}
     out = kb_dir / "renders" / f"{bucket}.json"
     out.parent.mkdir(parents=True, exist_ok=True)

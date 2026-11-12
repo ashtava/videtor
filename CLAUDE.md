@@ -54,7 +54,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 328 tests, about 30 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 341 tests, about 40 s, no drive needed
 .venv/bin/videtor eval                                           # the past projects re-cut from the cache and measured (about 1 min)
 ```
 
@@ -88,6 +88,11 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   - Feedback: `videtor readback <picks.json>` reads the finished video (or `--xml`, `--live`) against the picks,
     `videtor verdict`, and a swap made by a person (`look --by you`, the app) all go to `kb/feedback/<name>.json`.
     `videtor learn` fits taste and keeper from it and keeps them only if `eval` passes.
+  - **The app's Teach Videtor page is the user's one gateway for training inputs** (their instruction, 2026-11-12):
+    finished videos of Videtor cuts, verdicts, jobs they cut by hand (video or XML, with the footage), finished
+    videos of a style, rules. Every such input must be givable there (`teach.py`, `videtor teach ...`); don't ask
+    the user to run a command or edit a file to teach it something. When they tell you a verdict in chat, record it
+    (`videtor verdict`) so the page shows it.
   - `prep` writes `inventory.json` (what the shoot holds); `videtor draft` asks only for that. The cut settles
     neighbours (repeats, look-alikes, day cut to night) and runs an automatic second look (`plan/autolook.py`);
     Claude's second look is for what needs eyes.
@@ -104,7 +109,7 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 ## Layout
 
 ```
-src/videtor/  cli.py (thin) · pipeline.py (the steps: prepare, cut, look, read back, learn) · events.py · ui/
+src/videtor/  cli.py (thin) · pipeline.py (the steps: prepare, cut, look, read back, learn, teach) · events.py · teach.py · ui/
               kb/ (past edits, read-backs, feedback) · analyze/ (per clip, per second)
               plan/ (shot map → picks; moves, music, SFX, steadying, interview, music video) · export/ (xmeml writer)
 kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ library/ renders/ policy/

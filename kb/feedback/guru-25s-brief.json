@@ -1,0 +1,16 @@
+{
+ "key": "Guru.xml::Sequence 01",
+ "bucket": null,
+ "fps": 25.0,
+ "width": 1080,
+ "height": 1920,
+ "avoid": [],
+ "picks": "out/guru-25s-brief/picks.json",
+ "name": "guru-25s-brief",
+ "verdict": {
+  "good": true,
+  "note": "This is good. This is what I was looking for. We can standardize this. (said 2026-10-29)",
+  "by": "you",
+  "at": "2026-11-12T23:37:43"
+ }
+}

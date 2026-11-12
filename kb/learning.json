@@ -1,0 +1,50 @@
+[
+ {
+  "at": "2026-11-12T23:29:56",
+  "kept": [],
+  "refused": [
+   "keeper (brand-social)"
+  ],
+  "passed": false,
+  "before": {
+   "filled": 1.0,
+   "match": 2.672,
+   "sharp": 0.202,
+   "repeats": 0.286,
+   "lookalikes": 0.857,
+   "light_jumps": 0.143,
+   "keeper": 0.967,
+   "right_take": 0.336,
+   "right_second": 0.11,
+   "in_top3": 0.681
+  },
+  "after": {
+   "filled": 1.0,
+   "match": 2.66,
+   "sharp": 0.218,
+   "repeats": 0.286,
+   "lookalikes": 0.857,
+   "light_jumps": 0.143,
+   "keeper": 0.967,
+   "right_take": 0.325,
+   "right_second": 0.099,
+   "in_top3": 0.649
+  },
+  "worse": [
+   "guru-25s-brief: right_take 0.613 -> 0.581",
+   "guru-25s-brief: right_second 0.194 -> 0.161",
+   "guru-25s-brief: in_top3 0.968 -> 0.871"
+  ],
+  "state": {
+   "projects": 0,
+   "finals": 0,
+   "by_hand": 0,
+   "rows": 0,
+   "verdicts": {
+    "good": 0,
+    "not": 0
+   }
+  },
+  "note": ""
+ }
+]

@@ -33,3 +33,6 @@ media/
 # Local-only context: session history, memory snapshot (never pushed; the repo is public)
 private/
 .session
+
+# A keeper being tried by `videtor learn` (kept only if the evaluation passes)
+kb/keeper/candidate/

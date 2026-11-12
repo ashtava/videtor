@@ -64,36 +64,7 @@ def _xml_files(paths: list[Path]) -> list[Path]:
 
 def ingest_files(xml_files: list[Path], kb_dir: Path) -> int:
     """Parse exports into kb/projects/ and rebuild kb/profile/. Returns the number of sequences ingested."""
-    projects_dir = kb_dir / "projects"
-    projects_dir.mkdir(parents=True, exist_ok=True)
-    ingested = 0
-    for xml in xml_files:
-        try:
-            mains, nested = xmeml.load_all(xml)
-        except ET.ParseError as exc:
-            console.print(f"[red]{xml}: not valid XML ({exc})[/]")
-            continue
-        if not mains:
-            console.print(f"[yellow]{xml}: no main sequence found[/]")
-            continue
-        for seq in mains:
-            m = metrics.sequence_metrics(seq, nested)
-            out = projects_dir / f"{_slug(xml.stem)}__{_slug(seq.name)}.json"
-            out.write_text(json.dumps(m, indent=2) + "\n")
-            shots = m["shot_length_s"]["count"] if m["shot_length_s"] else 0
-            note = f", {m['nested']['expanded']}/{m['nested']['clips']} nests expanded" if m["nested"]["clips"] else ""
-            console.print(f"{xml.name} :: {seq.name}  →  {out.name}  ({shots} shots, {m['duration_s']:.0f}s{note})")
-            ingested += 1
-
-    unique, dupes = profile.dedupe(profile.load_projects(kb_dir))
-    for dupe, kept in dupes:
-        console.print(f"[yellow]{dupe} is the same sequence as {kept}; counted once[/]")
-    profiles = profile.roll_up(unique, profile.load_manifest(kb_dir))
-    written = profile.write_profiles(kb_dir, profiles)
-    console.print(f"\n{ingested} sequence(s) ingested; {len(written)} profile(s) written to {kb_dir / 'profile'}")
-    if list(profiles) == [profile.DEFAULT_TYPE]:
-        console.print("Name edit types in kb/manifest.json to split the profile by type (see README).")
-    return ingested
+    return pipeline.ingest(xml_files, kb_dir, _events())
 
 
 @kb_app.command("ingest")
@@ -697,16 +668,81 @@ def cut_mv(
     _step(pipeline.cut_mv, spec_path, paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir, beats=beats_dir), ev=_events())
 
 
+teach_app = typer.Typer(help="Give Videtor something to learn from (the app's Teach page runs these).", no_args_is_help=True)
+app.add_typer(teach_app, name="teach")
+
+
+@teach_app.command("project")
+def teach_project(
+    name: str = typer.Argument(..., help="A short name for the job."),
+    bucket: str = typer.Option(..., "--bucket", help="Its kind of work, e.g. event, brand-social, sports-promo."),
+    footage: Path = typer.Option(None, "--footage", help="The folder of raw footage it was cut from (drive connected)."),
+    video: Path = typer.Option(None, "--video", help="The finished video."),
+    xml: Path = typer.Option(None, "--xml", help="The Premiere XML export of the finished sequence."),
+    sample: int = typer.Option(120, "--sample", help="How many takes the job did not use are read in full as well."),
+    out_root: Path = typer.Option(Path("out"), "--out"),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Learn from a job you cut yourself: its style from the finished video or the XML, and, with the footage,
+    which shots you kept against what you left. What is learnt is kept only if past cuts get no worse."""
+    _step(pipeline.teach_project, name, bucket, footage=footage, video=video, xml=xml, sample=sample, out_root=out_root,
+          paths=pipeline.Paths(kb=kb_dir), ev=_events())
+
+
+@teach_app.command("edit")
+def teach_edit(
+    key: str = typer.Argument(..., help='One of the edits in kb/manifest.json, e.g. "Adidas.xml::Sequence 01".'),
+    sample: int = typer.Option(120, "--sample", help="How many takes the edit did not use are read in full as well."),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Learn what you keep from an edit already given: read its footage (drive connected), then learn for its kind of work."""
+    _step(pipeline.teach_edit, key, sample=sample, paths=pipeline.Paths(kb=kb_dir), ev=_events())
+
+
+@teach_app.command("style")
+def teach_style(
+    source: Path = typer.Argument(..., help="A finished video, or a folder of them."),
+    bucket: str = typer.Option(..., "--bucket", help="The kind of work they are."),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Learn a kind of work's style from finished videos alone (no footage): pace, effects, the grade, cuts on the music."""
+    _step(pipeline.teach_style, source, bucket, pipeline.Paths(kb=kb_dir), _events())
+
+
+@teach_app.command("pending")
+def teach_pending(out_root: Path = typer.Option(Path("out"), "--out"), kb_dir: Path = KB_OPTION) -> None:
+    """Read every finished video waiting in a project's folder against its cut, then learn."""
+    _step(pipeline.read_pending, out_root, pipeline.Paths(kb=kb_dir), _events())
+
+
+@teach_app.command("status")
+def teach_status(kb_dir: Path = KB_OPTION) -> None:
+    """What Videtor has been given and what it has learnt, per kind of work."""
+    from videtor import teach
+
+    st = teach.state(kb_dir)
+    for b in st["buckets"]:
+        if not b["known"]:
+            continue
+        k = b["keeper"]
+        console.print(f"{b['bucket']}: {len(b['edits'])} edit(s), {b['reels']} finished video(s), {b['finished']} job(s) read back, {b['choices']} choice(s), "
+                      f"{len(b['rules'])} rule(s)" + (f"; knows what you keep (AUC {k['auc']}, {k['edits']} edit(s))" if k else "") + ("; style learnt" if b["style"] else ""), markup=False)
+    last = st["last"]
+    if last:
+        console.print(f"last learning {last['at']}: kept {', '.join(last['kept']) or 'nothing'}" + (f"; refused {', '.join(last['refused'])}" if last["refused"] else ""), markup=False)
+
+
 @app.command()
 def learn(
     force: bool = typer.Option(False, "--force", help="Keep what was learnt even when the evaluation set says the cuts got worse."),
+    bucket: list[str] = typer.Option([], "--bucket", help="Also refit what you keep for this kind of work from its edits (repeatable)."),
     kb_dir: Path = KB_OPTION,
     footmap_dir: Path = FOOTMAP_OPTION,
 ) -> None:
     """Learn from all the feedback in kb/feedback: your taste from the shots you chose over the picks, and what
     you keep from every finished job read back. What is learnt is tried on the evaluation set first and kept only
     when the cuts got no worse."""
-    _step(pipeline.learn, pipeline.Paths(kb=kb_dir, footmap=footmap_dir), _events(), force=force)
+    _step(pipeline.learn, pipeline.Paths(kb=kb_dir, footmap=footmap_dir), _events(), force=force, buckets=bucket or None)
 
 
 @app.command()
@@ -717,13 +753,16 @@ def readback(
     live: bool = typer.Option(False, "--live", help="Read the open Premiere sequence over the bridge instead."),
     sequence: str = typer.Option(None, "--sequence", help="The sequence to read (XML or live)."),
     force: bool = typer.Option(False, "--force", help="Keep it even when it does not look like this cut."),
+    then_learn: bool = typer.Option(False, "--learn", help="Then learn from all the feedback (videtor learn)."),
     kb_dir: Path = KB_OPTION,
     footmap_dir: Path = FOOTMAP_OPTION,
 ) -> None:
     """Read a finished job back against its picks: which shots you kept, slipped, swapped or removed. From the
     finished video alone (nothing to export), or from an XML or Premiere live. Kept in kb/feedback for `videtor learn`."""
-    _step(pipeline.read_back, picks_path, render=render, xml=xml, live=live, sequence=sequence, force=force,
-          paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir), ev=_events())
+    paths = pipeline.Paths(kb=kb_dir, footmap=footmap_dir)
+    _step(pipeline.read_back, picks_path, render=render, xml=xml, live=live, sequence=sequence, force=force, paths=paths, ev=_events())
+    if then_learn:
+        _step(pipeline.learn, paths, _events(), note=f"after {picks_path.parent.name}")
 
 
 @app.command()

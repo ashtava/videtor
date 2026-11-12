@@ -1,0 +1,22 @@
+{
+ "key": "colourstone-mia::footage",
+ "bucket": "brand-social",
+ "fps": 25.0,
+ "width": 3840,
+ "height": 2160,
+ "avoid": [
+  "crew members standing in the background",
+  "a photographer holding a camera",
+  "a person holding a smartphone",
+  "a softbox and a light stand",
+  "a clapperboard"
+ ],
+ "picks": "out/colourstone-mia/picks.json",
+ "name": "colourstone-mia-60s",
+ "verdict": {
+  "good": true,
+  "note": "This is good, with finishing notes: ramps, zooms, grade and stabilising by hand (said 2026-10-30)",
+  "by": "you",
+  "at": "2026-11-12T23:37:43"
+ }
+}

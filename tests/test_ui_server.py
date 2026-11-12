@@ -167,11 +167,62 @@ class ServerTests(unittest.TestCase):
         self.assertIn("No finished video", self.post("/api/readback", {"project": str(d)})[1]["error"])
         (d / "final export.mp4").write_bytes(b"x")
         _, r = self.post("/api/readback", {"project": str(d)})
-        self.assertEqual(r["job"]["args"], ["readback", str(d / "picks.json"), "--render", str(d / "final export.mp4")])
+        self.assertEqual(r["job"]["args"], ["readback", str(d / "picks.json"), "--render", str(d / "final export.mp4"), "--learn"])
         _, r = self.post("/api/look", {"project": str(d), "choices": {"s1": 1}})
         self.assertEqual(r["job"]["args"][:4], ["look", str(d / "picks.json"), "--by", "you"])  # a person chose: it teaches
         fb = json.loads(self.get(f"/api/project?dir={d}")[2])["feedback"]
         self.assertEqual((fb["verdict"]["good"], fb["final"]), (False, str(d / "final export.mp4")))
+
+    def test_the_teach_page_takes_every_input_and_says_what_is_known(self):
+        (self.tmp / "kb").mkdir(exist_ok=True)
+        (self.tmp / "kb" / "manifest.json").write_text(json.dumps({"types": {"Old.xml::Seq": "event"}, "footage": {"Old.xml::Seq": ["/Volumes/Gone/shoot"]}}))
+        t = json.loads(self.get("/api/teach")[2])
+        self.assertEqual(t["kinds"][0], "event")
+        ev = next(b for b in t["buckets"] if b["bucket"] == "event")
+        self.assertEqual((ev["edits"][0]["name"], ev["edits"][0]["drive"], ev["edits"][0]["connected"]), ("Old", "Gone", False))
+        self.assertEqual(self.post("/api/teach/rule", {"bucket": "event", "text": "People first."})[1], {"rules": ["People first."]})
+        self.assertEqual(self.post("/api/teach/rule", {"bucket": "event", "text": "People first.", "remove": True})[1], {"rules": []})
+        self.assertIn("words", self.post("/api/teach/rule", {"bucket": "event", "text": " "})[1]["error"])
+        # a job cut by hand: a name, a kind of work, and the finished video or the XML
+        self.assertIn("name", self.post("/api/teach/project", {"bucket": "event"})[1]["error"])
+        self.assertIn("finished video or the Premiere XML", self.post("/api/teach/project", {"name": "Nike Launch", "bucket": "event"})[1]["error"])
+        self.assertIn("not there", self.post("/api/teach/project", {"name": "Nike Launch", "bucket": "event", "video": str(self.tmp / "no.mp4")})[1]["error"])
+        video, footage = self.tmp / "final.mp4", self.tmp / "footage"
+        video.write_bytes(b"x")
+        footage.mkdir(exist_ok=True)
+        _, r = self.post("/api/teach/project", {"name": "Nike Launch", "bucket": "Brand Social", "video": str(video), "footage": str(footage)})
+        self.assertEqual(r["job"]["args"], ["teach", "project", "nike-launch", "--bucket", "brand-social", "--footage", str(footage), "--video", str(video)])
+        self.assertEqual(r["job"]["kind"], "teach")
+        self.assertIn("folder of finished videos", self.post("/api/teach/style", {"bucket": "event"})[1]["error"])
+        self.assertEqual(self.post("/api/teach/style", {"source": str(footage), "bucket": "event"})[1]["job"]["args"], ["teach", "style", str(footage), "--bucket", "event"])
+        self.assertEqual(self.post("/api/teach/edit", {"key": "Old.xml::Seq"})[1]["job"]["args"], ["teach", "edit", "Old.xml::Seq"])
+        self.assertEqual(self.post("/api/teach/pending", {})[1]["job"]["args"][:3], ["teach", "pending", "--out"])
+
+    def test_projects_made_elsewhere_are_listed_and_each_kind_of_cut_runs_its_own_command(self):
+        out = self.tmp / "out"
+        for name, files in (("an-mv", ["mv.json"]), ("a-talk", ["aroll.json", "shotmap.json"]), ("library", ["picks.json"]), ("empty", [])):
+            (out / name).mkdir(parents=True, exist_ok=True)
+            for f in files:
+                (out / name / f).write_text(json.dumps({"version": 1, "name": name, "key": f"{name}::footage", "length_s": 10,
+                                                        "sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x", "beats": 1}]}]}))
+        self.app.out_root = out
+        self.assertGreaterEqual(self.app.discover(), 2)
+        self.assertEqual(self.app.discover(), 0)
+        dirs = {p["name"]: p["dir"] for p in json.loads(self.get("/api/state")[2])["projects"]}
+        self.assertTrue({"an-mv", "a-talk"} <= set(dirs))
+        self.assertFalse({"library", "empty"} & set(dirs))  # not the library's folder, not a folder with nothing in it
+        self.assertEqual(self.post("/api/cut", {"project": dirs["an-mv"]})[1]["job"]["args"], ["cut-mv", str(Path(dirs["an-mv"]) / "mv.json")])
+        self.assertEqual(self.post("/api/cut", {"project": dirs["a-talk"]})[1]["job"]["args"],
+                         ["cut-interview", str(Path(dirs["a-talk"]) / "aroll.json"), str(Path(dirs["a-talk"]) / "shotmap.json")])
+        self.assertIn("no cut yet", self.post("/api/preview", {"project": dirs["a-talk"]})[1]["error"])
+        (Path(dirs["a-talk"]) / "picks.json").write_text(json.dumps({"name": "a-talk", "slots": []}))
+        self.assertEqual(self.post("/api/preview", {"project": dirs["a-talk"]})[1]["job"]["args"], ["preview", str(Path(dirs["a-talk"]) / "picks.json")])
+        self.assertIn("which way", self.post("/api/orient", {"project": dirs["a-talk"], "which": "M2U", "rotate": 45})[1]["error"])
+        _, r = self.post("/api/orient", {"project": dirs["a-talk"], "which": "M2U", "rotate": -90})
+        self.assertEqual(r["job"]["args"][:6], ["orient", "a-talk", "--rotate", "-90", "--camera", "M2U"])
+        self.assertEqual(self.post("/api/orient", {"project": dirs["a-talk"], "which": "C0123.MP4", "rotate": 180})[1]["job"]["args"][4:6], ["--take", "C0123.MP4"])
+        proj = json.loads(self.get(f"/api/project?dir={dirs['a-talk']}")[2])
+        self.assertEqual((proj["kind"], proj["preview"], proj["finishing"]), ("interview", None, []))
 
     def test_scan_counts_the_video_files_under_a_folder(self):
         d = self.tmp / "scan" / "Card 1"

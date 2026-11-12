@@ -74,7 +74,7 @@ class StoreTests(Project):
         self.assertTrue(feedback.is_final(doc))
         self.assertEqual(doc["slots"][0]["show"], "axis 1")  # the slot's description travels with the row
         self.assertEqual(feedback.used_ranges(doc), {seen["fid"]: [(1.0, 2.0)], "C0": [(0.0, 1.0)]})
-        self.assertEqual(feedback.state(self.paths.kb), {"projects": 1, "finals": 1, "rows": 1, "verdicts": {"good": 0, "not": 1}})
+        self.assertEqual(feedback.state(self.paths.kb), {"projects": 1, "finals": 1, "by_hand": 0, "rows": 1, "verdicts": {"good": 0, "not": 1}})
         wrong = {**result, "sequence": "another cut", "summary": {"file_match_share": 0.1}}
         with self.assertRaises(Exception):
             feedback.record_readback(wrong, picks, self.paths.kb)  # not this cut: refused, not learnt from

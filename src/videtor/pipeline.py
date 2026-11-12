@@ -638,6 +638,12 @@ def read_back(picks_path: Path, render: Path | None = None, xml: Path | None = N
         if save:
             path = feedback.record_readback(result, picks, paths.kb, force)
             ev.wrote("feedback", path, f"feedback kept: {path} (videtor learn uses it)")
+            shotmap_p = picks_path.parent / "shotmap.json"
+            if shotmap_p.exists() and str(result.get("source") or "").startswith(feedback.FINAL):
+                from videtor.plan import evaluate
+
+                if evaluate.add_project(picks["name"], shotmap_p, paths.kb, feedback=picks["name"]):
+                    ev.info(f"{picks['name']} joined the evaluation set: later changes are also held to what you did with this cut")
     except readback.ReadbackError as exc:
         raise PipelineError(str(exc)) from exc
     return result
@@ -654,12 +660,15 @@ def verdict(picks_path: Path, good: bool, note: str = "", paths: Paths = Paths()
     return path
 
 
-def learn(paths: Paths = Paths(), ev: Events | None = None, force: bool = False, embed_texts=None) -> dict:
+def learn(paths: Paths = Paths(), ev: Events | None = None, force: bool = False, embed_texts=None, buckets: list[str] | None = None,
+          note: str = "") -> dict:
     """Learn from everything in kb/feedback: your taste (the windows you chose over the picks) and, per bucket
-    with a finished job read back, what you keep. Each candidate is tried on the evaluation set first
-    (plan/evaluate.py) and kept only when no guarded measure got worse, unless `force`."""
+    with a finished job read back (and for `buckets`: kinds of work an edit was just added to), what you keep.
+    Each candidate is tried on the evaluation set first (plan/evaluate.py) and kept only when no guarded measure
+    got worse, unless `force`. How it went is kept in kb/learning.json for the app to show."""
     import shutil
 
+    from videtor import teach
     from videtor.kb import feedback
     from videtor.plan import evaluate, keeper as keeper_mod, taste as taste_mod
 
@@ -672,9 +681,9 @@ def learn(paths: Paths = Paths(), ev: Events | None = None, force: bool = False,
     st = feedback.state(paths.kb)
     ev.info(f"feedback: {st['projects']} project(s), {st['finals']} finished job(s) read back, {st['rows']} choices, "
             f"verdicts {st['verdicts']['good']} good / {st['verdicts']['not']} not")
-    out: dict = {"state": st, "taste": {}, "keeper": {}, "kept": [], "refused": []}
-    if not docs:
-        ev.info("nothing to learn from yet: read a finished cut back (videtor readback <picks.json>), or choose runners-up in the app")
+    out: dict = {"state": st, "taste": {}, "keeper": {}, "kept": [], "refused": [], "note": note}
+    if not docs and not buckets:
+        ev.info("nothing to learn from yet: save a finished video in a project's folder, or choose runners-up in the app")
         return out
     pools: dict[str, list] = {}
 
@@ -691,7 +700,7 @@ def learn(paths: Paths = Paths(), ev: Events | None = None, force: bool = False,
     cand_dir = paths.kb / "keeper" / "candidate"
     shutil.rmtree(cand_dir, ignore_errors=True)
     keepers = {}
-    for bucket in sorted({d.get("bucket") for d in docs if d.get("bucket") and feedback.is_final(d)}):
+    for bucket in sorted({d.get("bucket") for d in docs if d.get("bucket") and feedback.is_final(d)} | set(buckets or [])):
         model = keeper_mod.train(bucket, embed_texts, paths.kb, footmap_dir=paths.footmap, log=ev.line("  "), model_dir=cand_dir)
         if model:
             keepers[bucket] = model
@@ -703,7 +712,8 @@ def learn(paths: Paths = Paths(), ev: Events | None = None, force: bool = False,
     if not tastes and st["rows"]:
         ev.info(f"taste: {st['rows']} choice(s) so far; corrections are fitted from {taste_mod.MIN_PAIRS} on")
     if not tastes and not keepers:
-        ev.info("nothing new to keep yet: the taste needs more choices, the keeper a finished job read back in a bucket")
+        ev.info("nothing new to keep yet: the taste needs more choices, the keeper a finished job with its footage read")
+        teach.log_learning(out, paths.kb)
         return out
     projects = evaluate.load_set(paths.kb)
     ok, rows = True, []
@@ -732,6 +742,252 @@ def learn(paths: Paths = Paths(), ev: Events | None = None, force: bool = False,
         out["refused"] = [f"taste ({m['scope']})" for m in tastes.values()] + [f"keeper ({b})" for b in keepers]
         ev.warn("not kept: a guarded measure got worse on the evaluation set (rows marked worse above). The models in use stay; "
                 f"the candidates are in {cand_dir} and --force keeps them anyway.")
+    teach.log_learning(out, paths.kb)
+    return out
+
+
+def ingest(xml_files: list[Path], kb_dir: Path, ev: Events | None = None) -> int:
+    """Parse Premiere XML exports into kb/projects/ and rebuild kb/profile/ (the style numbers per kind of work).
+    Returns the number of sequences read."""
+    import xml.etree.ElementTree as ET
+
+    from videtor.kb import metrics, profile, xmeml
+
+    ev = ev or Events()
+    projects_dir = kb_dir / "projects"
+    projects_dir.mkdir(parents=True, exist_ok=True)
+    ingested = 0
+    for xml in xml_files:
+        try:
+            mains, nested = xmeml.load_all(xml)
+        except ET.ParseError as exc:
+            ev.warn(f"{xml}: not valid XML ({exc})")
+            continue
+        if not mains:
+            ev.warn(f"{xml}: no main sequence found")
+            continue
+        for seq in mains:
+            m = metrics.sequence_metrics(seq, nested)
+            out = projects_dir / f"{slug(xml.stem)}__{slug(seq.name)}.json"
+            out.write_text(json.dumps(m, indent=2) + "\n")
+            shots = m["shot_length_s"]["count"] if m["shot_length_s"] else 0
+            note = f", {m['nested']['expanded']}/{m['nested']['clips']} nests expanded" if m["nested"]["clips"] else ""
+            ev.info(f"{xml.name} :: {seq.name}  →  {out.name}  ({shots} shots, {m['duration_s']:.0f}s{note})")
+            ingested += 1
+    unique, dupes = profile.dedupe(profile.load_projects(kb_dir))
+    for dupe, kept in dupes:
+        ev.info(f"{dupe} is the same sequence as {kept}; counted once")
+    profiles = profile.roll_up(unique, profile.load_manifest(kb_dir))
+    written = profile.write_profiles(kb_dir, profiles)
+    ev.info(f"{ingested} sequence(s) ingested; {len(written)} profile(s) written to {kb_dir / 'profile'}")
+    return ingested
+
+
+def teach_style(source: Path, bucket: str, paths: Paths = Paths(), ev: Events | None = None, refs_dir: Path = Path("out/references")) -> dict:
+    """Learn a kind of work's style from finished videos alone (a file or a folder of them, no footage needed): pace,
+    what happens between shots, black and white, moves, the grade, how cuts sit on the music. The style is the
+    summary of every video read for the bucket so far; from two on, a cutting policy is fitted to them."""
+    from videtor.kb import breakdown, render
+    from videtor.plan import gym
+
+    ev = ev or Events()
+    source = Path(source).expanduser()
+    files = [str(source)] if source.is_file() else sorted(str(p) for p in source.iterdir() if p.suffix.lower() in render.VIDEO_EXT and not p.name.startswith(".")) if source.is_dir() else []
+    if not files:
+        raise PipelineError(f"No finished video at {source}")
+    ev.stage("style", f"reading {len(files)} finished video(s) as {bucket}", "Reading the finished videos")
+    try:
+        style = render.read_files(files, bucket, refs_dir, paths.kb, log=ev.line("  "))
+    except ValueError as exc:
+        raise PipelineError(str(exc)) from exc
+    n = len(gym.load_refs(bucket, refs_dir))
+    trained = False
+    if n >= 2:
+        ev.stage("policy", f"fitting a cutting policy to the {n} {bucket} videos", "Learning the style")
+        gym.train(bucket, paths.kb, refs_dir, check=False, log=ev.line("  "))
+        trained = True
+    card = breakdown.card(bucket, paths.kb)
+    ev.wrote("card", card, f"{bucket}: {n} finished video(s) read" + ("; drafts and effects of this kind follow them" if trained else "; one more and a cutting policy is fitted") + f" · {card}")
+    return {"bucket": bucket, "videos": n, "policy": trained, "style": style.get("summary") or {}}
+
+
+def teach_project(name: str, bucket: str, footage: Path | None = None, video: Path | None = None, xml: Path | None = None, sample: int = 120,
+                  out_root: Path = Path("out"), paths: Paths = Paths(), ev: Events | None = None, exports: Path = Path(".xml-exports"),
+                  then_learn: bool = True, embed_images=None, embed_texts=None, refs_dir: Path = Path("out/references")) -> dict:
+    """Learn from a job the user cut by hand: its kind of work, and the finished video or the Premiere XML (or both);
+    with the footage folder, also which takes and seconds the job kept against what it left.
+
+      the XML       one of the user's edits: the manifest, the style numbers (kb/profile), the bucket's card
+      the video     the style (teach_style); with footage, where each of its shots comes from (kb/renderback.py)
+      the footage   read from its keyframes (minutes), then the takes the job used and `sample` of the rest in full
+                    (drive connected): what the keeper learns kept against left out from
+
+    Then `learn`, which keeps what was learnt only when the evaluation set says past cuts got no worse."""
+    import random
+    import xml.etree.ElementTree as ET
+
+    from videtor import teach
+    from videtor.analyze import footmap
+    from videtor.kb import breakdown, feedback
+    from videtor.plan import fill, keeper
+
+    ev = ev or Events()
+    name = slug(name)
+    if not (video or xml):
+        raise PipelineError("Give the finished video or the Premiere XML of the job (or both).")
+    for what, p in (("finished video", video), ("XML", xml), ("footage folder", footage)):
+        if p and not Path(p).expanduser().exists():
+            raise PipelineError(f"No such {what}: {p}")
+    out: dict = {"name": name, "bucket": bucket}
+    if xml:
+        ev.stage("edit", f"taking {Path(xml).name} in as one of your {bucket} edits", "Reading your edit")
+        try:
+            out["edit"] = teach.add_edit(Path(xml), bucket, str(Path(footage).expanduser()) if footage else None, paths.kb, exports)
+        except (ValueError, ET.ParseError, OSError) as exc:
+            raise PipelineError(f"{Path(xml).name}: {exc}") from exc
+        ingest([exports / Path(xml).name], paths.kb, ev)
+    if video:
+        out["style"] = teach_style(Path(video), bucket, paths, ev, refs_dir)
+    if footage:
+        key = f"{name}::footage"
+        prepare(Path(footage), name, out_root=out_root, paths=paths, ev=ev)
+        index = index_for_key(key, paths.kb)
+        entries = pool_entries(index, key)
+        if xml:
+            used = {keeper._base(n) for n in keeper.used_ranges(exports / Path(xml).name)}
+            chosen = [e for e in entries if keeper._base(e["basename"].lower()) in used]
+        else:
+            from videtor.analyze import sparse
+            from videtor.kb import renderback
+
+            ev.stage("shortlist", "finding the takes the finished video plays", "Finding the takes the job used")
+            likely = renderback.shortlist(video, sparse.as_takes(entries, paths.sparse), embed_images=embed_images)
+            chosen = [e for e in entries if e["fid"] in likely]
+        rest = [e for e in entries if e not in chosen]
+        extra = random.Random(0).sample(rest, min(len(rest), max(sample, 2 * len(chosen))))
+        subset = chosen + extra
+        ev.stage("decode", f"reading {len(subset)} of {len(entries)} takes in full: the {len(chosen)} the job used or may have, and a sample of the rest "
+                           "(keep the drive connected)", "Reading the takes the job used")
+        footmap.build_pool({**index, "files": subset}, key, cache_dir=paths.footmap, log=ev.line("      "), progress=lambda k, n: ev.progress(k, n))
+        out["takes"] = {"pool": len(entries), "read": len(subset), "likely_used": len(chosen)}
+        if not xml:
+            takes = fill.load_takes(subset, paths.footmap)
+            ev.stage("match", "finding each shot of the finished video in the footage", "Matching the video to the footage")
+            rows, report = renderback.read_by_hand(video, takes, paths.footmap / "frames", embed_images, log=ev.info)
+            if rows:
+                path = feedback.record_edit(name, key, bucket, rows, f"render:{video}", paths.kb, report)
+                ev.wrote("feedback", path, f"{len(rows)} of {report['shots']} shots found in {len({r['fid'] for r in rows})} takes · {path}")
+            else:
+                ev.warn("None of the video's shots were found in this footage: is it the right folder?")
+            out["matched"] = {"shots": report["shots"], "found": len(rows)}
+    try:
+        ev.wrote("card", breakdown.card(bucket, paths.kb, exports, embed_texts=embed_texts), f"{bucket}: what this kind of work is like, rewritten")
+    except Exception as exc:  # noqa: BLE001 - the card is a summary; the learning below does not need it
+        ev.warn(f"the {bucket} card could not be rewritten: {exc}")
+    if then_learn:
+        out["learning"] = learn(paths, ev, embed_texts=embed_texts, buckets=[bucket] if footage else None, note=f"after {name}")
+    return out
+
+
+def teach_edit(key: str, sample: int = 120, paths: Paths = Paths(), ev: Events | None = None, exports: Path = Path(".xml-exports"),
+               then_learn: bool = True, embed_texts=None) -> dict:
+    """Learn what the user keeps from one of the edits already in the knowledge base (kb/manifest.json): read in
+    full the takes the edit used and `sample` of those it left (its footage drive connected), then `learn` for
+    its kind of work. For the edits given before their footage could be read."""
+    import random
+
+    from videtor import teach
+    from videtor.analyze import footmap
+    from videtor.plan import keeper
+
+    ev = ev or Events()
+    m = teach.manifest(paths.kb)
+    bucket = m["types"].get(key)
+    xml = exports / key.split("::", 1)[0]
+    if not bucket or not xml.exists():
+        raise PipelineError(f"{key!r} is not one of the edits in {paths.kb / 'manifest.json'} with its XML in {exports}.")
+    folders = list(m["footage"].get(key) or []) or keeper.index_roots(key, paths.kb)
+    if not folders:
+        raise PipelineError(f"Videtor does not know where the footage of {key} is: add the job again with its footage folder.")
+    missing = [f for f in folders if not os.path.isdir(f)]
+    entries, seen = [], set()
+    for p in index_paths(paths.kb):
+        for f in json.loads(p.read_text()).get("files") or []:
+            if f.get("kind") == "video" and f["fid"] not in seen and not f.get("duplicate_of") and not f.get("excluded") and not footage.is_render(f["path"]) \
+                    and (f.get("media") or {}).get("duration_s") and any(f["path"].startswith(x.rstrip("/") + "/") for x in folders):
+                entries.append(f)
+                seen.add(f["fid"])
+    if not entries and not missing:
+        ev.stage("index", f"finding the clips under {folders[0]}", "Finding the clips")
+        index = footage.scan(str(mount_of(Path(folders[0]))), [], {key: folders}, log=ev.line("      "))
+        (paths.kb / "footage" / f"{slug(key)}.json").write_text(json.dumps(index, indent=1) + "\n")
+        entries = pool_entries(index, key)
+    used = {keeper._base(n) for n in keeper.used_ranges(xml)}
+    chosen = [e for e in entries if keeper._base(e["basename"].lower()) in used]
+    rest = [e for e in entries if e not in chosen]
+    subset = chosen + random.Random(0).sample(rest, min(len(rest), max(sample, 2 * len(chosen))))
+    todo = [e for e in subset if not footmap.is_done(e, paths.footmap)]
+    if missing and (not entries or any(not footmap.is_done(e, paths.footmap) for e in chosen)):  # read before: no drive needed
+        raise PipelineError(f"Connect the drive first: the footage of this edit is at {missing[0]}.")
+    if missing:
+        subset, todo = [e for e in subset if footmap.is_done(e, paths.footmap)], []
+    ev.stage("decode", f"reading {len(todo)} takes in full: {len(chosen)} the edit used, and a sample of the {len(rest)} it left "
+                       "(keep the drive connected)", "Reading the takes the edit used")
+    if todo:
+        footmap.build_pool({"mount": str(mount_of(Path(folders[0]))), "roots": {key: folders}, "files": subset}, key, cache_dir=paths.footmap,
+                           log=ev.line("      "), progress=lambda k, n: ev.progress(k, n))
+    out: dict = {"key": key, "bucket": bucket, "takes": {"pool": len(entries), "read": len(subset), "used": len(chosen)}}
+    if then_learn:
+        out["learning"] = learn(paths, ev, embed_texts=embed_texts, buckets=[bucket], note=f"after {key.split('::')[0]}")
+    return out
+
+
+def unread_final(project_dir: Path, kb_dir: Path = Path("kb")) -> Path | None:
+    """A project's finished video that has not been read back yet (or is newer than the last read)."""
+    from datetime import datetime
+
+    from videtor.kb import feedback
+
+    picks_p = Path(project_dir) / "picks.json"
+    final = find_render(Path(project_dir)) if picks_p.exists() else None
+    if not final:
+        return None
+    try:
+        name = json.loads(picks_p.read_text()).get("name") or Path(project_dir).name
+    except ValueError:
+        return None
+    doc = feedback.load(name, kb_dir)
+    if not feedback.is_final(doc) or str(doc.get("source") or "") != f"render:{final}":
+        return final
+    try:
+        read_at = datetime.fromisoformat(doc.get("read_at") or "").timestamp()
+    except ValueError:
+        return final
+    return final if final.stat().st_mtime > read_at else None
+
+
+def read_pending(out_root: Path = Path("out"), paths: Paths = Paths(), ev: Events | None = None, dirs: list[Path] | None = None,
+                 embed_images=None, embed_texts=None) -> dict:
+    """Read every finished video that is waiting (projects under `out_root`, or `dirs`) against its picks, then learn."""
+    ev = ev or Events()
+    dirs = dirs if dirs is not None else sorted(d for d in Path(out_root).iterdir() if d.is_dir()) if Path(out_root).is_dir() else []
+    read, failed = [], []
+    for d in dirs:
+        final = unread_final(d, paths.kb)
+        if not final:
+            continue
+        ev.stage("readback", f"{d.name}: reading {final.name}", f"Reading your finished video · {d.name}")
+        try:
+            read_back(d / "picks.json", render=final, paths=paths, ev=ev, embed_images=embed_images)
+            read.append(d.name)
+        except PipelineError as exc:
+            ev.warn(f"{d.name}: {exc}")
+            failed.append(d.name)
+    if not read and not failed:
+        ev.info("no finished video is waiting: save an export in a project's folder and it is read from here")
+    out = {"read": read, "failed": failed}
+    if read:
+        out["learning"] = learn(paths, ev, embed_texts=embed_texts, note="after " + ", ".join(read))
     return out
 
 
