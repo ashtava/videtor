@@ -78,6 +78,10 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
 1c. **logan (11-15)**: the second arrival from the same shoot and brief. Shot map written and validated; the user
    cuts from the app. Daytime, with family; he films on his phone walking in (the brief's "clicking photos").
    9:16, 16.0 s, BLAGE - Go Down from 110.57 s (drop on the greeting at 4.04 s), flash rate 0.35, stabilised; C6207 skipped.
+1d. **261115 arrival (11-15)**: the third arrival, same brief plus "only the guy in the grey t-shirt and cap". The project
+   folder is on the drive (`Paritosh_4/261114AC /pf/xml/261115-*`), not in `out/`. Shot map written and validated; the
+   user cuts from the app. The other man's takes (C6233-C6240, C6249) are in `skip`. Ariel Dahan - On up on Winning
+   from 32.37 s (drop on the check-in at 4.16 s), 16.0 s, flash 0.35, stabilised.
 1a. **diwali-test (A1)**: the shot map is written and validated. The user cuts from the app. Then do the second
    look, write `report.md` in the project folder, and record the verdict. The plan:
    - Brief: "fast paced party edit for diwali, under 60 seconds". Bucket `event` (inferred).

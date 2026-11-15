@@ -1,0 +1,1357 @@
+{
+ "mount": "/Volumes/Paritosh_4",
+ "scanned_at": "2026-11-15T18:51:48",
+ "dirs": [
+  "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival"
+ ],
+ "roots": {
+  "261115-fahid-and-waqar-arrival::footage": [
+   "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival"
+  ]
+ },
+ "top_level": [
+  "261114AC ",
+  "Razorpay BTS"
+ ],
+ "files": [
+  {
+   "fid": "6a35d6b5ea87",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6233.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6233.MP4",
+   "kind": "video",
+   "size": 1476716665,
+   "inode": 147383,
+   "mtime": 1794698585,
+   "media": {
+    "duration_s": 38.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 307649305,
+    "created": "2026-11-14T21:52:26.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7f54d0ac02fd",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6234.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6234.MP4",
+   "kind": "video",
+   "size": 939827693,
+   "inode": 147374,
+   "mtime": 1794698624,
+   "media": {
+    "duration_s": 23.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319669283,
+    "created": "2026-11-14T21:53:20.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "c5bca21f4fc8",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6235.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6235.MP4",
+   "kind": "video",
+   "size": 335828414,
+   "inode": 147399,
+   "mtime": 1794698652,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 349821264,
+    "created": "2026-11-14T21:54:03.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "b8304e9d00d2",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6236.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6236.MP4",
+   "kind": "video",
+   "size": 268717399,
+   "inode": 147388,
+   "mtime": 1794698661,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373218609,
+    "created": "2026-11-14T21:54:14.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "41b4d583a1d1",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6237.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6237.MP4",
+   "kind": "video",
+   "size": 470050461,
+   "inode": 147377,
+   "mtime": 1794698676,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 340616276,
+    "created": "2026-11-14T21:54:24.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "3e3c49ae1c14",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6238.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6238.MP4",
+   "kind": "video",
+   "size": 604272233,
+   "inode": 148259,
+   "mtime": 1794698696,
+   "media": {
+    "duration_s": 14.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 335706796,
+    "created": "2026-11-14T21:54:40.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "76dc7a7850b9",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6239.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6239.MP4",
+   "kind": "video",
+   "size": 335828059,
+   "inode": 148461,
+   "mtime": 1794698716,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373142287,
+    "created": "2026-11-14T21:55:08.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "804f846a2717",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6240.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6240.MP4",
+   "kind": "video",
+   "size": 201606199,
+   "inode": 149372,
+   "mtime": 1794698723,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 420012914,
+    "created": "2026-11-14T21:55:18.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "5defae7539bf",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6241.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6241.MP4",
+   "kind": "video",
+   "size": 738495261,
+   "inode": 150222,
+   "mtime": 1794698765,
+   "media": {
+    "duration_s": 18.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 315596265,
+    "created": "2026-11-14T21:55:46.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7850c0550161",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6242.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6242.MP4",
+   "kind": "video",
+   "size": 335828059,
+   "inode": 150699,
+   "mtime": 1794698787,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373142287,
+    "created": "2026-11-14T21:56:19.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f5cd3c3d77e4",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6243.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6243.MP4",
+   "kind": "video",
+   "size": 470049833,
+   "inode": 151456,
+   "mtime": 1794698812,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 356098358,
+    "created": "2026-11-14T21:56:40.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "1ed61ce1ee18",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6244.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6244.MP4",
+   "kind": "video",
+   "size": 335829227,
+   "inode": 152731,
+   "mtime": 1794698826,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 329244340,
+    "created": "2026-11-14T21:56:57.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "45f77fd12cd5",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6245.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6245.MP4",
+   "kind": "video",
+   "size": 402939259,
+   "inode": 152907,
+   "mtime": 1794698841,
+   "media": {
+    "duration_s": 9.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 353455490,
+    "created": "2026-11-14T21:57:11.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "35433f55504a",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6246.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6246.MP4",
+   "kind": "video",
+   "size": 939827693,
+   "inode": 153267,
+   "mtime": 1794698872,
+   "media": {
+    "duration_s": 23.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319669283,
+    "created": "2026-11-14T21:57:28.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 1
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "0e2964e4991a",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6247.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6247.MP4",
+   "kind": "video",
+   "size": 537161661,
+   "inode": 153714,
+   "mtime": 1794698893,
+   "media": {
+    "duration_s": 12.96,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 331581272,
+    "created": "2026-11-14T21:57:59.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "a8fd7b0b250c",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6248.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6248.MP4",
+   "kind": "video",
+   "size": 201607182,
+   "inode": 154129,
+   "mtime": 1794698936,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 336011970,
+    "created": "2026-11-14T21:58:50.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "08e04adb9d5c",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6249.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6249.MP4",
+   "kind": "video",
+   "size": 335828599,
+   "inode": 154545,
+   "mtime": 1794698947,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 349821457,
+    "created": "2026-11-14T21:58:58.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "e93dd2250913",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6250.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6250.MP4",
+   "kind": "video",
+   "size": 335828059,
+   "inode": 154784,
+   "mtime": 1794698958,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373142287,
+    "created": "2026-11-14T21:59:09.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "3406371e972f",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6251.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6251.MP4",
+   "kind": "video",
+   "size": 201607367,
+   "inode": 155021,
+   "mtime": 1794698972,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 336012278,
+    "created": "2026-11-14T21:59:26.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "54b1d6591c9b",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6252.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6252.MP4",
+   "kind": "video",
+   "size": 268717399,
+   "inode": 155684,
+   "mtime": 1794698989,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373218609,
+    "created": "2026-11-14T21:59:42.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f67e0cd4baa2",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6253.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6253.MP4",
+   "kind": "video",
+   "size": 335828414,
+   "inode": 156389,
+   "mtime": 1794699003,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 349821264,
+    "created": "2026-11-14T21:59:54.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "fbbf7aaba259",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6254.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6254.MP4",
+   "kind": "video",
+   "size": 470049648,
+   "inode": 156635,
+   "mtime": 1794699021,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 356098218,
+    "created": "2026-11-14T22:00:10.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "2358ec8e4ffe",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6255.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6255.MP4",
+   "kind": "video",
+   "size": 537161033,
+   "inode": 156641,
+   "mtime": 1794699067,
+   "media": {
+    "duration_s": 12.48,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 344333995,
+    "created": "2026-11-14T22:00:53.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 180,
+    "source": "faces",
+    "reason": "faces in 2 stills turned 180",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 2
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "17e615efaf0b",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6256.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6256.MP4",
+   "kind": "video",
+   "size": 268718382,
+   "inode": 156825,
+   "mtime": 1794699079,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319902835,
+    "created": "2026-11-14T22:01:12.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "d35cd9f4e555",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6257.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6257.MP4",
+   "kind": "video",
+   "size": 335829042,
+   "inode": 157085,
+   "mtime": 1794699093,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 329244158,
+    "created": "2026-11-14T22:01:25.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "588e00483eca",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6258.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6258.MP4",
+   "kind": "video",
+   "size": 470050816,
+   "inode": 157782,
+   "mtime": 1794699135,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 326424177,
+    "created": "2026-11-14T22:02:03.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f03e113c9bb6",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6259.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6259.MP4",
+   "kind": "video",
+   "size": 268717214,
+   "inode": 158384,
+   "mtime": 1794699165,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373218352,
+    "created": "2026-11-14T22:02:38.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "3e1bf742e9cd",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6260.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6260.MP4",
+   "kind": "video",
+   "size": 335828059,
+   "inode": 158725,
+   "mtime": 1794699233,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373142287,
+    "created": "2026-11-14T22:03:45.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 13 of 14 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "4fb51e17ab7d",
+   "path": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C6261.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+   "basename": "C6261.MP4",
+   "kind": "video",
+   "size": 671382893,
+   "inode": 158758,
+   "mtime": 1794699273,
+   "media": {
+    "duration_s": 15.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 339082269,
+    "created": "2026-11-14T22:04:16.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  }
+ ],
+ "project": {
+  "name": "261115-fahid-and-waqar-arrival",
+  "folder": "/Volumes/Paritosh_4/261114AC /261115 Fahid and Waqar arrival",
+  "key": "261115-fahid-and-waqar-arrival::footage"
+ }
+}

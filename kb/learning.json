@@ -1,5 +1,100 @@
 [
  {
+  "at": "2026-11-15T13:36:20",
+  "kept": [],
+  "refused": [
+   "keeper (sports-promo)"
+  ],
+  "passed": false,
+  "before": {
+   "filled": 0.995,
+   "match": 2.554,
+   "sharp": 0.152,
+   "repeats": 0.222,
+   "lookalikes": 0.667,
+   "light_jumps": 0.111,
+   "keeper": 0.967,
+   "right_take": 0.494,
+   "right_second": 0.318,
+   "in_top3": 0.701
+  },
+  "after": {
+   "filled": 0.995,
+   "match": 2.515,
+   "sharp": 0.145,
+   "repeats": 0.222,
+   "lookalikes": 0.667,
+   "light_jumps": 0.222,
+   "keeper": 0.967,
+   "right_take": 0.494,
+   "right_second": 0.28,
+   "in_top3": 0.701
+  },
+  "worse": [
+   "sports-practice-a: light_jumps 1 -> 2",
+   "261114ac-brandon-mcmullen-arrival: right_second 0.762 -> 0.619",
+   "logan: right_second 0.5 -> 0.45"
+  ],
+  "state": {
+   "projects": 5,
+   "finals": 2,
+   "by_hand": 0,
+   "rows": 9,
+   "verdicts": {
+    "good": 2,
+    "not": 1
+   }
+  },
+  "note": "after logan"
+ },
+ {
+  "at": "2026-11-15T13:35:51",
+  "kept": [],
+  "refused": [
+   "keeper (sports-promo)"
+  ],
+  "passed": false,
+  "before": {
+   "filled": 1.0,
+   "match": 2.627,
+   "sharp": 0.191,
+   "repeats": 0.25,
+   "lookalikes": 0.75,
+   "light_jumps": 0.125,
+   "keeper": 0.967,
+   "right_take": 0.455,
+   "right_second": 0.273,
+   "in_top3": 0.713
+  },
+  "after": {
+   "filled": 1.0,
+   "match": 2.587,
+   "sharp": 0.181,
+   "repeats": 0.25,
+   "lookalikes": 0.75,
+   "light_jumps": 0.25,
+   "keeper": 0.967,
+   "right_take": 0.455,
+   "right_second": 0.237,
+   "in_top3": 0.713
+  },
+  "worse": [
+   "sports-practice-a: light_jumps 1 -> 2",
+   "261114ac-brandon-mcmullen-arrival: right_second 0.762 -> 0.619"
+  ],
+  "state": {
+   "projects": 4,
+   "finals": 1,
+   "by_hand": 0,
+   "rows": 6,
+   "verdicts": {
+    "good": 2,
+    "not": 1
+   }
+  },
+  "note": "after 261114ac-brandon-mcmullen-arrival"
+ },
+ {
   "at": "2026-11-12T23:29:56",
   "kept": [],
   "refused": [

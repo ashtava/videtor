@@ -32,6 +32,16 @@
   {
    "name": "sports-matchday-b",
    "shotmap": "out/sports-matchday-b/shotmap.json"
+  },
+  {
+   "name": "261114ac-brandon-mcmullen-arrival",
+   "shotmap": "/Users/paritoshsrivastava/workspace/videtor/out/261114ac-brandon-mcmullen-arrival/shotmap.json",
+   "feedback": "261114ac-brandon-mcmullen-arrival"
+  },
+  {
+   "name": "logan",
+   "shotmap": "/Users/paritoshsrivastava/workspace/videtor/out/logan/shotmap.json",
+   "feedback": "logan"
   }
  ]
 }
