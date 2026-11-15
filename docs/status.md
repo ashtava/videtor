@@ -71,6 +71,10 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    it back: `.venv/bin/python -m videtor.kb.readback out/<name>/picks.json --live` (say so before touching
    Premiere) or `--xml <export>`, then `videtor kb learn`. No real feedback is recorded yet: `kb/feedback/` is
    empty and there's no `kb/taste.json`.
+1b. **261114ac arrival (11-15)**: the shot map is written and validated (`out/261114ac-*/shotmap.json`). The user cuts
+   from the app. Then the second look, `report.md` and the verdict. Bucket `sports-promo` (inferred: a player's hotel
+   arrival). 9:16, 16.0 s, Burn4Me from 81.13 s (drop on the handshake at 4.16 s), flash rate 0.35, stabilised;
+   entering, meeting, posing, close. Every slot names its takes from a stills sheet.
 1a. **diwali-test (A1)**: the shot map is written and validated. The user cuts from the app. Then do the second
    look, write `report.md` in the project folder, and record the verdict. The plan:
    - Brief: "fast paced party edit for diwali, under 60 seconds". Bucket `event` (inferred).
@@ -262,6 +266,8 @@ Not built; the source is in brackets.
   it at the start). Word it by the project's state. [A1]
 - Guests posing at the photo wall get sorted as interview-bite (they face a locked-off camera). A map has to
   name that class to use them. [A1]
+- `scripts/search_sheet.py` no longer runs: it imports `_takes_for` from `videtor.cli`, which the pipeline move removed.
+  Searched with `videtor search` and an ffmpeg stills sheet instead. [Arrival 11-15]
 - `scripts/search_sheet.py --skip` matches substrings, so `*/drive-download-*/*` skips nothing; pass `drive-download`. [A1]
 - Event pace is still slower than the user's (0.56 s against their 0.32 s median); more half-beat slots would
   help. [Diwali v2]

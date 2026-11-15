@@ -1,0 +1,1126 @@
+{
+ "mount": "/Volumes/Paritosh_4",
+ "scanned_at": "2026-11-15T10:58:14",
+ "dirs": [
+  "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival"
+ ],
+ "roots": {
+  "261114ac-brandon-mcmullen-arrival::footage": [
+   "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival"
+  ]
+ },
+ "top_level": [
+  "261114AC "
+ ],
+ "files": [
+  {
+   "fid": "bdffb80c05ed",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6127.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6127.MP4",
+   "kind": "video",
+   "size": 268716674,
+   "inode": 622,
+   "mtime": 1794631055,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 407146475,
+    "created": "2026-11-14T03:07:28.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ad30fa1a4bdb",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6128.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6128.MP4",
+   "kind": "video",
+   "size": 939826880,
+   "inode": 1531,
+   "mtime": 1794633448,
+   "media": {
+    "duration_s": 23.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 326328777,
+    "created": "2026-11-14T03:47:04.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "bb4e9cc50f07",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6129.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6129.MP4",
+   "kind": "video",
+   "size": 537162016,
+   "inode": 2513,
+   "mtime": 1794633469,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319739295,
+    "created": "2026-11-14T03:47:35.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "b6afa9cf0ef4",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6130.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6130.MP4",
+   "kind": "video",
+   "size": 738494448,
+   "inode": 3763,
+   "mtime": 1794633494,
+   "media": {
+    "duration_s": 18.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 323901073,
+    "created": "2026-11-14T03:47:54.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "c2da5c9dc098",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6131.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6131.MP4",
+   "kind": "video",
+   "size": 805605648,
+   "inode": 5625,
+   "mtime": 1794633518,
+   "media": {
+    "duration_s": 20.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319684780,
+    "created": "2026-11-14T03:48:17.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "78432d405363",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6132.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6132.MP4",
+   "kind": "video",
+   "size": 268718382,
+   "inode": 5916,
+   "mtime": 1794633530,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319902835,
+    "created": "2026-11-14T03:48:43.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "777741c4dceb",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6133.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6133.MP4",
+   "kind": "video",
+   "size": 335829582,
+   "inode": 7339,
+   "mtime": 1794633546,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 310953316,
+    "created": "2026-11-14T03:48:57.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "d62307232c17",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6134.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6134.MP4",
+   "kind": "video",
+   "size": 268716674,
+   "inode": 9059,
+   "mtime": 1794633555,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 407146475,
+    "created": "2026-11-14T03:49:09.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "0239db651244",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6135.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6135.MP4",
+   "kind": "video",
+   "size": 738493908,
+   "inode": 9346,
+   "mtime": 1794633582,
+   "media": {
+    "duration_s": 17.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 332654913,
+    "created": "2026-11-14T03:49:23.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "e0756bc8452e",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6136.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6136.MP4",
+   "kind": "video",
+   "size": 470050816,
+   "inode": 10367,
+   "mtime": 1794633600,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 326424177,
+    "created": "2026-11-14T03:49:47.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "45cae0fe26fb",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6137.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6137.MP4",
+   "kind": "video",
+   "size": 402939799,
+   "inode": 11353,
+   "mtime": 1794633622,
+   "media": {
+    "duration_s": 9.6,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 335783165,
+    "created": "2026-11-14T03:50:11.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f05cb65bc369",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6138.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6138.MP4",
+   "kind": "video",
+   "size": 1006939433,
+   "inode": 12675,
+   "mtime": 1794633658,
+   "media": {
+    "duration_s": 25.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 310783775,
+    "created": "2026-11-14T03:50:31.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9791c8ea1a56",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6139.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6139.MP4",
+   "kind": "video",
+   "size": 537160848,
+   "inode": 12802,
+   "mtime": 1794633677,
+   "media": {
+    "duration_s": 12.48,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 344333876,
+    "created": "2026-11-14T03:51:04.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "a343e5ee53c0",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6140.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6140.MP4",
+   "kind": "video",
+   "size": 402939074,
+   "inode": 13163,
+   "mtime": 1794633701,
+   "media": {
+    "duration_s": 9.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 353455328,
+    "created": "2026-11-14T03:51:30.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "5026660967a0",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6141.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6141.MP4",
+   "kind": "video",
+   "size": 268717399,
+   "inode": 16771,
+   "mtime": 1794633712,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373218609,
+    "created": "2026-11-14T03:51:45.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "103464ff9fd7",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6142.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6142.MP4",
+   "kind": "video",
+   "size": 335829042,
+   "inode": 17139,
+   "mtime": 1794633742,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 329244158,
+    "created": "2026-11-14T03:52:12.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "5dfb272fb9e8",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6143.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6143.MP4",
+   "kind": "video",
+   "size": 1141161293,
+   "inode": 18140,
+   "mtime": 1794633784,
+   "media": {
+    "duration_s": 29.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 311792703,
+    "created": "2026-11-14T03:52:33.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "1e5fc4e82f49",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6144.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6144.MP4",
+   "kind": "video",
+   "size": 537162016,
+   "inode": 19686,
+   "mtime": 1794633801,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319739295,
+    "created": "2026-11-14T03:53:06.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9cfbe92fccb1",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6145.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6145.MP4",
+   "kind": "video",
+   "size": 201607367,
+   "inode": 22350,
+   "mtime": 1794633809,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 336012278,
+    "created": "2026-11-14T03:53:24.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "aaf16e64f250",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6146.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6146.MP4",
+   "kind": "video",
+   "size": 335829042,
+   "inode": 22388,
+   "mtime": 1794633824,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 329244158,
+    "created": "2026-11-14T03:53:35.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ea211d53db3f",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6147.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6147.MP4",
+   "kind": "video",
+   "size": 268717214,
+   "inode": 22925,
+   "mtime": 1794633886,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373218352,
+    "created": "2026-11-14T03:54:39.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "cecab1eec90c",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6148.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6148.MP4",
+   "kind": "video",
+   "size": 335827874,
+   "inode": 24197,
+   "mtime": 1794633907,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373142082,
+    "created": "2026-11-14T03:54:58.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "4dfc52df4b2e",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6149.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6149.MP4",
+   "kind": "video",
+   "size": 201606642,
+   "inode": 25962,
+   "mtime": 1794633918,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373345633,
+    "created": "2026-11-14T03:55:12.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "024169f42e40",
+   "path": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C6150.MP4",
+   "dir": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+   "basename": "C6150.MP4",
+   "kind": "video",
+   "size": 671382708,
+   "inode": 30066,
+   "mtime": 1794720186,
+   "media": {
+    "duration_s": 15.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 339082175,
+    "created": "2026-11-14T03:55:50.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 10 of 10 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival/C* hevc 3840x2160 landscape dm0"
+   }
+  }
+ ],
+ "project": {
+  "name": "261114ac-brandon-mcmullen-arrival",
+  "folder": "/Volumes/Paritosh_4/261114AC /261114AC Brandon McMullen Arrival",
+  "key": "261114ac-brandon-mcmullen-arrival::footage"
+ }
+}
