@@ -82,6 +82,14 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    folder is on the drive (`Paritosh_4/261114AC /pf/xml/261115-*`), not in `out/`. Shot map written and validated; the
    user cuts from the app. The other man's takes (C6233-C6240, C6249) are in `skip`. Ariel Dahan - On up on Winning
    from 32.37 s (drop on the check-in at 4.16 s), 16.0 s, flash 0.35, stabilised.
+1e. **clip (11-15)**: a BTS cut of an ad shoot on the same drive (`Paritosh_4/261114AC /pf/xml/clip`, key `clip::footage`).
+   Brief: "45-60 sec BTS cut, fast and flashy, timelapse, bytes like cut/action, start on prep, a byte, then the music;
+   slow motion on the beat, stabilise, lots of SFX". Shot map written and validated; the user cuts from the app. Then the
+   second look, `report.md` and the verdict. No BTS bucket card: planned as `event` with `keeper_w` 0.3. 9:16, 49.3 s,
+   49 slots; Ariel Dahan - On up on Winning from 18.53 s (35-beat prep opening, drop on the cut after "action!").
+   Bytes from local Whisper: the AD's "silence, going for take" and "camera rolling, set and action!", "dog is here,
+   bro", "let's take a picture". Timelapse = set-build takes ramped to 600%/400% (gap below). Flash 0.35, accents,
+   stabilised, classes b-roll/close-up/wide/talking-head. Every slot names 2-10 candidate takes from the overview.
 1a. **diwali-test (A1)**: the shot map is written and validated. The user cuts from the app. Then do the second
    look, write `report.md` in the project folder, and record the verdict. The plan:
    - Brief: "fast paced party edit for diwali, under 60 seconds". Bucket `event` (inferred).
@@ -228,6 +236,8 @@ footage mapped) and `videtor kb bucket <bucket>`.
 ## Known gaps and backlog
 
 Not built; the source is in brackets.
+- **BTS** [11-15, clip]: no `bts` bucket card or keeper (planned as `event`). No timelapse move: a slot ramps a take to
+  400-600% instead (no frame blending or interval sampling). No SFX density knob for "lots of SFX".
 - **Teaching** [11-12]: a past edit's kind of work can't be changed on the page (it is in `kb/manifest.json`). Learning
   from a job cut by hand misses flicker sub-shots and cuts between look-alike shots (9 of 46 takes on the test), finds
   moments to about a second, and takes about two minutes for a 28 s video. A style from one video has no policy (two are
