@@ -75,6 +75,9 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    from the app. Then the second look, `report.md` and the verdict. Bucket `sports-promo` (inferred: a player's hotel
    arrival). 9:16, 16.0 s, Burn4Me from 81.13 s (drop on the handshake at 4.16 s), flash rate 0.35, stabilised;
    entering, meeting, posing, close. Every slot names its takes from a stills sheet.
+1c. **logan (11-15)**: the second arrival from the same shoot and brief. Shot map written and validated; the user
+   cuts from the app. Daytime, with family; he films on his phone walking in (the brief's "clicking photos").
+   9:16, 16.0 s, BLAGE - Go Down from 110.57 s (drop on the greeting at 4.04 s), flash rate 0.35, stabilised; C6207 skipped.
 1a. **diwali-test (A1)**: the shot map is written and validated. The user cuts from the app. Then do the second
    look, write `report.md` in the project folder, and record the verdict. The plan:
    - Brief: "fast paced party edit for diwali, under 60 seconds". Bucket `event` (inferred).
