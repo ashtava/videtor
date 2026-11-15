@@ -224,6 +224,46 @@ class ServerTests(unittest.TestCase):
         proj = json.loads(self.get(f"/api/project?dir={dirs['a-talk']}")[2])
         self.assertEqual((proj["kind"], proj["preview"], proj["finishing"]), ("interview", None, []))
 
+    def test_the_shape_and_the_music_are_the_users_to_set_for_a_project(self):
+        from videtor.plan import settings
+
+        footage = self.tmp / "footage-h"
+        footage.mkdir(exist_ok=True)
+        _, r = self.post("/api/prep", {"folder": str(footage), "out": str(self.tmp / "out"), "name": "wide one", "frame": "horizontal"})
+        d = Path(r["project"]["dir"])
+        self.assertEqual(settings.load(d), {"frame": "horizontal"})  # a new project is made with its shape
+        self.assertIn("frame must be", self.post("/api/prep", {"folder": str(footage), "out": str(self.tmp / "out"), "name": "odd", "frame": "round"})[1]["error"])
+        req = json.loads(self.get(f"/api/project?dir={d}")[2])["requirements"]
+        self.assertEqual((req["mine"], req["says"]["frame"], req["plan"]), ({"frame": "horizontal"}, "Horizontal 16:9", None))
+        self.assertEqual([k for k, _ in req["frames"]], ["vertical", "horizontal", "horizontal-4k", "square"])
+        # the user's own track: it has to be there and be audio; a start "at" needs its second
+        self.assertIn("not there", self.post("/api/settings", {"project": str(d), "music": {"path": str(self.tmp / "no.wav")}})[1]["error"])
+        (self.tmp / "notes.txt").write_text("x")
+        self.assertIn("audio file", self.post("/api/settings", {"project": str(d), "music": {"path": str(self.tmp / "notes.txt")}})[1]["error"])
+        track = self.tmp / "song.wav"
+        track.write_bytes(b"")
+        beats = self.tmp / "cache" / "beats"
+        beats.mkdir(parents=True, exist_ok=True)
+        (beats / "song.beats.json").write_text(json.dumps({"path": str(track), "duration_s": 60.0, "tempo_bpm": 120.0, "beats_s": [k * 0.5 for k in range(120)],
+                                                            "rms_db": [-8.0] * 120, "onset_half_s": [1.0] * 120}))
+        self.assertIn("second of the track", self.post("/api/settings", {"project": str(d), "music": {"path": str(track), "start": "at"}})[1]["error"])
+        _, r = self.post("/api/settings", {"project": str(d), "music": {"path": str(track), "start": "at", "in_s": 12}})
+        self.assertEqual(r["requirements"]["mine"], {"frame": "horizontal", "music": {"path": str(track), "start": "at", "in_s": 12.0}})
+        self.assertEqual(r["requirements"]["says"]["music"], "song.wav, from 12 s")
+        # with a plan written for vertical on beats, the page is told what the cut will be
+        m = {"version": 1, "name": "wide-one", "key": "wide-one::footage", "length_s": 4.0, "width": 1080, "height": 1920,
+             "sections": [{"name": "s", "slots": [{"id": "s-1", "show": "x", "beats": 4}, {"id": "s-2", "show": "y", "beats": 4}]}]}
+        self.post("/api/project/save", {"project": str(d), "shotmap": json.dumps(m)})
+        req = json.loads(self.get(f"/api/project?dir={d}")[2])["requirements"]
+        self.assertEqual((req["plan"]["frame"], req["cut"]["width"], req["cut"]["height"], req["cut"]["music"], req["cut"]["in_s"]), ("vertical", 1920, 1080, "song.wav", 12.0))
+        self.assertTrue(any("as you chose" in n for n in req["notes"]))
+        _, r = self.post("/api/settings", {"project": str(d), "music": {"none": True}, "frame": "square"})
+        self.assertEqual((r["requirements"]["mine"], r["requirements"]["cut"]["music"]), ({"frame": "square", "music": {"none": True}}, None))
+        _, r = self.post("/api/settings", {"project": str(d), "music": None})
+        self.assertEqual(r["requirements"]["mine"], {"frame": "square"})  # back to the plan's music
+        self.assertIn("not a folder", self.post("/api/music/ranked", {"folder": str(self.tmp / "nope")})[1]["error"])
+        self.assertEqual(self.post("/api/music/ranked", {"folder": str(footage), "length": 10})[1], {"tracks": []})
+
     def test_scan_counts_the_video_files_under_a_folder(self):
         d = self.tmp / "scan" / "Card 1"
         d.mkdir(parents=True)

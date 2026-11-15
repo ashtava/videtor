@@ -59,7 +59,12 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    "turned"). Lettering, horizons and standing people tell you; fix a camera or a take with
    `videtor orient <name> --camera M2U --rotate -90` (or `--take <file>`; -90 = counter-clockwise,
    as in Premiere), which rebuilds those takes' footage map (drive connected) and the overview.
-4. **Music.** For a folder or a feel ("a high-beat track"): `videtor music <folder> --length
+4. **Music.** First read `out/<name>/settings.json` when it exists: it is what the user set in the app. `music.path` is
+   their track (use it, never another; `start` `at` gives the in-point, `beginning` is 0, `auto` leaves the in-point to you:
+   put its lift on the reveal), `music.none` means no music (give slots `length_s`, no `beats`), and `frame` is the shape
+   to write the plan for (vertical 1080×1920, horizontal 1920×1080, horizontal-4k 3840×2160, square 1080×1080). The cut
+   applies these over the plan in any case; a plan written for them needs no adjusting. Only with no music set there:
+   for a folder or a feel ("a high-beat track"): `videtor music <folder> --length
    <seconds> --reveal-at <seconds>`. Choose the track and in-point so a lift (drop) lands on the
    reveal; a beat is 60/BPM seconds. Count the beats per section with the track's beat grid
    (`cache/beats/<track>.beats.json`).

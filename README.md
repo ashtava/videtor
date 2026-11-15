@@ -203,6 +203,23 @@ uv run videtor preview out/<name>/picks.json                     # a half-size v
 - A second look is remembered: `videtor look` writes `decisions.json` next to the picks and the next
   `videtor cut` puts the swaps back (`--fresh` forgets them).
 
+### The shape and the music are the user's to set
+
+A project's `settings.json` (written by the app: New project, and **Shape and music** on Brief & plan) holds what the
+user asked for, and the cut follows it whatever the plan says:
+
+```json
+{"frame": "horizontal", "music": {"path": "/Users/me/Music/track.wav", "start": "auto"}}
+```
+
+- `frame`: `vertical` (1080×1920), `horizontal` (1920×1080), `horizontal-4k` (3840×2160) or `square` (1080×1080).
+- `music`: the user's own track with `start` `auto` (the plan's in-point when it is the plan's track, else the start
+  that lands the track's lift on the plan's reveal), `beginning`, or `at` with `in_s`; `{"none": true}` for no
+  music; left out, the plan's music stands.
+- A plan is counted in beats, so on another track every shot keeps its beats and the cut's length follows the new
+  tempo (the cut and the app say by how much). With no music every shot keeps the length its beats had.
+- The Music tab ranks a folder for the cut's length and reveal; **Use this track** sets it for the project.
+
 ### Teach Videtor: the app is where it is given things to learn from
 
 The app's **Teach Videtor** page is the one place for every training input; each button runs one of these:

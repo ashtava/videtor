@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw
 sys.path.insert(0, "src")
 from videtor.analyze import tags
 from videtor.plan import fill
-from videtor.cli import _takes_for, _index_for_key
+from videtor.pipeline import takes_for as _takes_for, index_for_key as _index_for_key
 
 ap = argparse.ArgumentParser()
 ap.add_argument("queries")

@@ -145,6 +145,21 @@ def rank(scanned: list[dict], length_s: float, min_bpm: float = 115, max_bpm: fl
     return sorted(rows, key=lambda r: -r["score"])
 
 
+def ranked(folder: Path, length_s: float, reveal_at_s: float = 0.0, cache_dir: Path = Path("cache/beats"), top: int = 12) -> list[dict]:
+    """The folder's best tracks for a cut of `length_s`, as rows a page can show and choose from: name, path,
+    cutting tempo, where to start (so a lift lands on the reveal, when one is given) and how hard the stretch hits.
+    Reads each track's cached analysis (a track not analysed yet is analysed here, a few seconds each)."""
+    scanned = [beats_mod.load_or_track(p, cache_dir) for p in tracks(Path(folder).expanduser())]
+    by_path = {d["path"]: d for d in scanned}
+    rows = []
+    for r in rank(scanned, length_s)[:top]:
+        placed = place(by_path[r["path"]], length_s, reveal_at_s) if reveal_at_s else None
+        rows.append({"path": r["path"], "name": r["name"], "bpm": round(r["cut_bpm"]), "in_s": placed["in_s"] if placed else r["window"]["start_s"],
+                     "drop_s": placed["drop_s"] if placed else None, "punch": r["window"]["punch"], "score": r["score"],
+                     "duration_s": round(float(by_path[r["path"]]["duration_s"]), 1)})
+    return rows
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Rank a music folder for a fast cut.")
     ap.add_argument("folder", type=Path)

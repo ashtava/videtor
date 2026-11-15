@@ -66,11 +66,28 @@
           <details class="guide" data-guide="brief">
             <summary>How this works</summary>
             <ol>
+              <li><b>Shape and music:</b> choose the frame (vertical, horizontal, square) and the music: your own track and where it starts, no music, or leave it to the plan. The cut always follows what you choose here.</li>
               <li><b>Brief:</b> paste it as the client wrote it (length, format, feel, what must be in and stay out) and save.</li>
               <li><b>The plan</b> is the list of shots the cut fills: section by section, what each shot must show and how long it lasts. Claude writes it from the brief and the overview: copy the request below into Claude Code. When it is done, the plan shows here as a shot list.</li>
               <li>Check the shot list. To change it, ask Claude in the same chat, or edit it under <b>Edit the plan</b>. Then go to <b>Cut</b>.</li>
             </ol>
           </details>
+          <h2>Shape and music</h2>
+          <div class="card" id="req-card">
+            <div class="row"><label>Shape</label><select id="req-frame"></select><span class="muted" id="req-frame-note"></span></div>
+            <div class="row"><label>Music</label>
+              <label class="check"><input type="radio" name="req-music" value="mine"> My track</label>
+              <label class="check"><input type="radio" name="req-music" value="none"> No music</label>
+              <label class="check"><input type="radio" name="req-music" value="plan"> Leave it to the plan</label></div>
+            <div id="req-mine">
+              <div class="row"><label>Track</label><input type="text" id="req-track" placeholder="your music file" style="min-width:380px"><button class="btn" data-pick="req-track" data-kind="audio">Choose…</button>
+                <a href="#" data-goto="project:tools" class="muted">or find one in a music folder</a></div>
+              <div class="row"><label>Start it</label><select id="req-start"><option value="auto">where it suits this cut best</option><option value="beginning">from its beginning</option><option value="at">from this second</option></select>
+                <input type="number" id="req-in" step="0.1" min="0" placeholder="seconds" style="width:110px" hidden>
+                <button class="btn primary" id="req-save">Use this music</button></div>
+            </div>
+            <div id="req-msg" class="muted"></div>
+          </div>
           <h2>Brief</h2>
           <textarea id="brief" placeholder="Paste the brief as the client wrote it."></textarea>
           <div class="row"><button class="btn primary" id="save-brief">Save the brief</button><span id="brief-msg" class="muted"></span></div>
@@ -87,14 +104,16 @@
           <details class="guide" data-guide="tools">
             <summary>How this works</summary>
             <ul>
-              <li><b>Music</b> (optional): choose your music folder and the piece's length; with a reveal, the second it lands on. The best tracks come back with the in-point that puts a drop on the reveal. Tell Claude which one to use, or put it in the plan's <code>music</code>.</li>
+              <li><b>Music</b>: your own track is set on <a href="#" data-goto="project:brief">Brief &amp; plan</a>. To find one instead, choose a music folder and the piece's length (with a reveal, the second it lands on): the best tracks come back with where to start, and <b>Use this track</b> sets it for the project.</li>
               <li><b>Search</b> (optional): describe a shot in concrete words ("a golden trophy", "a man in a white jacket") to see the best moment of every take. Useful to check the footage has what the brief asks for.</li>
             </ul>
           </details>
           <h2>Music</h2>
+          <div id="music-chosen" class="muted"></div>
           <div class="row"><label>Music folder</label><input type="text" id="music-folder" placeholder="your music library"><button class="btn" data-browse="music-folder">Choose…</button></div>
           <div class="row"><label>Length (s)</label><input type="number" id="music-length" value="25"><label>Reveal at (s)</label><input type="number" id="music-reveal" placeholder="optional"><button class="btn" id="music-run">Find tracks</button></div>
           <pre class="log" id="music-log" hidden>—</pre>
+          <div id="music-results"></div>
           <h2>Search the footage</h2>
           <div class="row"><input type="text" id="search-query" placeholder="a golden trophy in a glass case"><button class="btn" id="search-run">Search</button></div>
           <pre class="log" id="search-log" hidden>—</pre>
@@ -106,10 +125,11 @@
             <ol>
               <li>The line below says whether the footage drive is needed. The first cut of a plan reads the takes it can use in full (a few minutes); later cuts are quick.</li>
               <li><b>Cut</b>: every shot gets its best take and three runners-up, with music and sound effects in your style, and the Premiere XML is written. Review opens when it is done.</li>
-              <li>Changed the plan? Cut again. A new cut starts over, so swaps made in Review have to be made again.</li>
+              <li>The cut is made in the shape and with the music you chose on Brief &amp; plan (the line below says which). Changed them, or the plan? Cut again: swaps made in Review are kept.</li>
             </ol>
             <p class="muted">Anything reading footage in the background pauses while the cut runs and carries on after it.</p>
           </details>
+          <div class="drive" id="cut-as"></div>
           <div class="drive" id="cut-drive"></div>
           <div class="row"><button class="btn primary big" id="cut-run">Cut</button><label class="check"><input type="checkbox" id="cut-sfx" checked> sound effects in your style</label><span id="cut-msg" class="muted"></span></div>
           <div class="status" id="cut-status" hidden></div>
@@ -221,6 +241,16 @@
           <label for="prep-name">Project name</label>
           <input type="text" id="prep-name" placeholder="filled in from the folder">
           <div class="hint">Names the project folder and the Premiere XML.</div>
+        </div>
+        <div class="field">
+          <label for="prep-frame">Shape of the cut</label>
+          <select id="prep-frame">
+            <option value="vertical">Vertical 9:16 (reels, shorts)</option>
+            <option value="horizontal">Horizontal 16:9</option>
+            <option value="horizontal-4k">Horizontal 16:9, 4K</option>
+            <option value="square">Square 1:1</option>
+          </select>
+          <div class="hint">The frame the timeline is made in. It can be changed later on Brief &amp; plan.</div>
         </div>
         <div class="field">
           <label for="prep-out">Save to</label>

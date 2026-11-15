@@ -81,6 +81,7 @@ the same `pipeline.cut_picks`, so a measure is always a measure of the real cut.
 | | `plan/library.py` | A shoot sorted into wide / close-up / talking-head / interview-bite / b-roll folders from the sparse map: rules first, then a model learnt from the user's moves (`kb/library/`); the bites as a Premiere sequence |
 | | `plan/fx.py` | Effects drawn at a bucket's rates (`kb/policy/`, else `kb/renders/`): flash and static overlays (generated in `cache/assets`, or the user's), whip, spin, blur, push-in, pull-out, punch, shake, echo, black and white (Iris label); `fx-test` sequence |
 | | `plan/gym.py` | Learning a cutting style from reels alone: each reel's shots as stand-in footage, a policy that cuts them, a reward against the real reel, cross-entropy search, leave-one-out evaluation → `kb/policy/<bucket>.json` |
+| | `plan/settings.py` | What the user set for a project in the app, `out/<name>/settings.json`: the frame (vertical, horizontal, horizontal-4k, square) and the music (their track with its start, none, or the plan's). `apply` lays it over the shot map at cut time: another track keeps every slot's beats and the length follows its tempo; `auto` start lands the track's lift on the plan's reveal (`plan/music.place`); no music turns beats into seconds |
 | | `plan/draft.py` | A first shot map for new footage (`videtor draft`): the bucket's policy for pace, effects and accents; the shoot's inventory for what to ask for (half the style's share of each kind of shot, half the shoot's own). A bucket with no reels drafts on its edits' pace with the general vocabulary and no effects |
 | | `plan/interview.py` | A-roll paper edit (`aroll.json`), B-roll by region, voice levelling, music dips, finishing pass (ramps, zooms, Warp flags) |
 | | `plan/musicvideo.py` | Beat-grid lip-sync cut with shares per singer, cutaways moved by whole bars, beam search (`mv.json`) |
@@ -129,6 +130,8 @@ the same `pipeline.cut_picks`, so a measure is always a measure of the real cut.
   - Each slot: `id beats show scale face hands camera speed role takes ramp flicker stack black byte stabilize`.
   - Examples: `out/guru-25s-brief/` (plain), `out/diwali-party-v2/` (moves, medley), `out/alpha-summit/`
     (bytes, stabilise, keeper_w), `out/engagement/` (cinematic 16:9, pinned moments).
+- **settings.json** (per project, the user's): `{"frame": ..., "music": {"path", "start": auto|beginning|at, "in_s"} | {"none": true}}`. It wins over the
+  shot map's `width`, `height` and `music` at cut time; the shot map on disk stays as written.
 - **picks.json:** the map's settings (`pipeline.carry`) plus `slots[]`, each with `id section role show start_s length_s`,
   the slot's own `effects` and filters (`scale face hands camera`) and `pick`/`alternates[]`. `pipeline.check_picks`
   reads it. A pick has `fid path name in_s out_s speed display_w display_h score reasons motion

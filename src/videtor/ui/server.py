@@ -327,6 +327,13 @@ class App:
         if body.get("workers"):
             args += ["--workers", str(int(body["workers"]))]
         project = self.add_project(name, str(folder), str(out_root / name))
+        if body.get("frame"):  # the shape the user chose for this job: kept with the project, used by every cut of it
+            from videtor.plan import settings
+
+            try:
+                settings.save(Path(project["dir"]), {**settings.load(Path(project["dir"])), "frame": body["frame"]})
+            except ValueError as exc:
+                return {"error": str(exc)}
         job = self.jobs.submit("prep", f"Read the footage · {name}", args, project=project["dir"])
         return {"job": job.to_dict(), "project": project}
 
@@ -463,9 +470,9 @@ class App:
     def api_pick_file(self, body: dict) -> dict:
         """The Mac's file dialog for one file: a finished video, or a Premiere XML export."""
         kind = body.get("kind")
-        types = '{"public.movie"}' if kind == "video" else '{"public.xml", "xml"}'
-        path = choose_video_native(body.get("prompt") or ("Choose the finished video" if kind == "video" else "Choose the Premiere XML export"),
-                                   body.get("start"), types)
+        types = {"video": '{"public.movie"}', "audio": '{"public.audio"}'}.get(kind, '{"public.xml", "xml"}')
+        prompt = {"video": "Choose the finished video", "audio": "Choose the music track"}.get(kind, "Choose the Premiere XML export")
+        path = choose_video_native(body.get("prompt") or prompt, body.get("start"), types)
         return {"path": path, "cancelled": path is None}
 
     # --- teaching: the one place the user gives Videtor something to learn from ------------------
@@ -559,6 +566,89 @@ class App:
         flag = ["--take", which] if "." in which else ["--camera", which]
         job = self.jobs.submit("prep", f"Turn {which} · {p['name']}", ["orient", p["name"], "--rotate", str(turn), *flag, "--out", str(Path(p["dir"]).parent)], project=p["dir"])
         return {"job": job.to_dict()}
+
+    def _requirements(self, d: Path, shotmap_text: str) -> dict:
+        """What the user set for this project (the frame, the music), what the plan says, and what the cut will do
+        with the two together. The effect on the plan is worked out only when the track is already analysed (the
+        save does the analysing), so opening a project never waits on a track."""
+        from videtor.plan import settings
+
+        mine = settings.load(d)
+        out: dict = {"mine": mine, "says": settings.describe(mine), "frames": [[k, v[2]] for k, v in settings.FRAMES.items()], "plan": None, "notes": []}
+        try:
+            m = json.loads(shotmap_text) if shotmap_text.strip() else None
+        except ValueError:
+            m = None
+        if isinstance(m, dict):
+            mu = m.get("music")
+            one = mu if isinstance(mu, dict) else None
+            out["plan"] = {"frame": settings.frame_of(m), "width": m.get("width", 1080), "height": m.get("height", 1920), "length_s": m.get("length_s"),
+                           "music": Path(one["path"]).name if one and one.get("path") else "a medley" if isinstance(mu, list) else None,
+                           "music_path": one.get("path") if one else None, "in_s": one.get("in_s") if one else None}
+            track = (mine.get("music") or {}).get("path")
+            if mine and (not track or settings.analysed(track, self.root / "cache" / "beats")):
+                try:
+                    cut_as, out["notes"] = settings.apply(m, mine, self.root / "cache" / "beats")
+                    out["cut"] = {"width": cut_as.get("width"), "height": cut_as.get("height"), "length_s": cut_as.get("length_s"),
+                                  "music": Path(cut_as["music"]["path"]).name if isinstance(cut_as.get("music"), dict) else None,
+                                  "in_s": cut_as["music"].get("in_s") if isinstance(cut_as.get("music"), dict) else None}
+                except (KeyError, TypeError, ValueError, OSError):
+                    pass
+        return out
+
+    def api_settings(self, body: dict) -> dict:
+        """Save what the user chose for a project: the shape of the frame and the music (their track and where it
+        starts, no music, or the plan's). The chosen track is analysed here, once, so the page can say what it does
+        to the cut's length."""
+        from videtor.analyze import beats as beats_mod
+        from videtor.plan import settings
+
+        p = self._project(body.get("project", ""))
+        if not p:
+            return {"error": "unknown project"}
+        d = Path(p["dir"])
+        mine = settings.load(d)
+        if "frame" in body:
+            mine["frame"] = body["frame"] or None
+        if "music" in body:
+            mu = body["music"]
+            if isinstance(mu, dict) and mu.get("path"):
+                path = Path(str(mu["path"]).strip()).expanduser()
+                if not path.is_file():
+                    return {"error": f"That track is not there: {path}"}
+                if path.suffix.lower() not in {".wav", ".mp3", ".aif", ".aiff", ".m4a", ".flac"}:
+                    return {"error": "Choose an audio file: wav, mp3, aif, m4a or flac."}
+                start = mu.get("start") or "auto"
+                mu = {"path": str(path), "start": start}
+                if start == "at":
+                    try:
+                        mu["in_s"] = max(0.0, float(body["music"].get("in_s")))
+                    except (TypeError, ValueError):
+                        return {"error": "Say the second of the track the cut should start on."}
+                try:
+                    beats_mod.load_or_track(path, self.root / "cache" / "beats")  # a few seconds the first time
+                except Exception as exc:  # noqa: BLE001 - an unreadable file is the user's to hear about
+                    return {"error": f"Videtor could not read that track: {exc}"}
+            mine["music"] = mu or None
+        try:
+            settings.save(d, mine)
+        except ValueError as exc:
+            return {"error": str(exc)}
+        shotmap = (d / "shotmap.json").read_text() if (d / "shotmap.json").exists() else ""
+        return {"ok": True, "requirements": self._requirements(d, shotmap)}
+
+    def api_music_ranked(self, body: dict) -> dict:
+        """A music folder's best tracks for this cut, as rows to choose from (after the ranking job has analysed them)."""
+        from videtor.plan import music as mus
+
+        folder = Path(body.get("folder", "")).expanduser()
+        if not folder.is_dir():
+            return {"error": f"not a folder: {folder}"}
+        try:
+            rows = mus.ranked(folder, float(body.get("length") or 25), float(body.get("reveal_at") or 0), self.root / "cache" / "beats")
+        except Exception as exc:  # noqa: BLE001
+            return {"error": f"{type(exc).__name__}: {exc}"}
+        return {"tracks": rows}
 
     def api_music(self, body: dict) -> dict:
         folder = Path(body.get("folder", "")).expanduser()
@@ -662,6 +752,7 @@ class App:
         out["preview"] = str(d / "preview.mp4") if (d / "preview.mp4").exists() else None
         out["finishing"] = self._finishing(d)
         out["kind"] = "music video" if (d / "mv.json").exists() else "interview" if (d / "aroll.json").exists() else "cut"
+        out["requirements"] = self._requirements(d, out["shotmap"])
         job = self._active_job(p["dir"])
         out["drive"] = self._drive(p.get("folder", ""))
         out["status"] = self._status(p)
@@ -906,7 +997,8 @@ class Handler(BaseHTTPRequestHandler):
                   "/api/readback": self.app.api_readback, "/api/learn": self.app.api_learn, "/api/pick-video": self.app.api_pick_video,
                   "/api/pick-file": self.app.api_pick_file, "/api/teach/project": self.app.api_teach_project, "/api/teach/edit": self.app.api_teach_edit,
                   "/api/teach/style": self.app.api_teach_style, "/api/teach/pending": self.app.api_teach_pending, "/api/teach/rule": self.app.api_teach_rule,
-                  "/api/preview": self.app.api_preview, "/api/orient": self.app.api_orient}
+                  "/api/preview": self.app.api_preview, "/api/orient": self.app.api_orient, "/api/settings": self.app.api_settings,
+                  "/api/music/ranked": self.app.api_music_ranked}
         if path in routes:
             try:
                 return self._json(routes[path](body))

@@ -178,6 +178,11 @@ def run(projects: list[dict], paths=None, only: list[str] | None = None, log=pri
         m = shotmap.load(sm_path)
         if pr.get("bucket"):  # a map written before buckets: score it as the kind of work it is
             m["bucket"] = pr["bucket"]
+        from videtor.plan import settings as settings_mod
+
+        mine = settings_mod.load(sm_path.parent)  # the frame and the music the user set: the cut they got is the cut measured
+        if mine:
+            m, _ = settings_mod.apply(m, mine, paths.beats)
         try:
             index = pipeline.index_for_key(m["key"], paths.kb)
         except pipeline.PipelineError as exc:

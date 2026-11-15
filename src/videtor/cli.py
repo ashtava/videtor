@@ -530,7 +530,12 @@ def draft_cmd(
     from fnmatch import fnmatch
 
     from videtor.plan import draft, inventory
+    from videtor.plan import settings as settings_mod
 
+    mine = settings_mod.load(out / name)  # the frame and the music the user set for this project in the app
+    track = (mine.get("music") or {}).get("path")
+    if not music and track:
+        music, music_in = Path(track), float((mine["music"].get("in_s") or 0.0) if mine["music"].get("start") == "at" else music_in)
     mu = {"path": str(music.expanduser()), "in_s": music_in, "fade_out_s": 1.0} if music else None
     key = key or f"{name}::footage"
     inv = None
@@ -549,7 +554,8 @@ def draft_cmd(
                 console.print(f"  {line}", markup=False)
         else:
             console.print(f"no footage read for {key!r} yet (videtor prep): drafting from the style alone")
-    m = draft.draft(name, bucket, length, key, mu, seed=seed, kb_dir=kb_dir, inventory=inv, order=order)
+    w, h = settings_mod.FRAMES[mine["frame"]][:2] if mine.get("frame") in settings_mod.FRAMES else (1080, 1920)
+    m = draft.draft(name, bucket, length, key, mu, width=w, height=h, seed=seed, kb_dir=kb_dir, inventory=inv, order=order)
     if skip:
         m["skip"] = list(skip)
     path = draft.write(m, out)

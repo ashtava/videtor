@@ -420,6 +420,13 @@ def cut(shotmap_path: Path, out: Path | None = None, mount: Path | None = None, 
         raise PipelineError(str(exc)) from exc
     for w in shotmap.warnings(m):
         ev.warn(f"shot map: {w}")
+    from videtor.plan import settings as settings_mod
+
+    mine = settings_mod.load(shotmap_path.parent)  # what the user set for this project in the app: it wins over the plan
+    if mine:
+        m, notes = settings_mod.apply(m, mine, paths.beats)
+        for note in notes:
+            ev.info(note)
     out = out or shotmap_path.parent
     out.mkdir(parents=True, exist_ok=True)
     takes, n = takes_for_cut(index_for_key(m["key"], paths.kb, mount), m, out, paths, ev)

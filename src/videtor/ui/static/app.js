@@ -200,7 +200,8 @@ $("prep-name").addEventListener("input", updateDest);
 $("prep-out").addEventListener("input", updateDest);
 $("prep-folder").addEventListener("change", () => afterPick("prep-folder"));
 $("prep-run").onclick = async () => {
-  const body = { folder: $("prep-folder").value.trim(), out: $("prep-out").value.trim(), name: $("prep-name").value.trim(), dense: $("prep-dense").checked, workers: $("prep-workers").value || null };
+  const body = { folder: $("prep-folder").value.trim(), out: $("prep-out").value.trim(), name: $("prep-name").value.trim(), dense: $("prep-dense").checked, workers: $("prep-workers").value || null,
+    frame: $("prep-frame").value };
   if (!body.folder) { $("prep-msg").innerHTML = `<span class="bad">Choose the footage folder first.</span>`; return; }
   $("prep-run").disabled = true;
   const r = await api("/api/prep", body);
@@ -294,11 +295,67 @@ function renderOverview(p) {
 
 /* ---- brief and plan ---- */
 function claudeRequest(p) {
+  const r = p.requirements || {}, mine = r.mine || {}, says = r.says || {}, mu = mine.music;
+  const frame = says.frame ? ` The cut is ${says.frame}: write the plan for ${says.size[0]}x${says.size[1]}.` : "";
+  const music = !mu ? "" : mu.none ? " No music: give every shot a length in seconds." :
+    ` Use my music: ${mu.path} (${mu.start === "at" ? `starting at ${mu.in_s} s` : mu.start === "beginning" ? "from its beginning" : "choose the in-point so its lift lands on the reveal"}); count the plan on its beats.`;
   return `/cut-from-brief The footage of this project is already read. Project folder: ${p.dir} (shot-map key "${p.key}"). ` +
-    `The brief is in ${p.dir}/brief.md. Read the overview there, write ${p.dir}/shotmap.json from the brief (name the shot types it draws on in "classes"), ` +
+    `The brief is in ${p.dir}/brief.md.${frame}${music} Read the overview there, write ${p.dir}/shotmap.json from the brief (name the shot types it draws on in "classes"), ` +
     `check it with the validator, and stop before cutting: I cut from the Videtor app.`;
 }
+/* ---- shape and music: what the user asks for; the cut follows it whatever the plan says ---- */
+function renderRequirements(p) {
+  const r = p.requirements || { mine: {}, frames: [], notes: [] }, mine = r.mine || {}, plan = r.plan;
+  const card = $("req-card");
+  if (p.kind !== "cut") { card.innerHTML = `<span class="muted">A ${esc(p.kind)} sets its frame and its music in its own plan.</span>`; return; }
+  const sel = $("req-frame");
+  if (!sel) return;
+  sel.innerHTML = (r.frames || []).map(([k, label]) => `<option value="${esc(k)}">${esc(label)}</option>`).join("");
+  sel.value = mine.frame || (plan && plan.frame) || "vertical";
+  $("req-frame-note").textContent = mine.frame && plan && plan.frame !== mine.frame ? `The plan was written for ${plan.width}×${plan.height}; the cut is made in this shape.` : "";
+  const mu = mine.music, mode = mu && mu.none ? "none" : mu && mu.path ? "mine" : "plan";
+  document.querySelectorAll('input[name="req-music"]').forEach((x) => { x.checked = x.value === mode; });
+  $("req-mine").hidden = mode !== "mine";
+  if (document.activeElement !== $("req-track")) $("req-track").value = mu && mu.path ? mu.path : "";
+  $("req-start").value = (mu && mu.start) || "auto";
+  $("req-in").hidden = $("req-start").value !== "at";
+  if (document.activeElement !== $("req-in")) $("req-in").value = mu && mu.in_s != null ? mu.in_s : "";
+  const planMusic = plan && plan.music ? `the plan's music: ${plan.music}${plan.in_s != null ? ` from ${plan.in_s} s` : ""}` : plan ? "the plan has no music" : "the plan will say";
+  const lines = (r.notes || []).map((n) => `<div>${esc(n.charAt(0).toUpperCase() + n.slice(1))}.</div>`).join("");
+  $("req-msg").innerHTML = lines || (mode === "plan" ? `<div>Music is left to the plan (${esc(planMusic)}).</div>` : mode === "none" ? `<div>The cut will have no music.</div>` : "");
+  const c = r.cut, says = r.says || {};
+  $("cut-as").innerHTML = !(p.shotmap || "").trim() ? "" :
+    `This cut: <b>${esc(says.frame || (plan ? `${plan.width}×${plan.height}` : ""))}</b> · music: <b>${esc(c ? (c.music ? `${c.music} from ${Number(c.in_s).toFixed(1)} s` : "none") : mu && mu.path ? says.music : plan && plan.music ? plan.music : "none")}</b>` +
+    `${c && c.length_s ? ` · ${Number(c.length_s).toFixed(1)} s long` : ""} <a href="#" data-goto="project:brief">change</a>`;
+  $("music-chosen").innerHTML = mode === "mine" ? `Music for this project: <b>${esc(says.music)}</b>.` : mode === "none" ? "This project is set to no music." : `Music for this project is left to the plan (${esc(planMusic)}).`;
+}
+async function saveRequirements(body, btn) {
+  if (!current) return;
+  if (btn) btn.disabled = true;
+  $("req-msg").innerHTML = body.music && body.music.path ? "Reading the track…" : "";
+  const r = await api("/api/settings", { project: current.dir, ...body });
+  if (btn) btn.disabled = false;
+  if (r.error) { $("req-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return false; }
+  current.requirements = r.requirements;
+  renderRequirements(current);
+  renderPlan(current);
+  return true;
+}
+$("req-frame").onchange = () => saveRequirements({ frame: $("req-frame").value });
+document.querySelectorAll('input[name="req-music"]').forEach((x) => x.addEventListener("change", () => {
+  $("req-mine").hidden = x.value !== "mine";
+  if (x.value === "none") saveRequirements({ music: { none: true } });
+  if (x.value === "plan") saveRequirements({ music: null });
+  if (x.value === "mine") $("req-msg").innerHTML = "Choose your track, then <b>Use this music</b>.";
+}));
+$("req-start").onchange = () => { $("req-in").hidden = $("req-start").value !== "at"; };
+$("req-save").onclick = () => {
+  const path = $("req-track").value.trim();
+  if (!path) { $("req-msg").innerHTML = `<span class="bad">Choose your track first.</span>`; return; }
+  saveRequirements({ music: { path, start: $("req-start").value, in_s: $("req-in").value === "" ? null : Number($("req-in").value) } }, $("req-save"));
+};
 function renderBrief(p) {
+  renderRequirements(p);
   if (document.activeElement !== $("brief")) $("brief").value = p.brief || "";
   if (document.activeElement !== $("shotmap")) $("shotmap").value = p.shotmap || "";
   showErrors(p.errors || [], !!(p.shotmap || "").trim());
@@ -361,8 +418,22 @@ $("validate-shotmap").onclick = async () => { const r = await api("/api/validate
 $("music-run").onclick = async () => {
   const r = await api("/api/music", { folder: $("music-folder").value.trim(), length: $("music-length").value, reveal_at: $("music-reveal").value || null, project: current && current.dir });
   if (r.error) { $("music-log").hidden = false; $("music-log").textContent = r.error; return; }
-  watch(r.job.id, { log: "music-log", showLog: true });
+  watch(r.job.id, { log: "music-log", showLog: true, onDone: () => showTracks() });
 };
+/* the ranked tracks as rows to choose from: Use this track sets the project's music */
+async function showTracks() {
+  const r = await api("/api/music/ranked", { folder: $("music-folder").value.trim(), length: $("music-length").value, reveal_at: $("music-reveal").value || null });
+  const el = $("music-results");
+  if (r.error || !(r.tracks || []).length) { el.innerHTML = r.error ? `<span class="bad">${esc(r.error)}</span>` : `<div class="muted">No track in that folder suits a cut of this length.</div>`; return; }
+  $("music-log").hidden = true;
+  el.innerHTML = `<div class="tablewrap"><table class="plan"><thead><tr><th>#</th><th>Track</th><th>Tempo</th><th>Start</th><th></th></tr></thead><tbody>` +
+    r.tracks.map((t, i) => `<tr><td>${i + 1}</td><td>${esc(t.name)}</td><td>${t.bpm} BPM</td><td>${Number(t.in_s).toFixed(1)} s${t.drop_s != null ? ` <span class="muted">(lift at ${Number(t.drop_s).toFixed(1)} s)</span>` : ""}</td>` +
+      `<td><button class="btn" data-track="${i}">Use this track</button></td></tr>`).join("") + `</tbody></table></div>`;
+  el.querySelectorAll("button[data-track]").forEach((b) => b.addEventListener("click", async () => {
+    const t = r.tracks[Number(b.dataset.track)];
+    if (await saveRequirements({ music: { path: t.path, start: "at", in_s: t.in_s } }, b)) b.textContent = "In use";
+  }));
+}
 $("search-run").onclick = async () => {
   if (!current) return;
   const r = await api("/api/search", { project: current.dir, query: $("search-query").value.trim(), top: 12 });
