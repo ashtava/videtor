@@ -641,8 +641,33 @@ async function loadLibrary() {
 /* ---- promos: the best half minute of a finished video ---- */
 let promoSets = null;
 const PR_KEEP = ["pr-frame", "pr-kind", "pr-count", "pr-length", "pr-lead", "pr-fit"];
-const prWatch = (id) => watch(id, { status: "pr-status", log: "pr-log", logbox: "pr-logbox", onDone: () => loadPromos(true) });
-async function loadPromos(newest) {
+const prShape = (frame) => ((promoSets.frames.find(([k]) => k === frame) || [0, frame])[1] || "").split(" (")[0];
+const prKind = (kind, n) => (kind === "edit" ? "Edit" : kind === "clip" ? "Clip" : "Promo") + (n === 1 ? "" : "s");
+const prMade = (x) => { const kinds = [...new Set(x.promos.map((p) => p.kind))]; return kinds.length === 1 ? kinds[0] : "mixed"; };  // what the set holds, whatever was asked for
+/* a run of the job: what was there before is dimmed while it runs; when it ends the page shows the set it made, or says
+   plainly that nothing was made (the promos still listed are older ones, not this run's) */
+function prWatch(id, what) {
+  $("pr-msg").textContent = "";
+  $("pr-view").classList.add("stale");
+  $("pr-note").hidden = false;
+  $("pr-note").className = "promo-note";
+  $("pr-note").textContent = `${what || "Making the promos"}… What is shown below was made before.`;
+  watch(id, { status: "pr-status", log: "pr-log", logbox: "pr-logbox", onDone: async (job) => {
+    $("pr-view").classList.remove("stale");
+    if (job.status === "done") {
+      $("pr-note").hidden = true;
+      const made = job.result && job.result.promos ? job.result.promos.replace(/\/promos\.json$/, "") : null;
+      await loadPromos(made || true);
+    } else {
+      const why = (job.result && job.result.error) || (job.progress && job.progress.last) || "see Details";
+      $("pr-note").className = "promo-note bad";
+      $("pr-note").innerHTML = `<b>No promos were made this time.</b> ${esc(why)}` + (promoSets && promoSets.sets.length ? `<br>The promos below are from an earlier run.` : "");
+      await loadPromos();
+    }
+  } });
+}
+/* `show`: a set's folder to open, true for the newest, nothing to stay on the one chosen */
+async function loadPromos(show) {
   const r = await api("/api/promos");
   if (r.error) { $("pr-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
   const first = promoSets === null;
@@ -654,9 +679,11 @@ async function loadPromos(newest) {
     if (live) prWatch(live.id);
   }
   $("pr-fetcher").textContent = r.fetcher ? `yt-dlp ${r.fetcher} is installed. When a link that used to work stops, update it.` : "The link fetcher (yt-dlp) is not installed: links will not work, files will.";
-  const sel = $("pr-select"), keep = newest ? null : sel.value;
-  sel.innerHTML = r.sets.map((x) => `<option value="${esc(x.dir)}">${esc(x.title)} · ${esc((x.made_at || "").replace("T", " ").slice(0, 16))}</option>`).join("") || `<option value="">none yet</option>`;
-  if (keep && r.sets.some((x) => x.dir === keep)) sel.value = keep;
+  const sel = $("pr-select"), keep = show ? null : sel.value;
+  const when = (x) => (x.made_at || "").replace("T", " ").slice(5, 16);
+  sel.innerHTML = r.sets.map((x) => `<option value="${esc(x.dir)}">${esc(x.title)} · ${x.promos.length} ${prKind(prMade(x), x.promos.length).toLowerCase()} · ${esc(prShape(x.options.frame))} · ${esc(when(x))}</option>`).join("") || `<option value="">none yet</option>`;
+  const want = typeof show === "string" ? show : keep;
+  if (want && r.sets.some((x) => x.dir === want)) sel.value = want;
   renderPromos();
 }
 function renderPromos() {
@@ -666,13 +693,16 @@ function renderPromos() {
   const o = x.options, shape = (promoSets.frames.find(([k]) => k === o.frame) || [0, o.frame])[1];
   const wide = ["horizontal", "horizontal-4k", "square"].includes(o.frame);
   const led = x.lead === "speech" ? "the talking" : "the music and the picture";
+  const others = promoSets.sets.filter((q) => q.video === x.video && q.dir !== x.dir).length;
   $("pr-view").innerHTML =
     `<p class="promo-head"><b>${esc(x.title)}</b> · ${fmtDur(x.source.duration_s)}${x.source.url ? ` · <a href="${esc(x.source.url)}" target="_blank" rel="noopener">the link</a>` : ""}<br>` +
-    `${o.kind === "edit" ? "Edits" : "Clips"} in ${esc(shape)}. Videtor took this as a video carried by ${led} (words during ${Math.round(100 * (x.said || 0))}% of it)` +
+    `<b>${prKind(prMade(x), 2)}</b>${prMade(x) !== o.kind ? ` (${prKind(o.kind, 2).toLowerCase()} were asked for: see the note below)` : ""} in ${esc(shape)}, made ${esc((x.made_at || "").replace("T", " ").slice(0, 16))}` +
+    (others ? `. This video has ${others} other set${others > 1 ? "s" : ""} in the list above.` : ".") + `<br>` +
+    `Videtor took this as a video carried by ${led} (words during ${Math.round(100 * (x.said || 0))}% of it)` +
     `${x.replayed ? ", and had YouTube's most-replayed parts to go by" : ""}. <span class="muted">Not so? Set “What carries the video” under Advanced and make them again.</span>` + (x.notes || []).map((n) => `<br><span class="warn">${esc(n)}</span>`).join("") + `</p>` +
     `<div class="promos">` + x.promos.map((p) =>
       `<div class="promo ${wide ? "wide" : ""}"><video controls preload="metadata" playsinline src="${fileUrl(p.file)}&v=${encodeURIComponent(p.made_at || "")}"></video>` +
-      `<h3>Promo ${p.n} · ${Number(p.length_s).toFixed(1)} s</h3><div class="muted">${p.kind === "edit" ? `${p.shots} pieces, the first from` : "from"} ${esc(p.at)} of the video</div>` +
+      `<h3>${prKind(p.kind, 1)} ${p.n} · ${Number(p.length_s).toFixed(1)} s</h3><div class="muted">${p.kind === "edit" ? `${p.shots} pieces from across the video; the sound from` : "one stretch, from"} ${esc(p.at)} of the video</div>` +
       `<ul>${(p.reasons || []).map((w) => `<li>${esc(w)}</li>`).join("")}</ul>` + (p.text ? `<blockquote>${esc(p.text)}</blockquote>` : "") +
       `<div class="row"><button class="btn small" data-another="${p.n}" ${x.more > 0 ? "" : "disabled"} title="${x.more > 0 ? `${x.more} more to try` : "no other part as good: change the kind or the length"}">Try another</button>` +
       `<button class="btn small" data-show="${esc(p.file)}">Show the file</button><button class="btn small" data-show="${esc(p.xml)}">Premiere XML</button></div></div>`).join("") + `</div>`;
@@ -680,7 +710,7 @@ function renderPromos() {
   $("pr-view").querySelectorAll("button[data-another]").forEach((b) => b.addEventListener("click", async () => {
     const r = await api("/api/promos/another", { dir: x.dir, n: Number(b.dataset.another) });
     if (r.error) { $("pr-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
-    prWatch(r.job.id);
+    prWatch(r.job.id, `Finding another for ${prKind(x.options.kind, 1).toLowerCase()} ${b.dataset.another}`);
   }));
 }
 $("pr-select").onchange = renderPromos;
@@ -695,12 +725,12 @@ $("pr-run").onclick = async () => {
   const r = await api("/api/promos/make", { source: $("pr-source").value.trim(), frame: $("pr-frame").value, kind: $("pr-kind").value, count: Number($("pr-count").value),
     length: Number($("pr-length").value), lead: $("pr-lead").value, fit: $("pr-fit").value, browser: $("pr-browser").value });
   if (r.error) { $("pr-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
-  prWatch(r.job.id);
+  prWatch(r.job.id, `Making ${$("pr-count").value} ${prKind($("pr-kind").value, Number($("pr-count").value)).toLowerCase()}`);
 };
 $("pr-update").onclick = async () => {
   const r = await api("/api/promos/update", {});
   if (r.error) { $("pr-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
-  prWatch(r.job.id);
+  prWatch(r.job.id, "Updating the link fetcher");
 };
 
 /* ---- activity ---- */

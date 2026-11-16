@@ -132,6 +132,17 @@ class App:
                     pass
             self.add_project(d.name, folder, str(d.resolve()))
             found += 1
+        # shoots sorted by shot type in the terminal (videtor library build): the Library page lists them too
+        have = {x["dir"] for x in self.state.get("libraries", [])}
+        for f in sorted((root / "library").glob("*/library.json")) if (root / "library").is_dir() else []:
+            if str(f.parent.resolve()) in have:
+                continue
+            try:
+                folders = json.loads(f.read_text()).get("folders") or []
+            except ValueError:
+                continue
+            self.add_library(f.parent.name, folders, str(f.parent.resolve()))
+            found += 1
         return found
 
     def _finished(self, job) -> None:
@@ -502,6 +513,7 @@ class App:
         sets = []
         for d in pipeline.promo_sets(self._promos_root()):
             sets.append({"dir": d["dir"], "name": d["name"], "made_at": d.get("made_at"), "title": d["source"].get("title") or d["name"],
+                         "video": link.key(d["source"]["url"]) if d["source"].get("url") else d["source"].get("path") or d["dir"],  # sets of one video, whichever folder
                          "source": {k: d["source"].get(k) for k in ("url", "path", "duration_s", "width", "height")}, "options": d["options"],
                          "lead": d.get("lead"), "said": d.get("said"), "replayed": d.get("replayed"), "notes": d.get("notes") or [],
                          "more": len(d.get("candidates") or []) - len(d.get("used") or []),
@@ -542,7 +554,7 @@ class App:
             n = int(body.get("n"))
         except (TypeError, ValueError):
             return {"error": "which promo?"}
-        if not (d / "promos.json").exists() or d.resolve().parent != self._promos_root().resolve():
+        if not (d / "promos.json").exists() or self._promos_root().resolve() not in d.resolve().parents:
             return {"error": "no promos there"}
         return {"job": self.jobs.submit("promos", f"Another promo {n} · {d.name}", ["promos", str(d), "--another", str(n)], project=str(d)).to_dict()}
 

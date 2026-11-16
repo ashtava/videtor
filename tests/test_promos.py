@@ -353,6 +353,15 @@ class LinkTests(unittest.TestCase):
         self.assertIn("updating the fetcher", link._plain("ERROR: something new", "https://youtu.be/abc"))
         self.assertIn("uv sync", link.missing())
 
+    def test_a_video_is_the_same_video_however_its_link_was_copied(self):
+        same = ["https://youtu.be/izY-H7x_67?si=AbCd", "https://www.youtube.com/watch?v=izY-H7x_67", "https://m.youtube.com/watch?v=izY-H7x_67&t=42s&list=PL1",
+                "https://www.youtube.com/shorts/izY-H7x_67?feature=share", "https://music.youtube.com/watch?v=izY-H7x_67&si=zz"]
+        self.assertEqual({link.key(u) for u in same}, {"youtube:izY-H7x_67"})
+        self.assertEqual({link.key(u) for u in ("https://www.instagram.com/reel/DeIX_9-Q/?igsh=abc", "https://instagram.com/someone/reel/DeIX_9-Q", "https://www.instagram.com/p/DeIX_9-Q/")},
+                         {"instagram:DeIX_9-Q"})
+        self.assertNotEqual(link.key("https://youtu.be/aaa"), link.key("https://youtu.be/bbb"))
+        self.assertEqual(link.key("https://vimeo.com/123/?utm_source=x&h=9f"), "vimeo.com/123?h=9f")  # other sites: the address without its tracking parts
+
 
 if __name__ == "__main__":
     unittest.main()

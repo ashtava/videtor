@@ -352,18 +352,50 @@ class ServerTests(unittest.TestCase):
         job = self.post("/api/promos/make", {"source": str(f), "count": 99, "browser": "netscape"})[1]["job"]
         self.assertEqual((job["title"], job["args"][2:8], "--browser" in job["args"]), ("Promos · talk.mp4", ["--frame", "vertical", "--kind", "clip", "--count", "6"], False))
         self.assertIn("not one Videtor knows", self.post("/api/promos/make", {"source": str(f), "frame": "round"})[1]["error"])
-        d = root / "a-talk"
+        d = root / "a-talk" / "clips-vertical-30s"  # a video's folder, and one making in it
         d.mkdir(parents=True)
         row = {"n": 1, "file": str(d / "promo-1.mp4"), "xml": str(d / "promo-1.xml"), "length_s": 28.4, "kind": "clip", "at": "2:10", "reasons": ["ends on a full stop"],
                "text": "Hello.", "shots": 1, "made_at": "2026-11-16T19:00:00", "score": 2.0}
         (d / "promos.json").write_text(json.dumps({"name": "a-talk", "made_at": "2026-11-16T19:00:00", "source": {"title": "A talk", "path": "/V/a.mp4", "duration_s": 600.0},
                                                    "options": {"count": 1, "length": 30.0, "frame": "vertical", "kind": "clip", "lead": "auto", "fit": "fill"},
                                                    "lead": "speech", "said": 0.8, "notes": [], "promos": [row], "candidates": [{}, {}, {}], "used": [0]}))
-        one = json.loads(self.get("/api/promos")[2])["sets"][0]
+        old = root / "an-old-one"  # a set from before sets had folders of their own: in the video's folder itself
+        old.mkdir()
+        (old / "promos.json").write_text(json.dumps({**json.loads((d / "promos.json").read_text()), "name": "an-old-one", "made_at": "2026-11-16T18:00:00",
+                                                     "options": {"count": 1, "length": 30.0, "frame": "square", "kind": "edit", "lead": "auto", "fit": "fill"}}))
+        sets = json.loads(self.get("/api/promos")[2])["sets"]
+        one = sets[0]
         self.assertEqual((one["title"], one["more"], one["promos"][0]["at"], "score" in one["promos"][0], "candidates" in one), ("A talk", 2, "2:10", False, False))
-        self.assertEqual(self.post("/api/promos/another", {"dir": str(d), "n": 1})[1]["job"]["args"], ["promos", str(d), "--another", "1"])
+        self.assertEqual([(x["dir"], x["options"]["kind"]) for x in sets], [(str(d.resolve()), "clip"), (str(old.resolve()), "edit")])  # every making, the newest first
+        self.assertEqual(len({x["video"] for x in sets}), 1)  # and known as sets of one video, whichever folder they lie in
+        for folder in (d, old):
+            self.assertEqual(self.post("/api/promos/another", {"dir": str(folder), "n": 1})[1]["job"]["args"], ["promos", str(folder), "--another", "1"])
         self.assertIn("no promos there", self.post("/api/promos/another", {"dir": str(self.tmp / "out"), "n": 1})[1]["error"])
+        elsewhere = self.tmp / "elsewhere"
+        elsewhere.mkdir()
+        (elsewhere / "promos.json").write_text("{}")
+        self.assertIn("no promos there", self.post("/api/promos/another", {"dir": str(elsewhere), "n": 1})[1]["error"])  # only folders of promos
         self.assertEqual(self.post("/api/promos/update", {})[1]["job"]["args"], ["promos", "--update"])
+
+    def test_a_shoot_sorted_in_the_terminal_is_listed_on_the_library_page(self):
+        lib = self.tmp / "out" / "library" / "a-shoot"
+        lib.mkdir(parents=True)
+        (lib / "library.json").write_text(json.dumps({"folders": ["/Volumes/T/a shoot"], "clips": [], "counts": {}}))
+        before = len(self.app.state.get("libraries", []))
+        self.app.discover()
+        self.assertEqual(self.app.discover(), 0)  # once
+        libs = json.loads(self.get("/api/state")[2])["libraries"]
+        self.assertEqual((len(libs), libs[-1]["name"], libs[-1]["folders"], libs[-1]["dir"]), (before + 1, "a-shoot", ["/Volumes/T/a shoot"], str(lib.resolve())))
+
+    def test_a_jobs_result_names_the_set_of_promos_it_made(self):
+        from videtor.ui import jobs
+
+        job = jobs.Job(id="j9", kind="promos", title="t", args=[])
+        jobs.note_event(job, {"event": "artifact", "kind": "promo", "path": "/p/x/clips/promo-1.mp4", "text": ""})
+        jobs.note_event(job, {"event": "artifact", "kind": "promos", "path": "/p/x/clips/promos.json", "text": ""})
+        self.assertEqual(job.result, {"promos": "/p/x/clips/promos.json"})  # what the page opens when the job ends
+        jobs.note_event(job, {"event": "error", "text": "YouTube wants a login for this video"})
+        self.assertEqual(job.result["error"], "YouTube wants a login for this video")  # what it shows when the job fails
 
     def test_scan_counts_the_video_files_under_a_folder(self):
         d = self.tmp / "scan" / "Card 1"

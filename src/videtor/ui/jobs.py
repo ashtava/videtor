@@ -86,8 +86,8 @@ def note_event(job: "Job", e: dict, now: float | None = None) -> None:
     elif kind == "progress":
         p["done"], p["total"] = int(e.get("done") or 0), int(e.get("total") or 0)
         p.setdefault("t0", now)
-    elif kind == "artifact" and e.get("kind") == "xml":
-        job.result["xml"] = e["path"]
+    elif kind == "artifact" and e.get("kind") in ("xml", "promos"):  # what the page opens when the job ends
+        job.result[e["kind"]] = e["path"]
     elif kind == "error":
         job.result["error"] = e.get("text", "")
     elif kind == "warning" and len(job.result.setdefault("warnings", [])) < 20:

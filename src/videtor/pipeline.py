@@ -1190,15 +1190,27 @@ PROMO_KINDS, PROMO_LEADS, PROMO_FITS = ("clip", "edit"), ("auto", "speech", "mus
 
 
 def promo_sets(out_root: Path = Path("out/promos")) -> list[dict]:
-    """Every video promos were made from, the newest first: what the app's Promos page lists."""
+    """Every set of promos made, the newest first: what the app's Promos page lists. A video's folder holds one set
+    per kind, shape and length (out_root/<video>/<set>/promos.json); sets made before 2026-11-17 lie in the video's
+    folder itself."""
     rows = []
-    for f in Path(out_root).glob(f"*/{PROMOS}"):
+    root = Path(out_root)
+    for f in [*root.glob(f"*/{PROMOS}"), *root.glob(f"*/*/{PROMOS}")]:
+        if f.parent.name == "work":
+            continue
         try:
             doc = json.loads(f.read_text())
         except ValueError:
             continue
-        rows.append({**doc, "dir": str(f.parent.resolve())})
-    return sorted(rows, key=lambda d: d.get("made_at") or "", reverse=True)
+        rows.append({**doc, "dir": str(f.parent.resolve()), "_at": f.stat().st_mtime_ns})
+    rows.sort(key=lambda d: (d.get("made_at") or "", d["_at"]), reverse=True)
+    return [{k: v for k, v in d.items() if k != "_at"} for d in rows]
+
+
+def promo_set_name(kind: str, frame: str, length: float, lead: str = "auto", fit: str = "fill") -> str:
+    """The folder of one making inside its video's folder: clips-vertical-30s, edits-square-15s-whole ... The same
+    choices again replace that set; any other choice is a set of its own beside it."""
+    return "-".join([f"{kind}s", frame, f"{float(length):g}s", *([lead] if lead != "auto" else []), *(["whole"] if fit == "whole" else [])])
 
 
 def _promo_folder(out_root: Path, name: str, same) -> Path:
@@ -1210,8 +1222,23 @@ def _promo_folder(out_root: Path, name: str, same) -> Path:
     raise PipelineError(f"too many promo folders called {name}")
 
 
-def _promo_source(source: str, name: str | None, out_root: Path, browser: str | None, ev: Events, fetch) -> tuple[Path, Path, dict]:
-    """(the promos' folder, the video file, what is known about it) for a link, a file or a folder of promos made before."""
+def _known_source(folder: Path) -> dict:
+    """What a video's folder says about its video (source.json; for a set made before 2026-11-17, its promos.json)."""
+    for name, pick in (("source.json", lambda d: d), (PROMOS, lambda d: d.get("source") or {})):
+        try:
+            return pick(json.loads((folder / name).read_text()))
+        except (OSError, ValueError):
+            continue
+    return {}
+
+
+def _promo_source(source: str, name: str | None, out_root: Path, browser: str | None, ev: Events, fetch) -> tuple[Path, Path, dict, Path | None]:
+    """(the video's folder, the video file, what is known about it, the set's folder when `source` is one) for a link,
+    a file or a folder of promos made before. A link is the same video however it was copied (analyze/link.key): it
+    is fetched once."""
+    import hashlib
+    import shutil
+
     from videtor.analyze import link as link_mod
 
     src = str(source).strip()
@@ -1222,44 +1249,51 @@ def _promo_source(source: str, name: str | None, out_root: Path, browser: str | 
     if not link_mod.is_link(src) and as_dir.is_dir():
         if not (as_dir / PROMOS).exists():
             raise PipelineError(f"{as_dir} is a folder with no promos in it: give a link or a video file")
-        known = json.loads((as_dir / PROMOS).read_text())["source"]
-        return as_dir, Path(known["path"]), known
+        doc = json.loads((as_dir / PROMOS).read_text())
+        return Path(doc.get("video_dir") or as_dir), Path(doc["source"]["path"]), {**_known_source(Path(doc.get("video_dir") or as_dir)), **doc["source"]}, as_dir
     if link_mod.is_link(src):
+        want, found = link_mod.key(src), None
         for f in sorted(out_root.glob("*/source.json")):
-            try:
-                known = json.loads(f.read_text())
-            except ValueError:
-                continue
-            if known.get("url") == src and (f.parent / "source.mp4").exists():
-                ev.info(f"this video was fetched before: {f.parent / 'source.mp4'}")
-                return f.parent, f.parent / "source.mp4", known
+            known = _known_source(f.parent)
+            ids = {link_mod.key(known["url"])} if known.get("url") else set()
+            if known.get("id") and known.get("extractor_key"):
+                ids.add(f"{str(known['extractor_key']).lower()}:{known['id']}")
+            if want in ids:
+                if (f.parent / "source.mp4").exists():
+                    ev.info(f"this video is on the Mac already (fetched {str(known.get('fetched_at') or '')[:10]}): {f.parent / 'source.mp4'}")
+                    return f.parent, f.parent / "source.mp4", known, None
+                found = found or f.parent  # its file is gone: fetched again into its own folder
         ev.stage("fetch", f"fetching the video: {src}", "Fetching the video")
-        tmp = out_root / f".fetching-{abs(hash(src)) % 10 ** 8}"
+        tmp = out_root / f".fetching-{hashlib.sha1(want.encode()).hexdigest()[:8]}"
+        shutil.rmtree(tmp, ignore_errors=True)
         try:
             got = (fetch or link_mod.fetch)(src, tmp, progress=ev.progress, log=ev.info, browser=browser)
         except link_mod.LinkError as exc:
+            shutil.rmtree(tmp, ignore_errors=True)
             raise PipelineError(str(exc)) from exc
         info = got["info"]
-        folder = _promo_folder(out_root, (name and slug(name)) or slug(str(info.get("title") or info.get("id") or "video"))[:48].strip("-") or "video",
-                               lambda d: False)
+        folder = found or _promo_folder(out_root, (name and slug(name)) or slug(str(info.get("title") or info.get("id") or "video"))[:48].strip("-") or "video",
+                                        lambda d: False)
         folder.mkdir(parents=True, exist_ok=True)
         for f in sorted(tmp.iterdir()):
             f.replace(folder / f.name)
         tmp.rmdir()
         ev.info(f"  fetched: {info.get('title') or folder.name} ({float(info.get('duration') or 0) / 60:.1f} min) -> {folder / 'source.mp4'}")
-        return folder, folder / "source.mp4", info
+        return folder, folder / "source.mp4", info, None
     f = Path(src).expanduser()
     if not f.is_file():
         raise PipelineError(f"no video at {f}: give a link (YouTube, Instagram) or a video file")
     f = f.resolve()
 
     def same(d: Path) -> bool:
-        try:
-            return json.loads((d / PROMOS).read_text())["source"].get("path") == str(f)
-        except (OSError, ValueError, KeyError):
-            return not any(d.iterdir())
+        return _known_source(d).get("path") == str(f) or not any(d.iterdir())
 
-    return _promo_folder(out_root, (name and slug(name)) or slug(f.stem)[:48].strip("-") or "video", same), f, {"title": f.stem}
+    folder = _promo_folder(out_root, (name and slug(name)) or slug(f.stem)[:48].strip("-") or "video", same)
+    known = {"title": f.stem, "path": str(f)}
+    folder.mkdir(parents=True, exist_ok=True)
+    if not (folder / "source.json").exists():
+        (folder / "source.json").write_text(json.dumps(known, indent=1, ensure_ascii=False) + "\n")
+    return folder, f, known, None
 
 
 def _make_promo(video, cand: dict, n: int, folder: Path, name: str, width: int, height: int, fit: str, ev: Events) -> dict:
@@ -1272,7 +1306,7 @@ def _make_promo(video, cand: dict, n: int, folder: Path, name: str, width: int, 
     from videtor.plan import promo as promo_mod
     from videtor.plan.build import build_from_picks
 
-    picks = promo_mod.picks_for(video, cand, f"{name}-promo-{n}", width, height, fit)
+    picks = promo_mod.picks_for(video, cand, f"{name}-{n}", width, height, fit)
     if not picks["slots"]:
         raise PipelineError("a promo came out empty: the video is too short for this length")
     heard = [(cand["bed"]["a"], cand["bed"]["b"])] if cand.get("bed") else [(p["a"], p["b"]) for p in cand["parts"]]
@@ -1311,8 +1345,9 @@ def promos(source: str, name: str | None = None, count: int = 3, length: float =
            detect=None, transcribe=None, track=None, fetch=None, cards=None) -> dict:
     """Promos out of one finished video: `count` of its best stretches of about `length` seconds (clips), or its best
     moments cut together (edits), each as a finished mp4 in the chosen frame and a Premiere XML to finish it from.
-    `source` is a link (fetched to the Mac once), a video file, or the folder of promos made before. `another=k`
-    replaces promo k of such a folder with the next best one."""
+    `source` is a link (fetched to the Mac once), a video file, or the folder of a set of promos made before.
+    `another=k` replaces promo k of such a set with the next best one. Every making is a set of its own in the video's
+    folder (promo_set_name): clips do not replace edits, one shape does not replace another."""
     from videtor.analyze import video as video_mod
     from videtor.plan import promo as promo_mod
     from videtor.plan import settings as settings_mod
@@ -1326,23 +1361,26 @@ def promos(source: str, name: str | None = None, count: int = 3, length: float =
                     "between 1 and 6 promos" if not 1 <= int(count) <= 6 else "", "a length between 8 and 90 seconds" if not 8 <= float(length) <= 90 else ""]
         if any(problems):
             raise PipelineError("promos: " + "; ".join(p for p in problems if p))
-    folder, path, known = _promo_source(source, name, Path(out_root), browser, ev, fetch)
+    home, path, known, folder = _promo_source(source, name, Path(out_root), browser, ev, fetch)
     if not path.exists():
         raise PipelineError(f"the video is not there any more: {path}" + (" (is its drive connected?)" if str(path).startswith("/Volumes/") else ""))
-    doc_p = folder / PROMOS
-    old = json.loads(doc_p.read_text()) if doc_p.exists() else None
+    old = json.loads((folder / PROMOS).read_text()) if folder is not None else None
     if another is not None:
         if not old or not 1 <= int(another) <= len(old["promos"]):
             raise PipelineError("another one: give the folder of promos made before and the number of the promo to replace")
         opts = old["options"]
         frame, kind, lead, fit, length = opts["frame"], opts["kind"], opts["lead"], opts["fit"], opts["length"]
+    else:
+        folder = home / promo_set_name(kind, frame, length, lead, fit)  # this making's own folder, beside the video's other sets
+    doc_p = folder / PROMOS
     try:
-        video = video_mod.read(path, folder / "work", detect=detect, transcribe=transcribe, track=track, cards=cards, listen={"speech": True, "music": False}.get(lead), ev=ev,
+        video = video_mod.read(path, home / "work", detect=detect, transcribe=transcribe, track=track, cards=cards, listen={"speech": True, "music": False}.get(lead), ev=ev,
                                extra={k: known.get(k) for k in ("heatmap", "chapters", "title") if known.get(k)})
     except ValueError as exc:
         raise PipelineError(str(exc)) from exc
     width, height, _ = settings_mod.FRAMES[frame]
-    title = folder.name
+    title = f"{home.name}-{kind}"  # the Premiere sequences: <video>-clip-1, <video>-edit-2 ...
+    folder.mkdir(parents=True, exist_ok=True)
     if another is not None:
         doc, cands = old, old["candidates"]
         left = [i for i in range(len(cands)) if i not in doc["used"]]
@@ -1373,7 +1411,8 @@ def promos(source: str, name: str | None = None, count: int = 3, length: float =
             m = re.match(r"promo-(\d+)", stale.name)
             if m and int(m.group(1)) > len(made):
                 stale.unlink()
-        doc = {"name": title, "source": {**{k: v for k, v in known.items() if k in ("url", "title", "uploader", "channel", "webpage_url", "extractor_key")},
+        doc = {"name": home.name, "set": folder.name, "video_dir": str(home.resolve()),
+               "source": {**{k: v for k, v in known.items() if k in ("url", "title", "uploader", "channel", "webpage_url", "extractor_key", "id")},
                                          "path": str(path), "duration_s": round(video.duration_s, 2), "width": video.info["display_w"], "height": video.info["display_h"]},
                "options": {"count": int(count), "length": float(length), "frame": frame, "kind": kind, "lead": lead, "fit": fit},
                "lead": led, "said": round(said, 3), "cuts": len(video.cuts_s), "replayed": bool(known.get("heatmap")), "notes": notes,
@@ -1382,7 +1421,7 @@ def promos(source: str, name: str | None = None, count: int = 3, length: float =
     doc_p.write_text(json.dumps(doc, indent=1, ensure_ascii=False, default=float) + "\n")
     ev.wrote("promos", doc_p, f"{len(doc['promos'])} promo{'s' if len(doc['promos']) > 1 else ''} in {folder} (each an .mp4 to post and an .xml to finish in Premiere: "
                               "File ▸ Import)")
-    return {"dir": folder, "doc": doc, "video": video}
+    return {"dir": folder, "home": home, "doc": doc, "video": video}
 
 
 def mount_of(folder: Path) -> Path:

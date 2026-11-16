@@ -54,7 +54,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 390 tests, about 50 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 394 tests, about 60 s, no drive needed
 .venv/bin/videtor eval                                           # the past projects re-cut from the cache and measured (about 1 min)
 ```
 
@@ -133,7 +133,8 @@ cache/        derived data, about 5 GB (footage maps took hours with the drives 
 out/<name>/   one folder per cut: brief.md, settings.json (the user's frame and music), shotmap.json, inventory.json, picks.json,
               decisions.json (swaps and timeline edits), review.json (the user's notes), <name>.xml, sheets, report.md,
               verdict.json, the finished video when the user saves it there, work/
-out/promos/<name>/   promos of one finished video (videtor promos): source.mp4 (a link's video), promos.json, promo-N.mp4, promo-N.xml, work/
+out/promos/<video>/  one finished video's promos (videtor promos): source.mp4 (a link's video), work/ (its reading), and a folder per making
+                     (clips-vertical-30s/, edits-square-15s/ ...: promos.json, promo-N.mp4, promo-N.xml)
 out/library/<name>/  a shoot sorted by shot type (videtor library): wide/ close-up/ talking-head/ interview-bite/ b-roll/ (links), sheets/, bites.xml, library.md
 scripts/      helpers and archived experiments (not imported by the CLI)
 docs/         handoff.md · status.md · architecture.md · architecture.html (the original 10-29 design page)

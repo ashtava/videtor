@@ -34,6 +34,37 @@ def is_link(text: str) -> bool:
     return str(text).strip().lower().startswith(("http://", "https://"))
 
 
+NOISE = {"si", "feature", "igsh", "igshid", "fbclid", "share", "t", "pp", "ab_channel", "list", "index", "start_radio"}  # what a share link adds
+
+
+def key(url: str) -> str:
+    """Which video a link points at, however it was copied: "youtube:<id>" for every form of a YouTube link (the
+    watch page, youtu.be, shorts, with or without a share token), "instagram:<id>" for a reel or a post, and for
+    other sites the address without its tracking parts. Two links with one key are one video: it is fetched once."""
+    import re
+    from urllib.parse import parse_qsl, urlencode, urlsplit
+
+    u = urlsplit(str(url).strip())
+    host = u.netloc.lower().split(":")[0]
+    for prefix in ("www.", "m.", "music."):
+        host = host.removeprefix(prefix)
+    query = dict(parse_qsl(u.query))
+    if host == "youtu.be" and u.path.strip("/"):
+        return "youtube:" + u.path.strip("/").split("/")[0]
+    if host in ("youtube.com", "youtube-nocookie.com"):
+        if u.path == "/watch" and query.get("v"):
+            return "youtube:" + query["v"]
+        m = re.match(r"/(?:shorts|live|embed|v)/([\w-]+)", u.path)
+        if m:
+            return "youtube:" + m.group(1)
+    if host == "instagram.com":
+        m = re.match(r"/(?:[\w.]+/)?(?:reel|reels|p|tv)/([\w-]+)", u.path)
+        if m:
+            return "instagram:" + m.group(1)
+    kept = sorted((k, v) for k, v in query.items() if k not in NOISE and not k.startswith("utm_"))
+    return f"{host}{u.path.rstrip('/')}" + ("?" + urlencode(kept) if kept else "")
+
+
 def available() -> str | None:
     """yt-dlp's version when it is installed, else None."""
     try:

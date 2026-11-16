@@ -228,4 +228,8 @@ video.preview { max-height: 420px; border-radius: 8px; background: #000; display
 .promo ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
 .promo blockquote { margin: 0; padding: 6px 10px; border-left: 3px solid var(--line); color: var(--fg); font-size: 13px; max-height: 96px; overflow: auto; }
 .promo .row { margin: 0; gap: 6px; }
+#pr-view.stale { opacity: .35; pointer-events: none; }
+.promo-note { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 14px; margin: 8px 0; max-width: 980px; }
+.promo-note.bad { border-left-color: var(--bad); color: var(--fg); }
+#pr-select { max-width: 760px; }
 

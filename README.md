@@ -235,7 +235,7 @@ Premiere `.xml` to finish it from. In the app it is the **Promos** page. Nothing
 uv sync --extra analyze --extra ui --extra links                    # once: the link fetcher (yt-dlp, its YouTube scripts, Deno, curl-cffi)
 uv run videtor promos "https://www.youtube.com/watch?v=..."         # three clips of 25-30 s, vertical 9:16
 uv run videtor promos talk.mp4 --kind edit --count 2 --frame square # two edits from a file, 1:1
-uv run videtor promos out/promos/<name> --another 2                 # promo 2 again: the next best part instead
+uv run videtor promos out/promos/<name>/clips-vertical-30s --another 2   # promo 2 of that set: the next best part instead
 uv run videtor promos --update                                      # when a link that used to work stops (sites change)
 ```
 
@@ -254,16 +254,20 @@ uv run videtor promos --update                                      # when a lin
   the frame is cropped around the faces, shot by shot (one crop per shot, no tracking inside a shot), or shown whole
   with bars. A slide or a screen of words with nobody in it is shown whole either way, so the words are not cut.
   Black bars in the source are cropped away.
-- **Where it goes:** `out/promos/<name>/`: `source.mp4` and `source.json` (a link), `promos.json` (what was made,
-  why, and the ranked parts not used yet), `promo-N.mp4`, `promo-N.xml`, `work/` (the reading of the video, kept, so
-  another shape or kind takes seconds). The XML points at the source file: keep it where it is.
+- **Where it goes:** `out/promos/<video>/` holds the video (`source.mp4`, `source.json` for a link) and its reading
+  (`work/`, kept, so another shape or kind takes seconds). Every making is a set of its own inside it, named by its
+  choices: `clips-vertical-30s/`, `edits-square-15s/` ... with `promos.json` (what was made, why, and the ranked
+  parts not used yet), `promo-N.mp4`, `promo-N.xml`. Clips do not replace edits and one shape does not replace
+  another; the same choices again make that set anew. The XML points at the source file: keep it where it is.
+- **One video, one fetch.** A link is the same video however it was copied (`youtu.be/…?si=…`, the watch page, a
+  shorts link, an Instagram link with a share token: `analyze/link.key`), so it is fetched once and found again.
 - **How long it takes** (measured on this Mac): a 10-minute 1080p video is watched in about 20 s and listened to in
   1-2 minutes when there is talk in it; each promo renders in 10-15 s; the fetch is the network's. The same video
   again (another shape, kind or count) skips all but the rendering.
 - **It does not understand what is said.** It picks by sound, picture, where thoughts start and end, and what viewers
   replayed. Watch before posting; "Try another" (`--another N`) gives the next best. Use videos you have the right to cut.
-- A link that asks for a login: save the video and give the file, or `--browser chrome` (the app: Advanced) lets the
-  fetcher use that browser's login for the site. That path is untested here.
+- A link that asks for a login (YouTube does after several fetches in a day): save the video and give the file, or
+  `--browser chrome` (the app: Advanced) lets the fetcher use that browser's login for the site.
 
 ### The shape and the music are the user's to set
 

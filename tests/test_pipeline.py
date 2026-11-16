@@ -163,44 +163,76 @@ class PromoTests(unittest.TestCase):
 
     def test_promos_from_a_file_are_finished_videos_and_premiere_xmls_and_another_swaps_one(self):
         result, seen = self.make(self.video)
-        folder, doc = result["dir"], result["doc"]
-        self.assertEqual((folder.name, doc["lead"], len(doc["promos"]), doc["options"]["frame"]), ("my-talk", "music", 2, "square"))
+        folder, home, doc = result["dir"], result["home"], result["doc"]
+        self.assertEqual((home.name, folder.parent, folder.name), ("my-talk", home, "clips-square-8s"))  # the video's folder, and this making's in it
+        self.assertEqual((doc["lead"], len(doc["promos"]), doc["options"]["frame"], doc["video_dir"]), ("music", 2, "square", str(home.resolve())))
         first = doc["promos"][0]
         self.assertEqual((first["from_s"], first["length_s"]), ([[12.0, 20.0]], 8.0))  # from the cut where the sound lifts
         self.assertEqual(first["reasons"][:2], ["the loudest, punchiest stretch of the sound", "starts as the sound lifts"])
         for row in doc["promos"]:
             w, h, dur, sounds = self.probe(row["file"])
-            self.assertEqual((w, h, sounds), (1080, 1080, 1))
+            self.assertEqual((w, h, sounds, Path(row["file"]).parent), (1080, 1080, 1, folder))
             self.assertAlmostEqual(dur, row["length_s"], delta=0.12)
             x = ET.parse(row["xml"]).getroot()
-            self.assertEqual(x.find("sequence/name").text, f"my-talk-promo-{row['n']}")
+            self.assertEqual(x.find("sequence/name").text, f"my-talk-clip-{row['n']}")
             self.assertEqual({e.text for e in x.iter("pathurl")}, {"file://localhost" + str(self.video.resolve()).replace(" ", "%20")})
             self.assertGreaterEqual(len(list(x.iter("clipitem"))), 2)  # the picture and its own sound
             picks = json.loads((folder / "work" / f"promo-{row['n']}.picks.json").read_text())
             self.assertTrue(all(s["byte"] and s["pick"]["motion"]["scale"] == 600.0 for s in picks["slots"]))  # 180 high fills 1080
         self.assertEqual([e["stage"] for e in seen if e["event"] == "stage"], ["picture", "sound", "speech", "choose", "render"])
         self.assertEqual([e["kind"] for e in seen if e["event"] == "artifact"], ["promo", "promo", "promos"])
-        self.assertEqual(pipeline.promo_sets(self.root / "promos")[0]["name"], "my-talk")
-        # the same video again in another shape: read from what was kept, the promos made anew
-        again, seen = self.make(self.video, frame="vertical", count=1, detect=lambda rgb: 1 / 0)
-        self.assertEqual((again["dir"], len(again["doc"]["promos"]), self.probe(again["doc"]["promos"][0]["file"])[:2]), (folder, 1, (1080, 1920)))
-        self.assertEqual(again["doc"]["notes"], [])
+        self.assertEqual([e["path"] for e in seen if e["event"] == "artifact"][-1], str(folder / "promos.json"))  # what the page opens
+        self.assertTrue((home / "work" / "read.json").exists() and (home / "source.json").exists())  # the reading is the video's, not the set's
+        # the same video in another shape, and as edits: sets of their own beside the first, which stays as it was
+        # (2026-11-17: an edit used to replace the clips made before it)
+        kept = {f.name: f.stat().st_mtime_ns for f in folder.iterdir() if f.is_file()}
+        tall, seen = self.make(self.video, frame="vertical", count=1, detect=lambda rgb: 1 / 0)
+        edits, _ = self.make(self.video, kind="edit", count=1)
+        self.assertEqual((tall["dir"].name, edits["dir"].name, tall["home"], edits["home"]), ("clips-vertical-8s", "edits-square-8s", home, home))
+        self.assertEqual((len(tall["doc"]["promos"]), self.probe(tall["doc"]["promos"][0]["file"])[:2], tall["doc"]["notes"]), (1, (1080, 1920), []))
+        self.assertEqual(edits["doc"]["promos"][0]["kind"], "edit")
+        self.assertEqual({f.name: f.stat().st_mtime_ns for f in folder.iterdir() if f.is_file()}, kept)
+        self.assertNotIn("picture", [e.get("stage") for e in seen])  # read from what was kept
+        listed = pipeline.promo_sets(self.root / "promos")
+        self.assertEqual(sorted((d["name"], d["set"], d["options"]["kind"]) for d in listed),
+                         [("my-talk", "clips-square-8s", "clip"), ("my-talk", "clips-vertical-8s", "clip"), ("my-talk", "edits-square-8s", "edit")])
+        self.assertEqual(listed[0]["dir"], str(edits["dir"].resolve()))  # the newest first
+        # the same choices again are the same set, made anew: a shorter run leaves none of the longer one's promos behind
         many, _ = self.make(self.video, count=6, length=12.0)
         self.assertTrue(len(many["doc"]["promos"]) < 6 and any("promos made, not 6" in n or "promo made, not 6" in n for n in many["doc"]["notes"]), many["doc"]["notes"])
-        again, seen = self.make(self.video, frame="vertical", count=1, detect=lambda rgb: 1 / 0)
-        self.assertFalse((folder / "promo-2.mp4").exists())  # the second promo of the earlier run is gone with it
-        self.assertNotIn("picture", [e.get("stage") for e in seen])
-        # another one: the next best stretch takes that promo's place
+        again, _ = self.make(self.video, count=1)
+        self.assertEqual((again["dir"], (folder / "promo-1.mp4").exists(), (folder / "promo-2.mp4").exists()), (folder, True, False))
+        # another one: the next best stretch takes that promo's place, in that set and no other
         before = again["doc"]["promos"][0]["from_s"]
         other, _ = self.make(folder, another=1)
         row = other["doc"]["promos"][0]
         self.assertNotEqual(row["from_s"], before)
-        self.assertEqual((row["n"], other["doc"]["used"], Path(row["file"]).name), (1, [0, 1], "promo-1.mp4"))
+        self.assertEqual((row["n"], other["doc"]["used"], Path(row["file"]), other["dir"]), (1, [0, 1], folder / "promo-1.mp4", folder))
         for _ in range(len(other["doc"]["candidates"]) - 2):
             self.make(folder, another=1)
         with self.assertRaises(pipeline.PipelineError) as ctx:
             self.make(folder, another=1)
         self.assertIn("no other stretch", str(ctx.exception))
+
+    def test_a_set_made_before_sets_had_folders_of_their_own_is_still_listed_and_swapped(self):
+        result, _ = self.make(self.video, out_root=self.root / "old", count=1)
+        folder, home = result["dir"], result["home"]
+        doc = json.loads((folder / "promos.json").read_text())
+        for f in folder.iterdir():  # as it lay until 2026-11-16: the set in the video's folder itself
+            if f.is_file():
+                f.replace(home / f.name)
+        shutil.rmtree(home / "work" / "picks", ignore_errors=True)
+        for k in ("video_dir", "set"):
+            doc.pop(k)
+        for row in doc["promos"]:
+            row["file"], row["xml"] = str(home / Path(row["file"]).name), str(home / Path(row["xml"]).name)
+        (home / "promos.json").write_text(json.dumps(doc))
+        shutil.rmtree(folder)
+        self.assertEqual([(d["name"], d["dir"]) for d in pipeline.promo_sets(self.root / "old")], [("my-talk", str(home.resolve()))])
+        other, _ = self.make(home, another=1)
+        self.assertEqual((other["dir"], other["home"], Path(other["doc"]["promos"][0]["file"]).parent), (home, home, home))
+        new, _ = self.make(self.video, out_root=self.root / "old", kind="edit", count=1)
+        self.assertEqual((new["home"], new["dir"].name, len(pipeline.promo_sets(self.root / "old"))), (home, "edits-square-8s", 2))  # beside the old one
 
     def test_promos_from_a_link_fetch_the_video_once_and_an_edit_runs_on_its_own_stretch_of_sound(self):
         fetched = []
@@ -209,27 +241,33 @@ class PromoTests(unittest.TestCase):
             fetched.append((url, browser))
             out_dir.mkdir(parents=True, exist_ok=True)
             shutil.copy(self.video, out_dir / "source.mp4")
-            info = {"title": "A Film: Part 1!", "duration": 36.0, "url": url,
+            info = {"title": "A Film: Part 1!", "duration": 36.0, "url": url, "id": "abc", "extractor_key": "Youtube",
                     "heatmap": [{"start_time": t, "end_time": t + 1.0, "value": 1.0 if 24 <= t < 33 else 0.05} for t in range(36)]}
             (out_dir / "source.json").write_text(json.dumps(info))
             return {"path": out_dir / "source.mp4", "info": info}
 
-        url = "https://www.youtube.com/watch?v=abc"
+        url = "https://youtu.be/abc?si=AAAA1111"
         result, seen = self.make(url, fetch=fetch, count=1, browser="chrome", out_root=self.root / "linked")
-        doc, folder = result["doc"], result["dir"]
-        self.assertEqual((folder.name, fetched, doc["source"]["url"], doc["replayed"]), ("a-film-part-1", [(url, "chrome")], url, True))
+        doc, folder, home = result["doc"], result["dir"], result["home"]
+        self.assertEqual((home.name, folder.name, fetched, doc["source"]["url"], doc["replayed"]), ("a-film-part-1", "clips-square-8s", [(url, "chrome")], url, True))
         self.assertTrue(23.0 <= doc["promos"][0]["from_s"][0][0] <= 26.0, doc["promos"][0]["from_s"])  # what viewers replayed, over the loud stretch
         self.assertIn("one of the most replayed parts on YouTube", doc["promos"][0]["reasons"])
         self.assertEqual([e["stage"] for e in seen if e["event"] == "stage"][0], "fetch")
         self.assertEqual(list((self.root / "linked").glob(".fetching-*")), [])
-        edit, _ = self.make(url, fetch=fetch, out_root=self.root / "linked", count=1, kind="edit")
-        self.assertEqual(len(fetched), 1)  # the second time the file on the Mac is used
+        # the same video by another form of its link (the watch page, a new share token): the file on the Mac is used,
+        # not fetched again into a second folder (2026-11-17: it was, and failed when YouTube refused the second fetch)
+        for again in ("https://www.youtube.com/watch?v=abc", "https://youtu.be/abc?si=BBBB2222", "https://m.youtube.com/watch?v=abc&t=12s"):
+            edit, _ = self.make(again, fetch=fetch, out_root=self.root / "linked", count=1, kind="edit")
+        self.assertEqual((len(fetched), edit["home"], sorted(d.name for d in (self.root / "linked").iterdir())), (1, home, ["a-film-part-1"]))
         row = edit["doc"]["promos"][0]
         self.assertEqual((row["kind"], row["lead"], row["shots"] >= 4, len(row["from_s"]) == row["shots"]), ("edit", "music", True, True))
         x = ET.parse(row["xml"]).getroot()
         self.assertEqual({Path(e.text).name for e in x.iter("pathurl")}, {"source.mp4", "promo-1-sound.wav"})  # the shots, and the bed as a file of its own
-        self.assertEqual((self.probe(row["file"])[3], (folder / "promo-1-sound.wav").exists()), (1, True))
+        self.assertEqual((self.probe(row["file"])[3], (edit["dir"] / "promo-1-sound.wav").exists(), (folder / "promo-1.mp4").exists()), (1, True, True))
         self.assertAlmostEqual(self.probe(row["file"])[2], row["bed_s"][1] - row["bed_s"][0], delta=0.12)
+        (home / "source.mp4").unlink()  # the file thrown away: fetched again, into the folder it had
+        back, _ = self.make("https://www.youtube.com/watch?v=abc", fetch=fetch, out_root=self.root / "linked", count=1)
+        self.assertEqual((len(fetched), back["home"]), (2, home))
 
     def test_what_cannot_be_made_is_said(self):
         from videtor.analyze import link
@@ -243,11 +281,14 @@ class PromoTests(unittest.TestCase):
         self.assertIn("give a link", str(ctx.exception))
 
         def refused(url, out_dir, **kw):
+            out_dir.mkdir(parents=True, exist_ok=True)
+            (out_dir / "half.part").write_bytes(b"x")
             raise link.LinkError("Instagram wants a login for this video")
 
         with self.assertRaises(pipeline.PipelineError) as ctx:
             self.make("https://www.instagram.com/reel/xyz/", fetch=refused, out_root=self.root / "refused")
         self.assertIn("wants a login", str(ctx.exception))
+        self.assertEqual(list((self.root / "refused").iterdir()), [])  # nothing half-fetched is left behind
 
 
 class EventTests(unittest.TestCase):
