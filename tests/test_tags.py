@@ -68,6 +68,65 @@ class VocabularyTests(unittest.TestCase):
             self.assertIsNone(tags.clip_tags([Path(tmp, "x_0.jpg"), Path(tmp, "x_1.jpg")]))
 
 
+class TextCacheTests(unittest.TestCase):
+    """The text embeddings kept in memory and on disk, with a fake model that counts what it is asked."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.folder = Path(self.tmp.name, "text-emb")
+        self.asked: list[list[str]] = []
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def encode(self, texts):
+        self.asked.append(list(texts))
+        rng = np.random.default_rng(len(self.asked))  # another call, another vector: a stale one would show
+        return tags._normalize(rng.normal(size=(len(texts), 8)))
+
+    def test_a_list_asked_twice_is_encoded_once_and_comes_back_the_same(self):
+        cache = tags.TextCache(self.encode, self.folder, "model-a")
+        first = cache(["people dancing", "a crowd"])
+        first[:] = 0  # what a caller does to its copy stays with it
+        again = cache(["people dancing", "a crowd"])
+        self.assertEqual(len(self.asked), 1)
+        self.assertEqual(again.dtype, np.float32)
+        self.assertTrue(np.allclose(np.linalg.norm(again, axis=1), 1.0))
+        cache(["a crowd", "people dancing"])  # another list (a vector moves with its batch): encoded as asked
+        self.assertEqual(self.asked, [["people dancing", "a crowd"], ["a crowd", "people dancing"]])
+
+    def test_a_new_process_reads_the_vectors_back_from_disk_without_the_model(self):
+        want = tags.TextCache(self.encode, self.folder, "model-a")(["rings close-up"])
+        later = tags.TextCache(lambda texts: self.fail("the model was asked again"), self.folder, "model-a")
+        self.assertTrue(np.array_equal(later(["rings close-up"]), want))  # bit for bit
+        self.assertEqual(len(list(self.folder.glob("*.npy"))), 1)
+        self.assertFalse(list(self.folder.glob(".*")))  # no half-written file left behind
+
+    def test_another_model_or_prompt_form_never_gets_these_vectors(self):
+        a = tags.TextCache(self.encode, self.folder, "model-a")(["rings close-up"])
+        b = tags.TextCache(self.encode, self.folder, "model-b")(["rings close-up"])
+        self.assertEqual(len(self.asked), 2)
+        self.assertFalse(np.array_equal(a, b))
+        self.assertEqual(len(list(self.folder.glob("*.npy"))), 2)
+
+    def test_without_a_folder_or_with_a_broken_file_it_still_answers(self):
+        mem = tags.TextCache(self.encode, None, "model-a")
+        mem(["x"]), mem(["x"])
+        self.assertEqual(len(self.asked), 1)
+        self.assertFalse(self.folder.exists())
+        cache = tags.TextCache(self.encode, self.folder, "model-a")
+        self.folder.mkdir()
+        (self.folder / f"{cache.key(['y'])}.npy").write_bytes(b"not an array")
+        self.assertEqual(cache(["y"]).shape, (1, 8))
+        self.assertEqual(len(self.asked), 2)
+
+    def test_the_real_cache_is_keyed_by_the_model_its_weights_and_the_prompt(self):
+        self.assertIn(tags.MODEL, tags._texts.model)
+        self.assertIn(tags.PRETRAINED, tags._texts.model)
+        self.assertIn(tags.PROMPT, tags._texts.model)
+        self.assertEqual(tags._texts.folder, Path("cache/text-emb"))
+
+
 @unittest.skipUnless(HAVE_CLIP, "needs torch and open_clip (uv sync)")
 class ModelTests(unittest.TestCase):
     @classmethod

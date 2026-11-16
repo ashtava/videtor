@@ -25,10 +25,16 @@ inserts can be missed; the weights (~600 MB) load once per process and run on
 the Apple GPU via MPS when available, else on the CPU. Threads share one model
 and forward passes are serialised, so parallel analysis workers overlap only
 their JPEG decoding.
+
+Text embeddings (a shot map's descriptions, the keeper's concepts) are kept in
+memory and in cache/text-emb, so cutting a plan again loads no model at all.
 """
 
 from __future__ import annotations
 
+import hashlib
+import json
+import os
 import threading
 from pathlib import Path
 
@@ -90,8 +96,6 @@ def _load() -> tuple:
     global _clip
     with _lock:
         if _clip is None:
-            import os
-
             # the weights are cached after the first download: load them without asking the Hugging Face hub
             os.environ.setdefault("HF_HUB_OFFLINE", "1")
             import open_clip
@@ -184,9 +188,6 @@ class TextCache:
         self.mem: dict[str, np.ndarray] = {}
 
     def key(self, texts: list[str]) -> str:
-        import hashlib
-        import json
-
         return hashlib.sha256(json.dumps([self.model, list(texts)]).encode()).hexdigest()
 
     def __call__(self, texts: list[str]) -> np.ndarray:
@@ -201,8 +202,6 @@ class TextCache:
         if hit is None:
             hit = np.asarray(self.encode(list(texts)), dtype=np.float32)
             if self.folder is not None:
-                import os
-
                 try:
                     self.folder.mkdir(parents=True, exist_ok=True)
                     tmp = self.folder / f".{k}.{os.getpid()}.{threading.get_ident()}.npy"

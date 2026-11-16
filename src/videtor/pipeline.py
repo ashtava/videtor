@@ -9,7 +9,14 @@ lines for the app); it never prints and never exits the process: what it cannot 
     cut(shotmap_path)                takes → picks (fill, levels, moves, effects, SFX) → decisions replayed → XML
     look(picks_path, choices)        second-look swaps, remembered in decisions.json so the next cut keeps them
     promos(link or file)             a finished video's best half minute, two or three times: mp4s and XMLs (plan/promo.py)
-    cut_interview(...) / cut_mv(...) the two other kinds of cut, on the same helpers
+    cut_interview(...) / cut_mv(...) the two other kinds of cut, on the same helpers (cut_kind, CUT_KINDS: how each is rebuilt)
+    edit(picks_path, op)             the app's timeline: one edit, or undo; write_xml when the user asks
+    preview(picks_path)              a small video of the cut, without Premiere
+    library_build / library_learn    a shoot sorted by shot type into folders, and the user's sorting learnt back
+
+A cut is a document of three files that move together: picks.json, decisions.json (what a person or a second look
+changed, made again by the next cut) and work/history/ (the way back). Each is written whole and swapped in; the
+XML's writer notes in work/xml.json which picks it was written from, so `edited` knows when the picks moved on.
 
 What a shot map hands to the picks goes through `carry` (map level) and fill's slot rows (slot level): a setting
 nobody carries is a setting the cut never sees.
@@ -555,6 +562,25 @@ def proxies(picks_path: Path, slots: list[str] | None = None, alternates: bool =
     out = proxy.ensure(picks, picks_path.parent, set(slots) if slots else None, alternates, progress=lambda k, n: ev.progress(k, n), log=ev.info)
     ev.info(f"preview clips: {out['made']} made, {out['had']} already there" + (f", {len(out['failed'])} could not be made (is the drive connected?)" if out["failed"] else ""))
     return out
+
+
+def preview(picks_path: Path, scale: float = 0.5, ev: Events | None = None) -> Path:
+    """A small video of the cut to watch without Premiere (export/preview.py: what V1 plays, framed as the XML frames
+    it, with the music): preview.mp4 next to the picks. The footage drive must be connected."""
+    import subprocess
+
+    from videtor.export import preview as preview_mod
+
+    ev = ev or Events()
+    picks = check_picks(json.loads(picks_path.read_text()))
+    target = picks_path.parent / "preview.mp4"
+    ev.stage("preview", "", "Making the preview")
+    try:
+        return preview_mod.render(picks, target, scale, log=lambda s: ev.wrote("preview", target, s), progress=lambda k, n: ev.progress(k, n))
+    except FileNotFoundError as exc:
+        raise PipelineError(str(exc)) from exc
+    except subprocess.CalledProcessError as exc:
+        raise PipelineError(f"ffmpeg could not make the preview: {(exc.stderr or b'').decode(errors='replace').strip()[-300:]}") from exc
 
 
 def load_options(out: Path, slot_id: str) -> dict:
@@ -1612,3 +1638,43 @@ def prepare(folder: Path, name: str, workers: int | None = None, sparse: bool = 
     ev.wrote("overview", md, f"      overview: {md}  ·  {len(sheets)} contact sheet(s)")
     ev.info(f"Shot-map key: {key!r}. Next: write {out / 'shotmap.json'} from the brief, then videtor cut it.")
     return {"key": key, "index": index_path, "overview": md, "takes": len(pool)}
+
+
+# --- the footage library: a shoot sorted by shot type (plan/library.py) -----------------------------------------
+
+
+def library_build(folders: list[Path], out: Path, paths: Paths = Paths(), ev: Events | None = None, workers: int | None = None, copy: bool = False,
+                  extract: bool = False, transcribe: bool = True, fresh: bool = False, embed_texts=None) -> dict:
+    """Sort every clip under `folders` into `out`'s class folders (wide, close-up, talking head, interview bite,
+    B-roll): find the clips, read them from their keyframes (every core), sort them, transcribe the speakers into
+    bites. Returns the library's record (library.json)."""
+    from videtor.plan import library
+
+    ev = ev or Events()
+    folders = [Path(f).expanduser().resolve() for f in folders]
+    for f in folders:
+        if not f.is_dir():
+            raise PipelineError(f"Not a folder: {f}")
+    out = Path(out).expanduser()
+    try:
+        lib = library.run_build(folders, out, cache_dir=paths.sparse, kb_dir=paths.kb, workers=workers, copy=copy, extract=extract, transcribe=transcribe,
+                                fresh=fresh, log=ev.line("  "), ev=ev, embed_texts=embed_texts)
+    except RuntimeError as exc:  # clips moved since the last build and not learnt yet
+        raise PipelineError(str(exc)) from exc
+    ev.wrote("library", out / "library.md", f"Library: {out}  ·  read {out / 'library.md'} and the sheets in {out / 'sheets'}")
+    if lib.get("bites"):
+        ev.wrote("bites", lib["bites_xml"], f"Interview bites: {lib['bites_xml']} (Premiere: File > Import) and {out / 'interview-bite' / 'bites.md'}")
+    return lib
+
+
+def library_learn(out: Path, paths: Paths = Paths(), ev: Events | None = None, embed_texts=None) -> dict:
+    """Read a library's class folders back as the user's sorting, keep it (kb/library/labels.json) and fit the model
+    the next build sorts with."""
+    from videtor.plan import library
+
+    ev = ev or Events()
+    ev.stage("labels", "", "Learning from your sorting")
+    try:
+        return library.learn(Path(out).expanduser(), paths.sparse, paths.kb, log=ev.line("  "), embed_texts=embed_texts)
+    except FileNotFoundError as exc:
+        raise PipelineError(str(exc)) from exc

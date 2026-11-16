@@ -8,8 +8,11 @@ scale, face, hands and camera movement, and the looks you keep (sharp, exposed,
 away from the start and end of the take). A slot's length becomes a window of
 consecutive samples; each take offers its best window to every slot, and one
 assignment over all slots gives every take to at most one slot so the total
-is highest. Each slot keeps three runners-up for the second look and the
-alternate tracks.
+is highest; the phases after it (the plan's named takes, another stretch of
+a take used twice, match-cut runs, neighbours, the fallback) change a slot's
+take only through `Assignment.give`, which refuses a take never scored for that
+slot. Each slot keeps three runners-up for the second look and the alternate
+tracks. Terms that depend on a take alone are worked out once a take (`Pool`).
 """
 
 from __future__ import annotations

@@ -857,13 +857,7 @@ def preview(
 ) -> None:
     """A small video of the cut (what V1 plays, framed as the XML frames it, with the music) to watch without
     Premiere: preview.mp4 next to the picks. Needs the footage drive; no effects, SFX or alternates."""
-    from videtor.export import preview as preview_mod
-
-    try:
-        preview_mod.render(pipeline.check_picks(json.loads(picks_path.read_text())), picks_path.parent / "preview.mp4", scale, log=console.print)
-    except (FileNotFoundError, pipeline.PipelineError) as exc:
-        console.print(str(exc))
-        raise typer.Exit(1) from exc
+    _step(pipeline.preview, picks_path, scale=scale, ev=_events())
 
 
 @app.command("eval")
@@ -944,24 +938,10 @@ def library_build(
     """Sort every clip under the folders into wide / close-up / talking-head / interview-bite / b-roll, with contact
     sheets per class, a Premiere sequence of the interview bites and library.md. Offline: keyframes only, every core.
     Move a link to another folder and `videtor library learn` to teach it."""
-    from videtor.plan import library
-
-    folders = [f.expanduser().resolve() for f in folders]
-    for f in folders:
-        if not f.is_dir():
-            console.print(f"Not a folder: {f}")
-            raise typer.Exit(1)
-    name = name or _slug(folders[0].name)
-    out = (out or Path("out") / "library" / name).expanduser()
-    try:
-        lib = library.run_build(folders, out, cache_dir=cache_dir, kb_dir=kb_dir, workers=workers, copy=copy, extract=extract,
-                                transcribe=transcribe, fresh=fresh, log=lambda s: console.print(f"  {s}"))
-    except RuntimeError as exc:
-        console.print(f"[yellow]{exc}[/]")
-        raise typer.Exit(1)
-    console.print(f"Library: {out}  ·  read {out / 'library.md'} and the sheets in {out / 'sheets'}")
-    if lib.get("bites"):
-        console.print(f"Interview bites: {lib['bites_xml']} (Premiere: File > Import) and {out / 'interview-bite' / 'bites.md'}")
+    name = name or _slug(folders[0].expanduser().resolve().name)
+    out = out or Path("out") / "library" / name
+    _step(pipeline.library_build, folders, out, pipeline.Paths(kb=kb_dir, sparse=cache_dir), _events(), workers=workers, copy=copy, extract=extract,
+          transcribe=transcribe, fresh=fresh)
 
 
 @library_app.command("learn")
@@ -971,13 +951,7 @@ def library_learn(
     kb_dir: Path = KB_OPTION,
 ) -> None:
     """Read the folders back as your labels, keep them, and fit the model the next build sorts with."""
-    from videtor.plan import library
-
-    try:
-        library.learn(out.expanduser(), cache_dir, kb_dir, log=lambda s: console.print(f"  {s}"))
-    except FileNotFoundError as exc:
-        console.print(f"[yellow]{exc}[/]")
-        raise typer.Exit(1)
+    _step(pipeline.library_learn, out, pipeline.Paths(kb=kb_dir, sparse=cache_dir), _events())
 
 
 @library_app.command("status")

@@ -36,28 +36,30 @@ def clip_filter(choice: dict, fps: float, width: int, height: int, scale: float)
             f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:black,setsar=1,format=yuv420p")
 
 
-def render(picks: dict, out: Path, scale: float = 0.5, log=print) -> Path:
-    """Write the preview of `picks` to `out` (mp4, H.264). Raises FileNotFoundError when a take is not reachable."""
+def render(picks: dict, out: Path, scale: float = 0.5, log=print, progress=None) -> Path:
+    """Write the preview of `picks` to `out` (mp4, H.264). Raises FileNotFoundError when a take is not reachable.
+    `progress(k, n)` hears of each clip made."""
     fps, width, height = float(picks["fps"]), int(picks["width"]), int(picks["height"])
     W, H = int(width * scale) // 2 * 2, int(height * scale) // 2 * 2
+    todo = [c for slot in picks["slots"] for c in slots_mod.clips(slot, fps) or [(None, slot["length_s"])]]
     with tempfile.TemporaryDirectory() as tmp:
         parts = []
-        for slot in picks["slots"]:
-            clips = slots_mod.clips(slot, fps) or [(None, slot["length_s"])]
-            for choice, length in clips:
-                frames = max(1, round(length * fps))
-                part = Path(tmp) / f"{len(parts):04d}.mp4"
-                enc = ["-frames:v", str(frames), "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-r", f"{fps:g}", str(part)]
-                if choice is None:  # a black slot
-                    cmd = ["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", f"color=black:s={W}x{H}:r={fps:g}", *enc]
-                else:
-                    if not Path(choice["path"]).exists():
-                        raise FileNotFoundError(f"{choice['path']} (is the drive connected?)")
-                    speed = float(choice.get("speed") or 1.0)
-                    cmd = ["ffmpeg", "-v", "error", "-y", "-ss", f"{float(choice['in_s']):.3f}", "-t", f"{length * speed + 0.2:.3f}", "-i", choice["path"],
-                           "-vf", clip_filter(choice, fps, width, height, scale), *enc]
-                subprocess.run(cmd, check=True, capture_output=True)
-                parts.append(part)
+        for choice, length in todo:
+            frames = max(1, round(length * fps))
+            part = Path(tmp) / f"{len(parts):04d}.mp4"
+            enc = ["-frames:v", str(frames), "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-r", f"{fps:g}", str(part)]
+            if choice is None:  # a black slot
+                cmd = ["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", f"color=black:s={W}x{H}:r={fps:g}", *enc]
+            else:
+                if not Path(choice["path"]).exists():
+                    raise FileNotFoundError(f"{choice['path']} (is the drive connected?)")
+                speed = float(choice.get("speed") or 1.0)
+                cmd = ["ffmpeg", "-v", "error", "-y", "-ss", f"{float(choice['in_s']):.3f}", "-t", f"{length * speed + 0.2:.3f}", "-i", choice["path"],
+                       "-vf", clip_filter(choice, fps, width, height, scale), *enc]
+            subprocess.run(cmd, check=True, capture_output=True)
+            parts.append(part)
+            if progress:
+                progress(len(parts), len(todo))
         listing = Path(tmp) / "parts.txt"
         listing.write_text("".join(f"file '{p}'\n" for p in parts))
         mu = picks.get("music") or {}

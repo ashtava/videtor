@@ -414,5 +414,64 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(cm.exception.code, 404)
 
 
+class OneWriterTests(unittest.TestCase):
+    """Jobs that write a project's cut, one at a time: the videtor here sleeps, so the first job stays running."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        (self.tmp / "cache").mkdir()
+        self.app = server.App(self.tmp, [sys.executable, "-c", "import time; time.sleep(30)"], out_root=self.tmp / "out", state_file=self.tmp / "cache" / "ui-state.json")
+        self.httpd = server.serve(self.app, port=0)
+        self.base = f"http://127.0.0.1:{self.httpd.server_address[1]}"
+        self.d = self.tmp / "out" / "demo"
+        self.d.mkdir(parents=True)
+        (self.d / "overview.md").write_text("x")
+        (self.d / "shotmap.json").write_text(json.dumps({"version": 1, "name": "demo", "key": "demo::footage", "length_s": 10,
+                                                         "sections": [{"name": "s", "slots": [{"id": "s1", "show": "x", "beats": 4}]}]}))
+        self.app.add_project("demo", str(self.tmp), str(self.d))
+
+    def tearDown(self):
+        self.app.jobs.cancel_all()
+        self.httpd.shutdown()
+        self.httpd.server_close()
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    post = ServerTests.post
+
+    def project(self) -> dict:
+        with urllib.request.urlopen(f"{self.base}/api/project?dir={self.d}") as r:
+            return json.loads(r.read())
+
+    def test_the_project_says_its_stage_and_what_may_be_done(self):
+        p = self.project()
+        self.assertEqual(p["stage"], "cut")
+        self.assertEqual(set(p["can"]), {"prep", "cut", "edit", "look", "write_xml", "readback"})
+        self.assertEqual(p["can"]["cut"], {"ok": True, "why": ""})
+        self.assertEqual(p["can"]["edit"], {"ok": False, "why": "There is no cut yet: cut it first."})
+        self.assertEqual(self.post("/api/write-xml", {"project": str(self.d)})[1], {"error": "There is no cut yet: cut it first."})  # the endpoint says the same
+        self.assertTrue(self.app.state_file.with_name("ui-jobs.json").exists())  # the running jobs are noted beside the app's state
+
+    def test_a_second_cut_and_an_edit_are_refused_in_words_while_a_cut_runs(self):
+        _, r = self.post("/api/cut", {"project": str(self.d)})
+        first = r["job"]
+        self.assertTrue(first["live"] and first["writes"])
+        busy = f"“{first['title']}” is still working on this project: wait for it to finish, or stop it, first."
+        self.assertEqual(self.post("/api/cut", {"project": str(self.d)})[1], {"error": busy})
+        (self.d / "picks.json").write_text(json.dumps({"version": 1, "name": "demo", "key": "demo::footage", "fps": 25, "width": 1080, "height": 1920, "slots": []}))
+        before = (self.d / "picks.json").read_text()
+        for path, body in (("/api/edit", {"op": "undo"}), ("/api/write-xml", {}), ("/api/look", {"choices": {"s1": 1}})):
+            self.assertEqual(self.post(path, {"project": str(self.d), **body})[1], {"error": busy}, path)
+        self.assertEqual((self.d / "picks.json").read_text(), before)
+        p = self.project()
+        self.assertEqual((p["stage"], p["can"]["edit"], p["can"]["cut"]["ok"], p["can"]["readback"]["ok"]), ("review", {"ok": False, "why": busy}, False, False))
+        self.assertEqual(p["status"], {"text": "Cutting", "tone": "busy"})
+        from unittest import mock
+
+        with mock.patch.object(server.project_mod, "can", return_value=(True, "")):  # past the page's rule, the jobs' own still holds (jobs.Busy)
+            self.assertEqual(self.post("/api/write-xml", {"project": str(self.d)})[1], {"error": busy})
+        self.app.jobs.cancel(self.app.jobs.get(first["id"]))
+        self.assertIn("job", self.post("/api/write-xml", {"project": str(self.d)})[1])  # the cut stopped: the XML may be written
+
+
 if __name__ == "__main__":
     unittest.main()

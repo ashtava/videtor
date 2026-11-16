@@ -179,16 +179,16 @@ def steps(p: Project, job: dict | None = None, needs: dict | None = None) -> tup
     """The project's steps with their state (done / running / todo / blocked / optional) and the one thing to do next.
     `job`: its live job, if any; `needs`: what a cut still needs from the drive (`needs`)."""
     running = job["kind"] if job else None
-    plan, st = p.plan and not p.problems, p.stage
+    plan, st = p.shotmap and not p.problems, p.stage  # the step "Brief & plan" is the shot map's, a music video's too (as the page has it)
 
     def state(done: bool, run: bool = False, ready: bool = True) -> str:
         return "running" if run else "done" if done else "todo" if ready else "blocked"
 
     out = [
         {"id": "overview", "label": "Footage", "state": state(p.footage, running == "prep")},
-        {"id": "brief", "label": "Brief & plan", "state": state(plan, False, p.footage or running == "prep" or p.plan)},
+        {"id": "brief", "label": "Brief & plan", "state": state(plan, False, p.footage or running == "prep" or p.shotmap)},
         {"id": "tools", "label": "Music & search", "state": "optional"},
-        {"id": "cut", "label": "Cut", "state": state(p.picks, running == "cut", plan)},
+        {"id": "cut", "label": "Cut", "state": state(p.picks, running == "cut", p.plan and not p.problems)},
         {"id": "look", "label": "Review & export", "state": state(False, running == "look", p.picks)},
     ]
     needs = needs or {}

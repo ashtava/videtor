@@ -394,6 +394,7 @@ function renderNext(p) {
   if (rp) rp.onclick = async () => {
     const r = await api("/api/reprep", { project: p.dir });
     if (r.error) { $("project-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+    if (r.job) runPanel("prep", r.job.id, PANELS.prep(p.dir));
     showTab("overview");
     loadProject();
   };
@@ -447,8 +448,10 @@ async function saveRequirements(body, btn, errEl) {
   if (!current) return false;
   if (btn) btn.disabled = true;
   $("req-msg").innerHTML = body.music && body.music.path ? "Reading the track…" : "";
-  const r = await api("/api/settings", { project: current.dir, ...body });
+  const dir = current.dir;
+  const r = await api("/api/settings", { project: dir, ...body });
   if (btn) btn.disabled = false;
+  if (!current || current.dir !== dir) return !r.error;  // saved for a project no longer open: nothing of it is shown over this one
   if (r.error) { (errEl || $("req-msg")).innerHTML = `<span class="bad">${esc(r.error)}</span>`; if (errEl) $("req-msg").innerHTML = ""; return false; }
   if (errEl) errEl.innerHTML = "";
   current.requirements = r.requirements;
@@ -536,12 +539,15 @@ $("validate-shotmap").onclick = async () => { const r = await api("/api/validate
 /* ---- music and search ---- */
 $("music-run").onclick = async () => {
   const r = await api("/api/music", { folder: $("music-folder").value.trim(), length: $("music-length").value, reveal_at: $("music-reveal").value || null, project: current && current.dir });
-  if (r.error) { $("music-log").hidden = false; $("music-log").textContent = r.error; return; }
-  watch(r.job.id, { log: "music-log", showLog: true, onDone: () => showTracks() });
+  if (r.error) { refuseRun("music", r.error); return; }
+  runPanel("music", r.job.id, { log: "music-log", showLog: true, what: "Ranking the tracks", failed: "No tracks were ranked.",
+    older: () => ($("music-results").innerHTML.trim() ? "The tracks listed are from before." : ""), onDone: () => showTracks() });
 };
 /* the ranked tracks as rows to choose from: Use this track sets the project's music */
 async function showTracks() {
+  const fresh = ticket("tracks");
   const r = await api("/api/music/ranked", { folder: $("music-folder").value.trim(), length: $("music-length").value, reveal_at: $("music-reveal").value || null });
+  if (!fresh()) return;
   const el = $("music-results");
   if (r.error || !(r.tracks || []).length) { el.innerHTML = r.error ? `<span class="bad">${esc(r.error)}</span>` : `<div class="muted">No track in that folder suits a cut of this length.</div>`; return; }
   $("music-log").hidden = true;
@@ -556,32 +562,38 @@ async function showTracks() {
 $("search-run").onclick = async () => {
   if (!current) return;
   const r = await api("/api/search", { project: current.dir, query: $("search-query").value.trim(), top: 12 });
-  if (r.error) { $("search-log").hidden = false; $("search-log").textContent = r.error; return; }
-  watch(r.job.id, { log: "search-log", showLog: true });
+  if (r.error) { refuseRun("search", r.error, current.dir); return; }
+  runPanel("search", r.job.id, { project: current.dir, log: "search-log", showLog: true, what: "Searching the footage", failed: "The search did not run." });
 };
 
 /* ---- cut ---- */
+/* whether a cut can start is the server's word (`can.cut`, project.py): live or not, and why not in words. A server that
+   does not send it gets today's reading of the plan, its problems and the drive. */
 function renderCutTab(p) {
-  const d = p.drive || {}, n = p.cut_needs;
+  const d = p.drive || {}, n = p.cut_needs, can = p.can && p.can.cut;
   const hasPlan = !!(p.shotmap || "").trim(), bad = (p.errors || []).length > 0;
   const blocked = !!(n && n.to_decode && !d.connected);
+  const toBrief = ` <a href="#" data-goto="project:brief">Brief &amp; plan</a>`;
   let line = "";
-  if (!hasPlan) line = `<span class="warn">No plan yet.</span> Write it on <a href="#" data-goto="project:brief">Brief &amp; plan</a> first.`;
-  else if (bad) line = `<span class="warn">The plan has ${p.errors.length} problem(s).</span> Fix them on <a href="#" data-goto="project:brief">Brief &amp; plan</a>.`;
-  else if (blocked) line = `<span class="bad">Plug in ${esc(d.name || "the footage drive")}.</span> ${n.to_decode} of the ${n.takes} takes the plan can use still need reading from it.`;
+  if (can && !can.ok) line = `<span class="warn">${esc(can.why || "Not ready to cut.")}</span>` + (["brief", "plan"].includes(p.stage) ? toBrief : "");
+  else if (!can && !hasPlan) line = `<span class="warn">No plan yet.</span> Write it on <a href="#" data-goto="project:brief">Brief &amp; plan</a> first.`;
+  else if (!can && bad) line = `<span class="warn">The plan has ${p.errors.length} problem(s).</span> Fix them on <a href="#" data-goto="project:brief">Brief &amp; plan</a>.`;
+  else if (!can && blocked) line = `<span class="bad">Plug in ${esc(d.name || "the footage drive")}.</span> ${n.to_decode} of the ${n.takes} takes the plan can use still need reading from it.`;
   else if (n && n.to_decode) line = `<span class="ok">${esc(d.name || "The footage")} is connected.</span> This cut reads ${n.to_decode} takes in full first (a few minutes); later cuts are quick.`;
   else if (n) line = `<span class="ok">Everything the plan can use is read: ${n.takes} takes to choose from.</span>` + (d.connected ? "" : " The drive can stay unplugged for the cut; Premiere needs it to play the clips.");
   $("cut-drive").innerHTML = line;
-  const running = !!(p.job && p.job.kind === "cut");
-  $("cut-run").disabled = !hasPlan || bad || blocked || running;
+  const running = !!(p.job && p.job.kind === "cut") || runRunning("cut");
+  $("cut-run").disabled = (can ? !can.ok : !hasPlan || bad || blocked) || running;
   $("cut-run").textContent = p.picks ? "Cut again" : "Cut";
 }
 $("cut-run").onclick = async () => {
   if (!current) return;
+  const dir = current.dir;
   $("cut-run").disabled = true;
-  const r = await api("/api/cut", { project: current.dir, sfx: $("cut-sfx").checked });
-  if (r.error) { $("cut-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; $("cut-run").disabled = false; return; }
   $("cut-msg").textContent = "";
+  const r = await api("/api/cut", { project: dir, sfx: $("cut-sfx").checked });
+  if (r.error) { $("cut-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; $("cut-run").disabled = false; return; }
+  runPanel("cut", r.job.id, PANELS.cut(dir));
   loadProject();
 };
 
@@ -606,13 +618,15 @@ function renderReview(p) {
 function renderPreview(p) {
   const el = $("preview");
   if (!p.picks) { el.innerHTML = ""; return; }
-  el.innerHTML = (p.preview ? `<video class="preview" controls preload="metadata" src="${fileUrl(p.preview)}&t=${Date.now()}"></video>` : "") +
-    `<div class="row"><button class="btn" id="preview-make">${p.preview ? "Make the preview again" : "Watch the cut here"}</button>
-     <span class="muted">A small video of the cut with its music, made from the footage (the drive must be connected; about a minute). No effects or sound effects in it.</span></div>`;
+  el.innerHTML = (p.preview ? `<video class="preview" data-run-stale="preview" controls preload="metadata" src="${fileUrl(p.preview)}&t=${Date.now()}"></video>` : "") +
+    `<div class="row"><button class="btn" id="preview-make" data-run-btn="preview">${p.preview ? "Make the preview again" : "Watch the cut here"}</button>
+     <span class="muted">A small video of the cut with its music, made from the footage (the drive must be connected; about a minute). No effects or sound effects in it.</span></div>
+     <div class="runmsg" data-run="preview"></div>`;
   $("preview-make").onclick = async () => {
     const r = await api("/api/preview", { project: p.dir });
-    if (r.error) { $("project-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
-    watch(r.job.id, { status: "preview-status", onDone: () => loadProject() });
+    if (r.error) { refuseRun("preview", r.error, p.dir); return; }
+    runPanel("preview", r.job.id, { project: p.dir, status: "preview-status", what: "Making the preview", failed: "No preview was made.",
+      older: p.preview ? "The video shown is the one made before." : "", onEnd: () => loadProject() });
   };
 }
 /* ---- when the job is finished: a verdict, and the finished video read back ---- */
@@ -621,15 +635,17 @@ function renderTeach(p) {
   if (!p.picks) { el.innerHTML = ""; return; }
   const f = p.feedback || {}, v = f.verdict, s = f.summary;
   const said = v ? `<span class="chip">You said: ${v.good ? "good" : "not good"}${v.note ? " · " + esc(v.note) : ""}</span>` : "";
-  const read = s ? `<div class="muted">Last read: ${s.kept} kept, ${s.slipped + s.trimmed} moved, ${s.swapped_to_alternate + s.swapped} swapped, ${s.removed} removed of ${s.slots} shots.</div>` : "";
+  const read = s ? `<div class="muted" data-run-stale="readback">Last read: ${s.kept} kept, ${s.slipped + s.trimmed} moved, ${s.swapped_to_alternate + s.swapped} swapped, ${s.removed} removed of ${s.slots} shots.</div>` : "";
   el.innerHTML = `<div class="exportcard"><div><b>When you have finished it</b></div>
     <div class="row"><span>Was this cut a good start?</span><button class="btn" id="verdict-good">Good</button><button class="btn" id="verdict-not">Not good</button>
       <input type="text" id="verdict-note" placeholder="why, in a line (optional)" style="min-width:280px">${said}</div>
     <div class="row"><span>Your finished video:</span><span class="muted" id="final-path">${esc(f.final ? f.final.split("/").pop() : "none in the project's folder yet")}</span>
-      <button class="btn" id="final-choose">Choose…</button><button class="btn primary" id="final-read">Read my finished video</button></div>
+      <button class="btn" id="final-choose">Choose…</button><button class="btn primary" id="final-read" data-run-btn="readback">Read my finished video</button></div>
+    <div class="runmsg" data-run="readback"></div>
     ${read}
-    <div class="row"><button class="btn" id="learn-run">Learn from my feedback</button>
-      <span class="muted">${f.choices || 0} of your swaps kept so far. Learning is tried on your past cuts first and kept only if they get no worse.</span></div></div>`;
+    <div class="row"><button class="btn" id="learn-run" data-run-btn="learn">Learn from my feedback</button>
+      <span class="muted">${f.choices || 0} of your swaps kept so far. Learning is tried on your past cuts first and kept only if they get no worse.</span></div>
+    <div class="runmsg" data-run="learn"></div></div>`;
   let video = f.final || null;
   const verdict = async (good) => { await api("/api/verdict", { project: p.dir, good, note: $("verdict-note").value.trim() }); loadProject(); };
   $("verdict-good").onclick = () => verdict(true);
@@ -640,12 +656,15 @@ function renderTeach(p) {
   };
   $("final-read").onclick = async () => {
     const r = await api("/api/readback", { project: p.dir, video });
-    if (r.error) { $("project-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
-    watch(r.job.id, { log: "teach-log", showLog: true, onDone: () => loadProject() });
+    if (r.error) { refuseRun("readback", r.error, p.dir); return; }
+    runPanel("readback", r.job.id, { project: p.dir, log: "teach-log", showLog: true, what: "Reading your finished video", failed: "Your finished video was not read.",
+      older: s ? "The numbers below are from the last read." : "", done: "Read: the numbers below are from this read.", onEnd: () => loadProject() });
   };
   $("learn-run").onclick = async () => {
     const r = await api("/api/learn", {});
-    if (!r.error) watch(r.job.id, { log: "teach-log", showLog: true });
+    if (r.error) { refuseRun("learn", r.error); return; }
+    runPanel("learn", r.job.id, { log: "teach-log", showLog: true, what: "Learning from your feedback", failed: "Nothing was learnt.",
+      done: "Done. What was learnt, and whether it was kept, is on Teach Videtor.", onEnd: () => loadProject() });
   };
 }
 function renderSlots(p) {
@@ -667,9 +686,10 @@ function renderSlots(p) {
       const notes = {}; if ($("look-note").value.trim()) notes[c.dataset.slot] = $("look-note").value.trim();
       c.classList.add("busy");
       const r = await api("/api/look", { project: p.dir, choices, notes });
-      if (r.error) { c.classList.remove("busy"); $("project-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+      if (r.error) { c.classList.remove("busy"); refuseRun("swap", r.error, p.dir); return; }
       $("look-note").value = "";
-      watch(r.job.id, { log: "look-log", onDone: () => loadProject() });
+      runPanel("swap", r.job.id, { project: p.dir, log: "look-log", what: "Making the swap", failed: "The swap was not made.",
+        older: "The list shows the cut as it was.", olderFailed: "The cut is as it was.", onEnd: () => loadProject() });
     });
   });
 }
@@ -697,16 +717,23 @@ $("lib-run").onclick = async () => {
   const r = await api("/api/library/build", { folders: libFolders, out: $("lib-out").value.trim(), name: $("lib-name").value.trim(), extract: $("lib-extract").checked, transcribe: $("lib-transcribe").checked });
   if (r.error) { $("lib-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
   $("lib-msg").textContent = "";
+  runPanel("lib-build", r.job.id, LIB_RUN["lib-build"]);
   await refreshState();
   $("lib-select").value = r.library.dir;
-  watch(r.job.id, { status: "lib-status-card", log: "lib-log", logbox: "lib-logbox", onDone: () => loadLibrary() });
+  loadLibrary();
+};
+/* sorting a shoot and learning from the user's sorting: one card, a line beside each button, the list dimmed meanwhile */
+const LIB_RUN = {
+  "lib-build": { status: "lib-status-card", log: "lib-log", logbox: "lib-logbox", what: "Sorting the footage", failed: "The footage was not sorted.", onEnd: () => loadLibrary() },
+  "lib-learn": { status: "lib-status-card", log: "lib-log", logbox: "lib-logbox", what: "Learning from your sorting", failed: "Nothing was learnt.",
+    older: "The list below is as it was before.", done: "Learnt: new sorting follows yours.", onEnd: () => loadLibrary() },
 };
 $("lib-select").onchange = loadLibrary;
 $("lib-learn").onclick = async () => {
   const dir = $("lib-select").value; if (!dir) return;
   const r = await api("/api/library/learn", { out: dir });
-  if (r.error) { $("lib-status").textContent = r.error; return; }
-  watch(r.job.id, { status: "lib-status-card", log: "lib-log", logbox: "lib-logbox", onDone: () => loadLibrary() });
+  if (r.error) { refuseRun("lib-learn:" + dir, r.error); return; }
+  runPanel("lib-learn:" + dir, r.job.id, LIB_RUN["lib-learn"]);
 };
 $("lib-add-existing").onclick = async () => {
   const r = await api("/api/library/add", { dir: $("lib-add-dir").value.trim() });
@@ -720,7 +747,15 @@ let libFilter = "all";
 async function loadLibrary() {
   const dir = $("lib-select").value;
   if (!dir) { $("lib-view").innerHTML = ""; $("lib-status").textContent = ""; return; }
+  const fresh = ticket("library");
+  const live = (state.jobs || []).filter((j) => j.project === dir && (j.kind === "library" || j.kind === "learn") && jobLive(j)).pop();
+  // learning is the chosen library's: its line, its button and its list follow the choice
+  $("lib-learn").dataset.runBtn = $("lib-learn-run").dataset.run = $("lib-view-wrap").dataset.runStale = "lib-learn:" + dir;
+  if (live && live.kind === "learn") runPanel("lib-learn:" + dir, live.id, LIB_RUN["lib-learn"]);  // started before the page was opened
+  else if (live) runPanel("lib-build", live.id, LIB_RUN["lib-build"]);
   const lib = await api("/api/library?dir=" + encodeURIComponent(dir));
+  if (!fresh() || $("lib-select").value !== dir) return;  // another library was chosen, or asked for again, meanwhile
+  paintRuns();
   if (lib.error) { $("lib-status").textContent = lib.error; $("lib-view").innerHTML = ""; return; }
   currentLibrary = lib;
   $("lib-status").textContent = `sorted ${(lib.built_at || "").replace("T", " ").slice(0, 16)} · ${lib.bites} bites` + (lib.moved ? ` · ${lib.moved} changed by you since (Learn to keep them)` : "") +
@@ -741,6 +776,7 @@ async function loadLibrary() {
   $("lib-view").querySelectorAll("button[data-f]").forEach((btn) => btn.addEventListener("click", () => { libFilter = btn.dataset.f; loadLibrary(); }));
   $("lib-view").querySelectorAll("select[data-name]").forEach((sel) => sel.addEventListener("change", async () => {
     const r = await api("/api/library/move", { out: dir, name: sel.dataset.name, to: sel.value });
+    if ($("lib-select").value !== dir) return;
     $("lib-status").textContent = r.error ? r.error : `${sel.dataset.name}: ${r.from} → ${r.to}. Learn from my sorting when you are done.`;
   }));
 }
@@ -751,38 +787,27 @@ const PR_KEEP = ["pr-frame", "pr-kind", "pr-count", "pr-length", "pr-lead", "pr-
 const prShape = (frame) => ((promoSets.frames.find(([k]) => k === frame) || [0, frame])[1] || "").split(" (")[0];
 const prKind = (kind, n) => (kind === "edit" ? "Edit" : kind === "clip" ? "Clip" : "Promo") + (n === 1 ? "" : "s");
 const prMade = (x) => { const kinds = [...new Set(x.promos.map((p) => p.kind))]; return kinds.length === 1 ? kinds[0] : "mixed"; };  // what the set holds, whatever was asked for
-/* a run of the job: what was there before is dimmed while it runs; when it ends the page shows the set it made, or says
-   plainly that nothing was made (the promos still listed are older ones, not this run's) */
+/* a run of the job (runPanel): what was there before is dimmed while it runs; when it ends the page shows the set it made,
+   or says plainly that nothing was made (the promos still listed are older ones, not this run's) */
 function prWatch(id, what) {
   $("pr-msg").textContent = "";
-  $("pr-view").classList.add("stale");
-  $("pr-note").hidden = false;
-  $("pr-note").className = "promo-note";
-  $("pr-note").textContent = `${what || "Making the promos"}… What is shown below was made before.`;
-  watch(id, { status: "pr-status", log: "pr-log", logbox: "pr-logbox", onDone: async (job) => {
-    $("pr-view").classList.remove("stale");
-    if (job.status === "done") {
-      $("pr-note").hidden = true;
-      const made = job.result && job.result.promos ? job.result.promos.replace(/\/promos\.json$/, "") : null;
-      await loadPromos(made || true);
-    } else {
-      const why = (job.result && job.result.error) || (job.progress && job.progress.last) || "see Details";
-      $("pr-note").className = "promo-note bad";
-      $("pr-note").innerHTML = `<b>No promos were made this time.</b> ${esc(why)}` + (promoSets && promoSets.sets.length ? `<br>The promos below are from an earlier run.` : "");
-      await loadPromos();
-    }
-  } });
+  runPanel("promos", id, { status: "pr-status", log: "pr-log", logbox: "pr-logbox", what: what || "Making the promos", older: "What is shown below was made before.",
+    failed: "No promos were made this time.", olderFailed: () => (promoSets && promoSets.sets.length ? "The promos below are from an earlier run." : ""),
+    onDone: (job) => loadPromos((job.result && job.result.promos ? job.result.promos.replace(/\/promos\.json$/, "") : null) || true),
+    onFail: () => loadPromos() });
 }
 /* `show`: a set's folder to open, true for the newest, nothing to stay on the one chosen */
 async function loadPromos(show) {
+  const fresh = ticket("promos");
   const r = await api("/api/promos");
+  if (!fresh()) return;  // a newer answer is already shown
   if (r.error) { $("pr-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
   const first = promoSets === null;
   promoSets = r;
   if (first) {
     $("pr-frame").innerHTML = r.frames.map(([k, label]) => `<option value="${esc(k)}">${esc(label)}</option>`).join("");
     PR_KEEP.forEach((id) => { const v = store.get("videtor." + id); if (v && [...$(id).options].some((o) => o.value === v)) $(id).value = v; });
-    const live = (state.jobs || []).filter((j) => j.kind === "promos" && LIVE.includes(j.status)).pop();
+    const live = (state.jobs || []).filter((j) => j.kind === "promos" && jobLive(j)).pop();
     if (live) prWatch(live.id);
   }
   $("pr-fetcher").textContent = r.fetcher ? `yt-dlp ${r.fetcher} is installed. When a link that used to work stops, update it.` : "The link fetcher (yt-dlp) is not installed: links will not work, files will.";
@@ -842,17 +867,20 @@ $("pr-update").onclick = async () => {
 
 /* ---- activity ---- */
 async function renderJobs() {
+  const fresh = ticket("jobs");
   const r = await api("/api/jobs");
+  if (!fresh()) return;
   const tb = $("jobs-table").querySelector("tbody");
   tb.innerHTML = r.jobs.slice().reverse().map((j) => {
     const p = j.progress || {};
     const pct = j.status === "running" && p.total ? Math.round(100 * (p.done || 0) / p.total) : null;
     const left = j.status === "running" && p.eta_s ? ` · about ${fmtDur(p.eta_s)} left` : "";
-    return `<tr><td><b>${esc(j.title)}</b></td><td class="st-${esc(j.status)}">${esc(stageText(j))}${pct !== null ? ` (${pct}%)` : ""}<span class="muted">${left}</span></td><td>${fmtDur(j.elapsed)}</td>` +
+    const why = !jobLive(j) && !jobOk(j) && j.status !== "cancelled" ? `<div class="small">${esc(jobWhy(j))}</div>` : "";
+    return `<tr><td><b>${esc(j.title)}</b></td><td class="st-${esc(j.status)}">${esc(stageText(j))}${pct !== null ? ` (${pct}%)` : ""}<span class="muted">${left}</span>${why}</td><td>${fmtDur(j.elapsed)}</td>` +
       `<td class="acts"><button class="btn small" data-show="${j.id}">Details</button>` +
       (j.status === "running" ? `<button class="btn small" data-act="pause" data-id="${j.id}">Pause</button>` : "") +
       (j.status === "paused" && !j.paused_by ? `<button class="btn small" data-act="resume" data-id="${j.id}">Resume</button>` : "") +
-      (["running", "paused", "waiting"].includes(j.status) ? `<button class="btn small danger" data-act="cancel" data-id="${j.id}">Stop</button>` : "") + `</td></tr>`;
+      (jobLive(j) ? `<button class="btn small danger" data-act="cancel" data-id="${j.id}">Stop</button>` : "") + `</td></tr>`;
   }).join("") || `<tr><td colspan="4" class="muted">Nothing yet.</td></tr>`;
   tb.querySelectorAll("button[data-show]").forEach((b) => b.addEventListener("click", () => { $("jobs-logbox").hidden = false; $("jobs-logbox").open = true; watch(b.dataset.show, { log: "jobs-log" }); }));
   tb.querySelectorAll("button[data-act]").forEach((b) => b.addEventListener("click", async () => { await api(`/api/jobs/${b.dataset.id}/${b.dataset.act}`, {}); renderJobs(); }));
@@ -862,8 +890,8 @@ async function renderJobs() {
 $("orient-run").onclick = async () => {
   if (!current) return;
   const r = await api("/api/orient", { project: current.dir, which: $("orient-which").value.trim(), rotate: Number($("orient-turn").value) });
-  if (r.error) { $("project-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
-  watch(r.job.id, { status: "overview-status", log: "overview-log", logbox: "overview-logbox", onDone: () => loadProject() });
+  if (r.error) { refuseRun("orient", r.error, current.dir); return; }
+  runPanel("orient", r.job.id, { ...PANELS.prep(current.dir), what: "Turning the takes", failed: "The takes were not turned.", done: "Turned." });
 };
 
 /* ---- one file: a finished video or a Premiere XML ---- */
@@ -877,21 +905,30 @@ document.querySelectorAll("button[data-pick]").forEach((b) => b.addEventListener
 
 /* ---- Teach Videtor: everything it learns from is given here ---- */
 let teach = null;
-const watchTeach = (id) => watch(id, { status: "teach-status", log: "teach-job-log", logbox: "teach-logbox", onDone: () => loadTeach() });
-async function teachPost(path, body) {
+/* every job of this page shares its card and its log; each control has its own line (data-run=name) beside it */
+const watchTeach = (name, id, what) => runPanel(name, id, { status: "teach-status", log: "teach-job-log", logbox: "teach-logbox", what: what || "Learning",
+  failed: "Nothing was learnt this time.", olderFailed: "What Videtor knows is as it was.", onEnd: () => loadTeach() });
+async function teachPost(path, body, name, what) {
+  $("teach-msg").innerHTML = "";
   const r = await api(path, body);
-  $("teach-msg").innerHTML = r.error ? `<span class="bad">${esc(r.error)}</span>` : "";
-  if (r.job) watchTeach(r.job.id);
+  if (r.error) refuseRun(name, r.error);
+  if (r.job) watchTeach(name, r.job.id, what);
   return r;
 }
 async function loadTeach() {
-  teach = await api("/api/teach");
+  const fresh = ticket("teach");
+  const t = await api("/api/teach");
+  if (!fresh()) return;  // a newer answer is already shown
+  if (t.error) { $("teach-msg").innerHTML = `<span class="bad">${esc(t.error)}</span>`; return; }
+  teach = t;
   $("kinds").innerHTML = teach.kinds.map((k) => `<option value="${esc(k)}">`).join("");
   renderTeachJobs();
   renderTeachEdits();
   renderRules();
   renderKnown();
-  if (teach.active) watchTeach(teach.active.id);
+  // a job started elsewhere (or before the page was opened) shows on the card, unless one of this page's lines already follows it
+  if (teach.active && !Object.values(runs).some((r) => r.job === teach.active.id && r.o.status === "teach-status")) watchTeach("teach", teach.active.id, teach.active.title);
+  paintRuns();
 }
 const day = (iso) => (iso || "").slice(0, 10);
 function renderTeachJobs() {
@@ -902,21 +939,22 @@ function renderTeachJobs() {
     const what = j.unread ? `<b>Finished video found:</b> ${esc(j.unread.split("/").pop())}. Not read yet.`
       : s ? `Read ${esc(day(j.read_at))}: ${s.kept} kept, ${s.slipped + s.trimmed} moved, ${s.swapped_to_alternate + s.swapped} swapped, ${s.removed} removed of ${s.slots} shots.`
       : `<span class="muted">Waiting for your finished video: save the export in this project's folder, or choose it.</span>`;
-    return `<div class="teachrow" data-dir="${esc(j.dir)}"><div class="who">${esc(j.name)}</div><div class="what">${what}${v && v.note ? `<div class="muted small">You said: ${esc(v.note)}</div>` : ""}</div>
-      <span class="acts">${j.unread ? `<button class="btn primary" data-act="read">Read it</button>` : `<button class="btn" data-act="choose">Choose the video…</button>`}
+    return `<div class="teachrow" data-dir="${esc(j.dir)}"><div class="who">${esc(j.name)}</div><div class="what">${what}${v && v.note ? `<div class="muted small">You said: ${esc(v.note)}</div>` : ""}<div class="runmsg" data-run="teach-row:${esc(j.dir)}"></div></div>
+      <span class="acts">${j.unread ? `<button class="btn primary" data-act="read" data-run-btn="teach-row:${esc(j.dir)}">Read it</button>` : `<button class="btn" data-act="choose" data-run-btn="teach-row:${esc(j.dir)}">Choose the video…</button>`}
       <button class="btn" data-act="folder">Show folder</button></span>
       <span class="acts"><span class="muted">Was the cut a good start?</span>
       <button class="btn ${v && v.good ? "primary" : ""}" data-act="good">Good</button><button class="btn ${v && !v.good ? "primary" : ""}" data-act="not">Not good</button></span></div>`;
   }).join("");
-  el.innerHTML = `<div class="card">` + (teach.pending ? `<div class="row"><button class="btn primary" id="teach-pending">Read ${teach.pending} finished video${teach.pending > 1 ? "s" : ""} and learn</button></div>` : "") + rows + `</div>`;
-  if ($("teach-pending")) $("teach-pending").onclick = () => teachPost("/api/teach/pending", {});
+  el.innerHTML = `<div class="card">` + (teach.pending ? `<div class="row"><button class="btn primary" id="teach-pending" data-run-btn="teach-pending">Read ${teach.pending} finished video${teach.pending > 1 ? "s" : ""} and learn</button>` +
+    `<span class="runmsg" data-run="teach-pending"></span></div>` : `<div class="runmsg" data-run="teach-pending"></div>`) + rows + `</div>`;
+  if ($("teach-pending")) $("teach-pending").onclick = () => teachPost("/api/teach/pending", {}, "teach-pending", "Reading the finished videos");
   el.querySelectorAll("button[data-act]").forEach((b) => b.addEventListener("click", async () => {
-    const dir = b.closest(".teachrow").dataset.dir, act = b.dataset.act;
-    if (act === "read") return teachPost("/api/readback", { project: dir });
+    const dir = b.closest(".teachrow").dataset.dir, act = b.dataset.act, name = "teach-row:" + dir;
+    if (act === "read") return teachPost("/api/readback", { project: dir }, name, "Reading the finished video");
     if (act === "folder") return api("/api/reveal", { path: dir + "/picks.json" });
     if (act === "choose") {
       const r = await api("/api/pick-file", { kind: "video", start: dir });
-      if (r.path) teachPost("/api/readback", { project: dir, video: r.path });
+      if (r.path) teachPost("/api/readback", { project: dir, video: r.path }, name, "Reading the finished video");
       return;
     }
     const note = act === "not" ? (window.prompt("What was wrong, in a line? (optional)") || "") : "";
@@ -935,12 +973,12 @@ function renderTeachEdits() {
       : !e.folders.length ? `<span class="muted">Its footage folder is not known: add the job again above with the folder.</span>`
       : !e.connected ? `<span class="muted">Its footage is on <b>${esc(e.drive || "a drive")}</b>, which is not connected. Connect it to learn which shots you kept.</span>`
       : `Its footage is connected.`;
-    return `<div class="teachrow"><div class="who">${esc(e.name)}</div><div class="what"><span class="chip">${esc(e.bucket)}</span> ${what}</div>
-      ${!e.learnt && (e.connected || read) ? `<button class="btn ${e.tried ? "" : "primary"}" data-key="${esc(e.key)}">${read ? (e.tried ? "Try again" : "Learn from it") : "Read its footage and learn"}</button>` : ""}</div>`;
+    return `<div class="teachrow"><div class="who">${esc(e.name)}</div><div class="what"><span class="chip">${esc(e.bucket)}</span> ${what}<div class="runmsg" data-run="teach-edit:${esc(e.key)}"></div></div>
+      ${!e.learnt && (e.connected || read) ? `<button class="btn ${e.tried ? "" : "primary"}" data-key="${esc(e.key)}" data-run-btn="teach-edit:${esc(e.key)}">${read ? (e.tried ? "Try again" : "Learn from it") : "Read its footage and learn"}</button>` : ""}</div>`;
   };
   const waiting = edits.filter((e) => !e.learnt).length;
   $("teach-edits").innerHTML = `<details class="advanced" ${waiting && edits.some((e) => !e.learnt && e.connected) ? "open" : ""}><summary>The ${edits.length} edits you gave before (${edits.length - waiting} learnt from, ${waiting} waiting for their footage)</summary><div class="card">${edits.map(row).join("")}</div></details>`;
-  $("teach-edits").querySelectorAll("button[data-key]").forEach((b) => b.addEventListener("click", () => teachPost("/api/teach/edit", { key: b.dataset.key })));
+  $("teach-edits").querySelectorAll("button[data-key]").forEach((b) => b.addEventListener("click", () => teachPost("/api/teach/edit", { key: b.dataset.key }, "teach-edit:" + b.dataset.key, "Learning from this edit")));
 }
 function renderRules() {
   const sel = $("rules-bucket"), keep = sel.value;
@@ -984,13 +1022,14 @@ function renderKnown() {
   const measured = ev && ev.summary && ev.summary.right_take != null ? ` Measured on ${ev.projects} past cuts: where you edited the same footage, ${Math.round(100 * ev.summary.right_take)}% of Videtor's shots are takes you used.` : "";
   $("teach-last").textContent = said + measured;
 }
-$("teach-learn").onclick = () => teachPost("/api/learn", {});
+$("teach-learn").onclick = () => teachPost("/api/learn", {}, "teach-learn", "Learning again");
 $("tp-run").onclick = async () => {
-  const r = await teachPost("/api/teach/project", { name: $("tp-name").value, bucket: $("tp-bucket").value, video: $("tp-video").value, xml: $("tp-xml").value, footage: $("tp-footage").value });
+  const r = await teachPost("/api/teach/project", { name: $("tp-name").value, bucket: $("tp-bucket").value, video: $("tp-video").value, xml: $("tp-xml").value, footage: $("tp-footage").value },
+    "teach-tp", "Learning from this job");
   if (!r.error) ["tp-name", "tp-video", "tp-xml", "tp-footage"].forEach((id) => { $(id).value = ""; });
 };
 $("ts-run").onclick = async () => {
-  const r = await teachPost("/api/teach/style", { source: $("ts-source").value, bucket: $("ts-bucket").value });
+  const r = await teachPost("/api/teach/style", { source: $("ts-source").value, bucket: $("ts-bucket").value }, "teach-ts", "Learning the style");
   if (!r.error) $("ts-source").value = "";
 };
 
