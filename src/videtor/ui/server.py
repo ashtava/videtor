@@ -229,11 +229,6 @@ class App:
         with self.jobs.lock:
             return [j.to_dict() for j in self.jobs.jobs.values() if j.project == dir_ and j.live]
 
-    def _status(self, p: dict) -> dict:
-        """One line for the project's card: what is happening, or what it needs next."""
-        job = self._active_job(p["dir"])
-        return project_mod.status(self._read(p), job.to_dict() if job else None)
-
     def _cut_needs(self, p: dict, proj: project_mod.Project | None = None) -> dict | None:
         """How many takes the plan can use, and how many of those still need the drive (no full footage map yet)."""
         return project_mod.needs(proj or self._read(p), p["key"], self._kb(), self.root / "cache" / "footmap")

@@ -83,6 +83,14 @@ details.logbox { margin: 6px 0 10px; max-width: 980px; }
 .status .bar.indet > div { width: 30% !important; animation: indet 1.4s infinite ease-in-out; }
 @keyframes indet { 0% { margin-left: -30%; } 100% { margin-left: 100%; } }
 
+/* a panel's run (runPanel in app.js): the line beside the control, and what was shown before, dimmed while it runs */
+.stale { opacity: .35; pointer-events: none; transition: opacity .2s; }
+.runmsg { font-size: 13px; }
+div.runmsg { margin: 6px 0; max-width: 980px; }
+.runmsg.running { color: var(--accent); }
+.runmsg.failed b { color: var(--bad); }
+.runmsg.done { color: var(--ok); }
+
 /* projects */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin: 8px 0 12px; max-width: 980px; }
 .pcard { text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; color: var(--fg); cursor: pointer; display: flex; flex-direction: column; gap: 3px; font: inherit; min-width: 0; }
@@ -228,8 +236,7 @@ video.preview { max-height: 420px; border-radius: 8px; background: #000; display
 .promo ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
 .promo blockquote { margin: 0; padding: 6px 10px; border-left: 3px solid var(--line); color: var(--fg); font-size: 13px; max-height: 96px; overflow: auto; }
 .promo .row { margin: 0; gap: 6px; }
-#pr-view.stale { opacity: .35; pointer-events: none; }
 .promo-note { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 14px; margin: 8px 0; max-width: 980px; }
-.promo-note.bad { border-left-color: var(--bad); color: var(--fg); }
+.promo-note.failed { border-left-color: var(--bad); color: var(--fg); }
 #pr-select { max-width: 760px; }
 

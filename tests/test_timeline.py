@@ -1,9 +1,12 @@
 """The app's timeline: the edits a person makes to a cut (swap, slip, roll, remove, replace, undo), the small
 preview clips it plays, the picks as the page draws them, and the edits kept for the next cut and as feedback."""
 
+import hashlib
 import json
+import os
 import shutil
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -217,6 +220,52 @@ class PipelineTests(Cut):
         pipeline.write_xml(self.picks_p, self.paths)
         self.assertEqual([r["id"] for r in feedback.teaching_rows(feedback.load("proj", self.paths.kb))], ["o1"])  # what stands now, not the history
         self.assertFalse(edit.timeline(self.picks(), self.out, [], self.paths.beats)["dirty"])
+
+    def test_the_xml_notes_the_picks_it_was_written_from_and_edited_means_they_moved_on(self):
+        dirty = lambda: edit.timeline(self.picks(), self.out, [], self.paths.beats)["dirty"]  # noqa: E731
+        rec = json.loads((self.out / "work" / pipeline.XML_RECORD).read_text())
+        self.assertEqual((rec["xml"], rec["picks_sha1"]), ("proj.xml", hashlib.sha1(self.picks_p.read_bytes()).hexdigest()))
+        self.assertFalse(dirty())
+        later = time.time() + 30
+        os.utime(self.picks_p, (later, later))  # copied, or a clock off: the same picks, a newer file
+        self.assertFalse(dirty())
+        pipeline.edit(self.picks_p, {"op": "slip", "slot": "o1", "frames": 5}, self.paths)
+        self.assertTrue(dirty())
+        pipeline.edit(self.picks_p, {"op": "undo"}, self.paths)  # back to the picks the XML holds
+        self.assertFalse(dirty())
+        pipeline.edit(self.picks_p, {"op": "slip", "slot": "o1", "frames": 5}, self.paths)
+        pipeline.look(self.picks_p, {}, paths=self.paths)
+        self.assertFalse(dirty())
+        (self.out / "work" / pipeline.XML_RECORD).unlink()  # a cut written before the note: the files' times decide, as before
+        os.utime(self.picks_p, (later, later))
+        self.assertTrue(dirty())
+        os.utime(self.picks_p, (time.time() - 30,) * 2)
+        self.assertFalse(dirty())
+
+    def test_each_file_is_written_whole_and_a_failure_never_leaves_picks_the_decisions_do_not_describe(self):
+        first = self.picks()
+        real = pipeline._write
+
+        def picks_fail(path, text):
+            if path.name == "picks.json":
+                raise OSError("the drive went away")
+            real(path, text)
+
+        with mock.patch.object(pipeline, "_write", side_effect=picks_fail):
+            with self.assertRaises(OSError):
+                pipeline.edit(self.picks_p, {"op": "slip", "slot": "o1", "frames": 5}, self.paths)
+        self.assertEqual(self.picks(), first)  # the picks as they were; the decisions one edit ahead, with the way back
+        self.assertEqual(len(json.loads((self.out / "decisions.json").read_text())["edits"]), 1)
+        pipeline.edit(self.picks_p, {"op": "undo"}, self.paths)  # puts both back
+        self.assertEqual((self.picks(), json.loads((self.out / "decisions.json").read_text())["edits"]), (first, []))
+        with mock.patch("os.replace", side_effect=OSError("no room")):  # a write that fails half way leaves the file as it was
+            with self.assertRaises(OSError):
+                pipeline.note(self.out, "o1", "darker")
+            with self.assertRaises(OSError):
+                pipeline.edit(self.picks_p, {"op": "slip", "slot": "o1", "frames": 5}, self.paths)
+        self.assertEqual(self.picks(), first)
+        self.assertFalse((self.out / "review.json").exists())
+        self.assertEqual([p.name for p in self.out.rglob(".*.tmp")], [])  # and nothing half written beside it
 
     def test_more_takes_for_a_shot_come_in_the_users_words_with_the_ones_in_the_cut_last(self):
         doc = pipeline.options(self.picks_p, "o2", show="axis 0", n=6, paths=self.paths, embed_texts=fake_embed)

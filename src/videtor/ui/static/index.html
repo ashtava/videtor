@@ -53,12 +53,13 @@
           <div class="status" id="overview-status" hidden></div>
           <details class="logbox" id="overview-logbox" hidden><summary>Details</summary><pre class="log" id="overview-log">—</pre></details>
           <div class="counts" id="project-classes"></div>
-          <div id="project-sheets"></div>
+          <div id="project-sheets" data-run-stale="prep"></div>
           <details class="advanced"><summary>A camera's shots look sideways or upside down?</summary>
             <p class="muted">Videtor turns sideways cameras by the faces in them. A camera that filmed only products or hands has none to read, so say which takes and which way.</p>
             <div class="row"><label>Which takes</label><input type="text" id="orient-which" placeholder="a file name (C0123.MP4), or how a camera's file names start (M2U)">
               <label>Turn them</label><select id="orient-turn"><option value="-90">a quarter turn left</option><option value="90">a quarter turn right</option><option value="180">upside down</option><option value="0">back to as shot</option></select>
-              <button class="btn" id="orient-run">Turn</button></div>
+              <button class="btn" id="orient-run" data-run-btn="orient">Turn</button></div>
+            <div class="runmsg" data-run="orient"></div>
           </details>
           <details class="advanced"><summary>The overview in numbers</summary><pre class="text" id="project-overview">—</pre></details>
         </div>
@@ -113,11 +114,11 @@
           <h2>Music</h2>
           <div id="music-chosen" class="muted"></div>
           <div class="row"><label>Music folder</label><input type="text" id="music-folder" placeholder="your music library"><button class="btn" data-browse="music-folder">Choose…</button></div>
-          <div class="row"><label>Length (s)</label><input type="number" id="music-length" value="25"><label>Reveal at (s)</label><input type="number" id="music-reveal" placeholder="optional"><button class="btn" id="music-run">Find tracks</button></div>
+          <div class="row"><label>Length (s)</label><input type="number" id="music-length" value="25"><label>Reveal at (s)</label><input type="number" id="music-reveal" placeholder="optional"><button class="btn" id="music-run" data-run-btn="music">Find tracks</button><span class="runmsg" data-run="music"></span></div>
           <pre class="log" id="music-log" hidden>—</pre>
-          <div id="music-results"></div>
+          <div id="music-results" data-run-stale="music"></div>
           <h2>Search the footage</h2>
-          <div class="row"><input type="text" id="search-query" placeholder="a golden trophy in a glass case"><button class="btn" id="search-run">Search</button></div>
+          <div class="row"><input type="text" id="search-query" placeholder="a golden trophy in a glass case"><button class="btn" id="search-run" data-run-btn="search">Search</button><span class="runmsg" data-run="search"></span></div>
           <pre class="log" id="search-log" hidden>—</pre>
         </div>
 
@@ -133,7 +134,7 @@
           </details>
           <div class="drive" id="cut-as"></div>
           <div class="drive" id="cut-drive"></div>
-          <div class="row"><button class="btn primary big" id="cut-run">Cut</button><label class="check"><input type="checkbox" id="cut-sfx" checked> sound effects in your style</label><span id="cut-msg" class="muted"></span></div>
+          <div class="row"><button class="btn primary big" id="cut-run">Cut</button><label class="check"><input type="checkbox" id="cut-sfx" checked> sound effects in your style</label><span id="cut-msg" class="muted"></span><span class="runmsg" data-run="cut"></span></div>
           <div class="status" id="cut-status" hidden></div>
           <details class="logbox" id="cut-logbox" hidden><summary>Details</summary><pre class="log" id="cut-log">—</pre></details>
         </div>
@@ -163,9 +164,10 @@
               <span class="tl-time" id="tl-time">0:00:00</span><span class="muted" id="tl-total"></span>
               <span style="flex:1"></span>
               <span class="muted" id="tl-msg"></span>
+              <span class="runmsg" data-run="tl-job"></span><span class="runmsg" data-run="tl-load"></span><span class="runmsg" data-run="tl-xml"></span>
               <button class="btn" id="tl-undo">Undo</button>
-              <button class="btn" id="tl-load" hidden>Load the moving picture</button>
-              <button class="btn" id="tl-write">Write the Premiere XML</button>
+              <button class="btn" id="tl-load" data-run-btn="tl-load" hidden>Load the moving picture</button>
+              <button class="btn" id="tl-write" data-run-btn="tl-xml">Write the Premiere XML</button>
             </div>
             <div class="status" id="tl-status" hidden></div>
             <div class="tl-wrap" id="tl-wrap"><div class="tl-inner" id="tl-inner">
@@ -187,7 +189,8 @@
             <div class="status" id="preview-status" hidden></div>
             <div id="cut-sheet"></div>
             <div class="row"><label>Why (optional)</label><input type="text" id="look-note" placeholder="saved with the next swap, e.g. sharper face" style="min-width:320px"></div>
-            <div id="slots"></div>
+            <div class="runmsg" data-run="swap"></div>
+            <div id="slots" data-run-stale="swap"></div>
             <pre class="log" id="look-log" hidden>—</pre>
           </details>
           <div id="teach"></div>
@@ -212,6 +215,7 @@
       <div class="status" id="teach-status" hidden></div>
       <details class="logbox" id="teach-logbox" hidden><summary>Details</summary><pre class="log" id="teach-job-log">—</pre></details>
       <div id="teach-msg" class="muted"></div>
+      <div class="runmsg" data-run="teach"></div>
 
       <h2>1 · Your finished jobs</h2>
       <div id="teach-jobs"></div>
@@ -223,7 +227,7 @@
         <div class="row"><label>Finished video</label><input type="text" id="tp-video" placeholder="the export" style="min-width:380px"><button class="btn" data-pick="tp-video" data-kind="video">Choose…</button></div>
         <div class="row"><label>or Premiere XML</label><input type="text" id="tp-xml" placeholder="File ▸ Export ▸ Final Cut Pro XML" style="min-width:380px"><button class="btn" data-pick="tp-xml" data-kind="xml">Choose…</button></div>
         <div class="row"><label>Footage folder</label><input type="text" id="tp-footage" placeholder="optional: the raw footage it was cut from" style="min-width:380px"><button class="btn" data-browse="tp-footage">Choose…</button></div>
-        <div class="row"><button class="btn primary" id="tp-run">Learn from this job</button></div>
+        <div class="row"><button class="btn primary" id="tp-run" data-run-btn="teach-tp">Learn from this job</button><span class="runmsg" data-run="teach-tp"></span></div>
       </div>
       <div id="teach-edits"></div>
 
@@ -232,7 +236,7 @@
         <p class="muted">A folder of finished videos of one kind (reels you made, or references you like), with no footage. From two videos on, new plans and effects of that kind follow them.</p>
         <div class="row"><label>Videos</label><input type="text" id="ts-source" placeholder="a folder of finished videos" style="min-width:380px"><button class="btn" data-browse="ts-source">Choose…</button>
           <label>Kind of work</label><input type="text" id="ts-bucket" list="kinds" placeholder="choose or type a new one"></div>
-        <div class="row"><button class="btn primary" id="ts-run">Learn this style</button></div>
+        <div class="row"><button class="btn primary" id="ts-run" data-run-btn="teach-ts">Learn this style</button><span class="runmsg" data-run="teach-ts"></span></div>
       </div>
 
       <h2>4 · Your rules</h2>
@@ -244,7 +248,8 @@
 
       <h2>What Videtor knows</h2>
       <div id="teach-known"></div>
-      <div class="row"><button class="btn" id="teach-learn">Learn again now</button><span class="muted" id="teach-last"></span></div>
+      <div class="row"><button class="btn" id="teach-learn" data-run-btn="teach-learn">Learn again now</button><span class="muted" id="teach-last" data-run-stale="teach-learn"></span></div>
+      <div class="runmsg" data-run="teach-learn"></div>
       <datalist id="kinds"></datalist>
     </section>
 
@@ -327,16 +332,17 @@
           <div class="row"><label class="check"><input type="checkbox" id="lib-transcribe" checked> Transcribe the clips with speech (for the bites)</label></div>
           <div class="row"><label class="check"><input type="checkbox" id="lib-extract"> Also cut every bite to its own file</label></div>
         </details>
-        <div class="actions"><button class="btn primary big" id="lib-run">Sort the footage</button><span id="lib-msg" class="muted"></span></div>
+        <div class="actions"><button class="btn primary big" id="lib-run" data-run-btn="lib-build">Sort the footage</button><span id="lib-msg" class="muted"></span><span class="runmsg" data-run="lib-build"></span></div>
       </div>
       <div class="status" id="lib-status-card" hidden></div>
       <details class="logbox" id="lib-logbox" hidden><summary>Details</summary><pre class="log" id="lib-log">—</pre></details>
       <h2>Sorted shoots</h2>
       <div class="row"><select id="lib-select"></select><button class="btn" id="lib-learn">Learn from my sorting</button><span id="lib-status" class="muted"></span></div>
+      <div class="runmsg" id="lib-learn-run"></div>
       <details class="advanced"><summary>Add a library made in the terminal</summary>
         <div class="row"><input type="text" id="lib-add-dir" placeholder="its folder, e.g. out/library/tpl"><button class="btn" data-browse="lib-add-dir">Choose…</button><button class="btn" id="lib-add-existing">Add</button></div>
       </details>
-      <div id="lib-view"></div>
+      <div id="lib-view-wrap"><div id="lib-view"></div></div>
     </section>
 
     <!-- ============ Promos ============ -->
@@ -376,9 +382,9 @@
       <details class="logbox" id="pr-logbox" hidden><summary>Details</summary><pre class="log" id="pr-log">—</pre></details>
       <h2>Your promos</h2>
       <p class="hint">Every making is kept: clips, edits and each shape are separate entries in this list.</p>
-      <div class="promo-note" id="pr-note" hidden></div>
+      <div class="promo-note" id="pr-note" data-run="promos" hidden></div>
       <div class="row"><select id="pr-select"></select><button class="btn" id="pr-reveal">Show the folder in Finder</button><button class="btn" id="pr-again">Use this video again</button></div>
-      <div id="pr-view"></div>
+      <div id="pr-view" data-run-stale="promos"></div>
     </section>
 
     <!-- ============ Activity ============ -->

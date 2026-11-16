@@ -51,6 +51,59 @@ def speaker(**over) -> dict:
     return feats(**base)
 
 
+def fake_transcript() -> dict:
+    """Three sentences: the first two 0.6 s apart (one bite), the third after a 3.6 s pause."""
+    def seg(start, text):
+        ws, t = [], start
+        for w in text.split():
+            ws.append({"w": w, "start": round(t, 2), "end": round(t + 0.3, 2), "p": 0.9})
+            t += 0.4
+        return {"start": start, "end": ws[-1]["end"], "text": text, "words": ws}
+
+    return {"segments": [seg(1.0, "We loved the season."), seg(3.1, "The crowd was huge this year."), seg(9.0, "Next year we go bigger.")]}
+
+
+def fake_clip(path: Path, cls: str, cache: Path) -> dict:
+    """A clip's sparse record and stills, made up to read as `cls` (wide, close-up or talking-head); returns its entry."""
+    fid = footage.file_id(str(path))
+    n = 6
+    emb = np.tile(class_emb(cls), (n, 1))
+    talk = cls == "talking-head"
+    faces = np.full(n, 1 if talk else 0, np.int8)
+    area = np.full(n, 0.006 if talk else 0.0, np.float32)
+    box = np.tile([0.45, 0.2, 0.55, 0.35] if talk else [np.nan] * 4, (n, 1)).astype(np.float32)
+    arrays = {"t": np.arange(n, dtype=np.float32), "faces": faces, "face_area": area, "face_box": box, "partial": np.zeros(n, bool),
+              "hands": np.zeros(n, np.int8), "sharp": np.full(n, 200.0, np.float32), "bright": np.full(n, 100.0, np.float32),
+              "shift": np.full(n - 1, 0.002 if talk else 0.1, np.float32), "response": np.full(n - 1, 0.8 if talk else 0.1, np.float32),
+              "diff": np.full(n - 1, 0.05, np.float32), "dt": np.ones(n - 1, np.float32)}
+    rec = {"fid": fid, "path": str(path), "basename": path.name, "duration_s": 12.0, "fps": 25.0, "codec": "h264", "stored_w": 1920, "stored_h": 1080,
+           "display_w": 1920, "display_h": 1080, "rotation": 0, "audio_channels": 2, "n": n, "t": list(range(n)), "hw": False, "seek": False,
+           "audio": {"audio": True, "speech_share": 0.5 if talk else 0.0, "speech_s": 6.0 if talk else 0.0, "spans": [], "rms_dbfs": -30.0},
+           "motion": {"steps": n - 1, "shift_med": 0.002 if talk else 0.1, "shift_p90": 0.003 if talk else 0.2, "response_med": 0.8 if talk else 0.1,
+                      "diff_med": 0.05, "static_share": 1.0 if talk else 0.0},
+           "faces": {"share": 1.0 if talk else 0.0, "count_med": 1 if talk else 0, "area_med": 0.006 if talk else 0.0, "area_max": 0.006 if talk else 0.0,
+                     "partial_share": 0.0, "hands_share": 0.0}, "sharp_med": 200.0, "bright_med": 100.0, "version": sparse.VERSION}
+    sparse.save(rec, arrays, emb, cache)
+    for i in range(n):
+        p = sparse.still_path(cache, fid, i)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        Image.new("RGB", (64, 36), (40, 40, 40)).save(p)
+    return {"fid": fid, "path": str(path), "basename": path.name, "kind": "video", "media": {"duration_s": 12.0, "video": {"fps": 25.0}, "audio": {"channels": 2}}}
+
+
+def fake_shoot(drive: Path, cache: Path, plan=(("wide", 4), ("close-up", 4), ("talking-head", 2))) -> list[dict]:
+    """Files on a made-up drive (one byte each) with their sparse records: four wide, four close-ups, two talking heads."""
+    entries, k = [], 0
+    for cls, n in plan:
+        for _ in range(n):
+            k += 1
+            path = drive / f"C{k:04d}.MP4"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"\0")
+            entries.append(fake_clip(path, cls, cache))
+    return entries
+
+
 class RuleTests(unittest.TestCase):
     def test_a_locked_off_speaker_is_a_talking_head(self):
         cls, conf, reasons, second = library.classify_rules(speaker())
@@ -105,15 +158,7 @@ class RuleTests(unittest.TestCase):
 
 class BiteTests(unittest.TestCase):
     def transcript(self):
-        def seg(start, text):
-            ws, t = [], start
-            for w in text.split():
-                ws.append({"w": w, "start": round(t, 2), "end": round(t + 0.3, 2), "p": 0.9})
-                t += 0.4
-            return {"start": start, "end": ws[-1]["end"], "text": text, "words": ws}
-
-        # the first two sentences sit 0.6 s apart (one bite); the third comes after a 3.6 s pause
-        return {"segments": [seg(1.0, "We loved the season."), seg(3.1, "The crowd was huge this year."), seg(9.0, "Next year we go bigger.")]}
+        return fake_transcript()
 
     def test_sentences_close_together_form_one_bite_and_a_pause_splits(self):
         rec = {"fid": "f1", "duration_s": 20.0}
@@ -212,45 +257,10 @@ class BuildTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
         self.cache, self.kb, self.out = self.tmp / "sparse", self.tmp / "kb", self.tmp / "lib"
-        self.entries = []
-        plan = [("wide", 4), ("close-up", 4), ("talking-head", 2)]
-        k = 0
-        for cls, n in plan:
-            for _ in range(n):
-                k += 1
-                path = self.tmp / "drive" / f"C{k:04d}.MP4"
-                path.parent.mkdir(exist_ok=True)
-                path.write_bytes(b"\0")
-                self.entries.append(self.make(path, cls))
+        self.entries = fake_shoot(self.tmp / "drive", self.cache)
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
-
-    def make(self, path: Path, cls: str) -> dict:
-        fid = footage.file_id(str(path))
-        n = 6
-        emb = np.tile(class_emb(cls), (n, 1))
-        talk = cls == "talking-head"
-        faces = np.full(n, 1 if talk else 0, np.int8)
-        area = np.full(n, 0.006 if talk else 0.0, np.float32)
-        box = np.tile([0.45, 0.2, 0.55, 0.35] if talk else [np.nan] * 4, (n, 1)).astype(np.float32)
-        arrays = {"t": np.arange(n, dtype=np.float32), "faces": faces, "face_area": area, "face_box": box, "partial": np.zeros(n, bool),
-                  "hands": np.zeros(n, np.int8), "sharp": np.full(n, 200.0, np.float32), "bright": np.full(n, 100.0, np.float32),
-                  "shift": np.full(n - 1, 0.002 if talk else 0.1, np.float32), "response": np.full(n - 1, 0.8 if talk else 0.1, np.float32),
-                  "diff": np.full(n - 1, 0.05, np.float32), "dt": np.ones(n - 1, np.float32)}
-        rec = {"fid": fid, "path": str(path), "basename": path.name, "duration_s": 12.0, "fps": 25.0, "codec": "h264", "stored_w": 1920, "stored_h": 1080,
-               "display_w": 1920, "display_h": 1080, "rotation": 0, "audio_channels": 2, "n": n, "t": list(range(n)), "hw": False, "seek": False,
-               "audio": {"audio": True, "speech_share": 0.5 if talk else 0.0, "speech_s": 6.0 if talk else 0.0, "spans": [], "rms_dbfs": -30.0},
-               "motion": {"steps": n - 1, "shift_med": 0.002 if talk else 0.1, "shift_p90": 0.003 if talk else 0.2, "response_med": 0.8 if talk else 0.1,
-                          "diff_med": 0.05, "static_share": 1.0 if talk else 0.0},
-               "faces": {"share": 1.0 if talk else 0.0, "count_med": 1 if talk else 0, "area_med": 0.006 if talk else 0.0, "area_max": 0.006 if talk else 0.0,
-                         "partial_share": 0.0, "hands_share": 0.0}, "sharp_med": 200.0, "bright_med": 100.0, "version": sparse.VERSION}
-        sparse.save(rec, arrays, emb, self.cache)
-        for i in range(n):
-            p = sparse.still_path(self.cache, fid, i)
-            p.parent.mkdir(parents=True, exist_ok=True)
-            Image.new("RGB", (64, 36), (40, 40, 40)).save(p)
-        return {"fid": fid, "path": str(path), "basename": path.name, "kind": "video", "media": {"duration_s": 12.0, "video": {"fps": 25.0}, "audio": {"channels": 2}}}
 
     def test_build_sorts_into_folders_and_writes_the_records(self):
         lib = library.build(self.entries, self.out, self.cache, self.kb, log=lambda _: None, transcribe=False, embed_texts=fake_embed_texts, folders=["/V"])

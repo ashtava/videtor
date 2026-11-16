@@ -28,6 +28,7 @@ import hashlib
 import json
 import os
 import re
+import threading
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -235,7 +236,7 @@ def check_picks(picks: dict) -> dict:
 def _write(path: Path, text: str) -> None:
     """A file written whole beside itself and swapped in: a reader, or a failure half way, sees the old file or the
     new one, never part of one."""
-    tmp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    tmp = path.with_name(f".{path.name}.{os.getpid()}-{threading.get_ident()}.tmp")  # the app edits in its own threads
     try:
         tmp.write_text(text)
         os.replace(tmp, path)

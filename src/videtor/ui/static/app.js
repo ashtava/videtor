@@ -206,10 +206,11 @@ function paintRuns() {
     else if (el.dataset.held) { el.disabled = false; delete el.dataset.held; }
   });
 }
-/* the open project changed: another project's runs stop drawing, its cards go; this project's running runs come back */
+/* the open project changed: another project's runs stop drawing, its cards go; this project's running runs come back
+   (their cards and logs drawn again from the start) */
 const PROJECT_CARDS = ["overview-status", "overview-logbox", "cut-status", "cut-logbox", "preview-status", "tl-status", "look-log", "teach-log", "search-log"];
 function enterProject(dir) {
-  for (const k of Object.keys(watching)) if (watching[k].project && watching[k].project !== dir) stopWatch(k);
+  for (const k of Object.keys(watching)) if (watching[k].project) stopWatch(k);
   PROJECT_CARDS.forEach((id) => { $(id).hidden = true; });
   Object.values(runs).forEach((r) => { if (r.project === dir && r.state === "running") attachRun(r); });
 }
@@ -1042,7 +1043,9 @@ const tlSlot = (id) => (TL.data.slots || []).find((s) => s.id === id);
 
 async function loadTimeline(keep) {
   if (!current || !current.picks) { $("tl").hidden = true; tlStop(); return; }
-  const d = await api("/api/timeline?dir=" + encodeURIComponent(current.dir));
+  const asked = current.dir, fresh = ticket("timeline");
+  const d = await api("/api/timeline?dir=" + encodeURIComponent(asked));
+  if (!fresh() || !current || current.dir !== asked) return;  // another project was opened, or the timeline asked for again, meanwhile
   if (d.error) { $("tl").hidden = true; return; }
   const same = TL.dir === d.dir;
   TL.data = d; TL.dir = d.dir;
@@ -1051,7 +1054,8 @@ async function loadTimeline(keep) {
   TL.t = Math.min(TL.t, Math.max(0, d.length_s - 1 / d.fps));
   $("tl").hidden = false;
   tlBuild();
-  if (d.job && ["preview", "search", "look"].includes(d.job.kind)) tlWatch(d.job.id);
+  if (d.job && ["preview", "search", "look"].includes(d.job.kind) && !Object.values(runs).some((r) => r.job === d.job.id)) tlWatch(d.job);
+  paintRuns();
 }
 function tlBuild() {
   const d = TL.data, stage = $("tl-stage");
@@ -1228,7 +1232,7 @@ function tlInspector() {
     ${s.can.roll ? `<div class="grp"><b>The cut after this shot (frames)</b>${step("roll", -2, "◀ 2", "cut two frames sooner")}${step("roll", -1, "◀ 1", "cut one frame sooner")}${step("roll", 1, "1 ▶", "cut one frame later")}${step("roll", 2, "2 ▶", "cut two frames later")}</div>` : ""}
     ${!s.can.slip && s.name ? `<div class="grp muted small">This shot is ${esc(what || "set by the plan")}: its timing is the plan's. It can still be swapped${s.can.replace ? " or replaced" : ""}.</div>` : ""}
     ${s.can.swap ? `<div class="grp"><b>Runners-up: click one to use it</b><div class="tl-alts">${alts}</div></div>` : ""}
-    ${s.can.replace ? `<div class="grp"><b>More takes</b><div class="row" style="margin:0"><input type="text" id="tl-find" placeholder="${esc(s.show || "what the shot should show")}" style="flex:1;min-width:160px"><button class="btn" id="tl-find-run">Find</button></div>${opts}</div>` : ""}
+    ${s.can.replace ? `<div class="grp"><b>More takes</b><div class="row" style="margin:0"><input type="text" id="tl-find" placeholder="${esc(s.show || "what the shot should show")}" style="flex:1;min-width:160px"><button class="btn" id="tl-find-run" data-run-btn="options:${esc(s.id)}">Find</button></div><div class="runmsg" data-run="options:${esc(s.id)}"></div><div data-run-stale="options:${esc(s.id)}">${opts}</div></div>` : ""}
     <div class="grp"><b>A note on this shot</b><input type="text" id="tl-note" value="${esc(s.note || "")}" placeholder="e.g. too long, wants a closer shot" style="width:100%"></div>
     <div class="grp">${s.can.remove ? `<button class="btn" data-op="remove">Remove this shot</button>` : ""}</div>
     ${s.reasons.length ? `<div class="grp muted small">Why it was picked: ${esc(s.reasons.join("; "))}</div>` : ""}`;
@@ -1239,19 +1243,28 @@ function tlInspector() {
   note.addEventListener("change", async () => { await api("/api/note", { project: TL.dir, slot: s.id, text: note.value }); s.note = note.value.trim(); tlDraw(); });
   if ($("tl-find-run")) {
     const find = async () => {
-      const r = await api("/api/options", { project: TL.dir, slot: s.id, show: $("tl-find").value });
-      if (r.error) { $("tl-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
-      $("tl-find-run").disabled = true;
-      watch(r.job.id, { status: "tl-status", onDone: async () => { TL.options = await api(`/api/options?dir=${encodeURIComponent(TL.dir)}&slot=${encodeURIComponent(s.id)}`); $("tl-status").hidden = true; tlInspector(); } });
+      const dir = TL.dir, name = "options:" + s.id;
+      const r = await api("/api/options", { project: dir, slot: s.id, show: $("tl-find").value });
+      if (r.error) { refuseRun(name, r.error, dir); return; }
+      runPanel(name, r.job.id, { project: dir, status: "tl-status", hideDone: true, what: "Looking for more takes", failed: "No takes were found.",
+        older: TL.options && TL.options.slot === s.id ? "The takes listed are from the last look." : "", onDone: async () => {
+          const o = await api(`/api/options?dir=${encodeURIComponent(dir)}&slot=${encodeURIComponent(s.id)}`);
+          if (TL.dir !== dir) return;  // another project is open now: its own shot is shown
+          TL.options = o;
+          tlInspector();
+        } });
     };
     $("tl-find-run").onclick = find;
-    $("tl-find").addEventListener("keydown", (e) => { if (e.key === "Enter") find(); });
+    $("tl-find").addEventListener("keydown", (e) => { if (e.key === "Enter" && !runRunning("options:" + s.id)) find(); });
   }
+  paintRuns();
 }
 /* one edit: made at once on the server, the timeline redrawn from what comes back; missing preview clips are fetched */
 async function tlEdit(op) {
   if (!TL.dir) return;
-  const r = await api("/api/edit", { project: TL.dir, ...op });
+  const dir = TL.dir;
+  const r = await api("/api/edit", { project: dir, ...op });
+  if (TL.dir !== dir) return;  // another project's timeline is open now: this answer is not drawn over it
   if (r.error) { $("tl-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
   $("tl-msg").textContent = r.line;
   TL.data = r.timeline;
@@ -1264,10 +1277,16 @@ async function tlEdit(op) {
   if (missing.length && had && TL.data.drive && TL.data.drive.connected !== false && !TL.auto[missing.join()]) {  // only what the edit left without a clip
     TL.auto[missing.join()] = true;
     const j = await api("/api/proxies", { project: TL.dir, slots: [...new Set(missing)] });
-    if (j.job) tlWatch(j.job.id);
+    if (j.job) tlWatch(j.job);
   }
 }
-function tlWatch(id) { watch(id, { status: "tl-status", onDone: async () => { $("tl-status").hidden = true; await loadTimeline(true); } }); }
+/* a job for the timeline: its preview clips (tl-load), the XML (tl-xml), or any other job of the project found running (tl-job) */
+function tlWatch(job, name) {
+  const nm = name || (job.kind === "preview" ? "tl-load" : "tl-job");
+  const say = { "tl-load": ["Loading the moving picture", "The moving picture was not loaded."], "tl-xml": ["Writing the Premiere XML", "The XML was not written."] }[nm] || [job.title || "Working", "It did not finish."];
+  runPanel(nm, job.id, { project: TL.dir, status: "tl-status", hideDone: true, what: say[0], failed: say[1], done: nm === "tl-xml" ? "The Premiere XML is written." : "",
+    onEnd: () => (nm === "tl-load" ? loadTimeline(true) : loadProject()) });
+}
 $("tl-play").onclick = () => (TL.playing ? tlStop() : tlPlay());
 $("tl-back").onclick = () => { tlStop(); tlSeek(TL.t - 1 / TL.data.fps); };
 $("tl-fwd").onclick = () => { tlStop(); tlSeek(TL.t + 1 / TL.data.fps); };
@@ -1277,14 +1296,15 @@ $("tl-undo").onclick = () => tlEdit({ op: "undo" });
 $("tl-zoom").oninput = () => { TL.zoom = Number($("tl-zoom").value); if (TL.data) tlDraw(); };
 $("tl-load").onclick = async () => {
   const r = await api("/api/proxies", { project: TL.dir });
-  if (r.error) { $("tl-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+  if (r.error) { refuseRun("tl-load", r.error, TL.dir); return; }
   $("tl-msg").textContent = "";
-  tlWatch(r.job.id);
+  tlWatch(r.job, "tl-load");
 };
 $("tl-write").onclick = async () => {
   const r = await api("/api/write-xml", { project: TL.dir });
-  if (r.error) { $("tl-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
-  watch(r.job.id, { status: "tl-status", onDone: (job) => { $("tl-status").hidden = true; $("tl-msg").textContent = job.status === "done" ? "The Premiere XML is written." : "The XML could not be written: see Activity."; loadProject(); } });
+  if (r.error) { refuseRun("tl-xml", r.error, TL.dir); return; }
+  $("tl-msg").textContent = "";
+  tlWatch(r.job, "tl-xml");
 };
 $("tl-overall").addEventListener("change", () => api("/api/note", { project: TL.dir, text: $("tl-overall").value }));
 $("tl-ask").onclick = async () => {

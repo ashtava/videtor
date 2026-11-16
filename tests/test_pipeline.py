@@ -3,11 +3,14 @@ do it, what crosses from the map to the picks, decisions kept across cuts, event
 
 import io
 import json
+import os
 import shutil
+import subprocess
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from unittest import mock
 
 import numpy as np
 
@@ -289,6 +292,81 @@ class PromoTests(unittest.TestCase):
             self.make("https://www.instagram.com/reel/xyz/", fetch=refused, out_root=self.root / "refused")
         self.assertIn("wants a login", str(ctx.exception))
         self.assertEqual(list((self.root / "refused").iterdir()), [])  # nothing half-fetched is left behind
+
+
+class LibraryStepTests(unittest.TestCase):
+    """`library build` and `library learn` as the app runs them: steps that say their stage in events, not sentences
+    the app has to read. The shoot is made up (test_library.fake_shoot), its clips already read from their keyframes."""
+
+    def setUp(self):
+        from test_library import fake_shoot
+
+        self.root = Path(tempfile.mkdtemp())
+        self.drive, self.out = self.root / "drive", self.root / "lib"
+        self.paths = pipeline.Paths(kb=self.root / "kb", sparse=self.root / "sparse")
+        entries = fake_shoot(self.drive, self.paths.sparse)
+        self.out.mkdir()
+        (self.out / "index.json").write_text(json.dumps({"folders": [str(self.drive.resolve())], "files": entries}))  # as a scan left it
+
+    def tearDown(self):
+        shutil.rmtree(self.root, ignore_errors=True)
+
+    def run_step(self, fn, *args, **kw):
+        from test_library import fake_embed_texts, fake_transcript
+
+        seen: list[dict] = []
+        with mock.patch("videtor.analyze.speech.transcribe", return_value=fake_transcript()):
+            return fn(*args, paths=self.paths, ev=events.Events(seen.append), embed_texts=fake_embed_texts, **kw), seen
+
+    def test_a_library_is_built_and_learnt_by_steps_that_report_their_stages(self):
+        lib, seen = self.run_step(pipeline.library_build, [self.drive], self.out)
+        self.assertEqual(lib["counts"], {"wide": 4, "close-up": 4, "talking-head": 2})
+        self.assertEqual([e["label"] for e in seen if e["event"] == "stage"],
+                         ["Finding the clips", "Reading the footage", "Sorting the shots by type", "Transcribing the interviews"])
+        self.assertEqual([(e["done"], e["total"]) for e in seen if e["event"] == "progress"], [(1, 2), (2, 2)])  # the two speakers
+        self.assertEqual([(e["kind"], Path(e["path"]).name) for e in seen if e["event"] == "artifact"], [("library", "library.md"), ("bites", "bites.xml")])
+        said = [e["text"] for e in seen if e["text"]]
+        self.assertTrue(said[0].startswith("  index: reusing"))  # the terminal reads as it did
+        self.assertTrue(said[-1].startswith("Interview bites: ") and said[-2].startswith(f"Library: {self.out}"))
+        os.rename(self.out / "wide" / "C0001.MP4", self.out / "b-roll" / "C0001.MP4")
+        with self.assertRaises(pipeline.PipelineError) as ctx:  # a move is not lost to a rebuild
+            self.run_step(pipeline.library_build, [self.drive], self.out)
+        self.assertIn("moved since the last build", str(ctx.exception))
+        res, seen = self.run_step(pipeline.library_learn, self.out)
+        self.assertEqual(([e["label"] for e in seen if e["event"] == "stage"], res["labels"]), (["Learning from your sorting"], 10))
+        self.assertEqual(json.loads((self.paths.kb / "library" / "labels.json").read_text())[str(self.drive / "C0001.MP4")], "b-roll")
+        for fn, args, words in ((pipeline.library_learn, [self.root / "none"], "build the library first"),
+                                (pipeline.library_build, [[self.root / "none"], self.out], "Not a folder")):
+            with self.assertRaises(pipeline.PipelineError) as ctx:
+                self.run_step(fn, *args)
+            self.assertIn(words, str(ctx.exception))
+
+
+@unittest.skipUnless(shutil.which("ffmpeg"), "needs ffmpeg")
+class PreviewStepTests(unittest.TestCase):
+    def test_the_preview_is_a_step_with_its_stage_its_count_and_the_file_it_wrote(self):
+        root = Path(tempfile.mkdtemp())
+        try:
+            take = root / "C0001.MP4"
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc=size=320x180:rate=25", "-t", "3", "-pix_fmt", "yuv420p", str(take)],
+                           check=True)
+            pick = {"fid": "f1", "name": take.name, "path": str(take), "in_s": 0.5, "out_s": 1.5, "duration_s": 3.0, "width": 320, "height": 180}
+            picks = {"version": 1, "name": "p", "fps": 25, "width": 320, "height": 180, "slots": [
+                {"id": "a", "start_s": 0.0, "length_s": 1.0, "pick": pick}, {"id": "b", "start_s": 1.0, "length_s": 0.4, "pick": None, "black": True}]}
+            (root / "picks.json").write_text(json.dumps(picks))
+            seen: list[dict] = []
+            path = pipeline.preview(root / "picks.json", ev=events.Events(seen.append))
+            self.assertEqual((path, path.exists()), (root / "preview.mp4", True))
+            self.assertEqual([e["label"] for e in seen if e["event"] == "stage"], ["Making the preview"])
+            self.assertEqual([(e["done"], e["total"]) for e in seen if e["event"] == "progress"], [(1, 2), (2, 2)])
+            self.assertEqual([(e["kind"], e["path"], e["text"]) for e in seen if e["event"] == "artifact"],
+                             [("preview", str(path), f"preview: {path} (2 clips, 160x90)")])
+            take.unlink()
+            with self.assertRaises(pipeline.PipelineError) as ctx:
+                pipeline.preview(root / "picks.json")
+            self.assertIn("is the drive connected", str(ctx.exception))
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
 
 
 class EventTests(unittest.TestCase):
