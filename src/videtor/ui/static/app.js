@@ -239,7 +239,9 @@ async function loadProject(pick) {
   if (!state.projects.some((p) => p.dir === currentDir)) currentDir = state.projects.length ? state.projects[state.projects.length - 1].dir : null;
   $("project-body").hidden = !currentDir;
   if (!currentDir) return;
-  const p = await api("/api/project?dir=" + encodeURIComponent(currentDir));
+  const asked = currentDir;
+  const p = await api("/api/project?dir=" + encodeURIComponent(asked));
+  if (asked !== currentDir) return;  // another project was opened while this one was on its way: its answer is not shown over it
   if (p.error) { $("project-msg").textContent = p.error; return; }
   current = p;
   $("project-title").textContent = p.name;
@@ -883,8 +885,8 @@ function tlSync(force) {
   if (c.el && c.el.tagName === "VIDEO") {
     const v = c.el, want = c.proxy.offset_s + (TL.t - c.start_s);
     if (TL.playing) {
-      if (v.paused) { v.currentTime = want; v.play().catch(() => {}); }
-      else if (Math.abs(v.currentTime - want) > 0.15) v.currentTime = want;
+      if (v.paused) { if (Math.abs(v.currentTime - want) > 0.04) v.currentTime = want; v.play().catch(() => {}); }
+      else if (Math.abs(v.currentTime - want) > 0.2) v.currentTime = want;
     } else {
       if (!v.paused) v.pause();
       if (Math.abs(v.currentTime - want) > 0.015) v.currentTime = want;
@@ -896,14 +898,41 @@ function tlSync(force) {
     const a = TL.audio[i];
     if (!a || !a.dataset.src) return;
     const on = TL.playing && TL.t >= g.start_s && TL.t < g.start_s + g.length_s, want = g.in_s + (TL.t - g.start_s);
-    if (on) { if (a.paused) { a.currentTime = want; a.play().catch(() => {}); } else if (Math.abs(a.currentTime - want) > 0.2) a.currentTime = want; }
-    else if (!a.paused) a.pause();
+    // The music is started where the playhead is and then left alone: every seek of a playing track is heard as a
+    // break. It is the picture's clock that leans to the music (tlTick), not the other way round.
+    if (on) {
+      if (a.paused) { if (Math.abs(a.currentTime - want) > 0.03) a.currentTime = want; a._seen = null; a.play().catch(() => {}); }
+      else if (TL.reseek) { a.currentTime = want; a._seen = null; }  // the playhead was moved while it plays
+    } else if (!a.paused) a.pause();
   });
+  TL.reseek = false;
   tlPlayhead();
+}
+/* with the playhead at rest, have the music waiting at that moment, so play starts at once */
+function tlCue() {
+  clearTimeout(TL.cue);
+  TL.cue = setTimeout(() => {
+    if (!TL.data || TL.playing) return;
+    TL.data.music.forEach((g, i) => {
+      const a = TL.audio[i];
+      if (a && a.dataset.src && a.readyState > 0 && TL.t >= g.start_s && TL.t < g.start_s + g.length_s && Math.abs(a.currentTime - (g.in_s + TL.t - g.start_s)) > 0.03) a.currentTime = g.in_s + (TL.t - g.start_s);
+    });
+  }, 250);
 }
 function tlTick() {
   if (!TL.playing) return;
-  TL.t = performance.now() / 1000 - TL.t0;
+  const now = performance.now() / 1000;
+  let t = now - TL.t0;
+  // the music is the clock: whenever its player reports a new time, the picture's clock leans to it
+  const k = TL.data.music.findIndex((g) => t >= g.start_s && t < g.start_s + g.length_s), a = k >= 0 ? TL.audio[k] : null;
+  if (a && a.dataset.src && !a.paused && a.readyState > 2 && a.currentTime !== a._seen) {
+    const g = TL.data.music[k], first = a._seen === null || a._seen === undefined;
+    a._seen = a.currentTime;
+    const err = g.start_s + (a.currentTime - g.in_s) - t;  // + : the music is ahead of the picture
+    if (!first && Math.abs(err) < 0.6) { TL.t0 -= err * 0.2; t = now - TL.t0; }
+    else if (Math.abs(err) >= 0.6 && now - (TL.aSeek || 0) > 1.5) { TL.aSeek = now; a.currentTime = g.in_s + (t - g.start_s); a._seen = null; }  // it did not start where asked: once
+  }
+  TL.t = t;
   if (TL.t >= TL.data.length_s - 0.5 / TL.data.fps) { TL.t = TL.data.length_s - 1 / TL.data.fps; tlStop(); return; }
   tlSync();
   requestAnimationFrame(tlTick);
@@ -920,13 +949,14 @@ function tlStop() {
   TL.playing = false;
   if ($("tl-play")) $("tl-play").textContent = "Play";
   TL.audio.forEach((a) => a.pause());
-  if (TL.data) tlSync(true);
+  if (TL.data) { tlSync(true); tlCue(); }
 }
 function tlSeek(t) {
   const d = TL.data;
   TL.t = Math.max(0, Math.min(d.length_s - 1 / d.fps, Math.round(t * d.fps) / d.fps));
-  if (TL.playing) TL.t0 = performance.now() / 1000 - TL.t;
+  if (TL.playing) { TL.t0 = performance.now() / 1000 - TL.t; TL.reseek = true; }
   tlSync();
+  if (!TL.playing) tlCue();
 }
 function tlJump(dir) {
   const starts = [...new Set(TL.data.clips.map((c) => c.start_s))].sort((a, b) => a - b);
