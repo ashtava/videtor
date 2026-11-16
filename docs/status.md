@@ -91,6 +91,13 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    Bytes from local Whisper: the AD's "silence, going for take" and "camera rolling, set and action!", "dog is here,
    bro", "let's take a picture". Timelapse = set-build takes ramped to 600%/400% (gap below). Flash 0.35, accents,
    stabilised, classes b-roll/close-up/wide/talking-head. Every slot names 2-10 candidate takes from the overview.
+1f. **combined-players (11-16)**: the four arrivals' players in one cut (`Paritosh_4/261114AC /pf/xml/combined-players`,
+   key `combined-players::footage`, footage in `Paritosh_4/combined players`). Brief: "combined vertical 15-20 sec cut
+   with flashes, slo-mo, time remapping, stabilise; players entering, meeting, clicking or posing for photos". Shot map
+   written and validated; the user cuts from the app. Then the second look, `report.md` and the verdict. Bucket
+   `sports-promo` (inferred). 9:16, 19.0 s, 28 slots; Burn4Me from 80.18 s (top ranked again; drop at 85.31 s on the
+   first handshake), flash 0.35, accents, stabilised. Five players, each in every section; every slot names its takes
+   from 8-stills-per-take sheets (`work/takes-*.jpg`). "Clicking photos" = C6278 (a woman photographs a player on her phone).
 1a. **diwali-test (A1)**: the shot map is written and validated. The user cuts from the app. Then do the second
    look, write `report.md` in the project folder, and record the verdict. The plan:
    - Brief: "fast paced party edit for diwali, under 60 seconds". Bucket `event` (inferred).
