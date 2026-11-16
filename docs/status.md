@@ -105,6 +105,12 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    0.35, accents, stabilised. No one takes photos in this footage: "posing" is to the lens. Closes on a hand over the lens (C6400).
    The app then made the project again in `out/data` (same key, overview and settings; no brief there): the same brief and
    shot map copied in and validated. Cut from `out/data`; the drive copy is the first draft.
+1h. **3 (11-16)**: one player's hotel arrival, face hidden until the reveal (`Paritosh_4/3/xml/3`, key `3::footage`, 21 takes,
+   50/100 fps). Frame vertical; the user's track (IamDayLight - I Think That You Should, instrumental), in-point left to us:
+   65.92 s, the drop at 74.63 s on the reveal (C3600, cap lifts to the lens; punch ramp, flash). The 20 hidden beats carry
+   `"effects": []`, end on a slow hold and 2 black beats over the track's own silence (72.1-74.2 s). 19.4 s, 44 beats,
+   20 slots. No car in the footage, though the brief asks for one: we said so. Shot map validated; the user cuts from the
+   app. Then the second look, `report.md` and the verdict.
 1a. **diwali-test (A1)**: the shot map is written and validated. The user cuts from the app. Then do the second
    look, write `report.md` in the project folder, and record the verdict. The plan:
    - Brief: "fast paced party edit for diwali, under 60 seconds". Bucket `event` (inferred).
