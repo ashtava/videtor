@@ -221,7 +221,11 @@ uv run videtor write-xml out/<name>/picks.json          # the Premiere XML from 
   side, so a slip or a moved cut plays at once; an edit past that fetches one new clip. Without the drive the
   timeline shows stills and every edit still works.
 - The XML is written when the user asks. What they changed against the cut as made (`work/picks.cut.json`) is then
-  kept as their choices in `kb/feedback/`: the net result teaches, not every click.
+  kept as their choices in `kb/feedback/`: the net result teaches, not every click. Whether the XML is behind the
+  picks is known, not guessed: the writer notes which picks it wrote (`work/xml.json`), and "changes not in it yet"
+  means the picks are no longer those.
+- One writer at a time: while a cut, a swap or "write the XML" is working on a project, another of them, or an edit
+  on the timeline, is refused with the name of the job in the way.
 - Effects, sound effects, steadying and stacked layers are in the XML, not in the timeline's picture.
 - Notes on a shot or on the whole cut go to `review.json`, for whoever revises the plan.
 
@@ -476,7 +480,14 @@ replaced. It is in `scripts/archive/` with its test.
 
 ```sh
 uv run python -m unittest discover -s tests -v
+uv run videtor eval                                               # the past projects cut again and measured
+uv run python scripts/picks_snapshot.py <folder>                  # their picks written out ...
+uv run python scripts/picks_snapshot.py --compare <before> <after>   # ... and compared pick for pick
 ```
+
+The suite says the code runs, `eval` says the cuts got no worse, and the snapshot says whether they changed at
+all: two runs of the same code are byte-identical, so a change meant to leave the cuts alone (a refactor, a faster
+way to score) is held to "identical" for every project.
 
 The parser and metrics use only the standard library, so the tests also run on the
 system Python: `PYTHONPATH=src python3 -m unittest discover -s tests`.

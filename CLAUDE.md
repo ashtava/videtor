@@ -54,7 +54,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 394 tests, about 60 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 445 tests, about 60 s, no drive needed
 .venv/bin/videtor eval                                           # the past projects re-cut from the cache and measured (about 1 min)
 ```
 
@@ -86,6 +86,18 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   reels alone and `videtor kb train <b>` a cutting policy from them (`plan/gym.py`); `videtor draft` drafts a shot
   map from it; a shot map's `"effects": "<b>"` adds the learnt effects (`plan/fx.py`) and `"cut_on": "accents"`
   cuts on the music's hits. The sports reels' file names (a client's) stay in `out/references/`, never in kb/.
+- **State is said once** (2026-11-17, after `docs/review-2026-11-17.md`). Before adding a status string, a file check or a flag test, use the place that owns it:
+  - a job: `ui/jobs.py` (`Status`, `TRANSITIONS`, `Manager._move`; `writes` and `Busy` for one writer a project); the page reads `job.live`;
+  - where a project stands and what may be done to it: `project.py` (`read`, `status`, `steps`, `can`); endpoints refuse with `can`'s sentence;
+  - what a slot of the picks is: `plan/slots.py`; what a cut is: `pipeline.cut_kind` and `CUT_KINDS`;
+  - which take a slot has, during the fill: `fill.Assignment.give` (never `chosen[j] = k`);
+  - a feedback row's status and what a feedback document is: `kb/feedback.py` (`Status`, `kind`);
+  - whether the XML is behind the picks: `pipeline.edited` (`work/xml.json`), never file times;
+  - a job started from the page: `runPanel` in `app.js`, so a failure is said beside its button.
+- **A check that clicks through the app** runs on `scripts/scratch_app.py <folder>` (its own `out/` and its own copy of `kb/`), never on a server
+  started from the repo: a "Learn" or a "Write the XML" there rewrites the real `kb/` (it happened twice on 2026-11-17).
+- **A change meant to leave the cuts alone** is held to it: `scripts/picks_snapshot.py <before>`, change, `<after>`, `--compare` must say
+  "identical" for every evaluation project (two runs of the same code are byte-identical), besides `videtor eval`.
 - **The pipeline and the loop** (2026-11-11, after `docs/review-2026-11-11.md`):
   - Every step lives in `src/videtor/pipeline.py`; the terminal and the app only call it. A new step goes there,
     with a test in `tests/test_pipeline.py` that runs it end to end. Steps report through `events.py`, never `print`.
@@ -123,13 +135,13 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 ## Layout
 
 ```
-src/videtor/  cli.py (thin) · pipeline.py (the steps: prepare, cut, look, read back, learn, teach, promos) · events.py · teach.py · ui/
+src/videtor/  cli.py (thin) · pipeline.py (the steps: prepare, cut, look, read back, learn, teach, promos) · project.py (where a project stands) · events.py · teach.py · ui/
               kb/ (past edits, read-backs, feedback) · analyze/ (per clip, per second)
               plan/ (shot map → picks; moves, music, SFX, steadying, interview, music video) · export/ (xmeml writer)
 kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ library/ renders/ policy/
               eval/ (the evaluation set and baseline) · feedback/ (read-backs, choices, verdicts) · taste.json, taste/<bucket>.json
 .xml-exports/ the user's Premiere exports: the knowledge base's source
-cache/        derived data, about 5 GB (footage maps took hours with the drives connected: don't delete); sparse/ holds the keyframe maps
+cache/        derived data, about 5 GB (footage maps took hours with the drives connected: don't delete); sparse/ holds the keyframe maps; text-emb/ the text embeddings (a re-cut loads no model); ui-jobs.json the app's running jobs
 out/<name>/   one folder per cut: brief.md, settings.json (the user's frame and music), shotmap.json, inventory.json, picks.json,
               decisions.json (swaps and timeline edits), review.json (the user's notes), <name>.xml, sheets, report.md,
               verdict.json, the finished video when the user saves it there, work/
