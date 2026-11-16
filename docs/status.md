@@ -44,6 +44,7 @@ verdict.
 | A1 | 11-07 | `~/Desktop/diwali_test/diwali-test/` (an app project, not under `out/`) | event, the first brief through the app; the Diwali footage again, so not blind | Shot map only (49.7 s, 9:16, 91 slots); the user cuts it from the app | **Awaiting the cut** |
 | S1 | 11-11 | `sports-practice-a/` | sports-promo, the first raw sports footage (Paritosh_2 `videos`, prep `sports-raw`; `untitled folder` left out unopened); no written brief | `sports-practice-a.xml` (28.4 s, 9:16, a practice-day wrap, effects at the learnt rates) | **Awaiting** (the user reviews it alongside `fx-test`) |
 | S2 | 11-11 | `sports-matchday-b/` | sports-promo, the same footage's second shoot (another team, log footage) | `sports-matchday-b.xml` (36.5 s, 9:16, a match-day reel) | **Awaiting** |
+| A2 | 11-16 | `/Volumes/Paritosh_4/4/xml/4/` (an app project, not under `out/`) | event (inferred: an arrival at a hotel), 18 takes, all 4K 100 fps | Shot map only (17.9 s, 9:16, 23 slots, Flint - Brass Attack from 77.9 s, drop on the reveal at 5.1 s); the user cuts it from the app | **Awaiting the cut** |
 
 Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past projects. Their outputs:
 - `out/guru-v0`, `guru-v1`, `guru-v2`: benchmarks against the real Guru edit;
@@ -259,6 +260,8 @@ footage mapped) and `videtor kb bucket <bucket>`.
 ## Known gaps and backlog
 
 Not built; the source is in brackets.
+- **Split screen** [11-16, project 4's brief]: no shot-map option for two or three shots side by side in the frame. Project 4's
+  plan stands a `stack` (smaller shots popping on top) in for it.
 - **BTS** [11-15, clip]: no `bts` bucket card or keeper (planned as `event`). No timelapse move: a slot ramps a take to
   400-600% instead (no frame blending or interval sampling). No SFX density knob for "lots of SFX".
 - **The timeline** [11-16]: it shows what plays when, not the finish: no effects, flashes, sound effects, steadying, stacked

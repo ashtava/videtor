@@ -98,6 +98,18 @@ def detect(rgb: np.ndarray) -> tuple[list[list[float]], int]:
     return boxes, hands
 
 
+def face_boxes(rgb: np.ndarray) -> list[list[float]]:
+    """Face boxes only (no hands): what a long video read frame after frame needs (analyze/video.py)."""
+    import mediapipe as mp
+
+    image = mp.Image(image_format=mp.ImageFormat.SRGB, data=np.ascontiguousarray(rgb))
+    h, w = rgb.shape[:2]
+    with _lock:
+        detections = detectors()[0].detect(image).detections
+    return [[d.bounding_box.origin_x / w, d.bounding_box.origin_y / h, (d.bounding_box.origin_x + d.bounding_box.width) / w,
+             (d.bounding_box.origin_y + d.bounding_box.height) / h] for d in detections]
+
+
 def visible_area(box: list[float]) -> float:
     """Share of the frame covered by the part of the box that lies inside it."""
     x0, y0, x1, y1 = box
