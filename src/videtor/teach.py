@@ -13,7 +13,8 @@ lands where the learners already read:
 
 `state` is the other half: per kind of work what has been given and what was made of it, what is waiting (a
 finished video not read yet, a past edit whose drive is not connected), and how the last learning went
-(kb/learning.json, written by pipeline.learn).
+(kb/learning.json, written by pipeline.learn). The page asks often: `state` reads the feedback once a call, and
+each footage index only when it changed since the last call (readback.footage_indexes).
 """
 
 from __future__ import annotations
@@ -43,14 +44,15 @@ def manifest(kb_dir: Path) -> dict:
     return m
 
 
-def buckets(kb_dir: Path = Path("kb")) -> list[str]:
-    """Every kind of work Videtor has heard of, the ones with something learnt first."""
+def buckets(kb_dir: Path = Path("kb"), docs: list[dict] | None = None) -> list[str]:
+    """Every kind of work Videtor has heard of, the ones with something learnt first; `docs`: the feedback, when read."""
     from videtor.kb import feedback
 
+    docs = feedback.all_docs(kb_dir) if docs is None else docs
     known = set(manifest(kb_dir)["types"].values())
     for sub, ext in (("policy", ".json"), ("renders", ".json"), ("keeper", ".json"), ("buckets", ".md"), ("profile", ".json"), ("taste", ".json")):
         known |= {p.name[: -len(ext)] for p in (kb_dir / sub).glob(f"*{ext}")}
-    known |= {d.get("bucket") for d in feedback.all_docs(kb_dir) if d.get("bucket")}
+    known |= {d.get("bucket") for d in docs if d.get("bucket")}
     known -= {"unsorted", "", None}
     return sorted(known) + [b for b in STARTER_BUCKETS if b not in known]
 
@@ -130,8 +132,10 @@ def add_edit(xml: Path, bucket: str, footage: str | None, kb_dir: Path = Path("k
 def past_edits(kb_dir: Path = Path("kb"), exports: Path = Path(".xml-exports"), footmap_dir: Path = Path("cache/footmap")) -> list[dict]:
     """Every edit in the manifest: its kind of work, where its footage is, whether that drive is connected, and how
     much of the footage has been read (what the keeper can learn from)."""
-    from videtor.plan import keeper
+    from videtor.kb import readback
 
+    indexes = readback.footage_indexes(kb_dir, strict=False)
+    have: dict[str, bool] = {}  # fid -> its footage map exists, asked once a call
     m = manifest(kb_dir)
     learnt = {}
     for p in (kb_dir / "keeper").glob("*.json"):
@@ -144,30 +148,32 @@ def past_edits(kb_dir: Path = Path("kb"), exports: Path = Path(".xml-exports"), 
     tried = {k for k, b in m["types"].items() if f"keeper ({b})" in (last.get("refused") or [])}  # learnt from, and the evaluation said no
     out = []
     for key, bucket in sorted(m["types"].items()):
-        folders = list(m["footage"].get(key) or []) or keeper.index_roots(key, kb_dir)
+        folders = list(m["footage"].get(key) or []) or _index_roots(key, indexes)
         drive = next((Path(*Path(f).parts[:3]) for f in folders if f.startswith("/Volumes/")), None)
-        mapped = _mapped_under(folders, kb_dir, footmap_dir) if folders else 0
+        mapped = _mapped_under(folders, indexes, footmap_dir, have) if folders else 0
         out.append({"key": key, "name": key.split("::")[0].rsplit(".", 1)[0], "bucket": bucket, "xml": (exports / key.split("::")[0]).exists(),
                     "folders": folders, "drive": drive.name if drive else None, "connected": bool(folders) and all(os.path.isdir(f) for f in folders),
                     "mapped_takes": mapped, "learnt": key in learnt, "kept_takes": learnt.get(key, 0), "tried": key in tried})
     return out
 
 
-def _mapped_under(folders: list[str], kb_dir: Path, footmap_dir: Path) -> int:
-    """How many takes under `folders` have a footage map (without loading them)."""
-    seen, n = set(), 0
-    for p in sorted((kb_dir / "footage").glob("*.json")):
-        if p.name.endswith((".summary.json", ".selects.json")):
-            continue
-        try:
-            files = json.loads(p.read_text()).get("files") or []
-        except (OSError, ValueError):
-            continue
-        for f in files:
-            if f.get("kind") == "video" and f["fid"] not in seen and any(f["path"].startswith(x.rstrip("/") + "/") for x in folders):
-                seen.add(f["fid"])
-                n += (footmap_dir / f"{f['fid']}.npz").exists()
-    return n
+def _index_roots(key: str, indexes: list[dict]) -> list[str]:
+    """keeper.index_roots over indexes already read: the footage folders the first index naming the edit lists."""
+    for ix in indexes:
+        if roots := ix["roots"].get(key):
+            return [roots] if isinstance(roots, str) else list(roots)
+    return []
+
+
+def _mapped_under(folders: list[str], indexes: list[dict], footmap_dir: Path, have: dict[str, bool] | None = None) -> int:
+    """How many takes under `folders` have a footage map (without loading them); `have` remembers the answers."""
+    under, seen = tuple(x.rstrip("/") + "/" for x in folders), set()
+    for ix in indexes:
+        seen |= {fid for fid, path, kind, _ in ix["files"] if kind == "video" and fid and path and path.startswith(under)}
+    have = {} if have is None else have
+    for fid in seen - have.keys():
+        have[fid] = (footmap_dir / f"{fid}.npz").exists()
+    return sum(have[fid] for fid in seen)
 
 
 def state(kb_dir: Path = Path("kb"), exports: Path = Path(".xml-exports"), refs_dir: Path = Path("out/references"),
@@ -179,24 +185,21 @@ def state(kb_dir: Path = Path("kb"), exports: Path = Path(".xml-exports"), refs_
     docs = feedback.all_docs(kb_dir)
     edits = past_edits(kb_dir, exports, footmap_dir)
     per: dict[str, dict] = {}
-    for b in buckets(kb_dir):
-        mine = [d for d in docs if d.get("bucket") == b]
+    for b in buckets(kb_dir, docs):
+        c = feedback.counts([d for d in docs if d.get("bucket") == b])
         keeper_p, policy_p = kb_dir / "keeper" / f"{b}.json", kb_dir / "policy" / f"{b}.json"
         keeper = json.loads(keeper_p.read_text()) if keeper_p.exists() else None
         t = taste.load(kb_dir, b)
         row = {
             "bucket": b, "edits": [e for e in edits if e["bucket"] == b], "reels": len(list((refs_dir / b).glob("*.json"))) if (refs_dir / b).is_dir() else 0,
-            "style": policy_p.exists(), "finished": sum(feedback.is_final(d) for d in mine), "by_hand": sum(1 for d in mine if d.get("by_hand")),
-            "choices": sum(len(feedback.teaching_rows(d)) for d in mine),
-            "verdicts": {"good": sum(1 for d in mine if (d.get("verdict") or {}).get("good") is True),
-                         "not": sum(1 for d in mine if (d.get("verdict") or {}).get("good") is False)},
+            "style": policy_p.exists(), "finished": c["finals"], "by_hand": c["by_hand"], "choices": c["rows"], "verdicts": c["verdicts"],
             "keeper": {"auc": keeper.get("cv_auc"), "edits": len(keeper.get("edits") or []), "keeps": [k for k, _ in (keeper.get("keeps") or [])[:3]]} if keeper else None,
             "taste": {"pairs": t["pairs"], "scope": t.get("scope")} if t else None, "rules": rules(b, kb_dir),
         }
         row["known"] = bool(row["edits"] or row["reels"] or row["finished"] or row["choices"] or row["rules"] or row["keeper"])
         per[b] = row
     base = evaluate.load_baseline(kb_dir)
-    return {"buckets": list(per.values()), "feedback": feedback.state(kb_dir), "last": last_learning(kb_dir),
+    return {"buckets": list(per.values()), "feedback": feedback.state(kb_dir, docs), "last": last_learning(kb_dir),
             "evaluation": {"saved": base.get("saved"), "summary": base.get("summary"), "projects": len(base.get("projects") or {})} if base else None,
             "taste_from": taste.MIN_PAIRS}
 

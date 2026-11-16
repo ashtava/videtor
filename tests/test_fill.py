@@ -3,6 +3,7 @@
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import numpy as np
 
@@ -276,6 +277,62 @@ class MatchCutTests(unittest.TestCase):
         self.assertGreater(matched["slots"][1]["pick"]["match"], 0.7)
         self.assertNotIn("match", matched["slots"][0]["pick"])
         self.assertEqual([s.get("match_cut", False) for s in matched["slots"]], [False, True])
+
+
+class AssignmentTests(unittest.TestCase):
+    def test_a_slot_is_only_given_a_take_scored_for_it_and_the_error_names_the_phase(self):
+        S = np.full((2, 3), -1e6)
+        S[0, 1], S[1, 2] = 0.4, 0.2
+        chosen = fill.Assignment(S, {(0, 1): (), (1, 2): ()}, ["d1", "r1"], ["A.MP4", "B.MP4", "C.MP4"])
+        chosen.give(0, 1, "assignment")
+        self.assertEqual((chosen[0], chosen.get(1), 0 in chosen, list(chosen.values())), (1, None, True, [1]))
+        with self.assertRaises(fill.Unscored) as e:
+            chosen.give(1, 0, "match-cut run")  # never scored: no detail, no score
+        self.assertIn("match-cut run", str(e.exception))
+        self.assertIn("r1", str(e.exception))
+        self.assertIn("A.MP4", str(e.exception))
+        S[1, 0] = 0.3  # a score alone is not enough: the window behind it is missing
+        self.assertRaises(fill.Unscored, chosen.give, 1, 0, "fallback")
+        chosen.detail[(1, 1)] = ()  # a window without a score neither
+        self.assertRaises(fill.Unscored, chosen.give, 1, 1, "neighbours")
+        self.assertNotIn(1, chosen)
+        chosen.rescore(1, 2, 0.9, ("another window",))
+        chosen.give(1, 2, "the plan's named takes")
+        self.assertEqual((S[1, 2], chosen.detail[(1, 2)]), (0.9, ("another window",)))
+        chosen.drop(0)
+        self.assertEqual(dict(chosen.items()), {1: 2})
+
+
+class SpeedTests(unittest.TestCase):
+    def test_a_takes_camera_and_fixed_terms_are_worked_out_once(self):
+        takes = [fake_take("A0", 0), fake_take("A1", 1, moving=True), fake_take("A2", 2), fake_take("A3", 3, faces=1)]
+        times = shotmap.timing(MAP, [i * 0.5 for i in range(10)], 25.0)
+        plain = fill.fill(MAP, takes, times, fake_embed)
+        calls = []
+        rank = fill.Pool._rank
+        with mock.patch.object(fill.Pool, "_rank", staticmethod(lambda v, p: calls.append(1) or rank(v, p))):
+            again = fill.fill(MAP, takes, times, fake_embed)
+        self.assertEqual(len(calls), 2 * len(takes))  # speed and shake, once a take, for three slots
+        self.assertEqual(again, plain)
+        pool = fill.Pool(takes)
+        self.assertIs(pool.camera(takes[0]), pool.camera(takes[0]))
+        self.assertIs(pool.fixed(takes[0]), pool.fixed(takes[0]))
+        twin = fake_take("A0", 0)  # another take of the same name is its own
+        self.assertIsNot(pool.camera(twin), pool.camera(takes[0]))
+        self.assertFalse(pool.camera(takes[0])[0].flags.writeable)  # shared, so nobody may change them in place
+
+    def test_a_slots_descriptions_are_embedded_once_even_when_its_take_is_rescored(self):
+        long, other = fake_take("LONG", 0, n=140), fake_take("OTHER", 1)
+        spans = [(5, 12), (16.5, 20), (21.5, 25), (38, 44), (48, 62), (25.5, 28), (43.5, 46)]
+        sec = {"name": "arrival", "slots": [{"id": f"s{n}", "beats": 1, "show": "axis 0", "takes": [f"LONG*@{a:g}-{b:g}", "OTHER*"]}
+                                            for n, (a, b) in enumerate(spans)]}
+        m = {**MAP, "avoid": ["axis 4"], "sections": [sec]}
+        asked, windows = [], []
+        best = fill.best_window
+        with mock.patch.object(fill, "best_window", lambda *a: windows.append(1) or best(*a)):
+            fill.fill(m, [long, other], shotmap.timing(m, [i * 0.5 for i in range(12)], 25.0), lambda t: asked.append(list(t)) or fake_embed(t))
+        self.assertGreater(len(windows), 2 * len(spans))  # some slot's take was used twice and given another window
+        self.assertEqual(len(asked), 1 + len(spans))  # the avoid list, then each slot once
 
 
 class CutTests(unittest.TestCase):

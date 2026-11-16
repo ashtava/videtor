@@ -6,7 +6,8 @@ pick on V1 (enabled) and up to two alternates at the same place on V2 and V3
 edited sequence back, from an xmeml export (`read_xml`) or live from the
 running Premiere over the prpr bridge with no export (`read_live`, read-only),
 labels what the editor did to every slot (`diff`, which aligns slots and clips
-by identity so ripple edits and reorders do not shift every later label), and
+by identity so ripple edits and reorders do not shift every later label; the
+labels are feedback.Status), and
 saves the labels as taste-model examples (`write_feedback` →
 kb/feedback/<name>.json). The sequence named after the picks is read by default;
 feedback from a differently named sequence that shares too few files with the
@@ -50,11 +51,11 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
-from videtor.kb import xmeml
+from videtor.kb import feedback, xmeml
+from videtor.kb.feedback import STATUSES, Status
 
 JS_READ_SEQUENCE = Path(__file__).with_name("js") / "read_sequence.js"
 FRAME_TOLERANCE = 2  # in-point and length within this many sequence frames count as unchanged
-STATUSES = ("kept", "trimmed", "slipped", "swapped_to_alternate", "swapped", "removed")
 GUARD_SHARE = 0.3  # below this share of slots showing their own files, a differently named sequence is suspect
 _ABS_PATH = re.compile(r"^(/|[A-Za-z]:[\\/]|\\\\)")  # POSIX, Windows drive or UNC: a real media file
 _EPS = 1e-6
@@ -254,16 +255,42 @@ class FootageIds:
         return self.canonical(self.by_path.get(norm_path(path))) if path else None
 
 
-def load_footage_ids(kb_dir: Path = Path("kb")) -> FootageIds:
-    """Every footage index in kb/footage (not the .selects/.summary side files); empty when there are none."""
-    entries: list[dict] = []
+_INDEXES: dict[str, tuple[tuple[int, int, int], dict]] = {}  # path -> (its mtime, size and inode when read, what was read)
+
+
+def _read_index(p: Path) -> dict:
+    """What the readers need of one footage index: {roots, files: [(fid, path, kind, duplicate_of)]}."""
+    data = json.loads(p.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        return {"roots": {}, "files": []}
+    return {"roots": data.get("roots") or {},
+            "files": [(f.get("fid"), f.get("path"), f.get("kind"), f.get("duplicate_of")) for f in data.get("files") or [] if isinstance(f, dict)]}
+
+
+def footage_indexes(kb_dir: Path = Path("kb"), strict: bool = True) -> list[dict]:
+    """Every footage index in kb/footage (not the .selects/.summary side files), in name order, as `_read_index`
+    gives it: each file is read once and remembered until its modification time or size changes. `strict`: a file
+    that cannot be read raises; else it is left out."""
+    out = []
     for p in sorted(Path(kb_dir, "footage").glob("*.json")):
         if p.name.endswith((".selects.json", ".summary.json")):
             continue
-        data = json.loads(p.read_text(encoding="utf-8"))
-        if isinstance(data, dict):
-            entries.extend(data.get("files") or [])
-    return FootageIds.from_entries(entries)
+        try:
+            st = p.stat()
+            sig, hit = (st.st_mtime_ns, st.st_size, st.st_ino), _INDEXES.get(str(p))
+            if not hit or hit[0] != sig:
+                hit = _INDEXES[str(p)] = (sig, _read_index(p))
+        except (OSError, ValueError):
+            if strict:
+                raise
+            continue
+        out.append(hit[1])
+    return out
+
+
+def load_footage_ids(kb_dir: Path = Path("kb")) -> FootageIds:
+    """Every footage index in kb/footage (not the .selects/.summary side files); empty when there are none."""
+    return FootageIds.from_entries([{"fid": fid, "path": path, "duplicate_of": dup} for ix in footage_indexes(kb_dir) for fid, path, _, dup in ix["files"]])
 
 
 # --- diff ---------------------------------------------------------------------
@@ -472,7 +499,7 @@ def diff(
             **{k: slot[k] for k in ("scale", "face", "hands", "camera") if slot.get(k) is not None},
             "start_s": slot["start_s"],
             "length_s": slot["length_s"],
-            "status": "removed",
+            "status": Status.REMOVED,
             "visible": None,
             "pick": slot.get("pick"),
             "alternates": list(slot.get("alternates") or []),
@@ -490,14 +517,14 @@ def diff(
             ref = entry["pick"]
         elif kind == "alternate":
             ref = entry["alternates"][alt]
-            entry["status"], entry["alternate"] = "swapped_to_alternate", alt
+            entry["status"], entry["alternate"] = Status.SWAPPED_TO_ALTERNATE, alt
         else:
-            entry["status"] = "swapped"
+            entry["status"] = Status.SWAPPED
         if ref is not None:
             d_in = v["in_s"] - ref["in_s"]
             d_len = (v["end_s"] - v["start_s"]) - slot["length_s"]
             if kind != "alternate":
-                entry["status"] = "slipped" if abs(d_in) > tol else "trimmed" if abs(d_len) > tol else "kept"
+                entry["status"] = Status.SLIPPED if abs(d_in) > tol else Status.TRIMMED if abs(d_len) > tol else Status.KEPT
             entry.update(delta_in_s=round(d_in, 4), delta_length_s=round(d_len, 4))
         entry["delta_start_s"] = round(v["start_s"] - slot["start_s"], 4)
 
@@ -546,8 +573,7 @@ def write_feedback(result: dict, kb_dir: Path = Path("kb"), force: bool = False)
             f"sequence {result.get('sequence')!r} does not look like the cut for {result.get('name')!r} ({seen}); "
             "read the right one with --sequence, or pass --force"
         )
-    name = re.sub(r"[^\w.-]+", "-", str(result.get("name") or "picks")).strip("-.") or "picks"
-    path = Path(kb_dir) / "feedback" / f"{name}.json"
+    path = feedback.path_for(result.get("name"), kb_dir)
     path.parent.mkdir(parents=True, exist_ok=True)
     doc = {k: result.get(k) for k in ("name", "key", "fps", "sequence", "sequence_duration_s", "picks", "source", "read_at")}
     doc["guard"] = verdict
@@ -605,13 +631,13 @@ def format_result(result: dict) -> str:
     width = max((len(str(s["id"])) for s in result["slots"]), default=4)
     for s in result["slots"]:
         status, detail = s["status"], ""
-        if status == "slipped":
+        if status == Status.SLIPPED:
             detail = f"in {s['delta_in_s']:+.2f} s"
-        elif status == "trimmed":
+        elif status == Status.TRIMMED:
             detail = f"length {s['delta_length_s']:+.2f} s"
-        elif status == "swapped_to_alternate":
+        elif status == Status.SWAPPED_TO_ALTERNATE:
             detail = f"alt {s['alternate']}: {_clip_text(s['visible'])}"
-        elif status == "swapped":
+        elif status == Status.SWAPPED:
             detail = _clip_text(s["visible"])
         if abs(s.get("delta_start_s") or 0.0) > FRAME_TOLERANCE / (result.get("fps") or 25.0):
             detail = f"{detail}  (moved {s['delta_start_s']:+.2f} s)".lstrip()

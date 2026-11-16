@@ -12,6 +12,9 @@ Three things teach Videtor about a cut, and they all land in the same file:
 Every row carries what a learner needs (the slot's description and filters, the window picked, the window chosen),
 so learning does not depend on picks.json still being the cut that was judged. `teaching_rows` is what the taste
 model reads (plan/taste.py), `used_ranges` what the keeper reads (plan/keeper.py), `videtor learn` runs both.
+
+What a row says happened to its slot is a `Status`; what a file holds as a whole is a `Kind` (`kind`). Both are
+spelled on disk exactly as their values.
 """
 
 from __future__ import annotations
@@ -19,9 +22,39 @@ from __future__ import annotations
 import json
 import re
 import time
+from enum import StrEnum
 from pathlib import Path
 
-CHOSEN = {"swapped", "swapped_to_alternate", "slipped"}  # statuses where the user chose another window than the pick
+
+class Status(StrEnum):
+    """What the finished job did to a slot (readback.diff, renderback) or what the user chose for it (choices)."""
+
+    KEPT = "kept"  # the pick, as cut (in-point and length within readback.FRAME_TOLERANCE)
+    TRIMMED = "trimmed"  # the pick's in-point, another length
+    SLIPPED = "slipped"  # the pick's take at another moment
+    SWAPPED_TO_ALTERNATE = "swapped_to_alternate"  # one of the slot's runners-up
+    SWAPPED = "swapped"  # another take, or another part of a runner-up's take
+    REMOVED = "removed"  # nothing shows for it
+
+
+STATUSES = tuple(Status)  # the order of a read-back's summary
+CHOSEN = frozenset({Status.SWAPPED, Status.SWAPPED_TO_ALTERNATE, Status.SLIPPED})  # the user chose another window than the pick
+RETIMED = frozenset({Status.SLIPPED, Status.TRIMMED})  # the pick's take, moved or shortened ("moved" on the page)
+SWAPS = frozenset({Status.SWAPPED_TO_ALTERNATE, Status.SWAPPED})  # another window shows ("swapped" on the page)
+
+
+class Kind(StrEnum):
+    """What a feedback file holds, the first that applies in this order (`kind`)."""
+
+    SUSPECT = "suspect"  # a read-back of a sequence that is probably not this cut (readback.guard), kept with --force
+    BY_HAND = "by_hand"  # a job the user cut by hand, read from its finished video (record_edit)
+    FINAL = "final"  # the finished job read back against the picks (render, XML or live)
+    CHOICES = "choices"  # runners-up the user chose, and maybe a verdict
+    VERDICT = "verdict"  # only the user's word on the cut
+    EMPTY = "empty"  # nothing yet
+
+
+FINISHED = frozenset({Kind.FINAL, Kind.BY_HAND})  # a finished job the learners count
 SLOT_KEYS = ("show", "scale", "face", "hands", "camera", "section", "role")
 FINAL = ("render:", "xml:", "live:")  # sources that describe the finished job, not one choice
 
@@ -107,7 +140,7 @@ def record_choices(picks: dict, before: dict[str, dict | None], slot_ids: list[s
             continue
         window = lambda p: {k: p.get(k) for k in ("fid", "path", "name", "in_s", "out_s", "speed")}  # noqa: E731
         rows.append({"id": sid, **{k: s[k] for k in SLOT_KEYS if s.get(k) is not None},
-                     "status": "slipped" if old.get("fid") == new.get("fid") else "swapped_to_alternate",
+                     "status": Status.SLIPPED if old.get("fid") == new.get("fid") else Status.SWAPPED_TO_ALTERNATE,
                      "visible": window(new), "picked": window(old), "why": (s.get("second_look") or {}).get("why", ""), "by": by,
                      "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
     if not rows and not (only and load(picks.get("name"), kb_dir).get("choices")):
@@ -141,9 +174,17 @@ def teaching_rows(doc: dict) -> list[dict]:
     return out
 
 
+def kind(doc: dict) -> Kind:
+    """What the file holds: a read-back of the finished job (suspect, by hand or against the picks) wins over
+    choices, choices over a verdict."""
+    if str(doc.get("source") or "").startswith(FINAL) and (doc.get("slots") or doc.get("added")):
+        return Kind.SUSPECT if (doc.get("guard") or {}).get("suspect") else Kind.BY_HAND if doc.get("by_hand") else Kind.FINAL
+    return Kind.CHOICES if doc.get("choices") else Kind.VERDICT if doc.get("verdict") else Kind.EMPTY
+
+
 def is_final(doc: dict) -> bool:
     """Whether the file holds a read-back of the finished job (not only choices or a verdict), read from the right cut."""
-    return str(doc.get("source") or "").startswith(FINAL) and bool(doc.get("slots") or doc.get("added")) and not (doc.get("guard") or {}).get("suspect")
+    return kind(doc) in FINISHED
 
 
 def used_ranges(doc: dict) -> dict[str, list[tuple[float, float]]]:
@@ -156,10 +197,15 @@ def used_ranges(doc: dict) -> dict[str, list[tuple[float, float]]]:
     return out
 
 
-def state(kb_dir: Path = Path("kb")) -> dict:
-    """What has been collected, for `videtor learn` to say."""
-    docs = all_docs(kb_dir)
-    return {"projects": len(docs), "finals": sum(is_final(d) for d in docs), "by_hand": sum(1 for d in docs if d.get("by_hand")),
-            "rows": sum(len(teaching_rows(d)) for d in docs),
+def counts(docs: list[dict]) -> dict:
+    """Finished jobs, jobs cut by hand, teaching rows and verdicts in `docs`."""
+    kinds = [kind(d) for d in docs]
+    return {"finals": sum(k in FINISHED for k in kinds), "by_hand": kinds.count(Kind.BY_HAND), "rows": sum(len(teaching_rows(d)) for d in docs),
             "verdicts": {"good": sum(1 for d in docs if (d.get("verdict") or {}).get("good") is True),
                          "not": sum(1 for d in docs if (d.get("verdict") or {}).get("good") is False)}}
+
+
+def state(kb_dir: Path = Path("kb"), docs: list[dict] | None = None) -> dict:
+    """What has been collected, for `videtor learn` to say; `docs`: all_docs(kb_dir) when already read."""
+    docs = all_docs(kb_dir) if docs is None else docs
+    return {"projects": len(docs), **counts(docs)}

@@ -13,7 +13,7 @@ import subprocess
 from pathlib import Path
 
 from videtor.export.preview import clip_filter
-from videtor.plan.build import _v1_clips
+from videtor.plan import slots as slots_mod
 
 FADE_OUT_S, FADE_IN_S, JOIN_S = 0.4, 0.05, 0.03
 
@@ -24,7 +24,7 @@ def stretches(picks: dict) -> list[tuple[str, float, float]]:
     out: list[list] = []
     for s in picks["slots"]:
         p = s.get("pick")
-        if not p or not s.get("byte"):
+        if not p or not slots_mod.own_sound(s):
             continue
         a, b = float(p["in_s"]), float(p["in_s"]) + float(s["length_s"]) * float(p.get("speed") or 1.0)
         if out and out[-1][0] == p["path"] and abs(out[-1][2] - a) < 0.6 / fps:
@@ -37,7 +37,7 @@ def stretches(picks: dict) -> list[tuple[str, float, float]]:
 def command(picks: dict, out: Path, music: dict | None = None, gain_db: float = 0.0) -> list[str]:
     """The one ffmpeg call that renders the promo."""
     fps, width, height = float(picks["fps"]), int(picks["width"]), int(picks["height"])
-    clips = [(c, max(1, round(length * fps))) for s in picks["slots"] for c, length in _v1_clips(s, fps)]
+    clips = [(c, max(1, round(length * fps))) for s in picks["slots"] for c, length in slots_mod.clips(s, fps)]
     if not clips:
         raise ValueError("the promo has no shots")
     total = sum(f for _, f in clips) / fps

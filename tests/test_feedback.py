@@ -80,6 +80,51 @@ class StoreTests(Project):
             feedback.record_readback(wrong, picks, self.paths.kb)  # not this cut: refused, not learnt from
 
 
+class KindTests(unittest.TestCase):
+    """What a feedback file holds, said by one function, on made-up documents."""
+
+    def test_each_kind_of_document_is_told_apart(self):
+        rows = {"slots": [{"id": "s", "status": "kept"}]}
+        docs = {
+            "empty": {"name": "p"},
+            "choices": {"name": "p", "choices": [{"id": "s", "status": "slipped"}], "verdict": {"good": True}},  # choices with a verdict are choices
+            "verdict": {"name": "p", "verdict": {"good": False}},
+            "final": {"name": "p", "source": "xml:/x.xml", **rows, "guard": {"suspect": False}, "verdict": {"good": True}},
+            "by_hand": {"name": "p", "source": "render:/x.mp4", "slots": [], "added": [{"fid": "A"}], "by_hand": True},
+            "suspect": {"name": "p", "source": "live:Sequence 01", **rows, "guard": {"suspect": True}},
+        }
+        self.assertEqual({k: feedback.kind(d) for k, d in docs.items()}, {k: k for k in docs})
+        self.assertEqual({k for k, d in docs.items() if feedback.is_final(d)}, {"final", "by_hand"})
+        self.assertEqual(feedback.kind({"source": "render:/x.mp4", "slots": [], "choices": [{}]}), "choices")  # a read with nothing in it
+        self.assertEqual(feedback.kind({"source": "a note", **rows}), "empty")  # not a read-back of the finished job
+        self.assertEqual(set(feedback.Kind), set(docs))
+        self.assertEqual(json.loads(json.dumps({"kind": feedback.kind(docs["by_hand"])})), {"kind": "by_hand"})
+
+    def test_the_counts_follow_the_kinds(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            kb = Path(tmp)
+            feedback._write({"name": "a", "source": "render:/a.mp4", "added": [{"fid": "A"}], "by_hand": True}, kb)
+            feedback._write({"name": "b", "source": "xml:/b.xml", "slots": [{"id": "s", "status": "swapped", "visible": {"fid": "B"}, "pick": {"fid": "C"}}],
+                             "verdict": {"good": True}}, kb)
+            feedback._write({"name": "c", "source": "xml:/c.xml", "slots": [{"id": "s"}], "guard": {"suspect": True}, "verdict": {"good": False}}, kb)
+            self.assertEqual(feedback.state(kb), {"projects": 3, "finals": 2, "by_hand": 1, "rows": 1, "verdicts": {"good": 1, "not": 1}})
+            self.assertEqual(feedback.state(kb, feedback.all_docs(kb)), feedback.state(kb))
+
+    def test_the_statuses_keep_their_spellings(self):
+        self.assertEqual([str(s) for s in feedback.STATUSES], ["kept", "trimmed", "slipped", "swapped_to_alternate", "swapped", "removed"])
+        self.assertEqual(feedback.CHOSEN, {"swapped", "swapped_to_alternate", "slipped"})
+        self.assertEqual((feedback.RETIMED | feedback.SWAPS) & {"kept", "removed"}, set())
+        self.assertEqual(json.dumps({feedback.Status.KEPT: feedback.Status.SWAPPED}), '{"kept": "swapped"}')
+        self.assertEqual(f"{feedback.Status.SWAPPED_TO_ALTERNATE}", "swapped_to_alternate")
+        with tempfile.TemporaryDirectory() as tmp:
+            pick = lambda fid, i: {"fid": fid, "path": f"/{fid}", "name": fid, "in_s": i, "out_s": i + 1.0}  # noqa: E731
+            picks = {"name": "p", "slots": [{"id": "a", "pick": pick("A", 2.0)}, {"id": "b", "pick": pick("C", 0.0)}]}
+            path = feedback.record_choices(picks, {"a": pick("A", 0.0), "b": pick("B", 0.0)}, ["a", "b"], "you", Path(tmp))
+            text = path.read_text()
+        self.assertEqual([r["status"] for r in json.loads(text)["choices"]], ["slipped", "swapped_to_alternate"])
+        self.assertIn('"status": "slipped"', text)
+
+
 class LearnTests(Project):
     def choose_hands(self, n: int) -> None:
         """n choices of a take with hands (A*) over the same shot without (B*), for the same description."""

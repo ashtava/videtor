@@ -18,13 +18,28 @@ const fmtDur = (s) => {
   if (s < 3600) return `${Math.round(s / 60)} min`;
   return `${Math.floor(s / 3600)} h ${Math.round((s % 3600) / 60)} min`;
 };
+/* a job's state is the server's word: `job.live` (jobs.py); today's list only for a server that does not send it */
 const LIVE = ["running", "paused", "waiting", "queued"];
+const jobLive = (j) => !!j && (typeof j.live === "boolean" ? j.live : LIVE.includes(j.status));
+const jobOk = (j) => !!j && j.status === "done";
+const jobWhy = (j) => !j ? "Videtor no longer knows this job (was the app restarted?). Start it again."
+  : j.status === "cancelled" ? "It was stopped before it finished."
+  : (j.result && j.result.error) || (j.progress && j.progress.last) || "It stopped with an error; Details or Activity say more.";
+/* answers that can come late: each request gets a number, and an answer older than one already shown is dropped */
+const seqs = {};
+function ticket(name) {
+  const s = seqs[name] || (seqs[name] = { asked: 0, shown: 0 });
+  const n = ++s.asked;
+  return () => { if (n < s.shown) return false; s.shown = n; return true; };
+}
 let state = { projects: [], libraries: [], jobs: [], out_root: "" };
 let current = null;                          // the open project, as /api/project returns it
 let currentDir = store.get("videtor.project");
+let shownDir = null;                         // the project whose panels are on screen
 let currentLibrary = null;
-const pollers = {};                          // status element id -> interval
-const watching = {};                         // status element id -> {job, project}
+const pollers = {};                          // watch key -> interval
+const watching = {};                         // watch key -> {job, project, els}
+const owner = {};                            // a status card or log -> the watch drawing in it (the newest)
 
 /* ---- navigation ---- */
 function showView(name) {
@@ -84,29 +99,44 @@ function renderStatus(el, job) {
   el.className = "status st-" + job.status;
   el.innerHTML = `<div class="st-line"><b>${esc(stageText(job))}</b>${eta}<span class="muted"> · ${fmtDur(job.elapsed)} so far</span></div>` +
     `<div class="bar ${running && pct === null ? "indet" : ""}"><div style="width:${job.status === "done" ? 100 : (pct ?? 0)}%"></div></div>` +
-    (job.status === "failed" ? `<div class="bad small">${esc(p.last || "See Details below.")}</div>` : "");
+    (!jobLive(job) && !jobOk(job) ? `<div class="bad small">${esc(jobWhy(job))}</div>` : "");
 }
 function stopWatch(key) {
   if (pollers[key]) clearInterval(pollers[key]);
+  const w = watching[key];
   delete pollers[key];
   delete watching[key];
+  for (const id of (w && w.els) || []) {  // a card another live watch also draws in goes back to it
+    if (owner[id] !== key) continue;
+    const next = Object.keys(watching).reverse().find((k) => watching[k].els.includes(id));
+    if (next) owner[id] = next; else delete owner[id];
+  }
 }
+/* follow a job: its log, its status card, onDone(job) when it has ended (job null: the server no longer knows it).
+   `key` names the watch (else the card's or the log's id); the newest watch on a card or a log draws in it. */
 function watch(jobId, opts) {
-  const key = opts.status || opts.log;
+  const key = opts.key || opts.status || opts.log;
   if (watching[key] && watching[key].job === jobId && pollers[key]) return;  // already on it
   stopWatch(key);
-  watching[key] = { job: jobId, project: opts.project || null };
+  const w = watching[key] = { job: jobId, project: opts.project || null, els: [opts.status, opts.log, opts.logbox].filter(Boolean), since: 0, busy: false };
+  w.els.forEach((id) => { owner[id] = key; });
+  const mine = (id) => id && owner[id] === key;
   const pre = opts.log ? $(opts.log) : null;
   if (pre) { pre.textContent = ""; if (opts.showLog) pre.hidden = false; }
   if (opts.logbox) $(opts.logbox).hidden = false;
-  let since = 0;
   const tick = async () => {
-    const r = await api(`/api/jobs/${jobId}?since=${since}`);
-    if (r.error) { stopWatch(key); return; }
-    if (pre && r.lines.length) { pre.textContent += (pre.textContent ? "\n" : "") + r.lines.join("\n"); pre.scrollTop = pre.scrollHeight; }
-    since = r.next;
-    if (opts.status) renderStatus($(opts.status), r.job);
-    if (!LIVE.includes(r.job.status)) {
+    if (w.busy) return;  // the last answer is still on its way: asking again would show its lines twice
+    w.busy = true;
+    let r;
+    try { r = await api(`/api/jobs/${jobId}?since=${w.since}`); } catch (e) { r = null; }
+    w.busy = false;
+    if (watching[key] !== w || !r) return;  // stopped, or another job took this place, while the answer was on its way
+    if (r.error) { stopWatch(key); if (opts.onDone) opts.onDone(null); return; }
+    if (pre && mine(opts.log) && r.lines.length) { pre.textContent += (pre.textContent ? "\n" : "") + r.lines.join("\n"); pre.scrollTop = pre.scrollHeight; }
+    w.since = r.next;
+    if (mine(opts.status)) renderStatus($(opts.status), r.job);
+    if (!jobLive(r.job)) {
+      if (opts.hideDone && jobOk(r.job) && mine(opts.status)) $(opts.status).hidden = true;
       stopWatch(key);
       refreshState();
       if (opts.onDone) opts.onDone(r.job);
@@ -116,9 +146,80 @@ function watch(jobId, opts) {
   tick();
 }
 
+/* ---- a panel's run: idle, running, done or failed, and said so beside the control that started it ----
+   runPanel(name, jobId, o) follows the job and keeps the panel's state in `runs`; paintRuns() shows it on the page:
+     [data-run=name]        the line beside the control: what is being done, then the reason it failed (or o.done)
+     [data-run-stale=name]  what was shown before, dimmed while it runs
+     [data-run-btn=name]    a control held while it runs
+   o: status, log, logbox, showLog, hideDone (as watch); project (the run is that project's; its lines show only there);
+      what (the running words), failed (the head of a failure), older (said of what is shown, while it runs and after a
+      failure; olderFailed for the failure only; text or a function), done (said after a run that worked);
+      onDone(job) after a run that worked, onFail(job) after one that did not, onEnd(job) after either. */
+const runs = {};
+const runKey = (name, project) => (project ? name + "@" + project : name);
+const runOf = (name) => runs[runKey(name, currentDir)] || runs[name];
+const txt = (v) => (typeof v === "function" ? v() : v) || "";
+function runPanel(name, jobId, o = {}) {
+  if (!jobId) return;
+  const rk = runKey(name, o.project);
+  const had = runs[rk];
+  if (had && had.job === jobId) { if (had.state === "running") attachRun(had); return; }  // already this panel's run
+  runs[rk] = { rk, name, project: o.project || null, job: jobId, state: "running", why: "", last: null, o };
+  paintRuns();
+  attachRun(runs[rk]);
+}
+function attachRun(r) {
+  const o = r.o;
+  watch(r.job, { key: "run:" + r.rk, status: o.status, log: o.log, logbox: o.logbox, showLog: o.showLog, hideDone: o.hideDone, project: r.project, onDone: async (job) => {
+    if (runs[r.rk] !== r) return;  // a newer run of this panel took its place
+    const ok = jobOk(job);
+    r.state = ok ? "done" : "failed";
+    r.why = ok ? "" : jobWhy(job);
+    r.last = job;
+    paintRuns();
+    try {
+      if (ok && o.onDone) await o.onDone(job);
+      if (!ok && o.onFail) await o.onFail(job);
+      if (o.onEnd) await o.onEnd(job);
+    } finally { paintRuns(); }
+  } });
+}
+/* a refusal from the server, said where the run's failure would be */
+function refuseRun(name, why, project) {
+  runs[runKey(name, project)] = { rk: runKey(name, project), name, project: project || null, job: null, state: "failed", why, last: null, o: { failed: "Not started." } };
+  paintRuns();
+}
+const runRunning = (name) => { const r = runOf(name); return !!r && r.state === "running"; };
+function paintRuns() {
+  document.querySelectorAll("[data-run]").forEach((el) => {
+    const r = runOf(el.dataset.run), o = r ? r.o : {}, st = r ? r.state : "idle";
+    const html = st === "running" ? `${esc(o.what || "Working")}…` + (txt(o.older) ? ` <span class="muted">${esc(txt(o.older))}</span>` : "")
+      : st === "failed" ? `<b>${esc(o.failed || "It did not work.")}</b> ${esc(r.why)}` + (txt(o.olderFailed || o.older) ? `<br>${esc(txt(o.olderFailed || o.older))}` : "")
+      : st === "done" ? esc(txt(o.done)) : "";
+    if (el.innerHTML !== html) el.innerHTML = html;
+    el.hidden = !html;
+    ["running", "failed", "done"].forEach((c) => el.classList.toggle(c, c === st));
+  });
+  document.querySelectorAll("[data-run-stale]").forEach((el) => el.classList.toggle("stale", runRunning(el.dataset.runStale)));
+  document.querySelectorAll("[data-run-btn]").forEach((el) => {
+    if (runRunning(el.dataset.runBtn)) { if (!el.disabled) { el.disabled = true; el.dataset.held = "1"; } }
+    else if (el.dataset.held) { el.disabled = false; delete el.dataset.held; }
+  });
+}
+/* the open project changed: another project's runs stop drawing, its cards go; this project's running runs come back */
+const PROJECT_CARDS = ["overview-status", "overview-logbox", "cut-status", "cut-logbox", "preview-status", "tl-status", "look-log", "teach-log", "search-log"];
+function enterProject(dir) {
+  for (const k of Object.keys(watching)) if (watching[k].project && watching[k].project !== dir) stopWatch(k);
+  PROJECT_CARDS.forEach((id) => { $(id).hidden = true; });
+  Object.values(runs).forEach((r) => { if (r.project === dir && r.state === "running") attachRun(r); });
+}
+
 /* ---- state: projects, libraries, what is running ---- */
 async function refreshState() {
-  state = await api("/api/state");
+  const fresh = ticket("state");
+  const s = await api("/api/state");
+  if (!fresh()) return;  // a newer answer is already shown
+  state = s;
   if (!$("prep-out").value) { $("prep-out").value = state.out_root; updateDest(); }
   if (!$("lib-out").value) $("lib-out").value = state.out_root + "/library";
   renderProjectCards();
@@ -126,7 +227,7 @@ async function refreshState() {
   const keepL = ls.value || (currentLibrary && currentLibrary.dir);
   ls.innerHTML = (state.libraries || []).slice().reverse().map((l) => `<option value="${esc(l.dir)}">${esc(l.name)}</option>`).join("") || `<option value="">none yet</option>`;
   if (keepL && [...ls.options].some((o) => o.value === keepL)) ls.value = keepL;
-  const live = state.jobs.filter((j) => ["running", "paused", "waiting"].includes(j.status));
+  const live = state.jobs.filter(jobLive);
   $("jobs-dot").classList.toggle("busy", live.length > 0);
   const mini = $("activity-mini");
   if (live.length) {
@@ -194,6 +295,7 @@ async function describeFolder() {
   if (!f) { $("prep-folder-info").textContent = FOLDER_HINT; return; }
   $("prep-folder-info").textContent = "Looking at the folder…";
   const r = await api("/api/scan?path=" + encodeURIComponent(f));
+  if ($("prep-folder").value.trim() !== f) return;  // another folder was chosen meanwhile: its own look answers
   if (r.error) { $("prep-folder-info").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
   const where = r.drive && r.drive.name ? ` on ${r.drive.name}` : "";
   $("prep-folder-info").innerHTML = r.videos
@@ -215,6 +317,7 @@ $("prep-run").onclick = async () => {
   $("prep-folder").value = ""; $("prep-name").value = ""; $("prep-folder-info").textContent = FOLDER_HINT; updateDest();
   currentDir = r.project.dir;
   store.set("videtor.project", currentDir);
+  if (r.job) runPanel("prep", r.job.id, PANELS.prep(r.project.dir));
   await refreshState();
   goto("project:overview");  // the project opens at once: the brief can go in while the footage is read
 };
@@ -245,6 +348,8 @@ async function loadProject(pick) {
   const p = await api("/api/project?dir=" + encodeURIComponent(asked));
   if (asked !== currentDir) return;  // another project was opened while this one was on its way: its answer is not shown over it
   if (p.error) { $("project-msg").textContent = p.error; return; }
+  if (shownDir !== p.dir) enterProject(p.dir);
+  shownDir = p.dir;
   current = p;
   $("project-title").textContent = p.name;
   const d = p.drive || {};
@@ -258,22 +363,24 @@ async function loadProject(pick) {
   renderCutTab(p);
   renderReview(p);
   showJobs(p);
+  paintRuns();
 }
+/* the two cards of a project: reading the footage (and turning a camera) on Footage, the cut on Cut */
+const PANELS = {
+  prep: (dir) => ({ project: dir, status: "overview-status", log: "overview-log", logbox: "overview-logbox", what: "Reading the footage", failed: "The footage was not read.", onEnd: () => loadProject() }),
+  cut: (dir) => ({ project: dir, status: "cut-status", log: "cut-log", logbox: "cut-logbox", what: "Cutting", failed: "The cut was not made.",
+    older: () => (current && current.dir === dir && current.picks ? "Review still shows the cut before." : ""), onDone: () => showTab("look"), onEnd: () => loadProject() }),
+};
 function showJobs(p) {
-  // the status cards belong to the open project: drop another project's, show this one's running or failed job
-  for (const key of ["overview-status", "cut-status"]) {
-    if (watching[key] && watching[key].project !== p.dir) stopWatch(key);
-  }
+  // the cards show this project's running job, else its run that failed (or the server's last failed job), else nothing
   const live = p.job, last = p.last_job;
-  const card = (kind) => (kind === "prep" ? ["overview-status", "overview-log", "overview-logbox"] : kind === "cut" ? ["cut-status", "cut-log", "cut-logbox"] : null);
   for (const kind of ["prep", "cut"]) {
-    const [status, log, box] = card(kind);
-    if (live && live.kind === kind) {
-      watch(live.id, { status, log, logbox: box, project: p.dir, onDone: (job) => { loadProject(); if (kind === "cut" && job.status === "done") showTab("look"); } });
-    } else if (!pollers[status]) {
-      if (last && last.kind === kind && last.status === "failed") { renderStatus($(status), last); $(box).hidden = false; }
-      else { $(status).hidden = true; $(box).hidden = true; }
-    }
+    const o = PANELS[kind](p.dir), r = runs[runKey(kind, p.dir)];
+    if (live && live.kind === kind) { runPanel(kind, live.id, o); continue; }
+    if (r && r.state === "running") continue;
+    const failed = r && r.state === "failed" && r.last ? r.last : last && last.kind === kind && !jobLive(last) && !jobOk(last) ? last : null;
+    if (failed) { renderStatus($(o.status), failed); $(o.logbox).hidden = false; }
+    else { $(o.status).hidden = true; $(o.logbox).hidden = true; }
   }
 }
 function renderNext(p) {

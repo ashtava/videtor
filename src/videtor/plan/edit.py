@@ -22,6 +22,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from videtor.plan import slots as slots_mod
+from videtor.plan.slots import kind, plain  # noqa: F401 - what a slot is (plan/slots.py), under the names it had here
+
 HOP = 0.5
 MIN_FRAMES = 2  # no shot shorter than this after an edit
 
@@ -35,18 +38,6 @@ def _slot(picks: dict, slot_id: str) -> tuple[int, dict]:
         if s["id"] == slot_id:
             return i, s
     raise EditError(f"no such shot: {slot_id}")
-
-
-def kind(slot: dict) -> str:
-    p = slot.get("pick")
-    if not p:
-        return "black" if slot.get("black") else "empty"
-    return "byte" if slot.get("byte") else "flicker" if p.get("pieces") else "ramp" if p.get("ramp") else "stack" if slot.get("layers") else "shot"
-
-
-def plain(slot: dict) -> bool:
-    """One clip with timing of its own: what a slip, a roll and a remove can work on."""
-    return kind(slot) == "shot"
 
 
 def _speed(p: dict) -> float:
@@ -75,7 +66,7 @@ def swap(picks: dict, slot_id: str, k: int | None = None, take: str | None = Non
 
 def slip(picks: dict, slot_id: str, frames: int) -> str:
     _, s = _slot(picks, slot_id)
-    if not plain(s):
+    if not slots_mod.can(s)["slip"]:
         raise EditError(f"{slot_id} is a {kind(s)}: its timing is set in the plan")
     p, fps = s["pick"], float(picks["fps"])
     before, after = _room(p)
@@ -106,7 +97,7 @@ def roll(picks: dict, slot_id: str, frames: int) -> str:
     if i + 1 >= len(picks["slots"]):
         raise EditError(f"{slot_id} is the last shot: there is no cut after it")
     b = picks["slots"][i + 1]
-    if not plain(a) or not plain(b):
+    if not slots_mod.can(a, b)["roll"]:
         raise EditError(f"the cut after {slot_id} joins a {kind(a)} and a {kind(b)}: its place is set in the plan")
     fps = float(picks["fps"])
     pa, pb = a["pick"], b["pick"]
@@ -150,7 +141,7 @@ def remove(picks: dict, slot_id: str) -> str:
 def replace(picks: dict, slot_id: str, choice: dict, why: str = "") -> str:
     """Another take altogether as the slot's pick (a row from `pipeline.options`); the old pick becomes the first runner-up."""
     _, s = _slot(picks, slot_id)
-    if kind(s) not in ("shot", "ramp"):
+    if not slots_mod.can(s)["replace"]:
         raise EditError(f"{slot_id} is a {kind(s)}: change it in the plan")
     old = s["pick"]
     new = {k: v for k, v in choice.items() if k not in ("thumb", "proxy", "k")}
@@ -218,8 +209,8 @@ def _beats(path: str, in_s: float, length_s: float, beats_dir: Path) -> list[flo
 def timeline(picks: dict, project_dir: Path, frames_dirs: list[Path], beats_dir: Path = Path("cache/beats")) -> dict:
     """The cut for the app's timeline: every clip V1 plays with its still and its preview clip (when one covers it),
     every slot with its runners-up and what can be done to it, the music and its beats, the sections."""
+    from videtor import pipeline
     from videtor.export import proxy
-    from videtor.plan.build import _v1_clips
 
     fps, width, height = float(picks["fps"]), int(picks["width"]), int(picks["height"])
     pdir = proxy.folder(project_dir)
@@ -246,14 +237,14 @@ def timeline(picks: dict, project_dir: Path, frames_dirs: list[Path], beats_dir:
         if not sections or sections[-1]["name"] != s.get("section"):
             sections.append({"name": s.get("section") or "", "start_s": t, "end_s": t})
         sections[-1]["end_s"] = round(t + float(s["length_s"]), 4)
-        parts = _v1_clips(s, fps)
+        parts, sound = slots_mod.clips(s, fps), slots_mod.own_sound(s)
         if not parts:
             clips.append({"slot": s["id"], "part": 0, "start_s": t, "length_s": float(s["length_s"]), "kind": k_slot, "name": "", "thumb": None, "proxy": None})
         for k, (c, length) in enumerate(parts):
-            pr = shown(c, bool(s.get("byte")))
+            pr = shown(c, sound)
             missing += pr is None
             clips.append({"slot": s["id"], "part": k, "start_s": round(t, 4), "length_s": round(float(length), 4), "kind": k_slot, "name": c["name"],
-                          "fid": c.get("fid"), "in_s": c["in_s"], "out_s": c["out_s"], "speed": _speed(c), "sound": bool(s.get("byte")),
+                          "fid": c.get("fid"), "in_s": c["in_s"], "out_s": c["out_s"], "speed": _speed(c), "sound": sound,
                           "thumb": _thumb(frames_dirs, c.get("fid") or "", c["in_s"], c["out_s"]), "proxy": pr})
             t += float(length)
         p = s.get("pick") or {}
@@ -264,8 +255,7 @@ def timeline(picks: dict, project_dir: Path, frames_dirs: list[Path], beats_dir:
             "id": s["id"], "section": s.get("section") or "", "show": show[0] if isinstance(show, list) and show else show or "", "kind": k_slot,
             "start_s": float(s["start_s"]), "length_s": float(s["length_s"]), "name": p.get("name"), "in_s": p.get("in_s"), "out_s": p.get("out_s"),
             "speed": _speed(p) if p else 1.0, "reasons": list(p.get("reasons") or [])[:3], "effects": list(s.get("effects") or []),
-            "can": {"slip": plain(s), "roll": plain(s) and nxt is not None and plain(nxt), "remove": bool(p), "swap": bool(p) and bool(s.get("alternates")),
-                    "replace": k_slot in ("shot", "ramp")},
+            "can": slots_mod.can(s, nxt),
             "room": {"before_f": int(before * fps), "after_f": int(after * fps)}, "second_look": s.get("second_look"),
             "note": (notes.get("notes") or {}).get(s["id"], ""),
             "alternates": [{"k": k, "name": a["name"], "in_s": a["in_s"], "score": a.get("score"), "reasons": list(a.get("reasons") or [])[:2],
@@ -283,7 +273,6 @@ def timeline(picks: dict, project_dir: Path, frames_dirs: list[Path], beats_dir:
         g["there"] = Path(g["path"]).exists()
         beats += [round(g["start_s"] + b, 3) for b in _beats(g["path"], g["in_s"], g["length_s"], beats_dir)]
     xml = Path(project_dir) / f"{picks['name']}.xml"
-    picks_p = Path(project_dir) / "picks.json"
     return {"name": picks["name"], "fps": fps, "width": width, "height": height, "length_s": round(total, 4), "clips": clips, "slots": slots,
             "sections": sections, "music": segments, "beats": beats, "missing": missing, "overall": notes.get("overall", ""),
-            "dirty": bool(xml.exists() and picks_p.exists() and picks_p.stat().st_mtime > xml.stat().st_mtime + 1), "has_xml": xml.exists()}
+            "dirty": pipeline.edited(Path(project_dir), picks["name"]), "has_xml": xml.exists()}

@@ -49,6 +49,7 @@ import numpy as np
 
 from videtor.analyze import faces as faces_mod
 from videtor.analyze import parallel, sparse
+from videtor.events import Events
 from videtor.kb import footage
 
 CLASSES = ["wide", "close-up", "talking-head", "interview-bite", "b-roll"]
@@ -490,10 +491,13 @@ def classify(records: dict[str, dict], text: np.ndarray, model: dict | None, lab
 
 
 def build(entries: list[dict], out: Path, cache_dir: Path, kb_dir: Path, log: Log = print, copy: bool = False, extract: bool = False,
-          transcribe: bool = True, embed_texts: Callable | None = None, folders: list[str] | None = None) -> dict:
-    """Sort the scanned entries into `out`'s class folders, with sheets, bites, library.json and library.md."""
+          transcribe: bool = True, embed_texts: Callable | None = None, folders: list[str] | None = None, ev: Events | None = None) -> dict:
+    """Sort the scanned entries into `out`'s class folders, with sheets, bites, library.json and library.md. `log`
+    takes the sentences; `ev` (when a step of pipeline.py runs this) the stages and how far along they are."""
     from videtor.plan import sheets as sheets_mod
 
+    ev = ev or Events()
+    ev.stage("classes", "", "Sorting the shots by type")
     if embed_texts is None:
         from videtor.analyze import tags
 
@@ -517,6 +521,7 @@ def build(entries: list[dict], out: Path, cache_dir: Path, kb_dir: Path, log: Lo
 
         t0 = parallel.Timer()
         total = sum(records[f]["duration_s"] for f in speakers)
+        ev.stage("transcribe", "", "Transcribing the interviews")
         log(f"transcribing {len(speakers)} speaker clips ({total / 60:.0f} min) with local Whisper; cached ones are instant")
         for k, fid in enumerate(sorted(speakers, key=lambda f: records[f]["basename"]), start=1):
             rec = records[fid]
@@ -535,6 +540,7 @@ def build(entries: list[dict], out: Path, cache_dir: Path, kb_dir: Path, log: Lo
             else:
                 found = bites_for(rec, data)
             bites += found
+            ev.progress(k, len(speakers))
             if k % 10 == 0 or k == len(speakers):
                 log(f"  {k}/{len(speakers)} ({t0}): {rec['basename']} {rec['duration_s']:.0f}s -> {len(found)} bites")
     bites.sort(key=lambda b: (records[b["fid"]]["basename"], b["in"]))
@@ -739,14 +745,18 @@ def candidates(entries: list[dict], classes: dict[str, dict], m: dict) -> list[d
 
 
 def run_build(folders: list[Path], out: Path, cache_dir: Path = sparse.CACHE_DIR, kb_dir: Path = Path("kb"), workers: int | None = None,
-              copy: bool = False, extract: bool = False, transcribe: bool = True, fresh: bool = False, log: Log = print) -> dict:
-    """Index the folders, scan what isn't scanned, then build (or rebuild) the library at `out`."""
+              copy: bool = False, extract: bool = False, transcribe: bool = True, fresh: bool = False, log: Log = print,
+              ev: Events | None = None, embed_texts: Callable | None = None) -> dict:
+    """Index the folders, scan what isn't scanned, then build (or rebuild) the library at `out` (pipeline.library_build
+    runs this as a step)."""
+    ev = ev or Events()
     out = Path(out)
     st = status(out)
     if st.get("built") and st["moved"] and not fresh:
         raise RuntimeError(f"{len(st['moved'])} clips were moved since the last build: run `videtor library learn {out}` first "
                            "(it keeps them), or pass --fresh to discard the moves")
     out.mkdir(parents=True, exist_ok=True)
+    ev.stage("index", "", "Finding the clips")
     index_p = out / "index.json"
     saved = json.loads(index_p.read_text()) if index_p.exists() else None
     if saved and not fresh and saved.get("folders") == [str(f) for f in folders]:
@@ -756,5 +766,7 @@ def run_build(folders: list[Path], out: Path, cache_dir: Path = sparse.CACHE_DIR
         entries = index_folders([Path(f) for f in folders], log)
         index_p.write_text(json.dumps({"folders": [str(f) for f in folders], "files": entries}, indent=1) + "\n")
     log(f"{len(entries)} clips, {sum(e['media']['duration_s'] for e in entries) / 3600:.1f} h")
-    sparse.scan(entries, cache_dir, workers=workers, log=log)
-    return build(entries, out, cache_dir, kb_dir, log=log, copy=copy, extract=extract, transcribe=transcribe, folders=[str(f) for f in folders])
+    ev.stage("scan", "", "Reading the footage")
+    sparse.scan(entries, cache_dir, workers=workers, log=log, progress=lambda k, n: ev.progress(k, n))
+    return build(entries, out, cache_dir, kb_dir, log=log, copy=copy, extract=extract, transcribe=transcribe, embed_texts=embed_texts,
+                 folders=[str(f) for f in folders], ev=ev)

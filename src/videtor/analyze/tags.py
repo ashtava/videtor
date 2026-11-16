@@ -77,6 +77,7 @@ VOCABULARY = [
 _lock = threading.RLock()
 _clip: tuple | None = None  # (model, preprocess, device), loaded on first use
 _text: np.ndarray | None = None  # unit-norm prompt embeddings, (len(VOCABULARY), EMBED_DIM)
+_tok = None  # CLIP's tokenizer, built once (about 46 ms a build)
 
 
 def device() -> str:
@@ -141,27 +142,86 @@ def _text_embeddings() -> np.ndarray:
     global _text
     with _lock:
         if _text is None:
-            import open_clip
             import torch
 
             model, _, dev = _load()
-            tokens = open_clip.get_tokenizer(MODEL)([PROMPT.format(tag=t) for t in VOCABULARY]).to(dev)
+            tokens = _tokenizer()([PROMPT.format(tag=t) for t in VOCABULARY]).to(dev)
             with torch.no_grad():
                 feats = model.encode_text(tokens)
             _text = _normalize(feats.float().cpu().numpy())
         return _text
 
 
-def embed_texts(texts: list[str]) -> np.ndarray:
-    """Unit-norm CLIP text embeddings (n, 512) for free descriptions, in the vocabulary's prompt form."""
-    import open_clip
+def _tokenizer():
+    global _tok
+    with _lock:
+        if _tok is None:
+            import open_clip
+
+            _tok = open_clip.get_tokenizer(MODEL)
+        return _tok
+
+
+def _encode_texts(texts: list[str]) -> np.ndarray:
     import torch
 
     model, _, dev = _load()
-    tokens = open_clip.get_tokenizer(MODEL)([PROMPT.format(tag=t.rstrip(".")) for t in texts]).to(dev)
+    tokens = _tokenizer()([PROMPT.format(tag=t.rstrip(".")) for t in texts]).to(dev)
     with _lock, torch.no_grad():
         feats = model.encode_text(tokens)
     return _normalize(feats.float().cpu().numpy())
+
+
+class TextCache:
+    """Text embeddings kept in memory and on disk, so asking again (a re-cut of a plan) loads no model.
+
+    The key is the whole list asked for, not each text: on the GPU a text's vector moves in its last bits with
+    the size of the batch it is encoded in, and a re-cut must get exactly what the first cut got. `model` names
+    the model, its weights and the prompt form, so another model is never served this one's vectors."""
+
+    def __init__(self, encode, folder: Path | None, model: str):
+        self.encode, self.folder, self.model = encode, folder, model
+        self.mem: dict[str, np.ndarray] = {}
+
+    def key(self, texts: list[str]) -> str:
+        import hashlib
+        import json
+
+        return hashlib.sha256(json.dumps([self.model, list(texts)]).encode()).hexdigest()
+
+    def __call__(self, texts: list[str]) -> np.ndarray:
+        k = self.key(texts)
+        with _lock:
+            hit = self.mem.get(k)
+        if hit is None and self.folder is not None:
+            try:
+                hit = np.load(self.folder / f"{k}.npy")
+            except (OSError, ValueError, EOFError):
+                hit = None
+        if hit is None:
+            hit = np.asarray(self.encode(list(texts)), dtype=np.float32)
+            if self.folder is not None:
+                import os
+
+                try:
+                    self.folder.mkdir(parents=True, exist_ok=True)
+                    tmp = self.folder / f".{k}.{os.getpid()}.{threading.get_ident()}.npy"
+                    np.save(tmp, hit)
+                    os.replace(tmp, self.folder / f"{k}.npy")
+                except OSError:
+                    pass  # a read-only cache folder costs only the speed
+        with _lock:
+            self.mem[k] = hit
+        return hit.copy()
+
+
+TEXT_CACHE = Path("cache/text-emb")
+_texts = TextCache(_encode_texts, TEXT_CACHE, f"{MODEL}|{PRETRAINED}|{PROMPT}|rstrip-dot")
+
+
+def embed_texts(texts: list[str]) -> np.ndarray:
+    """Unit-norm CLIP text embeddings (n, 512) for free descriptions, in the vocabulary's prompt form (kept: see TextCache)."""
+    return _texts(texts)
 
 
 def tag_scores(embeddings: np.ndarray) -> np.ndarray:

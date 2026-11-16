@@ -22,7 +22,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from videtor.export.preview import clip_filter
-from videtor.plan.build import _v1_clips
+from videtor.plan import slots as slots_mod
 
 HANDLE_S = 0.8  # timeline seconds kept before and after a clip, so a slip or a moved cut needs no new file
 LONG_SIDE = 640  # the proxy's longer side, pixels
@@ -65,7 +65,7 @@ def clips(picks: dict, slots: set[str] | None = None, alternates: bool = False) 
     for s in picks["slots"]:
         if slots is not None and s["id"] not in slots:
             continue
-        out += [(c, bool(s.get("byte"))) for c, _ in _v1_clips(s, fps)]
+        out += [(c, slots_mod.own_sound(s)) for c, _ in slots_mod.clips(s, fps)]
         if alternates:
             length = float(s["length_s"])
             out += [({**a, "out_s": round(float(a["in_s"]) + length * float(a.get("speed") or 1.0), 3)}, False) for a in s.get("alternates") or []]

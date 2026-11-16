@@ -5,6 +5,7 @@ from __future__ import annotations
 import opentimelineio as otio
 
 from videtor.export import xmeml_writer as w
+from videtor.plan import slots as slots_mod
 
 
 DIP_RAMP_S = 0.24  # the music steps down over this long before a byte (whole frames at 25 fps)
@@ -112,24 +113,7 @@ def _gap(seconds: float, fps: float) -> otio.schema.Gap:
     return otio.schema.Gap(source_range=otio.opentime.TimeRange(duration=otio.opentime.RationalTime(max(0, round(seconds * fps)), fps)))
 
 
-def _v1_clips(slot: dict, fps: float) -> list[tuple[dict, float]]:
-    """(choice, timeline seconds) the slot plays on V1: a flicker's sub-shots, a ramp's parts, or the one pick."""
-    from videtor.plan import moves
-
-    pick = slot.get("pick")
-    if not pick:
-        return []
-    if pick.get("pieces"):
-        out = []
-        for piece in pick["pieces"]:
-            if piece.get("ramp"):
-                out += moves.chain(piece, piece["ramp"])
-            else:
-                out.append((piece, piece["length_s"]))
-        return out
-    if pick.get("ramp"):
-        return moves.chain(pick, pick["ramp"])
-    return [(pick, slot["length_s"])]
+_v1_clips = slots_mod.clips  # the old name: (choice, timeline seconds) a slot plays on V1
 
 
 def _placed(track: otio.schema.Track, items: list[tuple[float, otio.schema.Item]], fps: float) -> None:
@@ -173,14 +157,14 @@ def build_from_picks(picks: dict, music: dict | None = None, alternates: int = 2
     slots = picks["slots"]
     for si, slot in enumerate(slots):
         length = slot["length_s"]
-        parts = _v1_clips(slot, fps)
+        parts = slots_mod.clips(slot, fps)
         effects = slot.get("effects") or []
         following = (slots[si + 1].get("effects") or []) if si + 1 < len(slots) else []
         if parts:
             n = round((total + length) * fps) - round(total * fps)  # the slot's frames on the timeline
             frames = [max(1, round(seconds * fps)) for _, seconds in parts[:-1]]
             frames.append(max(1, n - sum(frames)))  # the last part takes what is left: no gap, no overrun
-            voice = float(slot["pick"].get("gain_db") or 0.0) if slot.get("byte") else None
+            voice = float(slot["pick"].get("gain_db") or 0.0) if slots_mod.own_sound(slot) else None
             for i, ((choice, _), f) in enumerate(zip(parts, frames)):
                 choice = _steadied(choice, f, fps)
                 fx = fx_mod.clip_fx(_part_effects(effects, i, len(parts)), following if i == len(parts) - 1 else [], f, choice.get("motion")) if effects or following else None
@@ -228,7 +212,7 @@ def build_from_picks(picks: dict, music: dict | None = None, alternates: int = 2
         a = otio.schema.Track(name="music", kind=otio.schema.TrackKind.Audio)
         segs = [g for g in music["segments"] if g.get("path")] if music.get("segments") else [
             {"path": music["path"], "duration_s": music["duration_s"], "in_s": music.get("in_s", 0.0), "start_s": 0.0, "length_s": total}]
-        dips = [(s["start_s"], s["start_s"] + s["length_s"]) for s in picks["slots"] if s.get("byte") and s.get("pick")]
+        dips = [(s["start_s"], s["start_s"] + s["length_s"]) for s in picks["slots"] if slots_mod.own_sound(s) and s.get("pick")]
         under = float(music.get("under_db", picks.get("under_db", -12.0)))
         levels = music_levels(dips, under, total, fps) if dips else [(0.0, total, 0.0)]
         items = []

@@ -11,7 +11,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from videtor.plan.build import _v1_clips
+from videtor.plan import slots as slots_mod
 
 
 def clip_filter(choice: dict, fps: float, width: int, height: int, scale: float) -> str:
@@ -43,7 +43,7 @@ def render(picks: dict, out: Path, scale: float = 0.5, log=print) -> Path:
     with tempfile.TemporaryDirectory() as tmp:
         parts = []
         for slot in picks["slots"]:
-            clips = _v1_clips(slot, fps) or [(None, slot["length_s"])]
+            clips = slots_mod.clips(slot, fps) or [(None, slot["length_s"])]
             for choice, length in clips:
                 frames = max(1, round(length * fps))
                 part = Path(tmp) / f"{len(parts):04d}.mp4"

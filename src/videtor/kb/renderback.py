@@ -27,6 +27,7 @@ from pathlib import Path
 import numpy as np
 
 from videtor.kb import readback, render
+from videtor.plan import slots as slots_mod
 
 HOP = 0.5
 SNAP_S = 0.75  # a shot found this close to its slot's pick is that pick (the map's samples are 0.5 s apart)
@@ -104,7 +105,7 @@ def _piece_starts(picks: dict) -> list[float]:
     out = []
     for s in picks["slots"]:
         t = s["start_s"]
-        for piece in (s.get("pick") or {}).get("pieces") or []:
+        for piece in slots_mod.pieces(s):
             out.append(t)
             t += piece["length_s"]
     return out
@@ -115,7 +116,7 @@ def _proposed(picks: dict, t0: float, t1: float) -> list[dict]:
     out = []
     for s in picks["slots"]:
         if s["start_s"] < t1 and s["start_s"] + s["length_s"] > t0 and s.get("pick"):
-            out += [*((s["pick"].get("pieces")) or [s["pick"]]), *(s.get("alternates") or [])]
+            out += [*slots_mod.shown(s), *(s.get("alternates") or [])]
     return out
 
 
@@ -136,7 +137,7 @@ def merge_slivers(ranges: list[tuple[int, int]], picks: dict, fps: float, min_fr
                 out.append(pending)
             pending = None
         slot = slot_of(a, b)
-        if b - a >= min_frames or (slot and (slot.get("pick") or {}).get("pieces")):
+        if b - a >= min_frames or (slot and slots_mod.pieces(slot)):
             out.append((a, b))
         elif out and slot_of(*out[-1]) is slot:
             out[-1] = (out[-1][0], b)
@@ -228,8 +229,7 @@ def clips_from_render(video: str | Path, picks: dict, takes: list, frames_dir: P
     for (a, b), mid, e in zip(ranges, mids, emb):
         t0, t1 = a / fps, b / fps
         slot = slot_at((t0 + t1) / 2)
-        pick = (slot or {}).get("pick") or {}
-        own = pick.get("pieces") or ([pick] if pick else [])
+        own = slots_mod.shown(slot or {})
         at = sorted({mid, min(last, a + (b - a) // 4), min(last, a + 3 * (b - a) // 4)}) if b - a >= 8 else [mid]
         m = match_shot([big[i] for i in at], e, takes, pool_emb, offsets, frames_dir, _proposed(picks, t0, t1), own)
         if not m:
@@ -266,7 +266,7 @@ def _whole_slots(rows: list[dict], picks: dict) -> list[dict]:
     """A flicker slot whose first sub-shot still plays is one row over the slot, as the picks hold it (its other
     sub-shots are part of the same choice, not swaps)."""
     for s in picks["slots"]:
-        pieces = (s.get("pick") or {}).get("pieces")
+        pieces = slots_mod.pieces(s)
         if not pieces:
             continue
         t0, t1 = s["start_s"], s["start_s"] + s["length_s"]

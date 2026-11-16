@@ -17,20 +17,24 @@ nobody carries is a setting the cut never sees.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
 import time
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Callable
 
 from videtor.events import Events
 from videtor.kb import footage
+from videtor.plan import slots as slots_mod
 
 PICKS_VERSION = 1
 # what the picks take from the shot map as it stands: the build, the SFX placer and the steadying pass read these
 CARRY = ("sfx_skip", "stabilize", "under_db", "beds")
 DECISIONS = "decisions.json"
+XML_RECORD = "xml.json"  # in work/: which picks the Premiere XML was written from
 MACHINE = {"second look", "auto", "claude"}  # who a swap is `by` when no person made it
 AUTOLOOK = True  # the automatic second look (plan/autolook.py)
 INVENTORY = True  # what the shoot holds, written by prepare (plan/inventory.py)
@@ -218,13 +222,56 @@ def check_picks(picks: dict) -> dict:
     return picks
 
 
+# --- the cut as a document: picks.json, decisions.json, the way back, and the XML written from them -------------
+
+
+def _write(path: Path, text: str) -> None:
+    """A file written whole beside itself and swapped in: a reader, or a failure half way, sees the old file or the
+    new one, never part of one."""
+    tmp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        tmp.write_text(text)
+        os.replace(tmp, path)
+    finally:
+        tmp.unlink(missing_ok=True)
+
+
+def _save_picks(out: Path, picks: dict) -> str:
+    text = json.dumps(picks, indent=1) + "\n"
+    _write(out / "picks.json", text)
+    return text
+
+
+def _record_xml(out: Path, picks_text: str, xml: Path) -> None:
+    """Note which picks the XML was just written from (work/xml.json: the SHA-1 of picks.json's bytes)."""
+    (out / "work").mkdir(parents=True, exist_ok=True)
+    doc = {"picks_sha1": hashlib.sha1(picks_text.encode()).hexdigest(), "xml": Path(xml).name, "at": time.strftime("%Y-%m-%dT%H:%M:%S")}
+    _write(out / "work" / XML_RECORD, json.dumps(doc, indent=1) + "\n")
+
+
+def edited(out: Path, name: str) -> bool:
+    """The picks were changed after their Premiere XML was written (the timeline's "not in the XML yet"). The XML's
+    writer notes the picks it wrote (work/xml.json); for a cut written before 2026-11-17, which has no such note, the
+    picks being newer than the XML by more than a second says it."""
+    xml, picks_p = Path(out) / f"{name}.xml", Path(out) / "picks.json"
+    if not (xml.exists() and picks_p.exists()):
+        return False
+    try:
+        rec = json.loads((Path(out) / "work" / XML_RECORD).read_text())
+    except (OSError, ValueError):
+        rec = None
+    if isinstance(rec, dict) and rec.get("xml") == xml.name and rec.get("picks_sha1"):
+        return hashlib.sha1(picks_p.read_bytes()).hexdigest() != rec["picks_sha1"]
+    return picks_p.stat().st_mtime > xml.stat().st_mtime + 1
+
+
 def level_bytes(picks: dict, target_lufs: float) -> None:
     """Each byte's voice gain (pick["gain_db"]) so the bytes sit at one loudness; the music dips under them in the build."""
     from videtor.plan import interview
 
     for s in picks["slots"]:
         p = s.get("pick")
-        if not s.get("byte") or not p:
+        if not slots_mod.own_sound(s) or not p:
             continue
         lufs = interview.segment_lufs(p["path"], float(p["in_s"]), float(p["out_s"])) if Path(p["path"]).exists() else None
         p["gain_db"] = round(float(min(12.0, max(-12.0, target_lufs - lufs))), 1) if lufs is not None and lufs > -70 else 0.0
@@ -233,7 +280,7 @@ def level_bytes(picks: dict, target_lufs: float) -> None:
 def clear_bytes(sfx: list[dict], slots: list[dict]) -> list[dict]:
     """The SFX around the bytes: none starts on one; one running into one (a whoosh peaking on the cut) ends on the
     cut, fading over two frames."""
-    talk = [(s["start_s"], s["start_s"] + s["length_s"]) for s in slots if s.get("byte")]
+    talk = [(s["start_s"], s["start_s"] + s["length_s"]) for s in slots if slots_mod.own_sound(s)]
     out = [s for s in sfx if not any(a - 0.05 < s["start_s"] < b - 0.05 for a, b in talk)]
     for s in out:
         for a, _ in talk:
@@ -342,11 +389,13 @@ def write_cut(picks: dict, out: Path, music: dict | None, paths: Paths = Paths()
         from videtor.plan import stabilize
 
         stabilize.plan(picks, log=ev.info)
-    (out / "picks.json").write_text(json.dumps(picks, indent=1) + "\n")
+    text = _save_picks(out, picks)
     tl = build_from_picks(picks, music, sfx=picks.get("sfx"))
     second_look.cut_sheet(picks, paths.footmap / "frames", out / "cut-sheet.jpg")
     second_look.match_sheet(picks, paths.footmap / "frames", out / "match-cuts.jpg")
-    return w.write_xmeml(tl, out / f"{picks['name']}.xml", fps=picks["fps"], width=picks["width"], height=picks["height"])
+    xml = w.write_xmeml(tl, out / f"{picks['name']}.xml", fps=picks["fps"], width=picks["width"], height=picks["height"])
+    _record_xml(out, text, xml)
+    return xml
 
 
 # --- decisions: what a second look chose, kept across cuts --------------------------------------
@@ -372,7 +421,7 @@ def record_swaps(out: Path, picks: dict, slot_ids: list[str], by: str = "second 
             continue
         d["swaps"][sid] = {"take": s["pick"]["name"], "why": (s.get("second_look") or {}).get("why", ""), "by": by,
                            "at": time.strftime("%Y-%m-%dT%H:%M:%S")}
-    (out / DECISIONS).write_text(json.dumps(d, indent=1) + "\n")
+    _write(out / DECISIONS, json.dumps(d, indent=1) + "\n")
     return d
 
 
@@ -438,9 +487,9 @@ def edit(picks_path: Path, op: dict, paths: Paths = Paths(), ev: Events | None =
         if not past:
             raise PipelineError("Nothing to undo.")
         snap = json.loads(past[-1].read_text())
-        picks_path.write_text(json.dumps(snap["picks"], indent=1) + "\n")
         d["edits"], d["swaps"] = snap.get("edits", []), snap.get("swaps", d.get("swaps", {}))
-        (out / DECISIONS).write_text(json.dumps(d, indent=1) + "\n")
+        _write(picks_path, json.dumps(snap["picks"], indent=1) + "\n")  # the picks back first, then the decisions (see below)
+        _write(out / DECISIONS, json.dumps(d, indent=1) + "\n")
         past[-1].unlink()
         ev.info(f"undone: {snap.get('line', 'the last edit')}")
         return {"picks": snap["picks"], "line": f"Undone: {snap.get('line', 'the last edit')}"}
@@ -464,12 +513,16 @@ def edit(picks_path: Path, op: dict, paths: Paths = Paths(), ev: Events | None =
     hist.mkdir(parents=True, exist_ok=True)
     past = _history(out)
     n = int(past[-1].stem) + 1 if past else 1
-    (hist / f"{n:05d}.json").write_text(json.dumps({"picks": before, "edits": d["edits"], "swaps": d.get("swaps", {}), "line": line}) + "\n")
+    snap = {"picks": before, "edits": d["edits"], "swaps": d.get("swaps", {}), "line": line}
+    d["edits"] = d["edits"] + [{**{k: v for k, v in op.items() if k not in ("k", "option", "project")}, "by": by, "at": time.strftime("%Y-%m-%dT%H:%M:%S")}]
+    # Committed in this order, each file whole: the way back, the decisions, the picks last (an undo: the picks, then
+    # the decisions). So the picks on disk are never ahead of the decisions: a failure in between leaves at most the
+    # decisions one edit ahead, with the snapshot that takes it back still there (an undo puts both back as they were).
+    _write(hist / f"{n:05d}.json", json.dumps(snap) + "\n")
+    _write(out / DECISIONS, json.dumps(d, indent=1) + "\n")
+    _write(picks_path, json.dumps(picks, indent=1) + "\n")
     for old in past[: max(0, len(past) + 1 - HISTORY)]:
         old.unlink()
-    picks_path.write_text(json.dumps(picks, indent=1) + "\n")
-    d["edits"] = d["edits"] + [{**{k: v for k, v in op.items() if k not in ("k", "option", "project")}, "by": by, "at": time.strftime("%Y-%m-%dT%H:%M:%S")}]
-    (out / DECISIONS).write_text(json.dumps(d, indent=1) + "\n")
     ev.info(line)
     return {"picks": picks, "line": line}
 
@@ -488,7 +541,7 @@ def note(project_dir: Path, slot_id: str | None, text: str) -> dict:
     else:
         doc["overall"] = text
     doc["at"] = time.strftime("%Y-%m-%dT%H:%M:%S")
-    p.write_text(json.dumps(doc, indent=1, ensure_ascii=False) + "\n")
+    _write(p, json.dumps(doc, indent=1, ensure_ascii=False) + "\n")
     return doc
 
 
@@ -613,7 +666,7 @@ def cut(shotmap_path: Path, out: Path | None = None, mount: Path | None = None, 
     ev.stage("fill", f"choosing a shot for each of {len(shotmap.slots(m))} slots from {len(takes)} takes", "Choosing the shots")
     picks, music = cut_picks(m, takes, paths, ev, sfx=sfx, embed_texts=embed_texts)
     (out / "work").mkdir(parents=True, exist_ok=True)
-    (out / "work" / "picks.cut.json").write_text(json.dumps(picks) + "\n")  # the cut as made: what the user's changes are measured against
+    _write(out / "work" / "picks.cut.json", json.dumps(picks) + "\n")  # the cut as made: what the user's changes are measured against
     decisions = load_decisions(out) if not fresh else {"swaps": {}}
     for stale in ([out / DECISIONS] if fresh else []) + _history(out):  # undo reaches back to this cut, not past it
         stale.unlink(missing_ok=True)
@@ -655,10 +708,12 @@ def write_interview(picks: dict, aroll: dict, m: dict, takes: list, out: Path, s
     music = picks.get("music") if (picks.get("music") or {}).get("levels") else None
     tl = interview.build(aroll, placed, picks, m, {t.fid: t for t in takes}, music, picks["sfx"], gains, motion_for)
     picks["aroll"] = [{**s, "gain_db": gains.get(s["id"])} for s in placed]
-    (out / "picks.json").write_text(json.dumps(picks, indent=1) + "\n")
+    text = _save_picks(out, picks)
     second_look.cut_sheet(picks, paths.footmap / "frames", out / "cut-sheet.jpg")
     second_look.match_sheet(picks, paths.footmap / "frames", out / "match-cuts.jpg")
-    return w.write_xmeml(tl, out / f"{aroll['name']}.xml", fps=float(aroll["fps"]), width=W, height=H)
+    xml = w.write_xmeml(tl, out / f"{aroll['name']}.xml", fps=float(aroll["fps"]), width=W, height=H)
+    _record_xml(out, text, xml)
+    return xml
 
 
 def cut_interview(aroll_path: Path, shotmap_path: Path, sfx: bool = True, paths: Paths = Paths(), ev: Events | None = None) -> dict:
@@ -709,10 +764,12 @@ def write_mv(picks: dict, out: Path, paths: Paths = Paths(), ev: Events | None =
 
     ev = ev or Events()
     picks["shares"] = musicvideo.shares(picks)
-    (out / "picks.json").write_text(json.dumps(picks, indent=1) + "\n")
+    text = _save_picks(out, picks)
     for p in musicvideo.pages(picks, paths.footmap / "frames", out):
         ev.wrote("sheet", p, f"cut sheet: {p}")
-    return w.write_xmeml(build_from_picks(picks, picks["music"]), out / f"{picks['name']}.xml", fps=picks["fps"], width=picks["width"], height=picks["height"])
+    xml = w.write_xmeml(build_from_picks(picks, picks["music"]), out / f"{picks['name']}.xml", fps=picks["fps"], width=picks["width"], height=picks["height"])
+    _record_xml(out, text, xml)
+    return xml
 
 
 def cut_mv(spec_path: Path, paths: Paths = Paths(), ev: Events | None = None) -> dict:
@@ -747,34 +804,71 @@ def cut_mv(spec_path: Path, paths: Paths = Paths(), ev: Events | None = None) ->
     return {"picks": picks, "xml": path}
 
 
+# --- the kinds of cut, and how each is written again from its picks -----------------------------------
+
+
+def cut_kind(picks: dict) -> str:
+    """What picks.json holds: "music-video" (cut_mv), "interview" (cut_interview: its source names the A-roll),
+    "promo" (promos) or "cut" (a cut from a shot map)."""
+    if picks.get("kind") in ("music-video", "promo"):
+        return picks["kind"]
+    return "interview" if (picks.get("source") or {}).get("aroll") else "cut"
+
+
+def _rebuild_cut(picks: dict, out: Path, paths: Paths, ev: Events) -> Path:
+    mu = picks.get("music")
+    if picks.get("sfx") is not None:  # shutter clicks follow the picked shots' flashes: place again
+        picks["sfx"] = place_sfx(picks, paths)
+    return write_cut(picks, out, mu if mu and (mu.get("duration_s") or mu.get("segments")) else None, paths, ev)
+
+
+def _rebuild_interview(picks: dict, out: Path, paths: Paths, ev: Events) -> Path:
+    src = picks["source"]
+    aroll, m = json.loads(Path(src["aroll"]).read_text()), json.loads(Path(src["shotmap"]).read_text())
+    takes, _ = takes_for(index_for_key(aroll["key"], paths.kb), aroll["key"], paths.footmap)
+    return write_interview(picks, aroll, m, takes, out, src.get("sfx", True), paths)
+
+
+def _rebuild_mv(picks: dict, out: Path, paths: Paths, ev: Events) -> Path:
+    return write_mv(picks, out, paths, ev)
+
+
+@dataclass(frozen=True)
+class CutKind:
+    """How a kind of cut is written again from its picks (`rebuild(picks, out, paths, ev)` -> the XML; None: it is
+    not, and `refused` says why), and whether a second look may borrow another slot's runner-up."""
+    rebuild: Callable[[dict, Path, "Paths", Events], Path] | None = None
+    borrow: bool = True
+    refused: str = ""
+
+
+CUT_KINDS = {
+    "cut": CutKind(_rebuild_cut),
+    "interview": CutKind(_rebuild_interview),
+    "music-video": CutKind(_rebuild_mv, borrow=False,
+                           refused="A music video only swaps to a slot's own runners-up (id=k): a shot borrowed from another slot would be out of sync."),
+    "promo": CutKind(refused="A promo is not changed here: make another from the Promos page (videtor promos <its folder> --another <n>)."),
+}
+
+
 def look(picks_path: Path, choices: dict, notes: dict[str, str] | None = None, paths: Paths = Paths(), ev: Events | None = None,
          by: str = "second look") -> dict:
-    """Apply second-look choices to picks.json, rewrite the Premiere XML the way its kind of cut is built, and
-    remember the choices (decisions.json) so the next cut keeps them."""
+    """Apply second-look choices to picks.json, rewrite the Premiere XML the way its kind of cut is built (CUT_KINDS),
+    and remember the choices (decisions.json) so the next cut keeps them."""
     from videtor.plan import second_look
 
     ev = ev or Events()
     picks = check_picks(json.loads(picks_path.read_text()))
     out = picks_path.parent
+    kind = CUT_KINDS[cut_kind(picks)]
     before = {s["id"]: s.get("pick") for s in picks["slots"]}
-    if picks.get("kind") == "music-video" and any(isinstance(v, tuple) for v in choices.values()):
-        raise PipelineError("A music video only swaps to a slot's own runners-up (id=k): a shot borrowed from another slot would be out of sync.")
+    if kind.rebuild is None or (not kind.borrow and any(isinstance(v, tuple) for v in choices.values())):
+        raise PipelineError(kind.refused)
     try:
         second_look.apply(picks, choices, notes)
     except ValueError as exc:
         raise PipelineError(str(exc)) from exc
-    if picks.get("kind") == "music-video":
-        path = write_mv(picks, out, paths, ev)
-    elif (picks.get("source") or {}).get("aroll"):  # an interview piece: rebuild it the interview way
-        src = picks["source"]
-        aroll, m = json.loads(Path(src["aroll"]).read_text()), json.loads(Path(src["shotmap"]).read_text())
-        takes, _ = takes_for(index_for_key(aroll["key"], paths.kb), aroll["key"], paths.footmap)
-        path = write_interview(picks, aroll, m, takes, out, src.get("sfx", True), paths)
-    else:
-        mu = picks.get("music")
-        if picks.get("sfx") is not None:  # shutter clicks follow the picked shots' flashes: place again
-            picks["sfx"] = place_sfx(picks, paths)
-        path = write_cut(picks, out, mu if mu and (mu.get("duration_s") or mu.get("segments")) else None, paths, ev)
+    path = kind.rebuild(picks, out, paths, ev)
     if choices:
         record_swaps(out, picks, list(choices), by)
         if by not in MACHINE:  # a person chose: that teaches (kb/feedback.py); Claude's and the automatic second look do not

@@ -340,6 +340,45 @@ class FootageIdsTests(unittest.TestCase):
             self.assertEqual(ids.fid("/VOLUMES/X/Café.mp4"), "abc")
             self.assertEqual(rb.load_footage_ids(Path(tmp, "missing")).by_path, {})
 
+    def test_an_index_is_read_once_until_it_changes_and_a_broken_one_raises_only_when_strict(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            footage = Path(tmp, "footage")
+            footage.mkdir()
+            (footage / "x.json").write_text(json.dumps({"files": [{"fid": "abc", "path": "/Volumes/X/A.MP4"}]}))
+            real, reads = rb._read_index, []
+            with mock.patch.object(rb, "_read_index", side_effect=lambda p: reads.append(p.name) or real(p)):
+                rb.load_footage_ids(Path(tmp))
+                self.assertEqual(rb.load_footage_ids(Path(tmp)).fid("/volumes/x/a.mp4"), "abc")
+                self.assertEqual(reads, ["x.json"])
+                (footage / "x.json").write_text(json.dumps({"files": [{"fid": "abcd", "path": "/Volumes/X/A.MP4"}]}))
+                self.assertEqual(rb.load_footage_ids(Path(tmp)).fid("/Volumes/X/A.MP4"), "abcd")  # changed: read again
+                self.assertEqual(reads, ["x.json", "x.json"])
+            (footage / "y.json").write_text("{not json")
+            with self.assertRaises(ValueError):
+                rb.load_footage_ids(Path(tmp))
+            self.assertEqual(len(rb.footage_indexes(Path(tmp), strict=False)), 1)
+
+
+class StatusTests(unittest.TestCase):
+    def test_the_statuses_are_spelled_on_disk_and_in_the_summary_as_before(self):
+        self.assertEqual(rb.STATUSES, ("kept", "trimmed", "slipped", "swapped_to_alternate", "swapped", "removed"))
+        with tempfile.TemporaryDirectory() as tmp:
+            cut = ProposedCut(Path(tmp))
+            cut.slip(2, 10)
+            cut.trim_tail(3, 5)
+            cut.enable(4, track=2)
+            cut.relink(5, "/Volumes/RAW/Day 3/X009.MP4")
+            cut.remove(6)
+            result = cut.diff()
+            text = json.dumps(result)
+            back = json.loads(text)
+        self.assertEqual(back["slots"], json.loads(json.dumps(result["slots"])))
+        self.assertEqual([type(s["status"]) for s in back["slots"]], [str] * 6)
+        self.assertEqual(statuses(back), ["kept", "slipped", "trimmed", "swapped_to_alternate", "swapped", "removed"])
+        self.assertIn('"status": "swapped_to_alternate"', text)
+        self.assertEqual(list(back["summary"])[:7], ["slots", "kept", "trimmed", "slipped", "swapped_to_alternate", "swapped", "removed"])
+        self.assertEqual(rb.format_result(result), rb.format_result(back))  # read from disk or fresh, the same words
+
 
 LIVE_OUTPUT = {
     "sequence": "Sequence 01",

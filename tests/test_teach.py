@@ -14,7 +14,7 @@ from test_feedback import HAVE_FFMPEG, RenderbackTests, colour_embed
 from test_fill import fake_embed, fake_take
 from test_pipeline import KEY, the_map, write_project
 from videtor import events, pipeline, teach
-from videtor.kb import feedback
+from videtor.kb import feedback, readback
 from videtor.plan import evaluate, keeper
 
 
@@ -53,6 +53,67 @@ class RulesAndStateTests(unittest.TestCase):
             {"project": "p", "measure": "right_take", "was": 0.5, "now": 0.4, "verdict": "worse"}]}}, self.kb)
         last = teach.last_learning(self.kb)
         self.assertEqual((last["kept"], last["refused"], last["worse"]), ([], ["keeper (event)"], ["p: right_take 0.5 -> 0.4"]))  # the newest first
+
+
+class PastEditsTests(unittest.TestCase):
+    """Many past edits over a few footage indexes: each index read once, remembered until it changes."""
+
+    def setUp(self):
+        self.root = Path(tempfile.mkdtemp())
+        self.kb, self.footmap = self.root / "kb", self.root / "footmap"
+        (self.kb / "footage").mkdir(parents=True)
+        self.footmap.mkdir()
+        video = lambda fid, path: {"fid": fid, "path": path, "kind": "video"}  # noqa: E731
+        self.index("a", {"A.xml::Seq": "/Volumes/A/shoot"}, [video(f"a{k}", f"/Volumes/A/shoot/day{k % 2}/C{k}.MP4") for k in range(6)]
+                   + [{"fid": "wav", "path": "/Volumes/A/shoot/sound.wav", "kind": "audio"}])
+        self.index("b", {"B.xml::Seq": ["/Volumes/B/one", "/Volumes/B/two"]}, [video("b0", "/Volumes/B/one/X.MP4"), video("b1", "/Volumes/B/two/Y.MP4"),
+                                                                               video("b2", "/Volumes/B/three/Z.MP4"), video("a0", "/Volumes/B/one/copy.MP4")])
+        self.index("c", {}, [video("c0", "/Volumes/C/x/Q.MP4")])
+        (self.kb / "footage" / "c.summary.json").write_text(json.dumps({"files": [video("zz", "/Volumes/C/x/Z.MP4")]}))
+        for fid in ("a0", "a1", "a3", "b0", "b2", "c0"):
+            (self.footmap / f"{fid}.npz").write_bytes(b"")
+        types = {"A.xml::Seq": "event", "B.xml::Seq": "event", "C.xml::Seq": "wedding", "D.xml::Seq": "event"}
+        types.update({f"E{k}.xml::Seq": "sports-promo" for k in range(12)})
+        footage = {"C.xml::Seq": ["/Volumes/C/x/"], "D.xml::Seq": ["/Volumes/A/shoot/day1"], **{f"E{k}.xml::Seq": ["/Volumes/A/shoot", "/Volumes/C"] for k in range(12)}}
+        (self.kb / "manifest.json").write_text(json.dumps({"types": types, "footage": footage}))
+        feedback._write({"name": "p", "bucket": "event", "source": "render:/x.mp4", "added": [{"fid": "a0"}], "by_hand": True}, self.kb)
+
+    def tearDown(self):
+        shutil.rmtree(self.root, ignore_errors=True)
+
+    def index(self, name, roots, files):
+        (self.kb / "footage" / f"{name}.json").write_text(json.dumps({"roots": roots, "files": files}))
+
+    def edits(self):
+        return {e["key"]: (e["folders"], e["mapped_takes"]) for e in teach.past_edits(self.kb, self.root / "none", self.footmap)}
+
+    def test_each_index_is_read_once_for_many_edits_and_again_when_it_changes(self):
+        real, reads = readback._read_index, []
+        with mock.patch.object(readback, "_read_index", side_effect=lambda p: reads.append(p.name) or real(p)):
+            got = self.edits()
+            self.assertEqual(sorted(reads), ["a.json", "b.json", "c.json"])  # 16 edits, three indexes, each read once
+            self.assertEqual(got["A.xml::Seq"], (["/Volumes/A/shoot"], 3))  # the index's roots; a0, a1, a3 mapped, the sound not a take
+            self.assertEqual(got["B.xml::Seq"], (["/Volumes/B/one", "/Volumes/B/two"], 2))  # b2 lies outside its folders
+            self.assertEqual(got["C.xml::Seq"], (["/Volumes/C/x/"], 1))  # the summary is not an index
+            self.assertEqual(got["D.xml::Seq"], (["/Volumes/A/shoot/day1"], 2))
+            self.assertEqual(got["E0.xml::Seq"][1], 4)
+            self.assertEqual(self.edits(), got)
+            self.assertEqual(len(reads), 3)  # nothing changed: nothing read
+            self.index("c", {}, [{"fid": "c0", "path": "/Volumes/C/x/Q.MP4", "kind": "video"}, {"fid": "b0", "path": "/Volumes/C/x/R.MP4", "kind": "video"}])
+            self.assertEqual(self.edits()["C.xml::Seq"], (["/Volumes/C/x/"], 2))
+            self.assertEqual(reads[3:], ["c.json"])
+
+    def test_the_state_is_the_same_whatever_was_remembered(self):
+        st = lambda: json.dumps(teach.state(self.kb, exports=self.root / "none", refs_dir=self.root / "none", footmap_dir=self.footmap), sort_keys=True)  # noqa: E731
+        readback._INDEXES.clear()
+        first = st()
+        self.assertEqual(st(), first)
+        readback._INDEXES.clear()
+        self.assertEqual(st(), first)
+        ev = next(b for b in json.loads(first)["buckets"] if b["bucket"] == "event")
+        self.assertEqual(([e["mapped_takes"] for e in ev["edits"]], ev["by_hand"], ev["finished"]), ([3, 2, 2], 1, 1))
+        (self.kb / "footage" / "b.json").write_text("{broken")
+        self.assertEqual([e["mapped_takes"] for e in teach.past_edits(self.kb, self.root / "none", self.footmap) if e["bucket"] == "event"], [3, 0, 2])
 
 
 class EditTests(unittest.TestCase):

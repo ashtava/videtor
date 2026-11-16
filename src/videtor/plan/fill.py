@@ -137,6 +137,7 @@ class Pool:
         finite = lambda v: np.sort(v[np.isfinite(v)])  # noqa: E731
         self._speed = finite(np.concatenate([t.cam_speed for t in takes])) if takes else np.zeros(0)
         self._shake = finite(cat("shake"))
+        self._per_take: dict[tuple[str, int], tuple] = {}  # (what, id(take)) -> (take, value): terms of a take and the pool alone
 
     @staticmethod
     def _rank(values: np.ndarray, sorted_pool: np.ndarray) -> np.ndarray:
@@ -146,10 +147,36 @@ class Pool:
         r = np.searchsorted(sorted_pool, np.nan_to_num(values, nan=np.median(sorted_pool))) / sorted_pool.size
         return np.where(np.isfinite(values), r, 0.5)
 
+    def _once(self, what: str, take: Take, make) -> tuple | dict:
+        """make(take), worked out once a take for this pool; its arrays come back read-only, as they are shared."""
+        hit = self._per_take.get((what, id(take)))
+        if hit is None or hit[0] is not take:
+            out = make(take)
+            for x in out.values() if isinstance(out, dict) else out:
+                x.flags.writeable = False
+            hit = self._per_take[(what, id(take))] = (take, out)
+        return hit[1]
+
     def camera(self, take: Take) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """(speed rank, shake rank, moving, steady) per sample of `take`."""
-        speed, shake = self._rank(take.cam_speed, self._speed), self._rank(take.a["shake"], self._shake)
-        return speed, shake, (speed > MOVING_RANK) & (shake < SMOOTH_RANK), (speed < STEADY_RANK) & (shake < SMOOTH_RANK)
+        def make(take):
+            speed, shake = self._rank(take.cam_speed, self._speed), self._rank(take.a["shake"], self._shake)
+            return speed, shake, (speed > MOVING_RANK) & (shake < SMOOTH_RANK), (speed < STEADY_RANK) & (shake < SMOOTH_RANK)
+
+        return self._once("camera", take, make)
+
+    def fixed(self, take: Take) -> dict:
+        """The parts of a sample's score (sample_scores) that depend on the take and the pool, not on the slot."""
+        def make(take):
+            a = take.a
+            sharp_z = (np.log1p(a["sharp"]) - self.sharp[0]) / self.sharp[1]
+            return {
+                "has_face": a["faces"] > 0, "partial": a["partial"].astype(bool), "sharp_z": sharp_z, "sharp": 0.3 * np.clip(sharp_z, -2, 2),
+                "jump": 1.0 * a["jump"].astype(bool), "exposure": 0.5 * ((a["bright"] < 25) | (a["bright"] > 235)),
+                "edges": 0.4 * (a["t"] < 0.6) + 0.3 * (a["t"] > take.duration_s - 0.4),  # the operator settling, the camera dropping
+            }
+
+        return self._once("fixed", take, make)
 
     def similarity(self, text_emb: np.ndarray) -> list[np.ndarray]:
         """Per take, the pool z-score of each sample's best match over the given descriptions."""
@@ -196,8 +223,8 @@ def sample_scores(
         if "wide" in allowed:
             allowed.add("detail")  # a face too small to detect reads as no face: leave wide vs detail to the description
         s -= 0.8 * ~np.isin(take.scale, sorted(allowed))
-    has_face = a["faces"] > 0
-    partial = a["partial"].astype(bool)
+    f = pool.fixed(take)
+    has_face, partial = f["has_face"], f["partial"]
     face = slot.get("face", "any")
     if face == "none":
         s -= 0.8 * has_face
@@ -216,12 +243,11 @@ def sample_scores(
     else:
         s -= 2.0 * np.clip(shake_r - 0.85, 0, None)  # only the shakiest seconds lose
     terms["moving"], terms["steady"] = moving, steady
-    sharp_z = (np.log1p(a["sharp"]) - pool.sharp[0]) / pool.sharp[1]
-    s += 0.3 * np.clip(sharp_z, -2, 2)
-    terms["sharp_z"] = sharp_z
-    s -= 1.0 * a["jump"].astype(bool)
-    s -= 0.5 * ((a["bright"] < 25) | (a["bright"] > 235))
-    s -= 0.4 * (a["t"] < 0.6) + 0.3 * (a["t"] > take.duration_s - 0.4)  # the operator settling, the camera dropping
+    s += f["sharp"]
+    terms["sharp_z"] = f["sharp_z"]
+    s -= f["jump"]
+    s -= f["exposure"]
+    s -= f["edges"]
     return np.nan_to_num(s, nan=-5.0), terms
 
 
@@ -441,11 +467,61 @@ def _window_look(take: Take, d: tuple) -> tuple[np.ndarray, float]:
     return e / (np.linalg.norm(e) or 1.0), float(np.nanmean(take.a["bright"][sl]))
 
 
-def _settle_neighbours(chosen: dict[int, int], S: np.ndarray, detail: dict, takes: list[Take], slots: list[dict], times: list, fixed: set[int]) -> int:
+class Unscored(RuntimeError):
+    """A phase of the fill tried to give a slot a take that was never scored for it."""
+
+
+class Assignment:
+    """Which take each slot plays, through the fill's phases, with the scores behind it: `S` (slot x take) and
+    `detail` ((slot, take) -> the window and its terms). The one rule: a slot is only ever given a take that was
+    scored for it, and `give` is the only way to give one, so a phase that breaks the rule is named at once."""
+
+    def __init__(self, S: np.ndarray, detail: dict, slot_ids: list[str] | None = None, take_names: list[str] | None = None):
+        self.S, self.detail, self.chosen = S, detail, {}
+        self.slot_ids, self.take_names = slot_ids, take_names
+
+    def scored(self, j: int, k: int) -> bool:
+        return (j, k) in self.detail and self.S[j, k] > -1e5
+
+    def give(self, j: int, k: int, phase: str) -> None:
+        if not self.scored(j, k):
+            slot = self.slot_ids[j] if self.slot_ids else j
+            take = self.take_names[k] if self.take_names else k
+            raise Unscored(f"fill ({phase}): slot {slot} was given take {take}, which was never scored for it (slot {j}, take {k})")
+        self.chosen[j] = k
+
+    def drop(self, j: int) -> None:
+        del self.chosen[j]
+
+    def rescore(self, j: int, k: int, score: float, row: tuple) -> None:
+        """Another window of take k for slot j (a take used twice shows another stretch)."""
+        self.S[j, k], self.detail[(j, k)] = score, row
+
+    def __contains__(self, j: int) -> bool:
+        return j in self.chosen
+
+    def __getitem__(self, j: int) -> int:
+        return self.chosen[j]
+
+    def __iter__(self):
+        return iter(self.chosen)
+
+    def get(self, j, default=None):
+        return self.chosen.get(j, default)
+
+    def items(self):
+        return self.chosen.items()
+
+    def values(self):
+        return self.chosen.values()
+
+
+def _settle_neighbours(chosen: Assignment, takes: list[Take], slots: list[dict], times: list, fixed: set[int]) -> int:
     """Where two shots sit badly at a cut (the same take twice, two takes of one setup, day cut to night inside a
     section), give one of the two slots another of its good takes, when that loses less than the cut costs.
     The assignment before this scores every slot alone; this is the part of a second look that is about
     neighbours. Slots in `fixed` (match-cut runs, chosen together), bytes and black slots stay. Returns the swaps."""
+    S, detail = chosen.S, chosen.detail
     look: dict[tuple[int, int], tuple] = {}
 
     def at(j: int, k: int) -> tuple:
@@ -490,13 +566,13 @@ def _settle_neighbours(chosen: dict[int, int], S: np.ndarray, detail: dict, take
             best, best_val = cur, S[j, cur] - cur_cost
             for k in np.argsort(-S[j])[:NEIGHBOUR_K]:
                 k = int(k)
-                if S[j, k] < -1e5 or (j, k) not in detail or not free(j, k, before, after):
+                if not chosen.scored(j, k) or not free(j, k, before, after):
                     continue
                 val = S[j, k] - cost(before, kb, j, k) - cost(j, k, after, ka)
                 if val > best_val + 1e-6:
                     best, best_val = k, val
             if best != cur:
-                chosen[j] = best
+                chosen.give(j, best, "neighbours")
                 swaps += 1
                 changed = True
         if not changed:
@@ -524,11 +600,12 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
     n_s, n_t = len(slots), len(takes)
     S = np.full((n_s, n_t), -1e6)
     detail: dict[tuple[int, int], tuple] = {}
+    q_embs: dict[int, np.ndarray] = {}  # each slot's descriptions, embedded once for this fill
     for j, slot in enumerate(slots):
         if slot.get("black"):
             continue
         qs = sm.queries(slot)
-        q_emb = embed_texts(qs)
+        q_emb = q_embs[j] = embed_texts(qs)
         match = pool.similarity(q_emb)
         per_query = [pool.similarity(q_emb[k : k + 1]) for k in range(len(qs))] if len(qs) > 1 else None
         length = times[j][1]
@@ -573,12 +650,15 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
     copies = 1 if (m.get("repeat_take") is False and n_t >= n_s) else 2
     big = np.tile(S, (1, copies)) - np.repeat(np.arange(copies) * 0.5, n_t)[None, :]
     rows, cols = linear_sum_assignment(-big)
-    chosen = {j: c % n_t for j, c in zip(rows, cols) if big[j, c] > -1e5}
+    chosen = Assignment(S, detail, [s["id"] for s in slots], [t.name for t in takes])
+    for j, c in zip(rows, cols):
+        if big[j, c] > -1e5:
+            chosen.give(int(j), int(c % n_t), "assignment")
     # a slot whose takes the plan names gets one of them even when two slots already play that take: seven
     # moments of one long take are seven slots, and the plan asked for each of them
     for j, slot in enumerate(slots):
         if j not in chosen and slot.get("takes") and not slot.get("black") and S[j].max() > -1e5:
-            chosen[j] = int(np.argmax(S[j]))
+            chosen.give(j, int(np.argmax(S[j])), "the plan's named takes")
     used = set(chosen.values())
 
     def entry(j: int, k: int, length: float | None = None) -> dict:
@@ -611,7 +691,7 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
             windows.setdefault(k, []).append((a, b))
             continue
         if any(a < y + 1.0 and x < b + 1.0 for x, y in windows.get(k, [])):  # overlaps, or within a second of a use
-            scores, terms = sample_scores(take, slots[j], pool.similarity(embed_texts(sm.queries(slots[j])))[k], avoid_z[k], pool, crew_free, landscape[k],
+            scores, terms = sample_scores(take, slots[j], pool.similarity(q_embs[j])[k], avoid_z[k], pool, crew_free, landscape[k],
                                           (keeper or {}).get(take.fid), keep_w)
             t = take.a["t"]
             span = allowed_span(slots[j]["takes"], take.name) if slots[j].get("takes") else None
@@ -622,13 +702,12 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
             score, in_s, i = best_window(take, scores, times[j][1] * speed)
             win = max(1, int(round(times[j][1] * speed / HOP)))
             if score > -5:
-                detail[(j, k)] = (in_s, speed, i, win, terms, hit)
-                S[j, k] = score
+                chosen.rescore(j, k, score, (in_s, speed, i, win, terms, hit))
                 a, b = in_s, in_s + times[j][1] * speed
             elif slots[j].get("takes") and not any(S[j, kk] > -1e5 and kk != k and kk not in chosen.values() for kk in range(n_t)):
                 pass  # the plan named this take for the slot and it has no other: it stays where it is, next to the other use
             else:
-                del chosen[j]  # nothing left in that take: the slot falls back to its best runner-up below
+                chosen.drop(j)  # nothing left in that take: the slot falls back to its best runner-up below
                 continue
         windows.setdefault(k, []).append((a, b))
 
@@ -651,10 +730,10 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
         if len(seq) != len(js):  # never lay a shorter run onto the wrong slots: the slots keep their own takes
             continue
         for j, k, mm in zip(js, seq, ms):
-            chosen[j] = k
+            chosen.give(j, k, "match-cut run")
             if j != js[0]:
                 matched[j] = mm
-    _settle_neighbours(chosen, S, detail, takes, slots, times, {j for js in by_section.values() for j in js if slots[j]["section"] in match_sections})
+    _settle_neighbours(chosen, takes, slots, times, {j for js in by_section.values() for j in js if slots[j]["section"] in match_sections})
     used = set(chosen.values())
 
     def light(j: int, k: int) -> float:
@@ -666,7 +745,7 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
         if j not in chosen:  # lost its take to an earlier slot: the best take no slot is using, else any
             free = [k for k in np.argsort(-S[j]) if S[j, k] > -1e5 and k not in chosen.values()]
             if free:
-                chosen[j] = int(free[0])
+                chosen.give(j, int(free[0]), "fallback")
         if slot.get("black"):
             out_slots.append({"id": slot["id"], "section": slot["section"], "role": slot.get("role", ""), "show": slot.get("show", ""),
                               "start_s": start, "length_s": length, "pick": None, "alternates": [], "black": True})
