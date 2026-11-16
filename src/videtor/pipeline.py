@@ -950,7 +950,7 @@ def read_back(picks_path: Path, render: Path | None = None, xml: Path | None = N
             path = feedback.record_readback(result, picks, paths.kb, force)
             ev.wrote("feedback", path, f"feedback kept: {path} (videtor learn uses it)")
             shotmap_p = picks_path.parent / "shotmap.json"
-            if shotmap_p.exists() and str(result.get("source") or "").startswith(feedback.FINAL):
+            if shotmap_p.exists() and feedback.is_final(feedback.load(picks["name"], paths.kb)):  # a finished job, read from the right cut
                 from videtor.plan import evaluate
 
                 if evaluate.add_project(picks["name"], shotmap_p, paths.kb, feedback=picks["name"]):
@@ -1254,27 +1254,11 @@ def teach_edit(key: str, sample: int = 120, paths: Paths = Paths(), ev: Events |
 
 
 def unread_final(project_dir: Path, kb_dir: Path = Path("kb")) -> Path | None:
-    """A project's finished video that has not been read back yet (or is newer than the last read)."""
-    from datetime import datetime
+    """A project's finished video that has not been read back yet (or is newer than the last read). The rule is
+    said once, in project.py, which the app's pages ask too."""
+    from videtor import project
 
-    from videtor.kb import feedback
-
-    picks_p = Path(project_dir) / "picks.json"
-    final = find_render(Path(project_dir)) if picks_p.exists() else None
-    if not final:
-        return None
-    try:
-        name = json.loads(picks_p.read_text()).get("name") or Path(project_dir).name
-    except ValueError:
-        return None
-    doc = feedback.load(name, kb_dir)
-    if not feedback.is_final(doc) or str(doc.get("source") or "") != f"render:{final}":
-        return final
-    try:
-        read_at = datetime.fromisoformat(doc.get("read_at") or "").timestamp()
-    except ValueError:
-        return final
-    return final if final.stat().st_mtime > read_at else None
+    return project.unread(Path(project_dir), Path(kb_dir))
 
 
 def read_pending(out_root: Path = Path("out"), paths: Paths = Paths(), ev: Events | None = None, dirs: list[Path] | None = None,

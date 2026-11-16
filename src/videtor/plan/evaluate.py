@@ -75,11 +75,10 @@ def _window(take, pick: dict) -> slice:
 def _shots(picks: dict) -> list[tuple[dict, dict]]:
     """(slot, shot) for everything V1 plays, in order: a flicker's sub-shots each count."""
     out = []
+    from videtor.plan import slots as slots_mod
+
     for s in picks["slots"]:
-        p = s.get("pick")
-        if not p:
-            continue
-        out += [(s, piece) for piece in p["pieces"]] if p.get("pieces") else [(s, p)]
+        out += [(s, shot) for shot in slots_mod.shown(s)]
     return out
 
 
@@ -127,11 +126,12 @@ def measure(picks: dict, takes: list, embed_texts, used: dict | None = None, kee
     """One cut in numbers (see the module's list)."""
     from videtor.plan import fill
     from videtor.plan import shotmap as sm
+    from videtor.plan import slots as slots_mod
 
     by_fid = {t.fid: t for t in takes}
     pool = fill.Pool(takes)
     order = {t.fid: k for k, t in enumerate(takes)}
-    asked = [s for s in picks["slots"] if not s.get("black")]
+    asked = [s for s in picks["slots"] if slots_mod.kind(s) != "black"]
     match, sharp, keep = [], [], []
     for s in asked:
         p = s.get("pick")

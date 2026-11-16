@@ -22,6 +22,8 @@ from pathlib import Path
 
 import numpy as np
 
+from videtor.plan import slots as slots_mod
+
 SIZE = 640  # long side of the frames the path is measured on
 SIGMA_S = 0.35  # the path is smoothed over about this long: slower moves stay, faster shake goes
 PAD_S = 0.4  # measured beyond the shot on both sides, so the smoothing sees past the cuts
@@ -204,10 +206,10 @@ def plan(picks: dict, log=print) -> int:
     todo = []
     for slot in picks["slots"]:
         p = slot.get("pick")
-        if not p or p.get("pieces") or slot.get("black"):
+        if slots_mod.kind(slot) in ("black", "empty", "flicker"):
             continue
         p["reasons"] = [r for r in p.get("reasons") or [] if not r.startswith(("steadied", "left as shot"))]
-        if slot.get("stabilize") is False or slot.get("byte") or slot["length_s"] < MIN_SHOT_S or not Path(p["path"]).exists():
+        if slot.get("stabilize") is False or slots_mod.own_sound(slot) or slot["length_s"] < MIN_SHOT_S or not Path(p["path"]).exists():
             p.pop("stab", None)  # a byte is on a tripod: what moves there is the speaker
             continue
         todo.append((slot, p))

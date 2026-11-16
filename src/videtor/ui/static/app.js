@@ -22,9 +22,10 @@ const fmtDur = (s) => {
 const LIVE = ["running", "paused", "waiting", "queued"];
 const jobLive = (j) => !!j && (typeof j.live === "boolean" ? j.live : LIVE.includes(j.status));
 const jobOk = (j) => !!j && j.status === "done";
+const cap = (s) => String(s).charAt(0).toUpperCase() + String(s).slice(1);
 const jobWhy = (j) => !j ? "Videtor no longer knows this job (was the app restarted?). Start it again."
   : j.status === "cancelled" ? "It was stopped before it finished."
-  : (j.result && j.result.error) || (j.progress && j.progress.last) || "It stopped with an error; Details or Activity say more.";
+  : cap((j.result && j.result.error) || (j.progress && j.progress.last) || "it stopped with an error; Details or Activity say more.");
 /* answers that can come late: each request gets a number, and an answer older than one already shown is dropped */
 const seqs = {};
 function ticket(name) {
@@ -162,8 +163,8 @@ const txt = (v) => (typeof v === "function" ? v() : v) || "";
 function runPanel(name, jobId, o = {}) {
   if (!jobId) return;
   const rk = runKey(name, o.project);
-  const had = runs[rk];
-  if (had && had.job === jobId) { if (had.state === "running") attachRun(had); return; }  // already this panel's run
+  const had = runs[rk], same = had && [had, had.prev].find((x) => x && x.job === jobId);
+  if (same) { if (same.state === "running") attachRun(same); return; }  // already this panel's run
   runs[rk] = { rk, name, project: o.project || null, job: jobId, state: "running", why: "", last: null, o };
   paintRuns();
   attachRun(runs[rk]);
@@ -171,7 +172,9 @@ function runPanel(name, jobId, o = {}) {
 function attachRun(r) {
   const o = r.o;
   watch(r.job, { key: "run:" + r.rk, status: o.status, log: o.log, logbox: o.logbox, showLog: o.showLog, hideDone: o.hideDone, project: r.project, onDone: async (job) => {
-    if (runs[r.rk] !== r) return;  // a newer run of this panel took its place
+    const cur = runs[r.rk];
+    if (cur !== r && !(cur && cur.prev === r)) return;  // a newer run of this panel took its place
+    runs[r.rk] = r;  // a refusal said meanwhile gives way to the run's own end
     const ok = jobOk(job);
     r.state = ok ? "done" : "failed";
     r.why = ok ? "" : jobWhy(job);
@@ -186,10 +189,11 @@ function attachRun(r) {
 }
 /* a refusal from the server, said where the run's failure would be */
 function refuseRun(name, why, project) {
-  runs[runKey(name, project)] = { rk: runKey(name, project), name, project: project || null, job: null, state: "failed", why, last: null, o: { failed: "Not started." } };
+  const rk = runKey(name, project), had = runs[rk];
+  runs[rk] = { rk, name, project: project || null, job: null, state: "failed", why: cap(why), last: null, o: { failed: "Not started." }, prev: had && had.state === "running" ? had : null };
   paintRuns();
 }
-const runRunning = (name) => { const r = runOf(name); return !!r && r.state === "running"; };
+const runRunning = (name) => { const r = runOf(name); return !!r && (r.state === "running" || (!!r.prev && r.prev.state === "running")); };
 function paintRuns() {
   document.querySelectorAll("[data-run]").forEach((el) => {
     const r = runOf(el.dataset.run), o = r ? r.o : {}, st = r ? r.state : "idle";
@@ -212,7 +216,7 @@ const PROJECT_CARDS = ["overview-status", "overview-logbox", "cut-status", "cut-
 function enterProject(dir) {
   for (const k of Object.keys(watching)) if (watching[k].project) stopWatch(k);
   PROJECT_CARDS.forEach((id) => { $(id).hidden = true; });
-  Object.values(runs).forEach((r) => { if (r.project === dir && r.state === "running") attachRun(r); });
+  Object.values(runs).forEach((r) => { const go = r.state === "running" ? r : r.prev; if (r.project === dir && go && go.state === "running") attachRun(go); });
 }
 
 /* ---- state: projects, libraries, what is running ---- */
@@ -593,7 +597,7 @@ $("cut-run").onclick = async () => {
   $("cut-run").disabled = true;
   $("cut-msg").textContent = "";
   const r = await api("/api/cut", { project: dir, sfx: $("cut-sfx").checked });
-  if (r.error) { $("cut-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; $("cut-run").disabled = false; return; }
+  if (r.error) { refuseRun("cut", r.error, dir); $("cut-run").disabled = false; return; }
   runPanel("cut", r.job.id, PANELS.cut(dir));
   loadProject();
 };
@@ -792,7 +796,8 @@ const prMade = (x) => { const kinds = [...new Set(x.promos.map((p) => p.kind))];
    or says plainly that nothing was made (the promos still listed are older ones, not this run's) */
 function prWatch(id, what) {
   $("pr-msg").textContent = "";
-  runPanel("promos", id, { status: "pr-status", log: "pr-log", logbox: "pr-logbox", what: what || "Making the promos", older: "What is shown below was made before.",
+  runPanel("promos", id, { status: "pr-status", log: "pr-log", logbox: "pr-logbox", what: what || "Making the promos",
+    older: () => (promoSets && promoSets.sets.length ? "What is shown below was made before." : ""),
     failed: "No promos were made this time.", olderFailed: () => (promoSets && promoSets.sets.length ? "The promos below are from an earlier run." : ""),
     onDone: (job) => loadPromos((job.result && job.result.promos ? job.result.promos.replace(/\/promos\.json$/, "") : null) || true),
     onFail: () => loadPromos() });

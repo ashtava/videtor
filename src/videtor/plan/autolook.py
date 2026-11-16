@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import numpy as np
 
+from videtor.plan import slots as slots_mod
+
 HOP = 0.5
 MARGIN = 0.6  # how much lower a runner-up may score and still replace a flawed pick (sd of the slot's score)
 SOFT_Z, SHARPER_BY = -1.2, 1.0  # a pick this soft against the pool, and a runner-up at least this much sharper
@@ -61,7 +63,7 @@ def apply(picks: dict, takes: list) -> list[str]:
     lines = []
     for n, s in enumerate(slots):
         p = s.get("pick")
-        if not p or p.get("pieces") or s.get("layers") or s.get("byte") or s.get("match_cut") or p.get("ramp") or p["fid"] not in by_fid:
+        if not slots_mod.plain(s) or s.get("match_cut") or p["fid"] not in by_fid:  # one plain shot, not one of a match-cut run
             continue
         mine = flaws(by_fid[p["fid"]], p, pool)
         around = {(slots[k].get("pick") or {}).get("fid") for k in (n - 1, n + 1) if 0 <= k < len(slots)}
