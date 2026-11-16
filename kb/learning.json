@@ -1,5 +1,63 @@
 [
  {
+  "at": "2026-11-16T23:50:15",
+  "kept": [],
+  "refused": [
+   "taste (all your cuts)",
+   "taste (your bts cuts)",
+   "keeper (bts)",
+   "keeper (sports-promo)"
+  ],
+  "passed": false,
+  "before": {
+   "filled": 1.0,
+   "match": 2.523,
+   "sharp": 0.187,
+   "repeats": 0.2,
+   "lookalikes": 0.8,
+   "light_jumps": 0.5,
+   "keeper": 0.967,
+   "right_take": 0.479,
+   "right_second": 0.304,
+   "in_top3": 0.74
+  },
+  "after": {
+   "filled": 1.0,
+   "match": 1.906,
+   "sharp": 0.249,
+   "repeats": 0.222,
+   "lookalikes": 0.556,
+   "light_jumps": 0.222,
+   "keeper": 1.831,
+   "right_take": 0.511,
+   "right_second": 0.213,
+   "in_top3": 0.679
+  },
+  "worse": [
+   "guru-25s-brief: right_take 0.613 -> 0.548",
+   "guru-25s-brief: right_second 0.194 -> 0.161",
+   "guru-25s-brief: in_top3 0.968 -> 0.806",
+   "guru-25s-brief: match 2.898 -> 2.058",
+   "diwali-party-v2: match 2.214 -> 1.424",
+   "alpha-summit: match 3.198 -> 1.768",
+   "sports-practice-a: match 2.781 -> 1.725",
+   "sports-practice-a: light_jumps 1 -> 2",
+   "261114ac-brandon-mcmullen-arrival: right_second 0.762 -> 0.476",
+   "logan: right_second 0.524 -> 0.238"
+  ],
+  "state": {
+   "projects": 7,
+   "finals": 3,
+   "by_hand": 0,
+   "rows": 60,
+   "verdicts": {
+    "good": 4,
+    "not": 2
+   }
+  },
+  "note": "after clip"
+ },
+ {
   "at": "2026-11-15T13:36:20",
   "kept": [],
   "refused": [

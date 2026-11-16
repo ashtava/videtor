@@ -42,6 +42,11 @@
    "name": "logan",
    "shotmap": "/Users/paritoshsrivastava/workspace/videtor/out/logan/shotmap.json",
    "feedback": "logan"
+  },
+  {
+   "name": "clip",
+   "shotmap": "/Volumes/Paritosh_4/Razorpay BTS/xml/clip/shotmap.json",
+   "feedback": "clip"
   }
  ]
 }
