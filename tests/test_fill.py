@@ -210,6 +210,47 @@ class TasteTests(unittest.TestCase):
 
 
 class MatchCutTests(unittest.TestCase):
+    def test_every_moment_the_plan_names_in_one_long_take_gets_its_slot(self):
+        # the same job: seven slots named moments of one long take; a take went to two slots at most and the
+        # other five came out empty, the reveal among them
+        long, other = fake_take("LONG", 0, n=140), fake_take("OTHER", 1)
+        spans = [(5, 12), (16.5, 20), (21.5, 25), (38, 44), (48, 62), (25.5, 28), (43.5, 46)]
+        sec = {"name": "arrival", "slots": [{"id": f"s{n}", "beats": 1, "show": "axis 0", "takes": [f"LONG*@{a:g}-{b:g}"]} for n, (a, b) in enumerate(spans)]}
+        m = {**MAP, "sections": [sec]}
+        picks = fill.fill(m, [long, other], shotmap.timing(m, [i * 0.5 for i in range(12)], 25.0), fake_embed)
+        got = [s["pick"] for s in picks["slots"]]
+        self.assertTrue(all(got), [bool(g) for g in got])
+        for g, (a, b) in zip(got, spans):
+            self.assertEqual(g["name"], "LONG.MP4")
+            self.assertTrue(a - 0.26 <= g["in_s"] and g["out_s"] <= b + 0.26, (g["in_s"], g["out_s"], a, b))  # inside the moment named
+        ins = sorted(g["in_s"] for g in got)
+        self.assertTrue(all(y - x >= 0.5 for x, y in zip(ins, ins[1:])), ins)  # and no two the same stretch
+        # two slots naming the same short moment both keep it rather than one going empty or wandering off
+        twice = {"name": "arrival", "slots": [{"id": "a", "beats": 1, "show": "axis 0", "takes": ["LONG*@30-30.5"]}, {"id": "b", "beats": 1, "show": "axis 0", "takes": ["LONG*@30-30.5"]}]}
+        both = fill.fill({**MAP, "sections": [twice]}, [long, other], shotmap.timing({**MAP, "sections": [twice]}, [i * 0.5 for i in range(12)], 25.0), fake_embed)
+        self.assertEqual([s["pick"]["name"] for s in both["slots"]], ["LONG.MP4", "LONG.MP4"])
+        self.assertTrue(all(s["pick"]["in_s"] <= 30.25 <= s["pick"]["out_s"] for s in both["slots"]), [(s["pick"]["in_s"], s["pick"]["out_s"]) for s in both["slots"]])
+
+    def test_a_match_section_may_cut_between_moments_of_one_take(self):
+        # the plan of a real job (2026-11-16): three poses out of one take, cut on each other, then another take.
+        # The run used to refuse a take twice and hand the next slot's take to the wrong slot (a KeyError).
+        pose, face, other = fake_take("POSE", 0, n=40), fake_take("FACE", 1), fake_take("OTHER", 2)
+        sec = {"name": "pose", "match": True, "slots": [
+            {"id": "p1", "beats": 1, "show": "axis 0", "takes": ["POSE*@0-5"]}, {"id": "p2", "beats": 1, "show": "axis 0", "takes": ["POSE*@8-12"]},
+            {"id": "p3", "beats": 1, "show": "axis 0", "takes": ["POSE*@14-19"]}, {"id": "p4", "beats": 1, "show": "axis 1", "takes": ["FACE*"]}]}
+        m = {**MAP, "sections": [sec]}
+        times = shotmap.timing(m, [i * 0.5 for i in range(10)], 25.0)
+        with tempfile.TemporaryDirectory() as d:
+            picks = fill.fill(m, [pose, face, other], times, fake_embed, frames_dir=Path(d))
+        got = [(s["pick"]["name"], s["pick"]["in_s"]) for s in picks["slots"]]
+        self.assertEqual([n for n, _ in got], ["POSE.MP4", "POSE.MP4", "POSE.MP4", "FACE.MP4"])
+        self.assertTrue(0 <= got[0][1] <= 5 and 8 <= got[1][1] <= 12 and 14 <= got[2][1] <= 19, got)  # each its own moment
+        # a slot of the run that has other takes still gets one the run has not used
+        free = {**sec, "slots": [{"id": "a", "beats": 1, "show": "axis 0"}, {"id": "b", "beats": 1, "show": "axis 0"}]}
+        with tempfile.TemporaryDirectory() as d:
+            two = fill.fill({**MAP, "sections": [free]}, [pose, fake_take("POSE2", 0), other], times[:2], fake_embed, frames_dir=Path(d))
+        self.assertEqual(len({s["pick"]["name"] for s in two["slots"]}), 2)
+
     def test_a_match_section_picks_the_take_whose_frame_lines_up_with_the_cut_before(self):
         from PIL import Image, ImageDraw
 

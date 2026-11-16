@@ -391,16 +391,16 @@ def cut_match(frames_dir: Path | None, a: Take, ia: int, b: Take, ib: int) -> fl
 
 
 def match_run(js: list[int], cands: dict[int, list[int]], S: np.ndarray, ends, frames_dir: Path | None, takes: list[Take]) -> tuple[list[int], list[float]]:
-    """The takes for a run of match-cut slots `js` (one each, none twice) with the best total of their own
-    scores and MATCH_W x the match at every cut between them; `ends(j, k)` is (first sample, last sample) of
-    take k's window for slot j. Returns the takes and the match at each cut (0 for the first)."""
+    """The takes for a run of match-cut slots `js` (one each) with the best total of their own scores and
+    MATCH_W x the match at every cut between them; `ends(j, k)` is (first sample, last sample) of take k's
+    window for slot j. No take twice, except where a slot has no other left: a plan that names two moments of
+    one take for the run (three poses out of one take) gets them. Returns the takes and the match at each cut
+    (0 for the first), one per slot."""
     beams: list[tuple[float, list[int], list[float]]] = [(0.0, [], [])]
     for n, j in enumerate(js):
         nxt = []
         for total, seq, ms in beams:
-            for k in cands[j]:
-                if k in seq:
-                    continue
+            for k in [k for k in cands[j] if k not in seq] or cands[j]:
                 m = cut_match(frames_dir, takes[seq[-1]], ends(js[n - 1], seq[-1])[1], takes[k], ends(j, k)[0]) if seq else 0.0
                 nxt.append((total + float(S[j, k]) + MATCH_W * m, seq + [k], ms + [m]))
         beams = sorted(nxt, key=lambda b: -b[0])[:MATCH_BEAM] or beams
@@ -574,6 +574,11 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
     big = np.tile(S, (1, copies)) - np.repeat(np.arange(copies) * 0.5, n_t)[None, :]
     rows, cols = linear_sum_assignment(-big)
     chosen = {j: c % n_t for j, c in zip(rows, cols) if big[j, c] > -1e5}
+    # a slot whose takes the plan names gets one of them even when two slots already play that take: seven
+    # moments of one long take are seven slots, and the plan asked for each of them
+    for j, slot in enumerate(slots):
+        if j not in chosen and slot.get("takes") and not slot.get("black") and S[j].max() > -1e5:
+            chosen[j] = int(np.argmax(S[j]))
     used = set(chosen.values())
 
     def entry(j: int, k: int, length: float | None = None) -> dict:
@@ -609,6 +614,9 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
             scores, terms = sample_scores(take, slots[j], pool.similarity(embed_texts(sm.queries(slots[j])))[k], avoid_z[k], pool, crew_free, landscape[k],
                                           (keeper or {}).get(take.fid), keep_w)
             t = take.a["t"]
+            span = allowed_span(slots[j]["takes"], take.name) if slots[j].get("takes") else None
+            if span and math.isfinite(span[1]):  # the plan named the moment: another stretch of it, never another moment
+                scores = np.where((t >= span[0]) & (t <= span[1]), scores, -50.0)
             for x, y in windows[k]:
                 scores = np.where((t > x - 1.0 - times[j][1] * speed) & (t < y + 1.0), -50.0, scores)
             score, in_s, i = best_window(take, scores, times[j][1] * speed)
@@ -617,6 +625,8 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
                 detail[(j, k)] = (in_s, speed, i, win, terms, hit)
                 S[j, k] = score
                 a, b = in_s, in_s + times[j][1] * speed
+            elif slots[j].get("takes") and not any(S[j, kk] > -1e5 and kk != k and kk not in chosen.values() for kk in range(n_t)):
+                pass  # the plan named this take for the slot and it has no other: it stays where it is, next to the other use
             else:
                 del chosen[j]  # nothing left in that take: the slot falls back to its best runner-up below
                 continue
@@ -638,6 +648,8 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
             continue
         ends = lambda j, k: (detail[(j, k)][2], detail[(j, k)][2] + detail[(j, k)][3] - 1)  # noqa: E731
         seq, ms = match_run(js, cands, S, ends, frames_dir, takes)
+        if len(seq) != len(js):  # never lay a shorter run onto the wrong slots: the slots keep their own takes
+            continue
         for j, k, mm in zip(js, seq, ms):
             chosen[j] = k
             if j != js[0]:
