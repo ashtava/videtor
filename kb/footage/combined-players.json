@@ -1,0 +1,2416 @@
+{
+ "mount": "/Volumes/Paritosh_4",
+ "scanned_at": "2026-11-16T11:32:55",
+ "dirs": [
+  "/Volumes/Paritosh_4/combined players"
+ ],
+ "roots": {
+  "combined-players::footage": [
+   "/Volumes/Paritosh_4/combined players"
+  ]
+ },
+ "top_level": [
+  "261114AC ",
+  "Razorpay BTS",
+  "combined players"
+ ],
+ "files": [
+  {
+   "fid": "b044d2e88e20",
+   "path": "/Volumes/Paritosh_4/combined players/C6233.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6233.MP4",
+   "kind": "video",
+   "size": 1476716665,
+   "inode": 28450,
+   "mtime": 1794806469,
+   "media": {
+    "duration_s": 38.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 307649305,
+    "created": "2026-11-14T21:52:26.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "abbc8f6447cd",
+   "path": "/Volumes/Paritosh_4/combined players/C6234.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6234.MP4",
+   "kind": "video",
+   "size": 939827693,
+   "inode": 28261,
+   "mtime": 1794806282,
+   "media": {
+    "duration_s": 23.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319669283,
+    "created": "2026-11-14T21:53:20.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "a3f84ba43589",
+   "path": "/Volumes/Paritosh_4/combined players/C6235.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6235.MP4",
+   "kind": "video",
+   "size": 335828414,
+   "inode": 28557,
+   "mtime": 1794805915,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 349821264,
+    "created": "2026-11-14T21:54:03.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "aa290e53286a",
+   "path": "/Volumes/Paritosh_4/combined players/C6236.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6236.MP4",
+   "kind": "video",
+   "size": 268717399,
+   "inode": 28310,
+   "mtime": 1794805665,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373218609,
+    "created": "2026-11-14T21:54:14.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "441a2a169f24",
+   "path": "/Volumes/Paritosh_4/combined players/C6237.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6237.MP4",
+   "kind": "video",
+   "size": 470050461,
+   "inode": 28587,
+   "mtime": 1794806029,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 340616276,
+    "created": "2026-11-14T21:54:24.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "e33070892f49",
+   "path": "/Volumes/Paritosh_4/combined players/C6238.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6238.MP4",
+   "kind": "video",
+   "size": 604272233,
+   "inode": 28506,
+   "mtime": 1794806124,
+   "media": {
+    "duration_s": 14.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 335706796,
+    "created": "2026-11-14T21:54:40.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7f9a10443622",
+   "path": "/Volumes/Paritosh_4/combined players/C6239.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6239.MP4",
+   "kind": "video",
+   "size": 335828059,
+   "inode": 28405,
+   "mtime": 1794805894,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373142287,
+    "created": "2026-11-14T21:55:08.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9e7d592462bb",
+   "path": "/Volumes/Paritosh_4/combined players/C6249.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6249.MP4",
+   "kind": "video",
+   "size": 335828599,
+   "inode": 28357,
+   "mtime": 1794805879,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 349821457,
+    "created": "2026-11-14T21:58:58.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9fa8ff6adddd",
+   "path": "/Volumes/Paritosh_4/combined players/C6268.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6268.MP4",
+   "kind": "video",
+   "size": 738495261,
+   "inode": 166183,
+   "mtime": 1794655268,
+   "media": {
+    "duration_s": 18.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 315596265,
+    "created": "2026-11-14T23:20:49.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "23a6e680e98c",
+   "path": "/Volumes/Paritosh_4/combined players/C6269.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6269.MP4",
+   "kind": "video",
+   "size": 537162016,
+   "inode": 166201,
+   "mtime": 1794655306,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319739295,
+    "created": "2026-11-14T23:21:31.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "c6987de0a3dc",
+   "path": "/Volumes/Paritosh_4/combined players/C6270.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6270.MP4",
+   "kind": "video",
+   "size": 335829582,
+   "inode": 136219,
+   "mtime": 1794655318,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 310953316,
+    "created": "2026-11-14T23:21:49.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 1,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "8f45bfd2b23e",
+   "path": "/Volumes/Paritosh_4/combined players/C6271.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6271.MP4",
+   "kind": "video",
+   "size": 1141160480,
+   "inode": 133537,
+   "mtime": 1794655354,
+   "media": {
+    "duration_s": 28.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 316989022,
+    "created": "2026-11-14T23:22:06.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9a919e34596c",
+   "path": "/Volumes/Paritosh_4/combined players/C6272.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6272.MP4",
+   "kind": "video",
+   "size": 402940244,
+   "inode": 145822,
+   "mtime": 1794655368,
+   "media": {
+    "duration_s": 10.08,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319793844,
+    "created": "2026-11-14T23:22:39.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "df80ab849c2b",
+   "path": "/Volumes/Paritosh_4/combined players/C6273.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6273.MP4",
+   "kind": "video",
+   "size": 335828599,
+   "inode": 138730,
+   "mtime": 1794655456,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 349821457,
+    "created": "2026-11-14T23:24:07.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "37536bc9ead6",
+   "path": "/Volumes/Paritosh_4/combined players/C6274.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6274.MP4",
+   "kind": "video",
+   "size": 537162201,
+   "inode": 146725,
+   "mtime": 1794655480,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319739405,
+    "created": "2026-11-14T23:24:26.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "3797df261128",
+   "path": "/Volumes/Paritosh_4/combined players/C6275.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6275.MP4",
+   "kind": "video",
+   "size": 470049833,
+   "inode": 137839,
+   "mtime": 1794655496,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 356098358,
+    "created": "2026-11-14T23:24:45.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7ffef930c629",
+   "path": "/Volumes/Paritosh_4/combined players/C6276.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6276.MP4",
+   "kind": "video",
+   "size": 402939614,
+   "inode": 163568,
+   "mtime": 1794655512,
+   "media": {
+    "duration_s": 9.6,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 335783011,
+    "created": "2026-11-14T23:25:01.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ee8ce689bbff",
+   "path": "/Volumes/Paritosh_4/combined players/C6277.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6277.MP4",
+   "kind": "video",
+   "size": 268718382,
+   "inode": 163499,
+   "mtime": 1794655552,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319902835,
+    "created": "2026-11-14T23:25:45.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "4721bb7ad3a8",
+   "path": "/Volumes/Paritosh_4/combined players/C6278.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6278.MP4",
+   "kind": "video",
+   "size": 738494448,
+   "inode": 162026,
+   "mtime": 1794655582,
+   "media": {
+    "duration_s": 18.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 323901073,
+    "created": "2026-11-14T23:26:02.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f26f0ab2f7e4",
+   "path": "/Volumes/Paritosh_4/combined players/C6279.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6279.MP4",
+   "kind": "video",
+   "size": 872715865,
+   "inode": 131579,
+   "mtime": 1794655652,
+   "media": {
+    "duration_s": 21.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 330574191,
+    "created": "2026-11-14T23:27:11.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ef226a922343",
+   "path": "/Volumes/Paritosh_4/combined players/C6280.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6280.MP4",
+   "kind": "video",
+   "size": 738495261,
+   "inode": 164544,
+   "mtime": 1794655678,
+   "media": {
+    "duration_s": 18.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 315596265,
+    "created": "2026-11-14T23:27:39.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "b18840b9c538",
+   "path": "/Volumes/Paritosh_4/combined players/C6281.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6281.MP4",
+   "kind": "video",
+   "size": 872716848,
+   "inode": 146212,
+   "mtime": 1794658578,
+   "media": {
+    "duration_s": 22.08,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 316201756,
+    "created": "2026-11-15T00:15:56.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "8cfbf8d914be",
+   "path": "/Volumes/Paritosh_4/combined players/C6282.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6282.MP4",
+   "kind": "video",
+   "size": 268718027,
+   "inode": 161391,
+   "mtime": 1794658594,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 344510291,
+    "created": "2026-11-15T00:16:28.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "eff0b168678d",
+   "path": "/Volumes/Paritosh_4/combined players/C6283.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6283.MP4",
+   "kind": "video",
+   "size": 470051001,
+   "inode": 164533,
+   "mtime": 1794658612,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 326424306,
+    "created": "2026-11-15T00:16:40.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "e91f842929a1",
+   "path": "/Volumes/Paritosh_4/combined players/C6284.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6284.MP4",
+   "kind": "video",
+   "size": 537161661,
+   "inode": 143144,
+   "mtime": 1794658650,
+   "media": {
+    "duration_s": 12.96,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 331581272,
+    "created": "2026-11-15T00:17:16.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "4e6efe8341b7",
+   "path": "/Volumes/Paritosh_4/combined players/C6285.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6285.MP4",
+   "kind": "video",
+   "size": 470050276,
+   "inode": 142559,
+   "mtime": 1794658726,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 340616142,
+    "created": "2026-11-15T00:18:35.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "f8292351d701",
+   "path": "/Volumes/Paritosh_4/combined players/C6286.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6286.MP4",
+   "kind": "video",
+   "size": 335829227,
+   "inode": 162402,
+   "mtime": 1794658768,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 329244340,
+    "created": "2026-11-15T00:19:20.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "a0e431b0913d",
+   "path": "/Volumes/Paritosh_4/combined players/C6287.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6287.MP4",
+   "kind": "video",
+   "size": 805605833,
+   "inode": 146865,
+   "mtime": 1794658792,
+   "media": {
+    "duration_s": 20.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319684854,
+    "created": "2026-11-15T00:19:32.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "370f495b5c13",
+   "path": "/Volumes/Paritosh_4/combined players/C6288.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6288.MP4",
+   "kind": "video",
+   "size": 268717842,
+   "inode": 139641,
+   "mtime": 1794658806,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 344510053,
+    "created": "2026-11-15T00:19:59.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "0fb471320a58",
+   "path": "/Volumes/Paritosh_4/combined players/C6289.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6289.MP4",
+   "kind": "video",
+   "size": 537161033,
+   "inode": 167834,
+   "mtime": 1794658840,
+   "media": {
+    "duration_s": 12.48,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 344333995,
+    "created": "2026-11-15T00:20:28.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 2,
+     "-90": 1,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "85cb70c539b3",
+   "path": "/Volumes/Paritosh_4/combined players/C6290.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6290.MP4",
+   "kind": "video",
+   "size": 470050461,
+   "inode": 163595,
+   "mtime": 1794659052,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 340616276,
+    "created": "2026-11-15T00:24:01.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "4722412fc38a",
+   "path": "/Volumes/Paritosh_4/combined players/C6291.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6291.MP4",
+   "kind": "video",
+   "size": 537162016,
+   "inode": 166257,
+   "mtime": 1794663012,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319739295,
+    "created": "2026-11-15T01:29:58.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "7d7fb861d247",
+   "path": "/Volumes/Paritosh_4/combined players/C6292.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6292.MP4",
+   "kind": "video",
+   "size": 805605108,
+   "inode": 134874,
+   "mtime": 1794663040,
+   "media": {
+    "duration_s": 19.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 327481751,
+    "created": "2026-11-15T01:30:19.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "54feb70e0c42",
+   "path": "/Volumes/Paritosh_4/combined players/C6293.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6293.MP4",
+   "kind": "video",
+   "size": 470050276,
+   "inode": 144442,
+   "mtime": 1794663070,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 340616142,
+    "created": "2026-11-15T01:30:58.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "393f86d1f7ad",
+   "path": "/Volumes/Paritosh_4/combined players/C6294.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6294.MP4",
+   "kind": "video",
+   "size": 470049648,
+   "inode": 165076,
+   "mtime": 1794663084,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 356098218,
+    "created": "2026-11-15T01:31:13.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "0c6658d037ae",
+   "path": "/Volumes/Paritosh_4/combined players/C6295.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6295.MP4",
+   "kind": "video",
+   "size": 805605648,
+   "inode": 131768,
+   "mtime": 1794663108,
+   "media": {
+    "duration_s": 20.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319684780,
+    "created": "2026-11-15T01:31:28.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "df36eb9b145a",
+   "path": "/Volumes/Paritosh_4/combined players/C6296.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6296.MP4",
+   "kind": "video",
+   "size": 470050816,
+   "inode": 142361,
+   "mtime": 1794663126,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 326424177,
+    "created": "2026-11-15T01:31:54.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "3f30ed716ec4",
+   "path": "/Volumes/Paritosh_4/combined players/C6297.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6297.MP4",
+   "kind": "video",
+   "size": 268717842,
+   "inode": 162980,
+   "mtime": 1794663140,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 344510053,
+    "created": "2026-11-15T01:32:14.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "e235ec520c32",
+   "path": "/Volumes/Paritosh_4/combined players/C6298.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6298.MP4",
+   "kind": "video",
+   "size": 268717842,
+   "inode": 136257,
+   "mtime": 1794663190,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 344510053,
+    "created": "2026-11-15T01:33:04.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "eba5308adf06",
+   "path": "/Volumes/Paritosh_4/combined players/C6299.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6299.MP4",
+   "kind": "video",
+   "size": 537162644,
+   "inode": 169079,
+   "mtime": 1794674204,
+   "media": {
+    "duration_s": 13.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 308714163,
+    "created": "2026-11-15T04:36:29.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "6d863a9eaa6a",
+   "path": "/Volumes/Paritosh_4/combined players/C6300.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6300.MP4",
+   "kind": "video",
+   "size": 402939074,
+   "inode": 171158,
+   "mtime": 1794674228,
+   "media": {
+    "duration_s": 9.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 353455328,
+    "created": "2026-11-15T04:36:58.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "1a70450f3ce1",
+   "path": "/Volumes/Paritosh_4/combined players/C6301.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6301.MP4",
+   "kind": "video",
+   "size": 537162016,
+   "inode": 171706,
+   "mtime": 1794674276,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319739295,
+    "created": "2026-11-15T04:37:43.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "361da035e2cc",
+   "path": "/Volumes/Paritosh_4/combined players/C6302.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6302.MP4",
+   "kind": "video",
+   "size": 335827874,
+   "inode": 169984,
+   "mtime": 1794674292,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373142082,
+    "created": "2026-11-15T04:38:03.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "6daa10483179",
+   "path": "/Volumes/Paritosh_4/combined players/C6303.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6303.MP4",
+   "kind": "video",
+   "size": 201607182,
+   "inode": 168406,
+   "mtime": 1794674302,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 336011970,
+    "created": "2026-11-15T04:38:16.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "6df10c198394",
+   "path": "/Volumes/Paritosh_4/combined players/C6304.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6304.MP4",
+   "kind": "video",
+   "size": 335829582,
+   "inode": 170211,
+   "mtime": 1794674312,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 310953316,
+    "created": "2026-11-15T04:38:23.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "9c41c070c7cc",
+   "path": "/Volumes/Paritosh_4/combined players/C6305.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6305.MP4",
+   "kind": "video",
+   "size": 335827874,
+   "inode": 169954,
+   "mtime": 1794674326,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 373142082,
+    "created": "2026-11-15T04:38:39.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "005cf81601ee",
+   "path": "/Volumes/Paritosh_4/combined players/C6306.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6306.MP4",
+   "kind": "video",
+   "size": 738495076,
+   "inode": 169977,
+   "mtime": 1794674400,
+   "media": {
+    "duration_s": 18.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 315596186,
+    "created": "2026-11-15T04:39:41.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "668b68d37a0f",
+   "path": "/Volumes/Paritosh_4/combined players/C6307.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6307.MP4",
+   "kind": "video",
+   "size": 470049648,
+   "inode": 172008,
+   "mtime": 1794674422,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 356098218,
+    "created": "2026-11-15T04:40:11.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "78c1c467f165",
+   "path": "/Volumes/Paritosh_4/combined players/C6308.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6308.MP4",
+   "kind": "video",
+   "size": 268718382,
+   "inode": 168458,
+   "mtime": 1794674432,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319902835,
+    "created": "2026-11-15T04:40:25.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "ae7792848df6",
+   "path": "/Volumes/Paritosh_4/combined players/C6309.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6309.MP4",
+   "kind": "video",
+   "size": 470049648,
+   "inode": 172010,
+   "mtime": 1794674448,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 356098218,
+    "created": "2026-11-15T04:40:36.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "b23837c06e44",
+   "path": "/Volumes/Paritosh_4/combined players/C6310.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6310.MP4",
+   "kind": "video",
+   "size": 537162016,
+   "inode": 173427,
+   "mtime": 1794674468,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 319739295,
+    "created": "2026-11-15T04:40:55.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 27 of 27 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  },
+  {
+   "fid": "5bfa1299d57b",
+   "path": "/Volumes/Paritosh_4/combined players/C6311.MP4",
+   "dir": "/Volumes/Paritosh_4/combined players",
+   "basename": "C6311.MP4",
+   "kind": "video",
+   "size": 335829042,
+   "inode": 169078,
+   "mtime": 1794674550,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 329244158,
+    "created": "2026-11-15T04:42:22.000000Z",
+    "video": {
+     "codec": "hevc",
+     "width": 3840,
+     "height": 2160,
+     "fps": 100.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/combined players/C* hevc 3840x2160 landscape dm0"
+   }
+  }
+ ],
+ "project": {
+  "name": "combined-players",
+  "folder": "/Volumes/Paritosh_4/combined players",
+  "key": "combined-players::footage"
+ }
+}
