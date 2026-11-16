@@ -98,6 +98,11 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    `sports-promo` (inferred). 9:16, 19.0 s, 28 slots; Burn4Me from 80.18 s (top ranked again; drop at 85.31 s on the
    first handshake), flash 0.35, accents, stabilised. Five players, each in every section; every slot names its takes
    from 8-stills-per-take sheets (`work/takes-*.jpg`). "Clicking photos" = C6278 (a woman photographs a player on her phone).
+1g. **data (11-16)**: a second combined arrival, three other players (`Paritosh_4/2/xml/data`, key `data::footage`, footage
+   in `Paritosh_4/2/data`). The same brief at 25-30 s; frame vertical set in the app, no track. Shot map written and
+   validated; the user cuts from the app. Then the second look, `report.md` and the verdict. Bucket `sports-promo`
+   (inferred). 27.8 s, 39 slots; BLAGE - Go Down from 109.69 s (second ranked; drop at 114.66 s on a handshake), flash
+   0.35, accents, stabilised. No one takes photos in this footage: "posing" is to the lens. Closes on a hand over the lens (C6400).
 1a. **diwali-test (A1)**: the shot map is written and validated. The user cuts from the app. Then do the second
    look, write `report.md` in the project folder, and record the verdict. The plan:
    - Brief: "fast paced party edit for diwali, under 60 seconds". Bucket `event` (inferred).
