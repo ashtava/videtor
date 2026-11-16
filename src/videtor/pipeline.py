@@ -400,7 +400,184 @@ def replay(picks: dict, decisions: dict) -> tuple[list[str], list[str]]:
         second_look.apply(picks, {sid: choice}, {sid: d.get("why", "")})
         slot["second_look"]["replayed"] = True
         done.append(sid)
+    from videtor.plan import edit as edit_mod
+
+    for k, op in enumerate(decisions.get("edits") or []):  # the timeline's edits, in the order they were made
+        try:
+            edit_mod.apply(picks, op)
+            done.append(f"{op.get('op')} {op.get('slot')}")
+        except (edit_mod.EditError, KeyError, ValueError):
+            missed.append(f"{op.get('op')} {op.get('slot')}")
     return done, missed
+
+
+# --- the timeline in the app: edits, the way back, preview clips, more takes to choose from ------
+
+HISTORY = 30  # edits that can be undone
+
+
+def _history(out: Path) -> list[Path]:
+    d = out / "work" / "history"
+    return sorted(d.glob("*.json")) if d.is_dir() else []
+
+
+def edit(picks_path: Path, op: dict, paths: Paths = Paths(), ev: Events | None = None, by: str = "you") -> dict:
+    """One edit from the app's timeline (plan/edit.py: swap, slip, roll, remove, replace; "undo" takes the last one
+    back). The picks are changed at once and the edit is remembered (decisions.json) so the next cut of the plan
+    makes it again; the Premiere XML is written when the user asks (`write_xml`), not on every click."""
+    from videtor.plan import edit as edit_mod
+
+    ev = ev or Events()
+    out = picks_path.parent
+    picks = check_picks(json.loads(picks_path.read_text()))
+    d = load_decisions(out)
+    d.setdefault("edits", [])
+    if op.get("op") == "undo":
+        past = _history(out)
+        if not past:
+            raise PipelineError("Nothing to undo.")
+        snap = json.loads(past[-1].read_text())
+        picks_path.write_text(json.dumps(snap["picks"], indent=1) + "\n")
+        d["edits"], d["swaps"] = snap.get("edits", []), snap.get("swaps", d.get("swaps", {}))
+        (out / DECISIONS).write_text(json.dumps(d, indent=1) + "\n")
+        past[-1].unlink()
+        ev.info(f"undone: {snap.get('line', 'the last edit')}")
+        return {"picks": snap["picks"], "line": f"Undone: {snap.get('line', 'the last edit')}"}
+    before = json.loads(json.dumps(picks))
+    op = dict(op)
+    if op.get("op") == "swap" and op.get("k") and not op.get("take"):  # remembered by the take's name: it survives a re-cut that reorders the runners-up
+        slot = next((s for s in picks["slots"] if s["id"] == op.get("slot")), None)
+        alts = (slot or {}).get("alternates") or []
+        if slot and 1 <= int(op["k"]) <= len(alts):
+            op["take"] = alts[int(op["k"]) - 1]["name"]
+    if op.get("op") == "replace" and op.get("option") is not None and not op.get("choice"):
+        rows = load_options(out, str(op.get("slot"))).get("rows") or []
+        if not 0 <= int(op["option"]) < len(rows):
+            raise PipelineError("That take is no longer in the list: look for more takes again.")
+        op["choice"] = rows[int(op["option"])]
+    try:
+        line = edit_mod.apply(picks, op)
+    except edit_mod.EditError as exc:
+        raise PipelineError(str(exc)) from exc
+    hist = out / "work" / "history"
+    hist.mkdir(parents=True, exist_ok=True)
+    past = _history(out)
+    n = int(past[-1].stem) + 1 if past else 1
+    (hist / f"{n:05d}.json").write_text(json.dumps({"picks": before, "edits": d["edits"], "swaps": d.get("swaps", {}), "line": line}) + "\n")
+    for old in past[: max(0, len(past) + 1 - HISTORY)]:
+        old.unlink()
+    picks_path.write_text(json.dumps(picks, indent=1) + "\n")
+    d["edits"] = d["edits"] + [{**{k: v for k, v in op.items() if k not in ("k", "option", "project")}, "by": by, "at": time.strftime("%Y-%m-%dT%H:%M:%S")}]
+    (out / DECISIONS).write_text(json.dumps(d, indent=1) + "\n")
+    ev.info(line)
+    return {"picks": picks, "line": line}
+
+
+def note(project_dir: Path, slot_id: str | None, text: str) -> dict:
+    """A note on one shot (or on the whole cut): review.json, for whoever revises the plan."""
+    p = Path(project_dir) / "review.json"
+    doc = json.loads(p.read_text()) if p.exists() else {}
+    doc.setdefault("notes", {})
+    text = " ".join(str(text).split())
+    if slot_id:
+        if text:
+            doc["notes"][slot_id] = text
+        else:
+            doc["notes"].pop(slot_id, None)
+    else:
+        doc["overall"] = text
+    doc["at"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+    p.write_text(json.dumps(doc, indent=1, ensure_ascii=False) + "\n")
+    return doc
+
+
+def proxies(picks_path: Path, slots: list[str] | None = None, alternates: bool = False, ev: Events | None = None) -> dict:
+    """Make the small preview clips the timeline plays (export/proxy.py): the footage drive must be connected."""
+    from videtor.export import proxy
+
+    ev = ev or Events()
+    picks = check_picks(json.loads(picks_path.read_text()))
+    ev.stage("proxies", "making the preview clips for the timeline", "Loading the moving picture")
+    out = proxy.ensure(picks, picks_path.parent, set(slots) if slots else None, alternates, progress=lambda k, n: ev.progress(k, n), log=ev.info)
+    ev.info(f"preview clips: {out['made']} made, {out['had']} already there" + (f", {len(out['failed'])} could not be made (is the drive connected?)" if out["failed"] else ""))
+    return out
+
+
+def load_options(out: Path, slot_id: str) -> dict:
+    p = out / "work" / f"options-{slug(slot_id)}.json"
+    try:
+        return json.loads(p.read_text()) if p.exists() else {}
+    except ValueError:
+        return {}
+
+
+def options(picks_path: Path, slot_id: str, show: str | None = None, n: int = 12, paths: Paths = Paths(), ev: Events | None = None,
+            embed_texts=None) -> dict:
+    """More takes to choose from for one shot: the best `n` moments in the footage for what the slot asks (or for
+    `show`, the user's own words), takes no other shot uses first, then ones already in the cut (marked
+    `used_in`). Kept in work/options-<slot>.json; the timeline shows them and `edit` (op "replace") puts one in."""
+    from videtor.plan import edit as edit_mod, fill
+    from videtor.plan import taste as taste_mod
+
+    ev = ev or Events()
+    out = picks_path.parent
+    picks = check_picks(json.loads(picks_path.read_text()))
+    slot = next((s for s in picks["slots"] if s["id"] == slot_id), None)
+    if not slot or not slot.get("pick"):
+        raise PipelineError(f"No such shot: {slot_id}")
+    if embed_texts is None:
+        from videtor.analyze import tags
+
+        embed_texts = tags.embed_texts
+    ev.stage("options", f"looking for more takes for {slot_id}", "Looking for more takes")
+    takes, _ = takes_for(index_for_key(picks["key"], paths.kb), picks["key"], paths.footmap)
+    plan_p = out / "shotmap.json"
+    plan = json.loads(plan_p.read_text()) if plan_p.exists() else {}
+    elsewhere = {(s.get("pick") or {}).get("fid"): s["id"] for s in picks["slots"] if s["id"] != slot_id and s.get("pick")}
+    takes = [t for t in takes if t.fid != slot["pick"].get("fid")]  # other takes; one already in the cut is offered last, and said to be
+    if not takes:
+        raise PipelineError("No other take of this footage has been read.")
+    words = [show.strip()] if show and show.strip() else slot.get("show")
+    one = {"version": 1, "name": picks["name"], "key": picks["key"], "length_s": float(slot["length_s"]), "fps": picks["fps"], "width": picks["width"],
+           "height": picks["height"], "avoid": picks.get("avoid") or [], "skip": plan.get("skip") or [], "repeat_take": False,
+           "sections": [{"name": slot.get("section") or "s", "slots": [{
+               "id": slot_id, "length_s": float(slot["length_s"]), "show": words, **({} if show else {k: slot[k] for k in ("scale", "face", "hands", "camera") if slot.get(k) is not None}),
+               **({"speed": slot["pick"]["speed"]} if float(slot["pick"].get("speed") or 1.0) < 1.0 else {})}]}]}
+    keep = fill.RUNNERS_UP
+    fill.RUNNERS_UP = max(1, n - 1)
+    try:
+        found = fill.fill(one, takes, [(0.0, float(slot["length_s"]))], embed_texts, taste=taste_mod.load(paths.kb, picks.get("type")),
+                          frames_dir=paths.footmap / "frames")["slots"][0]
+    finally:
+        fill.RUNNERS_UP = keep
+    rows = [{**r, **({"used_in": elsewhere[r["fid"]]} if r.get("fid") in elsewhere else {})} for r in [found.get("pick")] + list(found.get("alternates") or []) if r]
+    rows = [r for r in rows if not r.get("used_in")] + [r for r in rows if r.get("used_in")]
+    doc = {"slot": slot_id, "show": words if isinstance(words, str) else (words or [""])[0], "rows": rows, "at": time.strftime("%Y-%m-%dT%H:%M:%S")}
+    (out / "work").mkdir(parents=True, exist_ok=True)
+    (out / "work" / f"options-{slug(slot_id)}.json").write_text(json.dumps(doc, indent=1) + "\n")
+    ev.info(f"{len(rows)} more takes for {slot_id}: " + ", ".join(r["name"] for r in rows[:6]) + (" …" if len(rows) > 6 else ""))
+    _ = edit_mod
+    return doc
+
+
+def write_xml(picks_path: Path, paths: Paths = Paths(), ev: Events | None = None, by: str = "you") -> dict:
+    """Write the Premiere XML from the picks as the timeline left them, and keep what the user changed against the
+    cut as made (work/picks.cut.json) as their choices: that is what teaches (kb/feedback.py), the net result, not
+    every click on the way."""
+    from videtor.plan import edit as edit_mod
+
+    ev = ev or Events()
+    result = look(picks_path, {}, paths=paths, ev=ev, by=by)
+    cut_p = picks_path.parent / "work" / "picks.cut.json"
+    if cut_p.exists() and by not in MACHINE:
+        from videtor.kb import feedback
+
+        cut_as_made = json.loads(cut_p.read_text())
+        ids = edit_mod.changed(result["picks"], cut_as_made)
+        feedback.record_choices(result["picks"], {s["id"]: s.get("pick") for s in cut_as_made["slots"]}, ids, by, paths.kb, picks_path, only=True)
+        if ids:
+            ev.info(f"your changes kept as feedback: {len(ids)} shot(s) ({', '.join(ids[:8])}{' …' if len(ids) > 8 else ''})")
+    return result
 
 
 # --- the steps ---------------------------------------------------------------------------------
@@ -434,10 +611,15 @@ def cut(shotmap_path: Path, out: Path | None = None, mount: Path | None = None, 
         raise PipelineError(f"No footage map for {m['key']!r} ({n} takes in the pool). Connect the drive and cut again.")
     ev.stage("fill", f"choosing a shot for each of {len(shotmap.slots(m))} slots from {len(takes)} takes", "Choosing the shots")
     picks, music = cut_picks(m, takes, paths, ev, sfx=sfx, embed_texts=embed_texts)
+    (out / "work").mkdir(parents=True, exist_ok=True)
+    (out / "work" / "picks.cut.json").write_text(json.dumps(picks) + "\n")  # the cut as made: what the user's changes are measured against
     decisions = load_decisions(out) if not fresh else {"swaps": {}}
-    if decisions["swaps"]:
+    for stale in ([out / DECISIONS] if fresh else []) + _history(out):  # undo reaches back to this cut, not past it
+        stale.unlink(missing_ok=True)
+    kept = len(decisions["swaps"]) + len(decisions.get("edits") or [])
+    if kept:
         done, missed = replay(picks, decisions)
-        ev.info(f"second look kept from before: {len(done)} of {len(decisions['swaps'])} swaps" + (f"; not found again: {', '.join(missed)}" if missed else ""))
+        ev.info(f"your changes from before, made again: {len(done)} of {kept}" + (f"; not possible on this cut: {', '.join(missed)}" if missed else ""))
         if picks.get("sfx") is not None:
             picks["sfx"] = place_sfx(picks, paths)
     ev.stage("write", "writing the Premiere XML", "Writing the Premiere XML")

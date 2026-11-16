@@ -786,6 +786,39 @@ def verdict(
 
 
 @app.command()
+def proxies(
+    picks_path: Path = typer.Argument(..., help="picks.json from `videtor cut`."),
+    slot: list[str] = typer.Option([], "--slot", help="Only this shot (repeatable); default every shot."),
+    alternates: bool = typer.Option(False, "--alternates", help="Also the runners-up of those shots."),
+) -> None:
+    """Make the small preview clips the app's timeline plays (the footage drive must be connected)."""
+    _step(pipeline.proxies, picks_path, slots=slot or None, alternates=alternates, ev=_events())
+
+
+@app.command()
+def options(
+    picks_path: Path = typer.Argument(..., help="picks.json from `videtor cut`."),
+    slot: str = typer.Argument(..., help="The shot to find more takes for."),
+    show: str = typer.Option(None, "--show", help="What the shot should show, in your own words (default: what the plan asks)."),
+    n: int = typer.Option(12, "-n", help="How many takes."),
+    kb_dir: Path = KB_OPTION,
+    footmap_dir: Path = FOOTMAP_OPTION,
+) -> None:
+    """More takes to choose from for one shot, from footage no other shot uses (the app's timeline shows them)."""
+    _step(pipeline.options, picks_path, slot, show=show, n=n, paths=pipeline.Paths(kb=kb_dir, footmap=footmap_dir), ev=_events())
+
+
+@app.command("write-xml")
+def write_xml(
+    picks_path: Path = typer.Argument(..., help="picks.json, as the app's timeline left it."),
+    by: str = typer.Option("you", "--by", help="Who made the changes (kept with the feedback)."),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Write the Premiere XML from the picks as they stand, and keep what was changed against the cut as feedback."""
+    _step(pipeline.write_xml, picks_path, paths=pipeline.Paths(kb=kb_dir), ev=_events(), by=by)
+
+
+@app.command()
 def preview(
     picks_path: Path = typer.Argument(..., help="picks.json from `videtor cut`."),
     scale: float = typer.Option(0.5, "--scale", help="Size against the sequence (0.5 = half)."),

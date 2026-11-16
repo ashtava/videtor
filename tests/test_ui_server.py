@@ -264,6 +264,71 @@ class ServerTests(unittest.TestCase):
         self.assertIn("not a folder", self.post("/api/music/ranked", {"folder": str(self.tmp / "nope")})[1]["error"])
         self.assertEqual(self.post("/api/music/ranked", {"folder": str(footage), "length": 10})[1], {"tracks": []})
 
+    def test_media_is_served_in_the_byte_ranges_a_player_asks_for(self):
+        f = self.tmp / "out" / "clip.bin"
+        f.write_bytes(bytes(range(200)))
+        url = self.base + "/file?path=" + str(f)
+
+        def ranged(spec):
+            req = urllib.request.Request(url, headers={"Range": spec})
+            with urllib.request.urlopen(req) as r:
+                return r.status, r.headers.get("Content-Range"), r.read()
+
+        with urllib.request.urlopen(url) as r:
+            self.assertEqual((r.status, r.headers.get("Accept-Ranges"), len(r.read())), (200, "bytes", 200))
+        self.assertEqual(ranged("bytes=10-19"), (206, "bytes 10-19/200", bytes(range(10, 20))))
+        self.assertEqual(ranged("bytes=190-"), (206, "bytes 190-199/200", bytes(range(190, 200))))
+        self.assertEqual(ranged("bytes=-5"), (206, "bytes 195-199/200", bytes(range(195, 200))))
+        with self.assertRaises(urllib.error.HTTPError) as ctx:
+            ranged("bytes=500-600")
+        self.assertEqual(ctx.exception.code, 416)
+
+    def test_the_timeline_is_drawn_edited_and_noted_through_the_server(self):
+        d = self.tmp / "out" / "timed"
+        d.mkdir(parents=True, exist_ok=True)
+        _, r = self.post("/api/project/add", {"dir": str(d)})
+        d = Path(r["project"]["dir"])
+        self.assertIn("no cut yet", json.loads(self.get(f"/api/timeline?dir={d}")[2])["error"])
+        shot = lambda fid, a: {"fid": fid, "path": f"/V/{fid}.mp4", "name": f"{fid}.mp4", "in_s": a, "out_s": a + 1.0, "speed": 1.0, "duration_s": 10.0, "file_fps": 25.0}  # noqa: E731
+        slots = [{"id": "s1", "section": "one", "show": "x", "start_s": 0.0, "length_s": 1.0, "pick": shot("a", 2.0), "alternates": [shot("c", 1.0)]},
+                 {"id": "s2", "section": "one", "show": "y", "start_s": 1.0, "length_s": 1.0, "pick": shot("b", 3.0), "alternates": []}]
+        (d / "picks.json").write_text(json.dumps({"version": 1, "name": "timed", "key": "timed::footage", "fps": 25.0, "width": 1080, "height": 1920, "slots": slots}))
+        tl = json.loads(self.get(f"/api/timeline?dir={d}")[2])
+        self.assertEqual((len(tl["clips"]), tl["length_s"], tl["missing"], tl["can_undo"], tl["music"]), (2, 2.0, 2, False, []))
+        _, r = self.post("/api/edit", {"project": str(d), "op": "roll", "slot": "s1", "frames": 5})
+        self.assertEqual(r["line"], "the cut after s1 moved +5 frame(s)")
+        self.assertEqual((r["timeline"]["slots"][0]["length_s"], r["timeline"]["can_undo"]), (1.2, True))
+        self.assertIn("no such shot", self.post("/api/edit", {"project": str(d), "op": "slip", "slot": "zz", "frames": 1})[1]["error"])
+        _, r = self.post("/api/edit", {"project": str(d), "op": "swap", "slot": "s1", "k": 1})
+        self.assertEqual(r["timeline"]["slots"][0]["name"], "c.mp4")
+        self.post("/api/edit", {"project": str(d), "op": "undo"})
+        _, r = self.post("/api/edit", {"project": str(d), "op": "undo"})
+        self.assertEqual((r["timeline"]["slots"][0]["length_s"], r["timeline"]["slots"][0]["name"], r["timeline"]["can_undo"]), (1.0, "a.mp4", False))
+        self.assertEqual(self.post("/api/note", {"project": str(d), "slot": "s2", "text": "closer"})[1], {"ok": True})
+        self.assertEqual(json.loads(self.get(f"/api/timeline?dir={d}")[2])["slots"][1]["note"], "closer")
+        self.assertEqual(json.loads(self.get(f"/api/options?dir={d}&slot=s1")[2])["rows"], [])
+        with self.assertRaises(urllib.error.HTTPError) as ctx:
+            urllib.request.urlopen(self.base + f"/media?dir={d}&i=0")  # the cut has no music: nothing outside the project is served
+        self.assertEqual(ctx.exception.code, 404)
+        self.assertEqual(self.post("/api/write-xml", {"project": str(d)})[1]["job"]["args"], ["write-xml", str(d / "picks.json")])
+        self.assertEqual(self.post("/api/proxies", {"project": str(d), "slots": ["s1"], "alternates": True})[1]["job"]["args"],
+                         ["proxies", str(d / "picks.json"), "--slot", "s1", "--alternates"])
+        self.assertEqual(self.post("/api/options", {"project": str(d), "slot": "s1", "show": " a dog "})[1]["job"]["args"], ["options", str(d / "picks.json"), "s1", "--show", "a dog"])
+
+    def test_one_file_is_chosen_with_the_windows_own_dialog_when_there_is_a_window(self):
+        from unittest import mock
+
+        window = mock.Mock()
+        window.create_file_dialog.return_value = ("/Users/me/Music/song.wav",)
+        self.app.window = window
+        try:
+            self.assertEqual(self.post("/api/pick-file", {"kind": "audio", "start": str(self.tmp)})[1], {"path": "/Users/me/Music/song.wav", "cancelled": False})
+            self.assertIn("*.wav", window.create_file_dialog.call_args.kwargs["file_types"][0])
+            window.create_file_dialog.return_value = None
+            self.assertEqual(self.post("/api/pick-file", {"kind": "video"})[1], {"path": None, "cancelled": True})
+        finally:
+            self.app.window = None
+
     def test_scan_counts_the_video_files_under_a_folder(self):
         d = self.tmp / "scan" / "Card 1"
         d.mkdir(parents=True)

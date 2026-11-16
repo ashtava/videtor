@@ -102,7 +102,7 @@ class CutTests(unittest.TestCase):
         slot = next(s for s in result["picks"]["slots"] if s["id"] == "o2")
         self.assertEqual(slot["pick"]["name"], runner_up)
         self.assertTrue(slot["second_look"]["replayed"])
-        self.assertTrue(any("second look kept from before: 1 of 1" in e["text"] for e in seen))
+        self.assertTrue(any("your changes from before, made again: 1 of 1" in e["text"] for e in seen))
         result, _ = self.cut(the_map(), fresh=True)
         self.assertEqual(next(s for s in result["picks"]["slots"] if s["id"] == "o2")["pick"]["name"], first)
 

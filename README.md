@@ -203,6 +203,28 @@ uv run videtor preview out/<name>/picks.json                     # a half-size v
 - A second look is remembered: `videtor look` writes `decisions.json` next to the picks and the next
   `videtor cut` puts the swaps back (`--fresh` forgets them).
 
+### The timeline in the app: watch the cut and change it before Premiere
+
+The Review step plays the cut on a timeline (a monitor, the shots as blocks with their stills, the music with its
+beats) and lets the user change it there: use a runner-up, slip a shot in its take, move a cut, look for more takes
+in their own words, remove a shot, leave notes; Undo takes the last change back. The commands behind the buttons:
+
+```sh
+uv run videtor proxies out/<name>/picks.json            # the small preview clips the timeline plays (drive connected)
+uv run videtor options out/<name>/picks.json <slot> --show "a close-up of hands"   # more takes for one shot
+uv run videtor write-xml out/<name>/picks.json          # the Premiere XML from the picks as the timeline left them
+```
+
+- Every edit changes `picks.json` at once and is kept in `decisions.json` (`edits`), so cutting the plan again makes
+  the same edits again; `work/history/` holds the way back for Undo (up to the last cut).
+- The preview clips (`work/proxies/`, 640 px, framed as the XML frames them) carry 0.8 s of spare footage on each
+  side, so a slip or a moved cut plays at once; an edit past that fetches one new clip. Without the drive the
+  timeline shows stills and every edit still works.
+- The XML is written when the user asks. What they changed against the cut as made (`work/picks.cut.json`) is then
+  kept as their choices in `kb/feedback/`: the net result teaches, not every click.
+- Effects, sound effects, steadying and stacked layers are in the XML, not in the timeline's picture.
+- Notes on a shot or on the whole cut go to `review.json`, for whoever revises the plan.
+
 ### The shape and the music are the user's to set
 
 A project's `settings.json` (written by the app: New project, and **Shape and music** on Brief & plan) holds what the

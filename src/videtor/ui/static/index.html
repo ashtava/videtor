@@ -88,6 +88,7 @@
             </div>
             <div id="req-msg" class="muted"></div>
           </div>
+          <div id="req-other" class="muted" hidden></div>
           <h2>Brief</h2>
           <textarea id="brief" placeholder="Paste the brief as the client wrote it."></textarea>
           <div class="row"><button class="btn primary" id="save-brief">Save the brief</button><span id="brief-msg" class="muted"></span></div>
@@ -140,19 +141,54 @@
           <details class="guide" data-guide="look">
             <summary>How this works</summary>
             <ol>
-              <li>The strip shows the cut in order. Below it, every shot: the pick (outlined) and three runners-up.</li>
-              <li>Click a runner-up to use it instead; the XML is rewritten at once.</li>
-              <li>When it looks right, import the XML into Premiere (the steps are in the box below) and finish there: grade and stabilise as usual.</li>
+              <li><b>Watch the cut.</b> Play it on the timeline, with its music. It shows stills until you press <b>Load the moving picture</b> (the footage drive must be connected; under a minute). Space plays and stops, the arrow keys step a frame, up and down jump from cut to cut.</li>
+              <li><b>Change what you would change.</b> Click a shot: use a runner-up, slip the shot earlier or later in its take, move the cut after it, look for more takes in your own words, or remove it. Every change shows at once, and <b>Undo</b> takes the last one back.</li>
+              <li><b>Leave notes</b> on a shot or on the whole cut for what the plan should do differently.</li>
+              <li><b>Write the Premiere XML</b> when it looks right, import it (the steps are in the box below) and finish in Premiere: grade, stabilise, titles. Effects and sound effects are in the XML, not in this preview.</li>
               <li>When the job is done, say how the cut was and save your finished video in the project's folder (at the bottom of this page). Videtor reads it and learns which shots you kept and which you changed; nothing to export.</li>
             </ol>
           </details>
+          <div id="tl" hidden>
+            <div class="tl-top">
+              <div class="tl-monitor"><div class="tl-stage" id="tl-stage"></div><span class="tl-flag" id="tl-flag"></span></div>
+              <div class="tl-side" id="tl-inspector"></div>
+            </div>
+            <div class="tl-bar">
+              <button class="btn" id="tl-prev" title="The cut before (↑)">⏮</button>
+              <button class="btn" id="tl-back" title="One frame back (←)">◀</button>
+              <button class="btn primary" id="tl-play" title="Play or stop (space)">Play</button>
+              <button class="btn" id="tl-fwd" title="One frame on (→)">▶</button>
+              <button class="btn" id="tl-next" title="The next cut (↓)">⏭</button>
+              <span class="tl-time" id="tl-time">0:00:00</span><span class="muted" id="tl-total"></span>
+              <span style="flex:1"></span>
+              <span class="muted" id="tl-msg"></span>
+              <button class="btn" id="tl-undo">Undo</button>
+              <button class="btn" id="tl-load" hidden>Load the moving picture</button>
+              <button class="btn" id="tl-write">Write the Premiere XML</button>
+            </div>
+            <div class="status" id="tl-status" hidden></div>
+            <div class="tl-wrap" id="tl-wrap"><div class="tl-inner" id="tl-inner">
+              <div class="tl-row tl-sections" id="tl-sections"></div>
+              <div class="tl-row tl-clips" id="tl-clips"></div>
+              <div class="tl-row tl-music" id="tl-music"></div>
+              <div class="tl-playhead" id="tl-playhead"></div>
+            </div></div>
+            <div class="row"><label>Zoom</label><input type="range" id="tl-zoom" min="1" max="10" step="0.5" value="1" style="width:220px">
+              <span class="muted">Click a shot to change it. Drag along the timeline to scrub.</span></div>
+            <details class="advanced" id="tl-notes"><summary>Notes on the whole cut, and asking for a new plan</summary>
+              <textarea id="tl-overall" placeholder="What the cut as a whole should do differently, e.g. 'slower opening, more of the crowd before the drop'." style="min-height:70px"></textarea>
+              <div class="row"><button class="btn" id="tl-ask">Copy a request for a new plan from my notes</button><span class="muted" id="tl-ask-msg">Your notes are saved with the project (review.json). Paste the request into Claude Code to have the plan revised; your changes on the timeline are kept.</span></div>
+            </details>
+          </div>
           <div id="export"></div>
-          <div id="preview"></div>
-          <div class="status" id="preview-status" hidden></div>
-          <div id="cut-sheet"></div>
-          <div class="row"><label>Why (optional)</label><input type="text" id="look-note" placeholder="saved with the next swap, e.g. sharper face" style="min-width:320px"></div>
-          <div id="slots"></div>
-          <pre class="log" id="look-log" hidden>—</pre>
+          <details class="advanced"><summary>Every shot and its runners-up as a list, the cut as one sheet, and one video file of the cut</summary>
+            <div id="preview"></div>
+            <div class="status" id="preview-status" hidden></div>
+            <div id="cut-sheet"></div>
+            <div class="row"><label>Why (optional)</label><input type="text" id="look-note" placeholder="saved with the next swap, e.g. sharper face" style="min-width:320px"></div>
+            <div id="slots"></div>
+            <pre class="log" id="look-log" hidden>—</pre>
+          </details>
           <div id="teach"></div>
           <pre class="log" id="teach-log" hidden>—</pre>
         </div>

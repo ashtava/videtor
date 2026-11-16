@@ -178,3 +178,41 @@ h2 { font-size: 15px; margin: 22px 0 6px; }
 .rule { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; }
 .rule span { flex: 1; }
 video.preview { max-height: 420px; border-radius: 8px; background: #000; display: block; margin: 6px 0; }
+
+/* The timeline: the cut played and changed before Premiere */
+#tl { max-width: 1180px; margin: 8px 0 14px; }
+.tl-top { display: flex; gap: 14px; align-items: stretch; flex-wrap: wrap; }
+.tl-monitor { position: relative; background: #000; border-radius: 8px; overflow: hidden; height: 440px; flex: 0 0 auto; }
+.tl-stage { position: absolute; inset: 0; }
+.tl-stage video, .tl-stage img, .tl-stage .tl-black { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; visibility: hidden; background: #000; }
+.tl-stage .on { visibility: visible; }
+.tl-flag { position: absolute; left: 8px; top: 8px; font-size: 11px; color: #fff; background: rgba(0,0,0,.55); padding: 2px 7px; border-radius: 9px; }
+.tl-flag:empty { display: none; }
+.tl-side { flex: 1; min-width: 320px; max-height: 440px; overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; }
+.tl-side h3 { margin: 0 0 2px; font-size: 14px; }
+.tl-side .grp { margin: 10px 0 0; }
+.tl-side .grp > b { display: block; font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+.tl-side .btn { padding: 3px 9px; }
+.tl-alts { display: flex; gap: 6px; flex-wrap: wrap; }
+.tl-alt { width: 92px; cursor: pointer; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; font-size: 11px; background: #15171b; }
+.tl-alt:hover { border-color: var(--accent); }
+.tl-alt img { width: 100%; height: 56px; object-fit: cover; display: block; }
+.tl-alt span { display: block; padding: 2px 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-bar { display: flex; gap: 6px; align-items: center; margin: 8px 0 6px; flex-wrap: wrap; }
+.tl-time { font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 600; margin-left: 8px; min-width: 76px; }
+.tl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: #14161a; user-select: none; }
+.tl-inner { position: relative; min-width: 100%; padding: 4px 0 6px; cursor: text; }
+.tl-row { position: relative; margin: 2px 0; }
+.tl-sections { height: 18px; }
+.tl-sections span { position: absolute; top: 0; height: 18px; line-height: 18px; font-size: 11px; color: var(--muted); padding-left: 5px; border-left: 1px solid var(--line); overflow: hidden; white-space: nowrap; }
+.tl-clips { height: 64px; }
+.tl-clip { position: absolute; top: 0; height: 64px; box-sizing: border-box; border: 1px solid #0d0e11; border-radius: 3px; background: #2b3038 center/cover no-repeat; overflow: hidden; cursor: pointer; }
+.tl-clip.black { background: #000; }
+.tl-clip.sel { outline: 2px solid var(--accent); outline-offset: -2px; z-index: 2; }
+.tl-clip.changed::after { content: ""; position: absolute; right: 3px; top: 3px; width: 7px; height: 7px; border-radius: 50%; background: var(--warn); }
+.tl-clip.noted::before { content: "✎"; position: absolute; left: 3px; top: 1px; font-size: 11px; color: #fff; text-shadow: 0 0 3px #000; }
+.tl-clip label { position: absolute; left: 0; right: 0; bottom: 0; font-size: 10px; color: #fff; background: rgba(0,0,0,.55); padding: 0 3px; white-space: nowrap; overflow: hidden; pointer-events: none; }
+.tl-music { height: 22px; background: #1c2531; border-radius: 3px; }
+.tl-music i { position: absolute; top: 4px; width: 1px; height: 14px; background: #4b6a8c; }
+.tl-music span { position: absolute; left: 6px; top: 3px; font-size: 11px; color: #9db8d6; white-space: nowrap; }
+.tl-playhead { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #ff5a5a; pointer-events: none; z-index: 3; }

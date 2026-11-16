@@ -94,8 +94,10 @@ def record_edit(name: str, key: str, bucket: str, rows: list[dict], source: str,
 
 
 def record_choices(picks: dict, before: dict[str, dict | None], slot_ids: list[str], by: str, kb_dir: Path = Path("kb"),
-                   picks_path: str | Path | None = None) -> Path | None:
-    """Keep what the user chose in a second look: for each slot, the pick it had (`before`) and the pick it has now."""
+                   picks_path: str | Path | None = None, only: bool = False) -> Path | None:
+    """Keep what the user chose in a second look: for each slot, the pick it had (`before`) and the pick it has now
+    (another moment of the same take is a slip, another take a swap). `only`: these are all of the user's choices
+    for this cut (the timeline's net result against the cut as made), replacing the ones kept before."""
     by_id = {s["id"]: s for s in picks.get("slots") or []}
     rows = []
     for sid in slot_ids:
@@ -104,14 +106,15 @@ def record_choices(picks: dict, before: dict[str, dict | None], slot_ids: list[s
         if not s or not old or not new or (old.get("fid"), old.get("in_s")) == (new.get("fid"), new.get("in_s")):
             continue
         window = lambda p: {k: p.get(k) for k in ("fid", "path", "name", "in_s", "out_s", "speed")}  # noqa: E731
-        rows.append({"id": sid, **{k: s[k] for k in SLOT_KEYS if s.get(k) is not None}, "status": "swapped_to_alternate",
+        rows.append({"id": sid, **{k: s[k] for k in SLOT_KEYS if s.get(k) is not None},
+                     "status": "slipped" if old.get("fid") == new.get("fid") else "swapped_to_alternate",
                      "visible": window(new), "picked": window(old), "why": (s.get("second_look") or {}).get("why", ""), "by": by,
                      "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
-    if not rows:
+    if not rows and not (only and load(picks.get("name"), kb_dir).get("choices")):
         return None
     doc = load(picks.get("name"), kb_dir)
     doc = {**_context(picks, picks_path), **doc, "name": picks.get("name")}
-    kept = [r for r in doc.get("choices") or [] if r.get("id") not in {x["id"] for x in rows}]
+    kept = [] if only else [r for r in doc.get("choices") or [] if r.get("id") not in {x["id"] for x in rows}]
     doc["choices"] = kept + rows
     return _write(doc, kb_dir)
 

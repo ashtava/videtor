@@ -54,7 +54,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 350 tests, about 45 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 365 tests, about 45 s, no drive needed
 .venv/bin/videtor eval                                           # the past projects re-cut from the cache and measured (about 1 min)
 ```
 
@@ -97,6 +97,10 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
     vertical, horizontal, horizontal-4k, square; `music`: their track and where it starts, none, or left to the
     plan). `pipeline.cut` applies it over the shot map (`plan/settings.py`). Before writing a plan, read it: write
     for that frame, count the plan on that track, and don't pick another track when the user gave one.
+  - **The timeline** (2026-11-16): the app's Review step plays the cut and edits it (`plan/edit.py`: swap, slip,
+    roll, remove, replace; `pipeline.edit`, undo, `export/proxy.py` for its preview clips). The user's notes on a cut
+    are in `out/<name>/review.json` (`overall`, `notes` per slot id): read them when asked to revise a plan, and
+    leave `decisions.json` alone, since the next cut makes the user's edits again.
   - `prep` writes `inventory.json` (what the shoot holds); `videtor draft` asks only for that. The cut settles
     neighbours (repeats, look-alikes, day cut to night) and runs an automatic second look (`plan/autolook.py`);
     Claude's second look is for what needs eyes.
@@ -121,7 +125,7 @@ kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · 
 .xml-exports/ the user's Premiere exports: the knowledge base's source
 cache/        derived data, about 5 GB (footage maps took hours with the drives connected: don't delete); sparse/ holds the keyframe maps
 out/<name>/   one folder per cut: brief.md, settings.json (the user's frame and music), shotmap.json, inventory.json, picks.json,
-              decisions.json, <name>.xml, sheets, report.md,
+              decisions.json (swaps and timeline edits), review.json (the user's notes), <name>.xml, sheets, report.md,
               verdict.json, the finished video when the user saves it there, work/
 out/library/<name>/  a shoot sorted by shot type (videtor library): wide/ close-up/ talking-head/ interview-bite/ b-roll/ (links), sheets/, bites.xml, library.md
 scripts/      helpers and archived experiments (not imported by the CLI)

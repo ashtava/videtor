@@ -153,6 +153,9 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
     `out/<name>/report.md` (examples in `out/engagement/`, `out/alpha-summit/`). Include the commands
     that rebuild the cut: prep, cut, and `look` with every swap and its note. Then update
     `docs/status.md` (the delivery row, what you're waiting on, any gaps you noted).
+    **When the user asks for the plan to be revised from their review**, read `out/<name>/review.json` (their notes:
+    `overall` for the whole cut, `notes` per slot id) and change the shot map for what they ask; leave `decisions.json`
+    alone (their timeline edits are made again by the next cut) and stop before cutting.
 11. **After the job is finished**, read it back. Ask the user to save the finished export in
     `out/<name>/` (or to say where it is), then `videtor readback out/<name>/picks.json [--render <file>]`
     (also `--xml <export>` or `--live`): every slot is labelled kept, slipped, swapped or removed in

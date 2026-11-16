@@ -31,12 +31,14 @@ function showView(name) {
   document.querySelectorAll("nav button[data-view]").forEach((b) => b.classList.toggle("active", b.dataset.view === name));
   document.querySelectorAll("section.view").forEach((s) => s.classList.toggle("active", s.id === "view-" + name));
   store.set("videtor.view", name);
+  if (name !== "project" && TL.playing) tlStop();
   if (name === "project") loadProject();
   if (name === "jobs") renderJobs();
   if (name === "library") loadLibrary();
   if (name === "teach") loadTeach();
 }
 function showTab(name) {
+  if (name !== "look" && typeof tlStop === "function" && TL.playing) tlStop();
   document.querySelectorAll("#project-tabs button").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
   document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.id === "tab-" + name));
 }
@@ -306,10 +308,11 @@ function claudeRequest(p) {
 /* ---- shape and music: what the user asks for; the cut follows it whatever the plan says ---- */
 function renderRequirements(p) {
   const r = p.requirements || { mine: {}, frames: [], notes: [] }, mine = r.mine || {}, plan = r.plan;
-  const card = $("req-card");
-  if (p.kind !== "cut") { card.innerHTML = `<span class="muted">A ${esc(p.kind)} sets its frame and its music in its own plan.</span>`; return; }
+  $("req-card").hidden = p.kind !== "cut";
+  $("req-other").hidden = p.kind === "cut";
+  $("req-other").textContent = p.kind === "cut" ? "" : `A ${p.kind} sets its frame and its music in its own plan.`;
+  if (p.kind !== "cut") { $("cut-as").innerHTML = ""; $("music-chosen").innerHTML = ""; return; }
   const sel = $("req-frame");
-  if (!sel) return;
   sel.innerHTML = (r.frames || []).map(([k, label]) => `<option value="${esc(k)}">${esc(label)}</option>`).join("");
   sel.value = mine.frame || (plan && plan.frame) || "vertical";
   $("req-frame-note").textContent = mine.frame && plan && plan.frame !== mine.frame ? `The plan was written for ${plan.width}×${plan.height}; the cut is made in this shape.` : "";
@@ -329,13 +332,14 @@ function renderRequirements(p) {
     `${c && c.length_s ? ` · ${Number(c.length_s).toFixed(1)} s long` : ""} <a href="#" data-goto="project:brief">change</a>`;
   $("music-chosen").innerHTML = mode === "mine" ? `Music for this project: <b>${esc(says.music)}</b>.` : mode === "none" ? "This project is set to no music." : `Music for this project is left to the plan (${esc(planMusic)}).`;
 }
-async function saveRequirements(body, btn) {
-  if (!current) return;
+async function saveRequirements(body, btn, errEl) {
+  if (!current) return false;
   if (btn) btn.disabled = true;
   $("req-msg").innerHTML = body.music && body.music.path ? "Reading the track…" : "";
   const r = await api("/api/settings", { project: current.dir, ...body });
   if (btn) btn.disabled = false;
-  if (r.error) { $("req-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return false; }
+  if (r.error) { (errEl || $("req-msg")).innerHTML = `<span class="bad">${esc(r.error)}</span>`; if (errEl) $("req-msg").innerHTML = ""; return false; }
+  if (errEl) errEl.innerHTML = "";
   current.requirements = r.requirements;
   renderRequirements(current);
   renderPlan(current);
@@ -348,12 +352,16 @@ document.querySelectorAll('input[name="req-music"]').forEach((x) => x.addEventLi
   if (x.value === "plan") saveRequirements({ music: null });
   if (x.value === "mine") $("req-msg").innerHTML = "Choose your track, then <b>Use this music</b>.";
 }));
-$("req-start").onchange = () => { $("req-in").hidden = $("req-start").value !== "at"; };
-$("req-save").onclick = () => {
-  const path = $("req-track").value.trim();
-  if (!path) { $("req-msg").innerHTML = `<span class="bad">Choose your track first.</span>`; return; }
-  saveRequirements({ music: { path, start: $("req-start").value, in_s: $("req-in").value === "" ? null : Number($("req-in").value) } }, $("req-save"));
+const useTrack = (quiet) => {
+  const path = $("req-track").value.trim(), start = $("req-start").value;
+  if (!path) { if (!quiet) $("req-msg").innerHTML = `<span class="bad">Choose your track first.</span>`; return; }
+  if (start === "at" && $("req-in").value === "") { $("req-msg").innerHTML = "Say the second of the track the cut starts on, then <b>Use this music</b>."; return; }
+  saveRequirements({ music: { path, start, in_s: $("req-in").value === "" ? null : Number($("req-in").value) } }, $("req-save"));
 };
+$("req-save").onclick = () => useTrack(false);
+$("req-track").addEventListener("change", () => useTrack(true));  // a track chosen with the file dialog is used at once
+$("req-start").onchange = () => { $("req-in").hidden = $("req-start").value !== "at"; useTrack(true); };
+$("req-in").addEventListener("change", () => useTrack(true));
 function renderBrief(p) {
   renderRequirements(p);
   if (document.activeElement !== $("brief")) $("brief").value = p.brief || "";
@@ -426,12 +434,12 @@ async function showTracks() {
   const el = $("music-results");
   if (r.error || !(r.tracks || []).length) { el.innerHTML = r.error ? `<span class="bad">${esc(r.error)}</span>` : `<div class="muted">No track in that folder suits a cut of this length.</div>`; return; }
   $("music-log").hidden = true;
-  el.innerHTML = `<div class="tablewrap"><table class="plan"><thead><tr><th>#</th><th>Track</th><th>Tempo</th><th>Start</th><th></th></tr></thead><tbody>` +
+  el.innerHTML = `<div id="music-msg"></div><div class="tablewrap"><table class="plan"><thead><tr><th>#</th><th>Track</th><th>Tempo</th><th>Start</th><th></th></tr></thead><tbody>` +
     r.tracks.map((t, i) => `<tr><td>${i + 1}</td><td>${esc(t.name)}</td><td>${t.bpm} BPM</td><td>${Number(t.in_s).toFixed(1)} s${t.drop_s != null ? ` <span class="muted">(lift at ${Number(t.drop_s).toFixed(1)} s)</span>` : ""}</td>` +
       `<td><button class="btn" data-track="${i}">Use this track</button></td></tr>`).join("") + `</tbody></table></div>`;
   el.querySelectorAll("button[data-track]").forEach((b) => b.addEventListener("click", async () => {
     const t = r.tracks[Number(b.dataset.track)];
-    if (await saveRequirements({ music: { path: t.path, start: "at", in_s: t.in_s } }, b)) b.textContent = "In use";
+    if (await saveRequirements({ music: { path: t.path, start: "at", in_s: t.in_s } }, b, $("music-msg"))) { el.querySelectorAll("button[data-track]").forEach((x) => { x.textContent = "Use this track"; }); b.textContent = "In use ✓"; }
   }));
 }
 $("search-run").onclick = async () => {
@@ -481,6 +489,7 @@ function renderReview(p) {
   renderPreview(p);
   renderSlots(p);
   renderTeach(p);
+  loadTimeline(true);
 }
 /* ---- watch the cut without Premiere ---- */
 function renderPreview(p) {
@@ -656,7 +665,7 @@ document.querySelectorAll("button[data-pick]").forEach((b) => b.addEventListener
   b.disabled = true;
   try {
     const r = await api("/api/pick-file", { kind: b.dataset.kind, start: state.home });
-    if (r.path) $(b.dataset.pick).value = r.path;
+    if (r.path) { $(b.dataset.pick).value = r.path; $(b.dataset.pick).dispatchEvent(new Event("change")); }
   } finally { b.disabled = false; }
 }));
 
@@ -778,6 +787,268 @@ $("ts-run").onclick = async () => {
   const r = await teachPost("/api/teach/style", { source: $("ts-source").value, bucket: $("ts-bucket").value });
   if (!r.error) $("ts-source").value = "";
 };
+
+/* ---- the timeline: the cut played and changed in the app before it goes to Premiere ---- */
+const TL = { data: null, dir: null, t: 0, playing: false, t0: 0, sel: null, zoom: 1, els: new Map(), audio: [], cur: null, options: null, auto: {} };
+const tlFrames = (s) => Math.round(s * TL.data.fps);
+const tlClock = (t) => { const f = Math.max(0, Math.round(t * TL.data.fps)), fps = Math.round(TL.data.fps); return `${Math.floor(f / fps / 60)}:${String(Math.floor(f / fps) % 60).padStart(2, "0")}:${String(f % fps).padStart(2, "0")}`; };
+const tlClipAt = (t) => { const cs = TL.data.clips; for (let i = cs.length - 1; i >= 0; i--) if (t >= cs[i].start_s - 1e-6) return cs[i]; return cs[0]; };
+const tlSlot = (id) => (TL.data.slots || []).find((s) => s.id === id);
+
+async function loadTimeline(keep) {
+  if (!current || !current.picks) { $("tl").hidden = true; tlStop(); return; }
+  const d = await api("/api/timeline?dir=" + encodeURIComponent(current.dir));
+  if (d.error) { $("tl").hidden = true; return; }
+  const same = TL.dir === d.dir;
+  TL.data = d; TL.dir = d.dir;
+  if (!same) { tlStop(); TL.t = 0; TL.sel = null; TL.options = null; TL.auto = {}; }
+  if (!keep && !same) TL.t = 0;
+  TL.t = Math.min(TL.t, Math.max(0, d.length_s - 1 / d.fps));
+  $("tl").hidden = false;
+  tlBuild();
+  if (d.job && ["preview", "search", "look"].includes(d.job.kind)) tlWatch(d.job.id);
+}
+function tlBuild() {
+  const d = TL.data, stage = $("tl-stage");
+  const mon = stage.parentElement, h = 440;
+  mon.style.width = Math.round(h * d.width / d.height) + "px";
+  // the picture: one element a clip (its preview clip when there is one, else its still), reused across rebuilds
+  const keepEls = new Map();
+  d.clips.forEach((c, i) => {
+    const key = `${c.slot}:${c.part}:${c.proxy ? c.proxy.path : c.thumb || c.kind}`;
+    let el = TL.els.get(key);
+    if (!el) {
+      if (c.proxy) { el = document.createElement("video"); el.muted = !c.sound; el.playsInline = true; el.preload = "auto"; el.src = fileUrl(c.proxy.path); }
+      else if (c.thumb) { el = document.createElement("img"); el.src = fileUrl(c.thumb); }
+      else { el = document.createElement("div"); el.className = "tl-black"; }
+      stage.appendChild(el);
+    }
+    keepEls.set(key, el);
+    c.el = el; c.i = i;
+  });
+  TL.els.forEach((el, key) => { if (!keepEls.has(key)) el.remove(); });
+  TL.els = keepEls;
+  TL.cur = null;
+  // the music: one player a piece
+  const want = d.music.map((g, i) => (g.there ? `/media?dir=${encodeURIComponent(d.dir)}&i=${i}` : ""));
+  if (TL.audio.length !== want.length || TL.audio.some((a, i) => a.dataset.src !== want[i])) {
+    TL.audio.forEach((a) => { a.pause(); a.remove(); });
+    TL.audio = want.map((src) => { const a = document.createElement("audio"); a.preload = "auto"; a.dataset.src = src; if (src) a.src = src; document.body.appendChild(a); return a; });
+  }
+  tlDraw();
+  tlInspector();
+  tlSync(true);
+  const stills = d.clips.filter((c) => c.kind !== "black" && c.kind !== "empty" && !c.proxy).length;
+  $("tl-load").hidden = !stills;
+  $("tl-load").textContent = stills === d.clips.length || stills > 3 ? "Load the moving picture" : `Load ${stills} more clip${stills > 1 ? "s" : ""}`;
+  $("tl-flag").textContent = stills ? (d.drive && d.drive.name && !d.drive.connected ? `Stills: plug in ${d.drive.name} for the moving picture` : "Stills") : "";
+  $("tl-undo").disabled = !d.can_undo;
+  $("tl-write").classList.toggle("primary", !!d.dirty || !d.has_xml);
+  $("tl-write").textContent = d.dirty ? "Write the Premiere XML (changes not in it yet)" : "Write the Premiere XML";
+  $("tl-total").textContent = ` / ${tlClock(d.length_s)} · ${d.slots.length} shots`;
+  if (document.activeElement !== $("tl-overall")) $("tl-overall").value = d.overall || "";
+}
+function tlDraw() {
+  const d = TL.data, W = Math.max(600, $("tl-wrap").clientWidth - 2) * TL.zoom, x = (t) => (t / d.length_s) * W;
+  $("tl-inner").style.width = W + "px";
+  $("tl-sections").innerHTML = d.sections.map((s) => `<span style="left:${x(s.start_s)}px;width:${x(s.end_s - s.start_s)}px">${esc(s.name)}</span>`).join("");
+  const slots = Object.fromEntries(d.slots.map((s) => [s.id, s]));
+  $("tl-clips").innerHTML = d.clips.map((c) => {
+    const s = slots[c.slot] || {}, w = Math.max(2, x(c.length_s));
+    const cls = ["tl-clip", c.kind === "black" || c.kind === "empty" ? "black" : "", c.slot === TL.sel ? "sel" : "", s.second_look ? "changed" : "", s.note ? "noted" : ""].join(" ");
+    const bg = c.thumb ? `background-image:url('${fileUrl(c.thumb)}')` : "";
+    return `<div class="${cls}" data-slot="${esc(c.slot)}" data-start="${c.start_s}" title="${esc(s.show || "")} · ${esc(c.name || c.kind)} · ${tlFrames(c.length_s)} frames" style="left:${x(c.start_s)}px;width:${w}px;${bg}">${w > 46 ? `<label>${esc((c.name || c.kind).replace(/\.[A-Za-z0-9]+$/, ""))}</label>` : ""}</div>`;
+  }).join("");
+  $("tl-music").innerHTML = d.music.map((g) => `<span style="left:${x(g.start_s) + 6}px">${esc(g.name)}${g.there ? "" : " (not found: no sound here)"}</span>`).join("") +
+    d.beats.map((b) => `<i style="left:${x(b)}px"></i>`).join("");
+  tlPlayhead();
+}
+function tlPlayhead() {
+  const d = TL.data, W = parseFloat($("tl-inner").style.width) || 1;
+  const px = (TL.t / d.length_s) * W;
+  $("tl-playhead").style.left = px + "px";
+  $("tl-time").textContent = tlClock(TL.t);
+  if (TL.playing) { const wrap = $("tl-wrap"); if (px < wrap.scrollLeft || px > wrap.scrollLeft + wrap.clientWidth - 40) wrap.scrollLeft = Math.max(0, px - 80); }
+}
+/* show the frame for TL.t: the active clip's element, its video at the right moment, the music with it */
+function tlSync(force) {
+  const d = TL.data;
+  if (!d) return;
+  const c = tlClipAt(TL.t);
+  if (c !== TL.cur || force) {
+    d.clips.forEach((o) => { if (o.el && o !== c) { o.el.classList.remove("on"); if (o.el.tagName === "VIDEO" && !o.el.paused) o.el.pause(); } });
+    if (c.el) c.el.classList.add("on");
+    TL.cur = c;
+  }
+  if (c.el && c.el.tagName === "VIDEO") {
+    const v = c.el, want = c.proxy.offset_s + (TL.t - c.start_s);
+    if (TL.playing) {
+      if (v.paused) { v.currentTime = want; v.play().catch(() => {}); }
+      else if (Math.abs(v.currentTime - want) > 0.15) v.currentTime = want;
+    } else {
+      if (!v.paused) v.pause();
+      if (Math.abs(v.currentTime - want) > 0.015) v.currentTime = want;
+    }
+  }
+  const nx = d.clips[c.i + 1];  // have the next clip ready at its first frame before the cut
+  if (nx && nx.el && nx.el.tagName === "VIDEO" && nx.start_s - TL.t < 0.5 && nx.el.paused && Math.abs(nx.el.currentTime - nx.proxy.offset_s) > 0.03) nx.el.currentTime = nx.proxy.offset_s;
+  d.music.forEach((g, i) => {
+    const a = TL.audio[i];
+    if (!a || !a.dataset.src) return;
+    const on = TL.playing && TL.t >= g.start_s && TL.t < g.start_s + g.length_s, want = g.in_s + (TL.t - g.start_s);
+    if (on) { if (a.paused) { a.currentTime = want; a.play().catch(() => {}); } else if (Math.abs(a.currentTime - want) > 0.2) a.currentTime = want; }
+    else if (!a.paused) a.pause();
+  });
+  tlPlayhead();
+}
+function tlTick() {
+  if (!TL.playing) return;
+  TL.t = performance.now() / 1000 - TL.t0;
+  if (TL.t >= TL.data.length_s - 0.5 / TL.data.fps) { TL.t = TL.data.length_s - 1 / TL.data.fps; tlStop(); return; }
+  tlSync();
+  requestAnimationFrame(tlTick);
+}
+function tlPlay() {
+  if (!TL.data) return;
+  if (TL.t >= TL.data.length_s - 2 / TL.data.fps) TL.t = 0;
+  TL.playing = true; TL.t0 = performance.now() / 1000 - TL.t;
+  $("tl-play").textContent = "Stop";
+  tlSync(true);
+  requestAnimationFrame(tlTick);
+}
+function tlStop() {
+  TL.playing = false;
+  if ($("tl-play")) $("tl-play").textContent = "Play";
+  TL.audio.forEach((a) => a.pause());
+  if (TL.data) tlSync(true);
+}
+function tlSeek(t) {
+  const d = TL.data;
+  TL.t = Math.max(0, Math.min(d.length_s - 1 / d.fps, Math.round(t * d.fps) / d.fps));
+  if (TL.playing) TL.t0 = performance.now() / 1000 - TL.t;
+  tlSync();
+}
+function tlJump(dir) {
+  const starts = [...new Set(TL.data.clips.map((c) => c.start_s))].sort((a, b) => a - b);
+  const e = 0.5 / TL.data.fps;
+  const to = dir > 0 ? starts.find((s) => s > TL.t + e) : [...starts].reverse().find((s) => s < TL.t - e);
+  if (to !== undefined) tlSeek(to);
+}
+function tlSelect(id, seek) {
+  TL.sel = id; TL.options = null;
+  const s = tlSlot(id);
+  if (seek && s) tlSeek(s.start_s);
+  document.querySelectorAll("#tl-clips .tl-clip").forEach((el) => el.classList.toggle("sel", el.dataset.slot === id));
+  tlInspector();
+}
+/* the selected shot: what it is, and everything that can be done to it */
+function tlInspector() {
+  const el = $("tl-inspector"), s = TL.sel && tlSlot(TL.sel);
+  if (!s) { el.innerHTML = `<h3>No shot selected</h3><p class="muted">Click a shot on the timeline to see its runners-up, slip it, move its cut, look for more takes or remove it.</p>`; return; }
+  const what = { flicker: "a flicker of several takes", ramp: "a speed ramp", byte: "someone speaking", stack: "a stack of shots", black: "black", empty: "empty" }[s.kind];
+  const step = (op, n, label, title) => `<button class="btn" data-op="${op}" data-n="${n}" title="${title}">${label}</button>`;
+  const alts = s.alternates.map((a) => `<div class="tl-alt" data-swap="${a.k}" title="${esc(a.name)} from ${Number(a.in_s).toFixed(1)} s${a.reasons.length ? " · " + esc(a.reasons.join("; ")) : ""}">${a.thumb ? `<img src="${fileUrl(a.thumb)}" loading="lazy">` : ""}<span>${esc(a.name)}</span></div>`).join("");
+  const opts = TL.options && TL.options.slot === s.id ? (TL.options.rows.length ? `<div class="tl-alts">` + TL.options.rows.map((a) => `<div class="tl-alt" data-option="${a.i}" title="${esc(a.name)} from ${Number(a.in_s).toFixed(1)} s${a.used_in ? " · already in the cut (" + esc(a.used_in) + ")" : ""}${a.reasons.length ? " · " + esc(a.reasons.join("; ")) : ""}">${a.thumb ? `<img src="${fileUrl(a.thumb)}" loading="lazy">` : ""}<span>${a.used_in ? "↺ " : ""}${esc(a.name)}</span></div>`).join("") + `</div>` : `<span class="muted">Nothing else in the footage that has been read fits.</span>`) : "";
+  el.innerHTML = `<h3>${esc(s.show || s.id)}</h3>
+    <div class="muted small">${esc(s.section)} · ${s.name ? `${esc(s.name)} from ${Number(s.in_s).toFixed(2)} s` : esc(what || "")} · ${tlFrames(s.length_s)} frames${s.speed < 1 ? ` · slow motion ${Math.round(s.speed * 100)}%` : ""}${what && s.name ? ` · ${what}` : ""}${s.second_look ? " · changed" : ""}</div>
+    ${s.can.slip ? `<div class="grp"><b>Slip: the same take, earlier or later (frames)</b>${step("slip", -5, "◀ 5", "five frames earlier in the take")}${step("slip", -1, "◀ 1", "one frame earlier")}${step("slip", 1, "1 ▶", "one frame later")}${step("slip", 5, "5 ▶", "five frames later")} <span class="muted small">${s.room.before_f} before, ${s.room.after_f} after</span></div>` : ""}
+    ${s.can.roll ? `<div class="grp"><b>The cut after this shot (frames)</b>${step("roll", -2, "◀ 2", "cut two frames sooner")}${step("roll", -1, "◀ 1", "cut one frame sooner")}${step("roll", 1, "1 ▶", "cut one frame later")}${step("roll", 2, "2 ▶", "cut two frames later")}</div>` : ""}
+    ${!s.can.slip && s.name ? `<div class="grp muted small">This shot is ${esc(what || "set by the plan")}: its timing is the plan's. It can still be swapped${s.can.replace ? " or replaced" : ""}.</div>` : ""}
+    ${s.can.swap ? `<div class="grp"><b>Runners-up: click one to use it</b><div class="tl-alts">${alts}</div></div>` : ""}
+    ${s.can.replace ? `<div class="grp"><b>More takes</b><div class="row" style="margin:0"><input type="text" id="tl-find" placeholder="${esc(s.show || "what the shot should show")}" style="flex:1;min-width:160px"><button class="btn" id="tl-find-run">Find</button></div>${opts}</div>` : ""}
+    <div class="grp"><b>A note on this shot</b><input type="text" id="tl-note" value="${esc(s.note || "")}" placeholder="e.g. too long, wants a closer shot" style="width:100%"></div>
+    <div class="grp">${s.can.remove ? `<button class="btn" data-op="remove">Remove this shot</button>` : ""}</div>
+    ${s.reasons.length ? `<div class="grp muted small">Why it was picked: ${esc(s.reasons.join("; "))}</div>` : ""}`;
+  el.querySelectorAll("button[data-op]").forEach((b) => b.addEventListener("click", () => tlEdit(b.dataset.op === "remove" ? { op: "remove", slot: s.id } : { op: b.dataset.op, slot: s.id, frames: Number(b.dataset.n) })));
+  el.querySelectorAll("[data-swap]").forEach((a) => a.addEventListener("click", () => tlEdit({ op: "swap", slot: s.id, k: Number(a.dataset.swap) })));
+  el.querySelectorAll("[data-option]").forEach((a) => a.addEventListener("click", () => tlEdit({ op: "replace", slot: s.id, option: Number(a.dataset.option) })));
+  const note = $("tl-note");
+  note.addEventListener("change", async () => { await api("/api/note", { project: TL.dir, slot: s.id, text: note.value }); s.note = note.value.trim(); tlDraw(); });
+  if ($("tl-find-run")) {
+    const find = async () => {
+      const r = await api("/api/options", { project: TL.dir, slot: s.id, show: $("tl-find").value });
+      if (r.error) { $("tl-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+      $("tl-find-run").disabled = true;
+      watch(r.job.id, { status: "tl-status", onDone: async () => { TL.options = await api(`/api/options?dir=${encodeURIComponent(TL.dir)}&slot=${encodeURIComponent(s.id)}`); $("tl-status").hidden = true; tlInspector(); } });
+    };
+    $("tl-find-run").onclick = find;
+    $("tl-find").addEventListener("keydown", (e) => { if (e.key === "Enter") find(); });
+  }
+}
+/* one edit: made at once on the server, the timeline redrawn from what comes back; missing preview clips are fetched */
+async function tlEdit(op) {
+  if (!TL.dir) return;
+  const r = await api("/api/edit", { project: TL.dir, ...op });
+  if (r.error) { $("tl-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+  $("tl-msg").textContent = r.line;
+  TL.data = r.timeline;
+  if (TL.sel && !tlSlot(TL.sel)) TL.sel = null;
+  if (op.op === "replace" || op.op === "swap") TL.options = null;
+  tlBuild();
+  if (current) current.picks = current.picks || {};
+  const missing = TL.data.clips.filter((c) => c.kind !== "black" && c.kind !== "empty" && !c.proxy).map((c) => c.slot);
+  const had = TL.data.clips.some((c) => c.proxy);
+  if (missing.length && had && TL.data.drive && TL.data.drive.connected !== false && !TL.auto[missing.join()]) {  // only what the edit left without a clip
+    TL.auto[missing.join()] = true;
+    const j = await api("/api/proxies", { project: TL.dir, slots: [...new Set(missing)] });
+    if (j.job) tlWatch(j.job.id);
+  }
+}
+function tlWatch(id) { watch(id, { status: "tl-status", onDone: async () => { $("tl-status").hidden = true; await loadTimeline(true); } }); }
+$("tl-play").onclick = () => (TL.playing ? tlStop() : tlPlay());
+$("tl-back").onclick = () => { tlStop(); tlSeek(TL.t - 1 / TL.data.fps); };
+$("tl-fwd").onclick = () => { tlStop(); tlSeek(TL.t + 1 / TL.data.fps); };
+$("tl-prev").onclick = () => tlJump(-1);
+$("tl-next").onclick = () => tlJump(1);
+$("tl-undo").onclick = () => tlEdit({ op: "undo" });
+$("tl-zoom").oninput = () => { TL.zoom = Number($("tl-zoom").value); if (TL.data) tlDraw(); };
+$("tl-load").onclick = async () => {
+  const r = await api("/api/proxies", { project: TL.dir });
+  if (r.error) { $("tl-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+  $("tl-msg").textContent = "";
+  tlWatch(r.job.id);
+};
+$("tl-write").onclick = async () => {
+  const r = await api("/api/write-xml", { project: TL.dir });
+  if (r.error) { $("tl-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+  watch(r.job.id, { status: "tl-status", onDone: (job) => { $("tl-status").hidden = true; $("tl-msg").textContent = job.status === "done" ? "The Premiere XML is written." : "The XML could not be written: see Activity."; loadProject(); } });
+};
+$("tl-overall").addEventListener("change", () => api("/api/note", { project: TL.dir, text: $("tl-overall").value }));
+$("tl-ask").onclick = async () => {
+  await api("/api/note", { project: TL.dir, text: $("tl-overall").value });
+  const text = `/cut-from-brief Revise the plan of this project from my review notes. Project folder: ${TL.dir}. My notes are in ${TL.dir}/review.json ("overall" for the whole cut, "notes" per shot id). ` +
+    `Keep what works, change ${TL.dir}/shotmap.json for what the notes ask, check it with the validator, and stop before cutting: I cut from the Videtor app (my changes on the timeline are kept in decisions.json and made again).`;
+  const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta);
+  await copyText(ta, $("tl-ask")); ta.remove();
+};
+/* scrubbing and choosing on the timeline */
+(() => {
+  const inner = $("tl-inner");
+  let down = false, moved = false, x0 = 0;
+  const at = (e) => { const r = inner.getBoundingClientRect(); return ((e.clientX - r.left) / r.width) * TL.data.length_s; };
+  inner.addEventListener("mousedown", (e) => { if (!TL.data) return; down = true; moved = false; x0 = e.clientX; });
+  window.addEventListener("mousemove", (e) => { if (!down) return; if (Math.abs(e.clientX - x0) > 3) moved = true; if (moved) tlSeek(at(e)); });
+  window.addEventListener("mouseup", (e) => {
+    if (!down) return;
+    down = false;
+    if (moved) return;
+    const clip = e.target.closest ? e.target.closest(".tl-clip") : null;
+    if (clip) tlSelect(clip.dataset.slot, false);
+    tlSeek(at(e));
+  });
+})();
+document.addEventListener("keydown", (e) => {
+  if (!TL.data || $("tl").hidden || !$("tab-look").classList.contains("active") || !$("view-project").classList.contains("active")) return;
+  if (["INPUT", "TEXTAREA", "SELECT"].includes((e.target.tagName || "").toUpperCase())) return;
+  const k = e.key;
+  if (k === " ") { e.preventDefault(); TL.playing ? tlStop() : tlPlay(); }
+  else if (k === "ArrowLeft") { e.preventDefault(); tlStop(); tlSeek(TL.t - 1 / TL.data.fps); }
+  else if (k === "ArrowRight") { e.preventDefault(); tlStop(); tlSeek(TL.t + 1 / TL.data.fps); }
+  else if (k === "ArrowUp") { e.preventDefault(); tlJump(-1); }
+  else if (k === "ArrowDown") { e.preventDefault(); tlJump(1); }
+  else if ((e.metaKey || e.ctrlKey) && k.toLowerCase() === "z") { e.preventDefault(); tlEdit({ op: "undo" }); }
+});
+window.addEventListener("resize", () => { if (TL.data && !$("tl").hidden) tlDraw(); });
 
 /* ---- start ---- */
 refreshState().then(() => {

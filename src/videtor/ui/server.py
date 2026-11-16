@@ -472,8 +472,122 @@ class App:
         kind = body.get("kind")
         types = {"video": '{"public.movie"}', "audio": '{"public.audio"}'}.get(kind, '{"public.xml", "xml"}')
         prompt = {"video": "Choose the finished video", "audio": "Choose the music track"}.get(kind, "Choose the Premiere XML export")
-        path = choose_video_native(body.get("prompt") or prompt, body.get("start"), types)
+        start = body.get("start")
+        if self.window is not None:  # the window's own dialog, as for folders: AppleScript's opens in Finder, which can sit behind the window
+            try:
+                import webview
+
+                exts = {"video": "Video (*.mp4;*.mov;*.m4v;*.mxf)", "audio": "Music (*.wav;*.mp3;*.aif;*.aiff;*.m4a;*.flac)"}.get(kind, "Premiere XML (*.xml)")
+                dialog = webview.FileDialog.OPEN if hasattr(webview, "FileDialog") else webview.OPEN_DIALOG
+                chosen = self.window.create_file_dialog(dialog, directory=start if start and Path(start).is_dir() else str(Path.home()),
+                                                        allow_multiple=False, file_types=(exts, "All files (*.*)"))
+                return {"path": chosen[0] if chosen else None, "cancelled": not chosen}
+            except Exception as exc:  # noqa: BLE001 - fall through to AppleScript
+                self.log(f"window dialog failed ({exc}); using AppleScript's")
+        path = choose_video_native(body.get("prompt") or prompt, start, types)
         return {"path": path, "cancelled": path is None}
+
+    # --- the timeline: the cut played and changed in the app before Premiere --------------------
+
+    def _picks_path(self, dir_: str) -> Path | None:
+        p = self._project(dir_)
+        picks = Path(p["dir"]) / "picks.json" if p else None
+        return picks if picks and picks.exists() else None
+
+    def api_timeline(self, dir_: str) -> dict:
+        """The cut as the timeline draws it (plan/edit.timeline), with whether the footage drive is there to make
+        preview clips from and whether a job for this project is making them now."""
+        from videtor.plan import edit
+
+        picks_p = self._picks_path(dir_)
+        if not picks_p:
+            return {"error": "no cut yet"}
+        p = self._project(dir_)
+        cache = self.root / "cache"
+        tl = edit.timeline(json.loads(picks_p.read_text()), picks_p.parent, [cache / "footmap" / "frames", cache / "sparse" / "frames"], cache / "beats")
+        job = self._active_job(p["dir"])
+        tl.update(dir=p["dir"], drive=self._drive(p.get("folder", "")), job=job.to_dict() if job else None,
+                  can_undo=any((picks_p.parent / "work" / "history").glob("*.json")) if (picks_p.parent / "work" / "history").is_dir() else False)
+        return tl
+
+    def music_file(self, dir_: str, i: int) -> Path | None:
+        """The i-th music piece of a project's cut: the only files outside the project and the cache the page may play."""
+        picks_p = self._picks_path(dir_)
+        if not picks_p:
+            return None
+        try:
+            mu = json.loads(picks_p.read_text()).get("music") or {}
+        except ValueError:
+            return None
+        paths = [g["path"] for g in mu.get("segments") or []] or ([mu["path"]] if mu.get("path") else [])
+        return Path(paths[i]) if 0 <= i < len(paths) and Path(paths[i]).is_file() else None
+
+    def api_edit(self, body: dict) -> dict:
+        """One edit from the timeline, made at once (pipeline.edit); answers with the timeline as it is now."""
+        from videtor import pipeline
+
+        picks_p = self._picks_path(body.get("project", ""))
+        if not picks_p:
+            return {"error": "no cut yet"}
+        try:
+            out = pipeline.edit(picks_p, {k: v for k, v in body.items() if k != "project"}, pipeline.Paths(kb=self._kb()))
+        except pipeline.PipelineError as exc:
+            return {"error": str(exc)}
+        return {"line": out["line"], "timeline": self.api_timeline(body["project"])}
+
+    def api_note(self, body: dict) -> dict:
+        from videtor import pipeline
+
+        p = self._project(body.get("project", ""))
+        if not p:
+            return {"error": "unknown project"}
+        pipeline.note(Path(p["dir"]), body.get("slot") or None, str(body.get("text") or ""))
+        return {"ok": True}
+
+    def api_proxies(self, body: dict) -> dict:
+        """Make the timeline's preview clips (a job): all that are missing, or one shot's with its runners-up."""
+        p = self._project(body.get("project", ""))
+        picks_p = self._picks_path(body.get("project", ""))
+        if not picks_p:
+            return {"error": "no cut yet"}
+        drive = self._drive(p.get("folder", ""))
+        if p.get("folder") and not drive["connected"]:
+            return {"error": f"Plug in {drive['name'] or 'the footage drive'} to see the moving picture. The stills and every edit work without it."}
+        args = ["proxies", str(picks_p)]
+        for slot in body.get("slots") or []:
+            args += ["--slot", str(slot)]
+        if body.get("alternates"):
+            args.append("--alternates")
+        return {"job": self.jobs.submit("preview", f"Load the moving picture · {p['name']}", args, project=p["dir"]).to_dict()}
+
+    def api_options(self, body: dict) -> dict:
+        """Look for more takes for one shot (a job; the list is read with GET /api/options when it is done)."""
+        p = self._project(body.get("project", ""))
+        picks_p = self._picks_path(body.get("project", ""))
+        if not picks_p or not body.get("slot"):
+            return {"error": "no cut yet"}
+        args = ["options", str(picks_p), str(body["slot"])] + (["--show", str(body["show"]).strip()] if str(body.get("show") or "").strip() else [])
+        return {"job": self.jobs.submit("search", f"More takes · {body['slot']}", args, project=p["dir"]).to_dict()}
+
+    def api_options_list(self, dir_: str, slot: str) -> dict:
+        from videtor import pipeline
+        from videtor.plan import edit
+
+        picks_p = self._picks_path(dir_)
+        if not picks_p:
+            return {"error": "no cut yet"}
+        doc = pipeline.load_options(picks_p.parent, slot)
+        frames = [self.root / "cache" / "footmap" / "frames", self.root / "cache" / "sparse" / "frames"]
+        rows = [{"i": i, "name": r["name"], "in_s": r["in_s"], "score": r.get("score"), "reasons": list(r.get("reasons") or [])[:2], "used_in": r.get("used_in"),
+                 "thumb": edit._thumb(frames, r.get("fid") or "", r["in_s"], r.get("out_s") or r["in_s"] + 1)} for i, r in enumerate(doc.get("rows") or [])]
+        return {"slot": slot, "show": doc.get("show"), "rows": rows}
+
+    def api_write_xml(self, body: dict) -> dict:
+        p = self._project(body.get("project", ""))
+        picks_p = self._picks_path(body.get("project", ""))
+        if not picks_p:
+            return {"error": "no cut yet"}
+        return {"job": self.jobs.submit("look", f"Write the Premiere XML · {p['name']}", ["write-xml", str(picks_p)], project=p["dir"]).to_dict()}
 
     # --- teaching: the one place the user gives Videtor something to learn from ------------------
 
@@ -931,17 +1045,46 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def _file(self, path: Path) -> None:
+        """A file, or the part of it a Range header asks for: a <video> or <audio> seeks with byte ranges, and
+        WebKit (the app's window) will not play media from a server that ignores them."""
         if not path.is_file():
             self._json({"error": "not found"}, 404)
             return
         mime = mimetypes.guess_type(str(path))[0] or "application/octet-stream"
-        data = path.read_bytes()
-        self.send_response(200)
+        size = path.stat().st_size
+        start, end, status = 0, size - 1, 200
+        m = re.fullmatch(r"bytes=(\d*)-(\d*)", (self.headers.get("Range") or "").strip())
+        if m and (m.group(1) or m.group(2)) and size:
+            if m.group(1):
+                start, end = int(m.group(1)), min(int(m.group(2)) if m.group(2) else size - 1, size - 1)
+            else:  # the last n bytes
+                start = max(0, size - int(m.group(2)))
+            if start > end or start >= size:
+                self.send_response(416)
+                self.send_header("Content-Range", f"bytes */{size}")
+                self.end_headers()
+                return
+            status = 206
+        self.send_response(status)
         self.send_header("Content-Type", mime)
-        self.send_header("Content-Length", str(len(data)))
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Length", str(end - start + 1))
+        if status == 206:
+            self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
         self.send_header("Cache-Control", "no-store" if path.suffix in (".html", ".js", ".css") else "max-age=60")
         self.end_headers()
-        self.wfile.write(data)
+        try:
+            with path.open("rb") as f:
+                f.seek(start)
+                left = end - start + 1
+                while left > 0:
+                    chunk = f.read(min(1 << 18, left))
+                    if not chunk:
+                        break
+                    self.wfile.write(chunk)
+                    left -= len(chunk)
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # the player moved on to another part of the file
 
     def _body(self) -> dict:
         n = int(self.headers.get("Content-Length") or 0)
@@ -977,6 +1120,13 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(self.app.api_library(q.get("dir", "")))
         if path == "/api/teach":
             return self._json(self.app.api_teach())
+        if path == "/api/timeline":
+            return self._json(self.app.api_timeline(q.get("dir", "")))
+        if path == "/api/options":
+            return self._json(self.app.api_options_list(q.get("dir", ""), q.get("slot", "")))
+        if path == "/media":
+            target = self.app.music_file(q.get("dir", ""), int(q.get("i", 0) or 0))
+            return self._file(target) if target else self._json({"error": "not found"}, 404)
         if path == "/api/jobs":
             return self._json({"jobs": self.app.jobs.list()})
         m = re.fullmatch(r"/api/jobs/(j\d+)", path)
@@ -998,7 +1148,8 @@ class Handler(BaseHTTPRequestHandler):
                   "/api/pick-file": self.app.api_pick_file, "/api/teach/project": self.app.api_teach_project, "/api/teach/edit": self.app.api_teach_edit,
                   "/api/teach/style": self.app.api_teach_style, "/api/teach/pending": self.app.api_teach_pending, "/api/teach/rule": self.app.api_teach_rule,
                   "/api/preview": self.app.api_preview, "/api/orient": self.app.api_orient, "/api/settings": self.app.api_settings,
-                  "/api/music/ranked": self.app.api_music_ranked}
+                  "/api/music/ranked": self.app.api_music_ranked, "/api/edit": self.app.api_edit, "/api/note": self.app.api_note,
+                  "/api/proxies": self.app.api_proxies, "/api/options": self.app.api_options, "/api/write-xml": self.app.api_write_xml}
         if path in routes:
             try:
                 return self._json(routes[path](body))

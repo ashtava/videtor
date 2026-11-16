@@ -149,7 +149,7 @@ def ranked(folder: Path, length_s: float, reveal_at_s: float = 0.0, cache_dir: P
     """The folder's best tracks for a cut of `length_s`, as rows a page can show and choose from: name, path,
     cutting tempo, where to start (so a lift lands on the reveal, when one is given) and how hard the stretch hits.
     Reads each track's cached analysis (a track not analysed yet is analysed here, a few seconds each)."""
-    scanned = [beats_mod.load_or_track(p, cache_dir) for p in tracks(Path(folder).expanduser())]
+    scanned = [{**beats_mod.load_or_track(p, cache_dir), "path": str(p)} for p in tracks(Path(folder).expanduser())]  # where the file is now
     by_path = {d["path"]: d for d in scanned}
     rows = []
     for r in rank(scanned, length_s)[:top]:
