@@ -23,6 +23,11 @@ dependencies = [
 ui = [
   "pywebview>=5",
 ]
+# Fetching a video from a link for `videtor promos` (analyze/link.py): yt-dlp, its YouTube scripts (yt-dlp-ejs),
+# Deno to run them, curl-cffi for Instagram without a login. Sites change: `videtor promos --update` when a link stops working.
+links = [
+  "yt-dlp[default,deno,curl-cffi]>=2026.10.26",
+]
 # Phase 1 media analysis. Installed separately so the knowledge-base commands
 # stay light: `uv sync --extra analyze`.
 analyze = [

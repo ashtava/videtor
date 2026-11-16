@@ -1308,7 +1308,7 @@ def _make_promo(video, cand: dict, n: int, folder: Path, name: str, width: int, 
 
 def promos(source: str, name: str | None = None, count: int = 3, length: float = 30.0, frame: str = "vertical", kind: str = "clip", lead: str = "auto",
            fit: str = "fill", out_root: Path = Path("out/promos"), browser: str | None = None, another: int | None = None, ev: Events | None = None,
-           detect=None, transcribe=None, track=None, fetch=None) -> dict:
+           detect=None, transcribe=None, track=None, fetch=None, cards=None) -> dict:
     """Promos out of one finished video: `count` of its best stretches of about `length` seconds (clips), or its best
     moments cut together (edits), each as a finished mp4 in the chosen frame and a Premiere XML to finish it from.
     `source` is a link (fetched to the Mac once), a video file, or the folder of promos made before. `another=k`
@@ -1337,7 +1337,7 @@ def promos(source: str, name: str | None = None, count: int = 3, length: float =
         opts = old["options"]
         frame, kind, lead, fit, length = opts["frame"], opts["kind"], opts["lead"], opts["fit"], opts["length"]
     try:
-        video = video_mod.read(path, folder / "work", detect=detect, transcribe=transcribe, track=track, listen=lead != "music", ev=ev,
+        video = video_mod.read(path, folder / "work", detect=detect, transcribe=transcribe, track=track, cards=cards, listen={"speech": True, "music": False}.get(lead), ev=ev,
                                extra={k: known.get(k) for k in ("heatmap", "chapters", "title") if known.get(k)})
     except ValueError as exc:
         raise PipelineError(str(exc)) from exc
@@ -1354,13 +1354,16 @@ def promos(source: str, name: str | None = None, count: int = 3, length: float =
         doc["promos"][k - 1] = {**_make_promo(video, cands[left[0]], k, folder, title, width, height, fit, ev), "cand": left[0]}
     else:
         ev.stage("choose", "choosing the promos", "Choosing the best parts")
-        cands, led, notes = promo_mod.candidates(video, kind, lead, round(float(length) * 5 / 6, 1), float(length), n=int(count) + PROMO_BENCH)
+        cands, led, notes = promo_mod.candidates(video, kind, lead, round(float(length) * 5 / 6, 1), float(length), n=int(count) + PROMO_BENCH, want=int(count))
         if not cands:
             raise PipelineError(f"the video ({video.duration_s:.0f} s) is too short for a promo of {length:.0f} s")
         said = float(video.a["spoken"].mean())
         ev.info(f"  what leads: {'the talking' if led == 'speech' else 'the sound and the picture'} (words during {100 * said:.0f}% of the video; "
                 f"{len(video.cuts_s)} cuts) · {len(cands)} candidates" + ("".join(f"\n  {n}" for n in notes)))
         made = cands[: int(count)]
+        if len(made) < int(count):
+            notes.append(f"only {len(made)} separate part{'s' if len(made) > 1 else ''} of this length in a video of {video.duration_s:.0f} s: "
+                         f"{len(made)} promo{'s' if len(made) > 1 else ''} made, not {int(count)}")
         ev.stage("render", f"making {len(made)} promo{'s' if len(made) > 1 else ''} ({width}×{height})", "Making the promos")
         rows = []
         for n, cand in enumerate(made, start=1):

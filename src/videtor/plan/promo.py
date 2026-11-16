@@ -28,12 +28,17 @@ from videtor.analyze.beats import ENERGY_HOP_S as HOP
 from videtor.plan.fill import centre_offset
 
 RATES = (23.976, 24.0, 25.0, 29.97, 30.0, 48.0, 50.0, 59.94, 60.0)
-SPEECH_LED = 0.4  # words during this share of the video: the talking leads
+SPEECH_LED, SPEECH_OVER_MUSIC = 0.4, 0.65  # words during this share of the video: the talking leads; over sound that runs on
+# like music it takes more (a song has words during half of it and they are sung; a voice-over runs nearly throughout)
 PRE_S, POST_S = 0.12, 0.3  # air before the first word and after the last
 PAUSE_SPLIT_S, MAX_UNIT_S = 0.7, 14.0  # a pause this long ends a thought; a longer run of words is split at its widest gap
 PACE = 2.8  # words a second of a good delivery
 APART_S = 8.0  # two clips of one video are at least this far apart
 DARK = 22.0
+HEAT_W = 2.5  # what viewers went back to counts for more than how a stretch sounds or looks
+WORDS = 0.4  # a frame this surely a picture of words (a slide, a screen, a chart): shown whole, not cropped
+CARD, CARD_W, CARD_MAX = 0.5, 3.0, 0.35  # a frame this surely a card (credits, a title, a logo, an end screen); what a stretch
+# loses for them; the share past which a stretch chosen for its picture is no promo at all (a talk goes on over a card: it only loses)
 STOPS = ".!?।॥。？！"
 LINE_S = (2.5, 12.0)  # a line of an edit
 SHOT_S = (0.8, 2.5)  # a shot of a music-led edit
@@ -81,6 +86,7 @@ class Measures:
         self.sharp = _Curve(_z(np.log1p(a["sharp"])), st)
         self.motion = _Curve(_z(a["motion"]), st)
         self.dark = _Curve(a["bright"] < DARK, st)
+        self.card = _Curve(np.asarray(a.get("card", np.zeros(len(a["t"])))) > CARD, st)  # credits, titles, logos, end screens
         self.spoken = _Curve(a["spoken"], st)
         b = video.beats or {}
         rms = np.array(b.get("rms_db") or [0.0], np.float64)
@@ -107,12 +113,15 @@ class Measures:
         h = self.heat.mean(a, b)
         if h >= 0.8:
             why.append("one of the most replayed parts on YouTube")
-        return 1.5 * h
+        return HEAT_W * h
 
 
 def lead_of(video) -> str:
     """What carries the video: "speech" when words are said through enough of it, else "music"."""
-    return "speech" if video.speech and float(np.mean(video.a["spoken"])) >= SPEECH_LED else "music"
+    from videtor.analyze.video import TALK_PAUSES
+
+    talk_like = float((video.beats or {}).get("pauses", 1.0)) >= TALK_PAUSES
+    return "speech" if video.speech and float(np.mean(video.a["spoken"])) >= (SPEECH_LED if talk_like else SPEECH_OVER_MUSIC) else "music"
 
 
 # --- what is said ---------------------------------------------------------------------------------
@@ -198,7 +207,7 @@ def _said(us: list[dict], i: int, j: int, m: Measures, english: bool) -> tuple[f
     score += 0.4 * face
     if face >= 0.9:
         why.append("a face on screen throughout")
-    score += m.heat_of(a, b, why)
+    score += m.heat_of(a, b, why) - m.card.mean(a, b)
     return a, b, score, why
 
 
@@ -258,9 +267,9 @@ def speech_edit(video, m: Measures, lo: float, hi: float, taken: list[tuple[floa
 
 
 def _lift(m: Measures, a: float, b: float) -> tuple[float, float]:
-    """The biggest rise of the sound in the first part of a stretch: (dB, seconds in)."""
+    """The biggest rise of the sound at the start or in the first part of a stretch: (dB, seconds in)."""
     best, at = 0.0, 0.0
-    for t in np.arange(a + 1.0, a + 0.6 * (b - a), HOP):
+    for t in np.arange(a, a + 0.6 * (b - a), HOP):
         rise = m.rms_db.mean(t, t + 2.0) - m.rms_db.mean(max(t - 2.0, 0.0), t)
         if rise > best:
             best, at = rise, t - a
@@ -275,7 +284,7 @@ def _sounds(m: Measures, a: float, b: float, why: list[str]) -> float:
     rise, at = _lift(m, a, b)
     if rise >= 3.0:
         score += 0.6 * min(rise / 8.0, 1.0)
-        why.append(f"the sound lifts {at:.0f} s in")
+        why.append(f"the sound lifts {at:.0f} s in" if at >= 0.75 else "starts as the sound lifts")
     return score
 
 
@@ -293,9 +302,11 @@ def music_clips(video, m: Measures, lo: float, hi: float) -> list[dict]:
             break
         ends = cuts_a[(cuts_a >= a + lo) & (cuts_a <= a + hi)]
         b = float(ends.max()) if len(ends) else min(a + hi, dur)
+        if m.card.mean(a, b) > CARD_MAX:
+            continue  # credits, titles, an end screen
         why: list[str] = []
         score = _sounds(m, a, b, why)
-        rate = int(((cuts_a > a) & (cuts_a < b)).sum()) / max(b - a, 0.1)
+        rate = int(((cuts_a > a - 1e-3) & (cuts_a < b)).sum()) / max(b - a, 0.1)  # the cut it starts on is one of its cuts
         rel = rate / (m.cut_rate + 1e-6) if m.cut_rate else 1.0
         score += 0.4 * float(np.clip(rel - 1.0, -1.0, 1.5))
         if rel >= 1.3 and rate >= 0.3:
@@ -304,7 +315,7 @@ def music_clips(video, m: Measures, lo: float, hi: float) -> list[dict]:
         score += 0.3 * float(np.clip(m.motion.mean(a, b), -1.5, 1.5)) + 0.3 * face + 0.2 * float(np.clip(m.sharp.mean(a, b), -1.5, 1.5))
         if face >= 0.6:
             why.append("people on screen")
-        score -= 1.5 * m.dark.mean(a, b)
+        score -= 1.5 * m.dark.mean(a, b) + CARD_W * m.card.mean(a, b)
         starts_on, ends_on = round(a, 3) in on_cut, bool(len(ends)) or b >= dur - 0.05
         score += 0.5 * starts_on + 0.5 * ends_on
         why.append(("starts and ends on a cut" if ends_on else "starts on a cut, fades out") if starts_on else ("ends on a cut" if ends_on else "fades in and out"))
@@ -330,15 +341,15 @@ def music_edit(video, m: Measures, lo: float, hi: float, beds: list[tuple[float,
         if any(b0 < t1 and b0 + hi > t0 for t0, t1 in beds):
             continue
         why: list[str] = []
-        s = _sounds(m, b0, b0 + hi, why) + (m.heat.mean(b0, b0 + hi) * 0.5 if m.heat else 0.0)
+        s = _sounds(m, b0, b0 + hi, why) + (m.heat.mean(b0, b0 + hi) * 0.5 if m.heat else 0.0) - m.card.mean(b0, b0 + hi)  # the credits' music least
         if bed is None or s > bed[0]:
             bed = (s, float(b0), why)
     if bed is None:
         return None
     a0 = bed[1]
     shots = video.shots()
-    typical = float(np.median([b - a for a, b in shots])) if len(shots) >= 8 else 1.5
-    target = float(np.clip(typical, *SHOT_S))
+    typical = float(np.median([b - a for a, b in shots])) if len(shots) >= 8 else 2.0
+    target = float(np.clip(0.75 * typical, *SHOT_S))  # a little shorter than the video's own shots, so most of them can serve
     for k in sorted((1, 2, 4, 8), key=lambda k: abs(k * period - target)):
         grid = beats[beats >= a0 - 1e-3][::k]
         grid = grid[grid <= a0 + hi + 1e-3]
@@ -358,6 +369,8 @@ def music_edit(video, m: Measures, lo: float, hi: float, beds: list[tuple[float,
                 if any(t < x1 and t + need > x0 for x0, x1 in used):
                     continue
                 w: list[str] = []
+                if m.card.mean(t, t + need) > CARD_MAX:
+                    continue  # no credits, titles or end screens among the shots
                 sc = (0.5 * m.sharp.mean(t, t + need) + 0.5 * float(np.clip(m.motion.mean(t, t + need), -1.5, 1.5)) + 0.6 * m.face.mean(t, t + need)
                       - 2.0 * m.dark.mean(t, t + need) + (m.heat.mean(t, t + need) * 0.8 if m.heat else 0.0) - (0.4 if t < 0.02 * dur or t + need > 0.97 * dur else 0.0))
                 found.append((sc, float(t)))
@@ -396,8 +409,10 @@ def ranked_clips(cands: list[dict], n: int, apart: float = APART_S) -> list[dict
     return out
 
 
-def candidates(video, kind: str = "clip", lead: str = "auto", lo: float = 25.0, hi: float = 30.0, n: int = 9) -> tuple[list[dict], str, list[str]]:
-    """Up to n promos of `kind`, best first, none reusing another's footage; what led the choice; notes for the user."""
+def candidates(video, kind: str = "clip", lead: str = "auto", lo: float = 25.0, hi: float = 30.0, n: int = 9, want: int | None = None) -> tuple[list[dict], str, list[str]]:
+    """Up to n promos of `kind`, best first, none reusing another's footage; what led the choice; notes for the user
+    (said only when they touch the first `want` promos, the ones that are made; the rest wait for "another one")."""
+    want = n if want is None else want
     notes: list[str] = []
     hi = min(hi, max(video.duration_s - 0.1, 1.0))
     lo = min(lo, hi)
@@ -419,7 +434,7 @@ def candidates(video, kind: str = "clip", lead: str = "auto", lo: float = 25.0, 
             taken += [(p["a"], p["b"]) for p in c["parts"]]
             if c.get("bed"):
                 beds.append((c["bed"]["a"], c["bed"]["b"]))
-        if len(out) < n:
+        if len(out) < want:
             notes.append(("the video has too few separate lines" if lead == "speech" else "the video has too few shots or no steady beat")
                          + f" for {'more' if out else 'an'} edit{'s' if out else ''}: " + ("the rest are" if out else "these are") + " its best stretches as they are")
     if len(out) < n:
@@ -451,10 +466,24 @@ def _subject(video, a: float, b: float, crop_share: float) -> tuple[float, float
     return x, y
 
 
+def _words_on_screen(video, a: float, b: float) -> bool:
+    """A stretch that is a picture of words (a slide, a screen, a chart) with nobody in it: cropping it cuts the words."""
+    st, arr = video.step_s, video.a
+    if "text" not in arr:
+        return False
+    i0 = min(max(int(a / st), 0), len(arr["t"]) - 1)
+    i1 = min(max(int(math.ceil(b / st)), i0 + 1), len(arr["t"]))
+    words = arr["text"][i0:i1] + arr["card"][i0:i1]  # a slide reads as a title card as often as a slide: either way, words
+    return float(np.mean(words > WORDS)) >= 0.5 and float(np.mean(arr["faces"][i0:i1] > 0)) < 0.34
+
+
 def framing(video, a: float, b: float, width: int, height: int, fit: str = "fill") -> dict:
     """Basic Motion for a stretch in a width x height frame: the scale that fills it (or fits it whole), black bars
-    of the source left outside, and, where the picture is wider or taller than the frame, the faces kept in view."""
+    of the source left outside, and, where the picture is wider or taller than the frame, the faces kept in view.
+    A slide or a screen of words is shown whole whatever the fit, since a crop would cut the words."""
     info = video.info
+    shown_whole = fit != "whole" and _words_on_screen(video, a, b)
+    fit = "whole" if shown_whole else fit
     dw, dh = float(info["display_w"]), float(info["display_h"])
     x0, y0, x1, y1 = info.get("content") or [0.0, 0.0, 1.0, 1.0]
     cw, ch = (x1 - x0) * dw, (y1 - y0) * dh  # the picture inside the bars, source pixels
@@ -472,6 +501,8 @@ def framing(video, a: float, b: float, width: int, height: int, fit: str = "fill
         if sh > height + 1:
             dy += float(np.clip((0.42 - sy) * sh, -(sh - height) / 2, (sh - height) / 2))  # a little headroom
         out["reframed"] = {"subject_x": round(subject[0], 3), "subject_y": round(subject[1], 3)}
+    if shown_whole and (sw < width - 1 or sh < height - 1):
+        out["whole"] = "words on screen"
     out["center"] = centre_offset(dx, dy, width, height)
     return out
 
@@ -494,10 +525,14 @@ def picks_for(video, cand: dict, name: str, width: int, height: int, fit: str = 
     fps = seq_fps(float(video.info["fps"]))
     info = video.info
     own_sound = not cand.get("bed")
-    slots, t = [], 0
+    slots, t, laid = [], 0, 0.0
+    last = int(video.duration_s * fps) - 1
     for n, part in enumerate(cand["parts"], start=1):
-        fa, fb = round(part["a"] * fps), round(part["b"] * fps)
-        fb = min(fb, int(video.duration_s * fps) - 1)
+        # whole frames, counted along the promo so the cuts of an edit stay on the beat they were laid on
+        frames = max(1, round((laid + part["b"] - part["a"]) * fps) - round(laid * fps))
+        laid += part["b"] - part["a"]
+        fa = min(max(round(part["a"] * fps), 0), max(last - frames, 0))
+        fb = min(fa + frames, last)
         for s0, s1, motion in segments(video, fa / fps, fb / fps, width, height, fit, fps):
             f0, f1 = round(s0 * fps), round(s1 * fps)
             if f1 <= f0:
@@ -505,7 +540,7 @@ def picks_for(video, cand: dict, name: str, width: int, height: int, fit: str = 
             pick = {"fid": video.fid, "path": video.path, "name": video.name, "in_s": round(f0 / fps, 4), "out_s": round(f1 / fps, 4), "speed": 1.0,
                     "duration_s": round(video.duration_s, 3), "file_fps": fps, "width": info["width"], "height": info["height"],
                     "display_w": info["display_w"], "display_h": info["display_h"], "audio_channels": info["audio_channels"], "motion": motion,
-                    "score": cand["score"], "reasons": [f"{clock(f0 / fps)} of the video"]}
+                    "score": cand["score"], "reasons": [f"{clock(f0 / fps)} of the video", *(["shown whole: words on screen"] if motion.get("whole") else [])]}
             slots.append({"id": f"p{len(slots) + 1}", "section": f"line {n}" if cand["kind"] == "edit" and own_sound else "promo",
                           "show": (part.get("text") or cand.get("text") or f"the video at {clock(f0 / fps)}")[:140], "start_s": round(t / fps, 4),
                           "length_s": round((f1 - f0) / fps, 4), **({"byte": True} if own_sound else {}), "pick": pick, "alternates": []})

@@ -36,6 +36,8 @@ function showView(name) {
   if (name === "jobs") renderJobs();
   if (name === "library") loadLibrary();
   if (name === "teach") loadTeach();
+  if (name === "promos") loadPromos();
+  else document.querySelectorAll("#pr-view video").forEach((v) => v.pause());
 }
 function showTab(name) {
   if (name !== "look" && typeof tlStop === "function" && TL.playing) tlStop();
@@ -635,6 +637,71 @@ async function loadLibrary() {
     $("lib-status").textContent = r.error ? r.error : `${sel.dataset.name}: ${r.from} → ${r.to}. Learn from my sorting when you are done.`;
   }));
 }
+
+/* ---- promos: the best half minute of a finished video ---- */
+let promoSets = null;
+const PR_KEEP = ["pr-frame", "pr-kind", "pr-count", "pr-length", "pr-lead", "pr-fit"];
+const prWatch = (id) => watch(id, { status: "pr-status", log: "pr-log", logbox: "pr-logbox", onDone: () => loadPromos(true) });
+async function loadPromos(newest) {
+  const r = await api("/api/promos");
+  if (r.error) { $("pr-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+  const first = promoSets === null;
+  promoSets = r;
+  if (first) {
+    $("pr-frame").innerHTML = r.frames.map(([k, label]) => `<option value="${esc(k)}">${esc(label)}</option>`).join("");
+    PR_KEEP.forEach((id) => { const v = store.get("videtor." + id); if (v && [...$(id).options].some((o) => o.value === v)) $(id).value = v; });
+    const live = (state.jobs || []).filter((j) => j.kind === "promos" && LIVE.includes(j.status)).pop();
+    if (live) prWatch(live.id);
+  }
+  $("pr-fetcher").textContent = r.fetcher ? `yt-dlp ${r.fetcher} is installed. When a link that used to work stops, update it.` : "The link fetcher (yt-dlp) is not installed: links will not work, files will.";
+  const sel = $("pr-select"), keep = newest ? null : sel.value;
+  sel.innerHTML = r.sets.map((x) => `<option value="${esc(x.dir)}">${esc(x.title)} · ${esc((x.made_at || "").replace("T", " ").slice(0, 16))}</option>`).join("") || `<option value="">none yet</option>`;
+  if (keep && r.sets.some((x) => x.dir === keep)) sel.value = keep;
+  renderPromos();
+}
+function renderPromos() {
+  const x = (promoSets.sets || []).find((q) => q.dir === $("pr-select").value);
+  $("pr-reveal").hidden = $("pr-again").hidden = !x;
+  if (!x) { $("pr-view").innerHTML = `<p class="muted">Nothing yet: give a video above.</p>`; return; }
+  const o = x.options, shape = (promoSets.frames.find(([k]) => k === o.frame) || [0, o.frame])[1];
+  const wide = ["horizontal", "horizontal-4k", "square"].includes(o.frame);
+  const led = x.lead === "speech" ? "the talking" : "the music and the picture";
+  $("pr-view").innerHTML =
+    `<p class="promo-head"><b>${esc(x.title)}</b> · ${fmtDur(x.source.duration_s)}${x.source.url ? ` · <a href="${esc(x.source.url)}" target="_blank" rel="noopener">the link</a>` : ""}<br>` +
+    `${o.kind === "edit" ? "Edits" : "Clips"} in ${esc(shape)}. Videtor took this as a video carried by ${led} (words during ${Math.round(100 * (x.said || 0))}% of it)` +
+    `${x.replayed ? ", and had YouTube's most-replayed parts to go by" : ""}. <span class="muted">Not so? Set “What carries the video” under Advanced and make them again.</span>` + (x.notes || []).map((n) => `<br><span class="warn">${esc(n)}</span>`).join("") + `</p>` +
+    `<div class="promos">` + x.promos.map((p) =>
+      `<div class="promo ${wide ? "wide" : ""}"><video controls preload="metadata" playsinline src="${fileUrl(p.file)}&v=${encodeURIComponent(p.made_at || "")}"></video>` +
+      `<h3>Promo ${p.n} · ${Number(p.length_s).toFixed(1)} s</h3><div class="muted">${p.kind === "edit" ? `${p.shots} pieces, the first from` : "from"} ${esc(p.at)} of the video</div>` +
+      `<ul>${(p.reasons || []).map((w) => `<li>${esc(w)}</li>`).join("")}</ul>` + (p.text ? `<blockquote>${esc(p.text)}</blockquote>` : "") +
+      `<div class="row"><button class="btn small" data-another="${p.n}" ${x.more > 0 ? "" : "disabled"} title="${x.more > 0 ? `${x.more} more to try` : "no other part as good: change the kind or the length"}">Try another</button>` +
+      `<button class="btn small" data-show="${esc(p.file)}">Show the file</button><button class="btn small" data-show="${esc(p.xml)}">Premiere XML</button></div></div>`).join("") + `</div>`;
+  $("pr-view").querySelectorAll("button[data-show]").forEach((b) => b.addEventListener("click", () => api("/api/reveal", { path: b.dataset.show })));
+  $("pr-view").querySelectorAll("button[data-another]").forEach((b) => b.addEventListener("click", async () => {
+    const r = await api("/api/promos/another", { dir: x.dir, n: Number(b.dataset.another) });
+    if (r.error) { $("pr-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+    prWatch(r.job.id);
+  }));
+}
+$("pr-select").onchange = renderPromos;
+$("pr-reveal").onclick = () => { const d = $("pr-select").value; if (d) api("/api/reveal", { path: d + "/promos.json" }); };
+$("pr-again").onclick = () => {
+  const x = (promoSets.sets || []).find((q) => q.dir === $("pr-select").value);
+  if (x) { $("pr-source").value = x.source.url || x.source.path; $("pr-source").focus(); window.scrollTo(0, 0); }
+};
+$("pr-run").onclick = async () => {
+  PR_KEEP.forEach((id) => store.set("videtor." + id, $(id).value));
+  $("pr-msg").textContent = "";
+  const r = await api("/api/promos/make", { source: $("pr-source").value.trim(), frame: $("pr-frame").value, kind: $("pr-kind").value, count: Number($("pr-count").value),
+    length: Number($("pr-length").value), lead: $("pr-lead").value, fit: $("pr-fit").value, browser: $("pr-browser").value });
+  if (r.error) { $("pr-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+  prWatch(r.job.id);
+};
+$("pr-update").onclick = async () => {
+  const r = await api("/api/promos/update", {});
+  if (r.error) { $("pr-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
+  prWatch(r.job.id);
+};
 
 /* ---- activity ---- */
 async function renderJobs() {

@@ -133,11 +133,18 @@ def fetch(url: str, out_dir: Path, progress: Callable[[int, int], None] | None =
         if browser not in BROWSERS:
             raise LinkError(f"browser must be one of {', '.join(BROWSERS)}")
         opts["cookiesfrombrowser"] = (browser,)
+    import contextlib
+    import io
+
+    aside = io.StringIO()  # yt-dlp writes some notes straight to the terminal (a codec it does not know): kept out of the job's log
     try:
-        with yt_dlp.YoutubeDL(opts) as ydl:
+        with contextlib.redirect_stderr(aside), yt_dlp.YoutubeDL(opts) as ydl:
             info = ydl.sanitize_info(ydl.extract_info(url, download=True))
     except Exception as exc:  # noqa: BLE001 - yt-dlp raises many kinds; all mean "not fetched"
         raise LinkError(_plain(str(exc), url)) from exc
+    for line in aside.getvalue().splitlines():
+        if line.strip() and "Unknown codec" not in line:
+            log(f"  {line.strip()[:200]}")
     if isinstance(info, dict) and info.get("entries"):  # a post with several videos: the first
         info = next((e for e in info["entries"] if e), None)
     if not isinstance(info, dict):

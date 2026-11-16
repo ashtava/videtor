@@ -13,6 +13,7 @@
     <button data-view="project">Projects</button>
     <button data-view="prep">New project</button>
     <button data-view="library">Library</button>
+    <button data-view="promos">Promos</button>
     <button data-view="teach">Teach Videtor <span class="badge" id="teach-badge" hidden></span></button>
     <button data-view="jobs">Activity <span class="jobs-dot" id="jobs-dot"></span></button>
     <div style="flex:1"></div>
@@ -336,6 +337,46 @@
         <div class="row"><input type="text" id="lib-add-dir" placeholder="its folder, e.g. out/library/tpl"><button class="btn" data-browse="lib-add-dir">Choose…</button><button class="btn" id="lib-add-existing">Add</button></div>
       </details>
       <div id="lib-view"></div>
+    </section>
+
+    <!-- ============ Promos ============ -->
+    <section class="view" id="view-promos">
+      <h1>Promos</h1>
+      <p class="lede">Give Videtor a finished video, as a YouTube or Instagram link or as a file, and get its best half minute as ready promos in the shape you choose.</p>
+      <details class="guide" data-guide="promos">
+        <summary>How this works</summary>
+        <ol>
+          <li>Paste the video's link, or choose its file. A link is fetched to this Mac once; nothing is sent anywhere.</li>
+          <li>Choose the shape, and what to make: <b>Clips</b> are the best stretches as they are; <b>Edits</b> are the best moments cut together.</li>
+          <li><b>Make the promos.</b> Videtor watches the video, listens to it and writes down what is said, then picks the parts. A ten-minute video takes a few minutes the first time; changing the shape or the kind afterwards is quick.</li>
+          <li>Watch them below. Not the right part? <b>Try another</b> swaps that promo for the next best. Every promo is an .mp4 to post and a Premiere .xml to finish it from.</li>
+        </ol>
+        <p class="hint">Videtor picks by how the video sounds and looks, where a thought starts and ends, and (on YouTube) what viewers replayed most. It does not understand what is said, so watch before you post. Use videos you have the right to cut.</p>
+      </details>
+      <div class="card form">
+        <div class="field">
+          <label for="pr-source">The video</label>
+          <div class="pick"><input type="text" id="pr-source" placeholder="Paste a YouTube or Instagram link, or choose a file"><button class="btn" data-pick="pr-source" data-kind="video">Choose a file…</button></div>
+        </div>
+        <div class="field"><label for="pr-frame">Shape</label><select id="pr-frame"></select></div>
+        <div class="field"><label for="pr-kind">Make</label>
+          <select id="pr-kind"><option value="clip">Clips: the best stretches as they are</option><option value="edit">Edits: the best moments cut together</option></select></div>
+        <div class="field"><label for="pr-count">How many</label>
+          <div class="row" style="margin:0"><select id="pr-count"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select>
+          <label for="pr-length" style="min-width:auto">each</label><select id="pr-length"><option value="15">about 15 s</option><option value="30" selected>25 to 30 s</option><option value="45">about 45 s</option><option value="60">about 60 s</option></select></div></div>
+        <details class="advanced"><summary>Advanced</summary>
+          <div class="row"><label for="pr-lead">What carries the video</label><select id="pr-lead"><option value="auto">Videtor decides</option><option value="speech">The talking</option><option value="music">The music and the picture</option></select></div>
+          <div class="row"><label for="pr-fit">A picture wider or taller than the shape</label><select id="pr-fit"><option value="fill">Fill the frame: crop, the faces kept in view</option><option value="whole">Show the whole picture, with bars</option></select></div>
+          <div class="row"><label for="pr-browser">If the site asks to log in, use my login from</label><select id="pr-browser"><option value="">nothing</option><option value="chrome">Chrome</option><option value="safari">Safari</option><option value="firefox">Firefox</option></select></div>
+          <div class="row"><button class="btn" id="pr-update">Update the link fetcher</button><span class="muted" id="pr-fetcher"></span></div>
+        </details>
+        <div class="actions"><button class="btn primary big" id="pr-run">Make the promos</button><span id="pr-msg" class="muted"></span></div>
+      </div>
+      <div class="status" id="pr-status" hidden></div>
+      <details class="logbox" id="pr-logbox" hidden><summary>Details</summary><pre class="log" id="pr-log">—</pre></details>
+      <h2>Your promos</h2>
+      <div class="row"><select id="pr-select"></select><button class="btn" id="pr-reveal">Show the folder in Finder</button><button class="btn" id="pr-again">Use this video again</button></div>
+      <div id="pr-view"></div>
     </section>
 
     <!-- ============ Activity ============ -->

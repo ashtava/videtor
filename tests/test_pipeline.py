@@ -127,6 +127,129 @@ class CutTests(unittest.TestCase):
         self.assertEqual(picks, {"sfx_skip": ["shutter"], "stabilize": True, "under_db": -9})
 
 
+@unittest.skipUnless(shutil.which("ffmpeg"), "needs ffmpeg")
+class PromoTests(unittest.TestCase):
+    """Promos end to end on a small made-up video: the reading, the choice, the picks, the XML and the rendered files.
+    The faces, the cards, the words and the beats are stand-ins; ffmpeg is the real one."""
+
+    @classmethod
+    def setUpClass(cls):
+        from test_promos import make_video
+
+        cls.root = Path(tempfile.mkdtemp())
+        cls.video = make_video(cls.root / "My Talk.mp4", seconds=36)
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.root, ignore_errors=True)
+
+    def make(self, source, **kw):
+        from test_promos import said, sound
+
+        seen = []
+        opts = dict(count=2, length=8.0, frame="square", out_root=self.root / "promos", ev=events.Events(seen.append), detect=lambda rgb: [[0.6, 0.2, 0.8, 0.6]],
+                    cards=lambda frames: np.zeros(len(frames), np.float32), track=lambda wav: sound(36.0, loud=[(12, 24)]),
+                    transcribe=lambda path, fid, folder: said((2.0, "Hello."), (30.0, "Goodbye.")))
+        return pipeline.promos(str(source), **{**opts, **kw}), seen
+
+    def probe(self, path):
+        import subprocess
+
+        out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "stream=codec_type,width,height:format=duration", "-of", "json", str(path)],
+                             capture_output=True, text=True, check=True)
+        d = json.loads(out.stdout)
+        v = next(x for x in d["streams"] if x["codec_type"] == "video")
+        return v["width"], v["height"], float(d["format"]["duration"]), sum(x["codec_type"] == "audio" for x in d["streams"])
+
+    def test_promos_from_a_file_are_finished_videos_and_premiere_xmls_and_another_swaps_one(self):
+        result, seen = self.make(self.video)
+        folder, doc = result["dir"], result["doc"]
+        self.assertEqual((folder.name, doc["lead"], len(doc["promos"]), doc["options"]["frame"]), ("my-talk", "music", 2, "square"))
+        first = doc["promos"][0]
+        self.assertEqual((first["from_s"], first["length_s"]), ([[12.0, 20.0]], 8.0))  # from the cut where the sound lifts
+        self.assertEqual(first["reasons"][:2], ["the loudest, punchiest stretch of the sound", "starts as the sound lifts"])
+        for row in doc["promos"]:
+            w, h, dur, sounds = self.probe(row["file"])
+            self.assertEqual((w, h, sounds), (1080, 1080, 1))
+            self.assertAlmostEqual(dur, row["length_s"], delta=0.12)
+            x = ET.parse(row["xml"]).getroot()
+            self.assertEqual(x.find("sequence/name").text, f"my-talk-promo-{row['n']}")
+            self.assertEqual({e.text for e in x.iter("pathurl")}, {"file://localhost" + str(self.video.resolve()).replace(" ", "%20")})
+            self.assertGreaterEqual(len(list(x.iter("clipitem"))), 2)  # the picture and its own sound
+            picks = json.loads((folder / "work" / f"promo-{row['n']}.picks.json").read_text())
+            self.assertTrue(all(s["byte"] and s["pick"]["motion"]["scale"] == 600.0 for s in picks["slots"]))  # 180 high fills 1080
+        self.assertEqual([e["stage"] for e in seen if e["event"] == "stage"], ["picture", "sound", "speech", "choose", "render"])
+        self.assertEqual([e["kind"] for e in seen if e["event"] == "artifact"], ["promo", "promo", "promos"])
+        self.assertEqual(pipeline.promo_sets(self.root / "promos")[0]["name"], "my-talk")
+        # the same video again in another shape: read from what was kept, the promos made anew
+        again, seen = self.make(self.video, frame="vertical", count=1, detect=lambda rgb: 1 / 0)
+        self.assertEqual((again["dir"], len(again["doc"]["promos"]), self.probe(again["doc"]["promos"][0]["file"])[:2]), (folder, 1, (1080, 1920)))
+        self.assertEqual(again["doc"]["notes"], [])
+        many, _ = self.make(self.video, count=6, length=12.0)
+        self.assertTrue(len(many["doc"]["promos"]) < 6 and any("promos made, not 6" in n or "promo made, not 6" in n for n in many["doc"]["notes"]), many["doc"]["notes"])
+        again, seen = self.make(self.video, frame="vertical", count=1, detect=lambda rgb: 1 / 0)
+        self.assertFalse((folder / "promo-2.mp4").exists())  # the second promo of the earlier run is gone with it
+        self.assertNotIn("picture", [e.get("stage") for e in seen])
+        # another one: the next best stretch takes that promo's place
+        before = again["doc"]["promos"][0]["from_s"]
+        other, _ = self.make(folder, another=1)
+        row = other["doc"]["promos"][0]
+        self.assertNotEqual(row["from_s"], before)
+        self.assertEqual((row["n"], other["doc"]["used"], Path(row["file"]).name), (1, [0, 1], "promo-1.mp4"))
+        for _ in range(len(other["doc"]["candidates"]) - 2):
+            self.make(folder, another=1)
+        with self.assertRaises(pipeline.PipelineError) as ctx:
+            self.make(folder, another=1)
+        self.assertIn("no other stretch", str(ctx.exception))
+
+    def test_promos_from_a_link_fetch_the_video_once_and_an_edit_runs_on_its_own_stretch_of_sound(self):
+        fetched = []
+
+        def fetch(url, out_dir, progress=None, log=print, browser=None):
+            fetched.append((url, browser))
+            out_dir.mkdir(parents=True, exist_ok=True)
+            shutil.copy(self.video, out_dir / "source.mp4")
+            info = {"title": "A Film: Part 1!", "duration": 36.0, "url": url,
+                    "heatmap": [{"start_time": t, "end_time": t + 1.0, "value": 1.0 if 24 <= t < 33 else 0.05} for t in range(36)]}
+            (out_dir / "source.json").write_text(json.dumps(info))
+            return {"path": out_dir / "source.mp4", "info": info}
+
+        url = "https://www.youtube.com/watch?v=abc"
+        result, seen = self.make(url, fetch=fetch, count=1, browser="chrome", out_root=self.root / "linked")
+        doc, folder = result["doc"], result["dir"]
+        self.assertEqual((folder.name, fetched, doc["source"]["url"], doc["replayed"]), ("a-film-part-1", [(url, "chrome")], url, True))
+        self.assertTrue(23.0 <= doc["promos"][0]["from_s"][0][0] <= 26.0, doc["promos"][0]["from_s"])  # what viewers replayed, over the loud stretch
+        self.assertIn("one of the most replayed parts on YouTube", doc["promos"][0]["reasons"])
+        self.assertEqual([e["stage"] for e in seen if e["event"] == "stage"][0], "fetch")
+        self.assertEqual(list((self.root / "linked").glob(".fetching-*")), [])
+        edit, _ = self.make(url, fetch=fetch, out_root=self.root / "linked", count=1, kind="edit")
+        self.assertEqual(len(fetched), 1)  # the second time the file on the Mac is used
+        row = edit["doc"]["promos"][0]
+        self.assertEqual((row["kind"], row["lead"], row["shots"] >= 4, len(row["from_s"]) == row["shots"]), ("edit", "music", True, True))
+        x = ET.parse(row["xml"]).getroot()
+        self.assertEqual({Path(e.text).name for e in x.iter("pathurl")}, {"source.mp4", "promo-1-sound.wav"})  # the shots, and the bed as a file of its own
+        self.assertEqual((self.probe(row["file"])[3], (folder / "promo-1-sound.wav").exists()), (1, True))
+        self.assertAlmostEqual(self.probe(row["file"])[2], row["bed_s"][1] - row["bed_s"][0], delta=0.12)
+
+    def test_what_cannot_be_made_is_said(self):
+        from videtor.analyze import link
+
+        for kw, words in ((dict(frame="round"), "the shape must be one of"), (dict(count=9), "between 1 and 6"), (dict(length=300.0), "between 8 and 90")):
+            with self.assertRaises(pipeline.PipelineError) as ctx:
+                self.make(self.video, **kw)
+            self.assertIn(words, str(ctx.exception))
+        with self.assertRaises(pipeline.PipelineError) as ctx:
+            self.make(self.root / "nothing.mp4")
+        self.assertIn("give a link", str(ctx.exception))
+
+        def refused(url, out_dir, **kw):
+            raise link.LinkError("Instagram wants a login for this video")
+
+        with self.assertRaises(pipeline.PipelineError) as ctx:
+            self.make("https://www.instagram.com/reel/xyz/", fetch=refused, out_root=self.root / "refused")
+        self.assertIn("wants a login", str(ctx.exception))
+
+
 class EventTests(unittest.TestCase):
     def test_sentences_for_a_terminal_and_json_lines_for_the_app(self):
         said: list[str] = []

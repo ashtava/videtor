@@ -216,3 +216,16 @@ video.preview { max-height: 420px; border-radius: 8px; background: #000; display
 .tl-music i { position: absolute; top: 4px; width: 1px; height: 14px; background: #4b6a8c; }
 .tl-music span { position: absolute; left: 6px; top: 3px; font-size: 11px; color: #9db8d6; white-space: nowrap; }
 .tl-playhead { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #ff5a5a; pointer-events: none; z-index: 3; }
+
+/* ---- promos ---- */
+.promo-head { color: var(--muted); max-width: 980px; margin: 6px 0 12px; }
+.promo-head b { color: var(--fg); }
+.promos { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+.promo { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; width: 300px; display: flex; flex-direction: column; gap: 8px; }
+.promo.wide { width: 460px; }
+.promo video { width: 100%; max-height: 480px; background: #000; border-radius: 6px; display: block; }
+.promo h3 { margin: 0; font-size: 15px; }
+.promo ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+.promo blockquote { margin: 0; padding: 6px 10px; border-left: 3px solid var(--line); color: var(--fg); font-size: 13px; max-height: 96px; overflow: auto; }
+.promo .row { margin: 0; gap: 6px; }
+

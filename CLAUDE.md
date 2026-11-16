@@ -54,7 +54,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 365 tests, about 45 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 390 tests, about 50 s, no drive needed
 .venv/bin/videtor eval                                           # the past projects re-cut from the cache and measured (about 1 min)
 ```
 
@@ -76,6 +76,12 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   (`uv sync --extra analyze --extra ui`), which the app installs on its first run; without it the page opens in
   the browser. The user chose this over the MCP server, and it is for a non-technical end user: keep its words
   plain and its steps few.
+- **Promos** (2026-11-16): `videtor promos <link or file>` and the app's Promos page make a finished video's best 25-30 s two or
+  three times over (clips, or edits) in the chosen shape: an mp4 and a Premiere XML each, in `out/promos/<name>/` (`plan/promo.py`,
+  `analyze/video.py`, `export/promo.py`). Links are fetched with yt-dlp, installed in `.venv` with the user's yes on 2026-11-16 (extra
+  `links`: yt-dlp, yt-dlp-ejs, Deno, curl-cffi); `videtor promos --update` when a link stops working. The choice is by measures
+  (sound, picture, where thoughts start and end, YouTube's most-replayed), not by understanding the words: say so, and don't
+  promise more. A video's title or link never goes into a tracked file (`out/` only).
 - **Styles from renders** (2026-11-11): `videtor kb renders <folder> --bucket <b>` learns a bucket from finished
   reels alone and `videtor kb train <b>` a cutting policy from them (`plan/gym.py`); `videtor draft` drafts a shot
   map from it; a shot map's `"effects": "<b>"` adds the learnt effects (`plan/fx.py`) and `"cut_on": "accents"`
@@ -94,7 +100,7 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
     the user to run a command or edit a file to teach it something. When they tell you a verdict in chat, record it
     (`videtor verdict`) so the page shows it.
   - **The shape and the music are the user's** (2026-11-15): `out/<name>/settings.json`, set in the app (`frame`:
-    vertical, horizontal, horizontal-4k, square; `music`: their track and where it starts, none, or left to the
+    vertical, portrait (4:5), horizontal, horizontal-4k, square; `music`: their track and where it starts, none, or left to the
     plan). `pipeline.cut` applies it over the shot map (`plan/settings.py`). Before writing a plan, read it: write
     for that frame, count the plan on that track, and don't pick another track when the user gave one.
   - **The timeline** (2026-11-16): the app's Review step plays the cut and edits it (`plan/edit.py`: swap, slip,
@@ -117,7 +123,7 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 ## Layout
 
 ```
-src/videtor/  cli.py (thin) · pipeline.py (the steps: prepare, cut, look, read back, learn, teach) · events.py · teach.py · ui/
+src/videtor/  cli.py (thin) · pipeline.py (the steps: prepare, cut, look, read back, learn, teach, promos) · events.py · teach.py · ui/
               kb/ (past edits, read-backs, feedback) · analyze/ (per clip, per second)
               plan/ (shot map → picks; moves, music, SFX, steadying, interview, music video) · export/ (xmeml writer)
 kb/           manifest.json (bucket per edit) · notes.md (the user's rules) · profile/ keeper/ buckets/ footage/ library/ renders/ policy/
@@ -127,6 +133,7 @@ cache/        derived data, about 5 GB (footage maps took hours with the drives 
 out/<name>/   one folder per cut: brief.md, settings.json (the user's frame and music), shotmap.json, inventory.json, picks.json,
               decisions.json (swaps and timeline edits), review.json (the user's notes), <name>.xml, sheets, report.md,
               verdict.json, the finished video when the user saves it there, work/
+out/promos/<name>/   promos of one finished video (videtor promos): source.mp4 (a link's video), promos.json, promo-N.mp4, promo-N.xml, work/
 out/library/<name>/  a shoot sorted by shot type (videtor library): wide/ close-up/ talking-head/ interview-bite/ b-roll/ (links), sheets/, bites.xml, library.md
 scripts/      helpers and archived experiments (not imported by the CLI)
 docs/         handoff.md · status.md · architecture.md · architecture.html (the original 10-29 design page)

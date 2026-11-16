@@ -62,7 +62,7 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
 4. **Music.** First read `out/<name>/settings.json` when it exists: it is what the user set in the app. `music.path` is
    their track (use it, never another; `start` `at` gives the in-point, `beginning` is 0, `auto` leaves the in-point to you:
    put its lift on the reveal), `music.none` means no music (give slots `length_s`, no `beats`), and `frame` is the shape
-   to write the plan for (vertical 1080×1920, horizontal 1920×1080, horizontal-4k 3840×2160, square 1080×1080). The cut
+   to write the plan for (vertical 1080×1920, portrait 1080×1350, horizontal 1920×1080, horizontal-4k 3840×2160, square 1080×1080). The cut
    applies these over the plan in any case; a plan written for them needs no adjusting. Only with no music set there:
    for a folder or a feel ("a high-beat track"): `videtor music <folder> --length
    <seconds> --reveal-at <seconds>`. Choose the track and in-point so a lift (drop) lands on the

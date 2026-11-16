@@ -30,7 +30,8 @@ STATIC = Path(__file__).with_name("static")
 STATE_FILE = Path("cache/ui-state.json")
 VIDEO_EXT = (".mp4", ".mov", ".mxf", ".mts", ".m4v", ".avi", ".braw", ".r3d", ".mpg")
 VERBS = {"prep": "Reading the footage", "cut": "Cutting", "look": "Updating the cut", "search": "Searching", "music": "Ranking music",
-         "library": "Sorting the footage", "learn": "Learning your sorting", "teach": "Learning from your work", "preview": "Making the preview"}
+         "library": "Sorting the footage", "learn": "Learning your sorting", "teach": "Learning from your work", "preview": "Making the preview",
+         "promos": "Making the promos"}
 Log = Callable[[str], None]
 
 
@@ -118,7 +119,7 @@ class App:
         known = {p["dir"] for p in self.state["projects"]}
         found = 0
         for d in sorted(root.iterdir()) if root.is_dir() else []:
-            if not d.is_dir() or str(d.resolve()) in known or d.name in ("library", "references", "fx-test"):
+            if not d.is_dir() or str(d.resolve()) in known or d.name in ("library", "references", "fx-test", "promos"):
                 continue
             if not any((d / f).exists() for f in ("picks.json", "shotmap.json", "aroll.json", "mv.json")):
                 continue
@@ -134,13 +135,13 @@ class App:
         return found
 
     def _finished(self, job) -> None:
-        if not self.notify or job.kind not in ("prep", "cut", "library", "teach"):
+        if not self.notify or job.kind not in ("prep", "cut", "library", "teach", "promos"):
             return
         name = Path(job.project or "").name or "the project"
         text = {("prep", "done"): f"The footage of {name} is read. Next: the brief and the plan.",
                 ("cut", "done"): f"The cut of {name} is ready to review.",
                 ("teach", "done"): "Videtor has finished learning: see Teach Videtor for what it kept.",
-                ("library", "done"): f"The footage of {name} is sorted."}.get((job.kind, job.status), f"{job.title} stopped with an error: see Activity.")
+                ("library", "done"): f"The footage of {name} is sorted.", ("promos", "done"): "The promos are ready to watch."}.get((job.kind, job.status), f"{job.title} stopped with an error: see Activity.")
         notify(text)
 
     # --- state ------------------------------------------------------------------------------
@@ -170,7 +171,7 @@ class App:
         return lib
 
     def allowed_roots(self) -> list[Path]:
-        roots = [self.root / "cache", self.root / "out", STATIC]
+        roots = [self.root / "cache", self.root / "out", STATIC, self._promos_root()]
         roots += [Path(p["dir"]).parent for p in self.state["projects"]] + [Path(x["dir"]) for x in self.state.get("libraries", [])]
         return [r.resolve() for r in roots]
 
@@ -486,6 +487,67 @@ class App:
                 self.log(f"window dialog failed ({exc}); using AppleScript's")
         path = choose_video_native(body.get("prompt") or prompt, start, types)
         return {"path": path, "cancelled": path is None}
+
+    # --- promos: the best half minute of a finished video, from a link or a file ------------------
+
+    def _promos_root(self) -> Path:
+        return (self.out_root if self.out_root.is_absolute() else self.root / self.out_root) / "promos"
+
+    def api_promos(self) -> dict:
+        """What the Promos page shows: every video promos were made from, its promos, and the choices on offer."""
+        from videtor import pipeline
+        from videtor.analyze import link
+        from videtor.plan import settings as settings_mod
+
+        sets = []
+        for d in pipeline.promo_sets(self._promos_root()):
+            sets.append({"dir": d["dir"], "name": d["name"], "made_at": d.get("made_at"), "title": d["source"].get("title") or d["name"],
+                         "source": {k: d["source"].get(k) for k in ("url", "path", "duration_s", "width", "height")}, "options": d["options"],
+                         "lead": d.get("lead"), "said": d.get("said"), "replayed": d.get("replayed"), "notes": d.get("notes") or [],
+                         "more": len(d.get("candidates") or []) - len(d.get("used") or []),
+                         "promos": [{k: r.get(k) for k in ("n", "file", "xml", "length_s", "kind", "at", "reasons", "text", "shots", "made_at")} for r in d["promos"]]})
+        return {"sets": sets, "frames": [[k, v[2]] for k, v in settings_mod.FRAMES.items() if k != "horizontal-4k"], "fetcher": link.available(),
+                "browsers": list(link.BROWSERS), "out": str(self._promos_root())}
+
+    def api_promos_make(self, body: dict) -> dict:
+        from videtor import pipeline
+        from videtor.analyze import link
+        from videtor.plan import settings as settings_mod
+
+        source = str(body.get("source") or "").strip()
+        if not source:
+            return {"error": "Paste the video's link, or choose its file."}
+        if link.is_link(source):
+            if not link.available():
+                return {"error": link.missing()}
+        elif not Path(source).expanduser().is_file():
+            return {"error": f"There is no video at {source}. Paste a link that starts with https://, or choose the file."}
+        frame, kind, lead, fit = body.get("frame") or "vertical", body.get("kind") or "clip", body.get("lead") or "auto", body.get("fit") or "fill"
+        if frame not in settings_mod.FRAMES or kind not in pipeline.PROMO_KINDS or lead not in pipeline.PROMO_LEADS or fit not in pipeline.PROMO_FITS:
+            return {"error": "That choice of shape or kind is not one Videtor knows."}
+        try:
+            count, length = min(max(int(body.get("count") or 3), 1), 6), min(max(float(body.get("length") or 30), 8.0), 90.0)
+        except (TypeError, ValueError):
+            return {"error": "How many and how long must be numbers."}
+        args = ["promos", source, "--frame", frame, "--kind", kind, "--count", str(count), "--length", f"{length:g}", "--lead", lead, "--fit", fit,
+                "--out", str(self._promos_root())]
+        if body.get("browser") in link.BROWSERS:
+            args += ["--browser", body["browser"]]
+        what = urlsplit(source).netloc.removeprefix("www.") if link.is_link(source) else Path(source).name
+        return {"job": self.jobs.submit("promos", f"Promos · {what}", args).to_dict()}
+
+    def api_promos_another(self, body: dict) -> dict:
+        d = Path(str(body.get("dir") or ""))
+        try:
+            n = int(body.get("n"))
+        except (TypeError, ValueError):
+            return {"error": "which promo?"}
+        if not (d / "promos.json").exists() or d.resolve().parent != self._promos_root().resolve():
+            return {"error": "no promos there"}
+        return {"job": self.jobs.submit("promos", f"Another promo {n} · {d.name}", ["promos", str(d), "--another", str(n)], project=str(d)).to_dict()}
+
+    def api_promos_update(self, body: dict) -> dict:
+        return {"job": self.jobs.submit("promos", "Update the link fetcher", ["promos", "--update"]).to_dict()}
 
     # --- the timeline: the cut played and changed in the app before Premiere --------------------
 
@@ -1120,6 +1182,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(self.app.api_library(q.get("dir", "")))
         if path == "/api/teach":
             return self._json(self.app.api_teach())
+        if path == "/api/promos":
+            return self._json(self.app.api_promos())
         if path == "/api/timeline":
             return self._json(self.app.api_timeline(q.get("dir", "")))
         if path == "/api/options":
@@ -1149,7 +1213,9 @@ class Handler(BaseHTTPRequestHandler):
                   "/api/teach/style": self.app.api_teach_style, "/api/teach/pending": self.app.api_teach_pending, "/api/teach/rule": self.app.api_teach_rule,
                   "/api/preview": self.app.api_preview, "/api/orient": self.app.api_orient, "/api/settings": self.app.api_settings,
                   "/api/music/ranked": self.app.api_music_ranked, "/api/edit": self.app.api_edit, "/api/note": self.app.api_note,
-                  "/api/proxies": self.app.api_proxies, "/api/options": self.app.api_options, "/api/write-xml": self.app.api_write_xml}
+                  "/api/proxies": self.app.api_proxies, "/api/options": self.app.api_options, "/api/write-xml": self.app.api_write_xml,
+                  "/api/promos/make": self.app.api_promos_make, "/api/promos/another": self.app.api_promos_another,
+                  "/api/promos/update": self.app.api_promos_update}
         if path in routes:
             try:
                 return self._json(routes[path](body))

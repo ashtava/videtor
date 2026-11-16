@@ -22,13 +22,21 @@ from typing import Callable
 
 import numpy as np
 
-VERSION = 2
+VERSION = 7
 LONG_SIDE = 480  # the picture is read at this size (faces in a wide shot are still found)
 STEP_S, STEP_LONG_S, LONG_S = 0.5, 1.0, 20 * 60.0  # a sample every half second; every second past twenty minutes
 MAX_S = 4 * 3600.0
 CUT_MIN, CUT_SURE, CUT_OVER = 0.12, 0.3, 3.0  # ffmpeg's scene score: a cut is a lone peak, this high or this far over its neighbours
 BAR_LUMA = 18.0  # rows and columns never brighter than this are black bars
-KEYS = ("t", "sharp", "bright", "motion", "faces", "face_area", "face_x", "face_y", "faces_x0", "faces_x1")
+TALK_PAUSES = 0.15  # sound with fewer pauses than this runs on like music (a song 0.06, a film's score 0.06; a talk 0.36)
+VOICE_MIN = 0.2  # a voice during less of the video than this (the quick detector, analyze/audio.py): Whisper is not run at all
+CARD_EVERY_S = 1.0  # how often a frame is asked whether it is a card (credits, a title, a logo, an end screen)
+CARDS = ("the end credits of a film: a list of names in white text", "a title card: large text on a plain background", "a logo on a plain background",
+         "a YouTube end screen with video thumbnails and a subscribe button", "a plain black screen")
+TEXTS = ("a presentation slide with text and bullet points", "a screenshot of a computer screen", "a chart or a diagram", "a poster with large words")
+SCENES = ("a scene from a film", "a person talking to the camera", "people talking", "an action shot of someone moving", "a landscape", "a close-up of an object",
+          "a crowd of people at an event", "an animated cartoon character", "a sports game", "a person with a caption at the bottom of the picture")
+KEYS = ("t", "sharp", "bright", "motion", "faces", "face_area", "face_x", "face_y", "faces_x0", "faces_x1", "card", "text")
 _SCORE = re.compile(r"pts_time:([-\d.]+)\s*\n\s*lavfi\.scene_score=([\d.]+)")
 
 
@@ -113,13 +121,45 @@ def _faces(boxes: list[list[float]]) -> tuple[float, float, float, float, float,
             float(min(b[0] for b in boxes)), float(max(b[2] for b in boxes)))
 
 
-def scan_picture(path: str | Path, info: dict, step_s: float, detect: Callable | None = None, progress: Callable | None = None) -> tuple[dict, list[float], list[float]]:
+def clip_cards(frames: list[np.ndarray]) -> np.ndarray:
+    """Per frame, how surely it is (a card, a picture of words) rather than footage, 0..1 each: CLIP, asked in words
+    (CARDS and TEXTS against SCENES). A card (credits, a title, a logo, an end screen) is no part of a promo; a picture
+    of words (a slide, a screen, a chart) is, but cropping it cuts the words."""
+    from PIL import Image
+
+    from videtor.analyze import tags
+
+    global _card_text
+    if _card_text is None:
+        _card_text = tags.embed_texts([*CARDS, *TEXTS, *SCENES])
+    logits = tags.LOGIT_SCALE * tags._embed([Image.fromarray(f) for f in frames]) @ _card_text.T
+    p = np.exp(logits - logits.max(axis=1, keepdims=True))
+    p /= p.sum(axis=1, keepdims=True)
+    c, t = len(CARDS), len(CARDS) + len(TEXTS)
+    return np.stack([p[:, :c].sum(axis=1), p[:, c:t].sum(axis=1)], axis=1).astype(np.float32)
+
+
+_card_text = None
+
+
+def scan_picture(path: str | Path, info: dict, step_s: float, detect: Callable | None = None, progress: Callable | None = None,
+                 cards: Callable | None = None) -> tuple[dict, list[float], list[float]]:
     """The picture in one pass: per-sample arrays, the cuts, and the box of the picture inside any black bars
-    (x0, y0, x1, y1 as shares of the frame)."""
+    (x0, y0, x1, y1 as shares of the frame). `detect` (frame -> face boxes) and `cards` (frames -> (card, words) 0..1
+    each, or the card alone) default to the real ones."""
     import cv2
 
     if detect is None:
         from videtor.analyze.faces import face_boxes as detect
+    cards = cards or clip_cards
+    every = max(1, int(round(CARD_EVERY_S / step_s)))
+    asked: list[np.ndarray] = []  # frames waiting to be asked, a batch at a time
+    card_vals: list[tuple[float, float]] = []
+
+    def ask() -> None:
+        got = np.asarray(cards(asked), np.float32)
+        got = got if got.ndim == 2 else np.stack([got, np.zeros_like(got)], axis=1)
+        card_vals.extend((float(a), float(b)) for a, b in got)
     dw, dh = info["display_w"], info["display_h"]
     k = LONG_SIDE / max(dw, dh)
     w, h = max(2, int(dw * k) // 2 * 2), max(2, int(dh * k) // 2 * 2)
@@ -129,7 +169,8 @@ def scan_picture(path: str | Path, info: dict, step_s: float, detect: Callable |
     with tempfile.TemporaryDirectory() as tmp:
         graph = (f"[0:v]scale={w}:{h}:flags=fast_bilinear,split[a][b];[a]fps={1 / step_s:g},format=rgb24[s];"
                  f"[b]select='gte(scene,0)',metadata=print:file=scores.txt[c]")
-        cmd = ["ffmpeg", "-hide_banner", "-v", "error", "-nostdin", "-hwaccel", "videotoolbox", "-i", str(Path(path).resolve()), "-an",
+        # decoded on the processor's cores, not by VideoToolbox: for H.264 that is several times faster (measured: 2000 against 250 frames a second)
+        cmd = ["ffmpeg", "-hide_banner", "-v", "error", "-nostdin", "-threads", "0", "-i", str(Path(path).resolve()), "-an",
                "-filter_complex", graph, "-map", "[s]", "-f", "rawvideo", "pipe:1", "-map", "[c]", "-f", "null", "-"]
         with open(Path(tmp) / "err.txt", "wb") as err:
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=err, cwd=tmp)
@@ -141,11 +182,18 @@ def scan_picture(path: str | Path, info: dict, step_s: float, detect: Callable |
                 rgb = np.frombuffer(buf, np.uint8).reshape(h, w, 3)
                 gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY).astype(np.float32)
                 col_max, row_max = np.maximum(col_max, gray.mean(axis=0)), np.maximum(row_max, gray.mean(axis=1))
+                if len(rows) % every == 0:
+                    asked.append(rgb.copy())
+                    if len(asked) >= 64:
+                        ask()
+                        asked = []
                 rows.append((len(rows) * step_s, float(cv2.Laplacian(gray, cv2.CV_32F).var()), float(gray.mean()), *_faces(detect(rgb))))
                 if progress and len(rows) % 20 == 0:
                     progress(min(len(rows), n_expected), n_expected)
             proc.stdout.close()
             code = proc.wait()
+        if asked:
+            ask()
         if code != 0 or not rows:
             raise ValueError(f"{Path(path).name} could not be read ({(Path(tmp) / 'err.txt').read_text(errors='replace').strip()[-200:] or 'no frames'})")
         scores = (Path(tmp) / "scores.txt").read_text() if (Path(tmp) / "scores.txt").exists() else ""
@@ -155,6 +203,19 @@ def scan_picture(path: str | Path, info: dict, step_s: float, detect: Callable |
     cols = ("t", "sharp", "bright", "face_n", "face_area", "face_x", "face_y", "faces_x0", "faces_x1")
     arr = {c: np.array([r[i] for r in rows], np.float32) for i, c in enumerate(cols)}
     arr["faces"] = arr.pop("face_n")
+    # every sample takes the answer of the asked frame nearest to it in its own shot (an answer never crosses a cut)
+    at = np.arange(len(card_vals)) * every  # the samples that were asked
+    shot = np.searchsorted(np.array(cuts), arr["t"] + 1e-3) if cuts else np.zeros(len(rows), int)
+    near = np.zeros(len(rows), int)
+    for i in range(len(rows)):
+        if not len(at):
+            break
+        same = at[shot[at.clip(0, len(rows) - 1)] == shot[i]]
+        pool = same if len(same) else at
+        near[i] = int(np.argmin(np.abs(pool - i)) if pool is at else np.searchsorted(at, pool[np.argmin(np.abs(pool - i))]))
+    for col, key in enumerate(("card", "text")):
+        vals = np.array([v[col] for v in card_vals], np.float32)
+        arr[key] = vals[near] if len(vals) else np.zeros(len(rows), np.float32)
     # how much the picture moves in each sample's half second: the frames' change, the cuts themselves left out
     motion = np.zeros(len(rows), np.float32)
     if len(ft):
@@ -185,6 +246,33 @@ def audio_wav(path: str | Path, out: Path) -> Path | None:
     return out
 
 
+def pauses(wav: str | Path) -> float:
+    """How much of the sound falls quiet between louder moments: the share of 20 ms frames under half their own
+    second's level. Talk has gaps between words and phrases (0.3 and more, measured); a song or a film score runs
+    on without them (under 0.1). It tells a talking video from one with words sung over music."""
+    import soundfile as sf
+
+    x, sr = sf.read(str(wav), dtype="float32", always_2d=True)
+    x = x.mean(axis=1)
+    n = int(sr * 0.02)
+    frames = x[: len(x) // n * n].reshape(-1, n)
+    rms = np.sqrt((frames ** 2).mean(axis=1) + 1e-12)
+    secs = rms[: len(rms) // 50 * 50].reshape(-1, 50)
+    secs = secs[secs.mean(axis=1) > 1e-4]  # silence says nothing either way
+    return round(float((secs < 0.5 * secs.mean(axis=1, keepdims=True)).mean()), 3) if len(secs) else 0.0
+
+
+def voiced(wav: str | Path, duration_s: float) -> float:
+    """The share of the video with a voice in it, by the quick detector (WebRTC VAD): it also hears singing, so it
+    only says when there is nothing for Whisper to write down."""
+    from videtor.analyze import audio
+
+    pcm = audio.decode_mono(str(wav))
+    if pcm is None or not duration_s:
+        return 0.0
+    return round(min(1.0, sum(s.length for s in audio.speech_spans(pcm)) / duration_s), 3)
+
+
 def spoken(speech: dict | None, n: int, step_s: float, min_p: float = 0.3) -> np.ndarray:
     """1 for every sample during which a word is said (Whisper's doubtful words left out)."""
     out = np.zeros(n, np.float32)
@@ -201,9 +289,10 @@ def _sig(path: Path, step_s: float) -> str:
 
 
 def read(path: str | Path, work: Path, detect: Callable | None = None, transcribe: Callable | None = None, track: Callable | None = None,
-         listen: bool = True, ev=None, extra: dict | None = None) -> Video:
-    """Read the video (or load what was read before). `detect` (frame -> face boxes), `transcribe` (path, fid, folder ->
-    transcript) and `track` (wav -> beats) default to the real ones; `listen=False` skips Whisper."""
+         listen: bool | None = None, ev=None, extra: dict | None = None, cards: Callable | None = None) -> Video:
+    """Read the video (or load what was read before). `detect` (frame -> face boxes), `cards` (frames -> how surely each
+    is a card), `transcribe` (path, fid, folder -> transcript) and `track` (wav -> beats) default to the real ones.
+    `listen`: True writes down what is said (Whisper), False does not, None only when a voice is heard in enough of it."""
     from videtor.events import Events
 
     ev = ev or Events()
@@ -228,9 +317,10 @@ def read(path: str | Path, work: Path, detect: Callable | None = None, transcrib
         ev.info(f"the picture and the sound of {path.name} were read before: {len(cuts)} cuts, {info['duration_s'] / 60:.1f} min")
     else:
         ev.stage("picture", f"reading the picture of {path.name} ({info['duration_s'] / 60:.1f} min, {info['display_w']}×{info['display_h']})", "Watching the video")
-        arrays, cuts, content = scan_picture(path, info, step, detect, ev.progress)
+        arrays, cuts, content = scan_picture(path, info, step, detect, ev.progress, cards)
         info = {**info, "content": content}
-        ev.info(f"  {len(cuts)} cuts, a face on screen {100 * float((arrays['faces'] > 0).mean()):.0f}% of the time"
+        ev.info(f"  {len(cuts)} cuts, a face on screen {100 * float((arrays['faces'] > 0).mean()):.0f}% of the time, "
+                f"titles or credits {100 * float((arrays['card'] > 0.5).mean()):.0f}%"
                 + (f", black bars around the picture ({content})" if content != [0.0, 0.0, 1.0, 1.0] else ""))
         beats = None
         if info["audio_channels"]:
@@ -240,9 +330,15 @@ def read(path: str | Path, work: Path, detect: Callable | None = None, transcrib
                 if track is None:
                     from videtor.analyze.beats import track_beats as track
                 beats = {k: v for k, v in track(wav).items() if k != "path"}
+                beats.setdefault("pauses", pauses(wav))
+                beats.setdefault("voice", voiced(wav, info["duration_s"]))
         meta_p.write_text(json.dumps({"sig": sig, "fid": fid, "path": str(path), "info": info, "step_s": step, "cuts_s": cuts, "beats": beats}) + "\n")
         np.savez_compressed(npz_p, **arrays)
     speech = None
+    if listen is None:
+        listen = float((beats or {}).get("voice", 1.0)) >= VOICE_MIN
+        if not listen and info["audio_channels"]:
+            ev.info(f"  hardly a voice in the sound ({100 * float((beats or {}).get('voice', 0)):.0f}% of it): not listened to for words")
     if listen and info["audio_channels"]:
         if not (work / f"{fid}.json").exists():
             ev.stage("speech", "writing down what is said (Whisper, on this Mac)", "Listening to what is said")

@@ -225,6 +225,46 @@ uv run videtor write-xml out/<name>/picks.json          # the Premiere XML from 
 - Effects, sound effects, steadying and stacked layers are in the XML, not in the timeline's picture.
 - Notes on a shot or on the whole cut go to `review.json`, for whoever revises the plan.
 
+### Promos out of a finished video (a link or a file)
+
+`videtor promos` takes one finished video, as a YouTube or Instagram link (fetched to this Mac once) or as a file,
+and makes its best 25-30 seconds two or three times over in the shape you choose: each an `.mp4` to post and a
+Premiere `.xml` to finish it from. In the app it is the **Promos** page. Nothing is sent anywhere.
+
+```sh
+uv sync --extra analyze --extra ui --extra links                    # once: the link fetcher (yt-dlp, its YouTube scripts, Deno, curl-cffi)
+uv run videtor promos "https://www.youtube.com/watch?v=..."         # three clips of 25-30 s, vertical 9:16
+uv run videtor promos talk.mp4 --kind edit --count 2 --frame square # two edits from a file, 1:1
+uv run videtor promos out/promos/<name> --another 2                 # promo 2 again: the next best part instead
+uv run videtor promos --update                                      # when a link that used to work stops (sites change)
+```
+
+- **Two kinds** (`--kind`). `clip`: one stretch of the video as it is. `edit`: the best moments cut together, a talk's
+  strongest lines back to back, or a music-led video's best shots laid over its strongest stretch of sound and cut on
+  its beat (the stretch is written out as `promo-N-sound.wav` and sits on the XML's music track).
+- **What leads** (`--lead auto|speech|music`). Where a voice is heard in the sound, Whisper writes down what is
+  said (on this Mac). When words fill enough of the video the talking leads: a promo starts on a new thought after a
+  pause and ends on a full stop, said at a good pace without stumbling, with energy and a face on screen (in English,
+  not opening on "and", "but", "it"). Otherwise the music and the picture lead: the loud, punchy stretch with a lift
+  in it and a busy picture, from a cut to a cut. Words over sound that runs on without the pauses of talk are sung,
+  unless they run nearly throughout (a voice-over): a song is music-led. On YouTube the most-replayed curve counts
+  for more than any of these. Credits, title cards, logos and end screens are recognised (CLIP) and left out. The
+  reasons are written with every promo.
+- **The shape** (`--frame vertical|portrait|square|horizontal`; `--fit fill|whole`). A picture wider or taller than
+  the frame is cropped around the faces, shot by shot (one crop per shot, no tracking inside a shot), or shown whole
+  with bars. A slide or a screen of words with nobody in it is shown whole either way, so the words are not cut.
+  Black bars in the source are cropped away.
+- **Where it goes:** `out/promos/<name>/`: `source.mp4` and `source.json` (a link), `promos.json` (what was made,
+  why, and the ranked parts not used yet), `promo-N.mp4`, `promo-N.xml`, `work/` (the reading of the video, kept, so
+  another shape or kind takes seconds). The XML points at the source file: keep it where it is.
+- **How long it takes** (measured on this Mac): a 10-minute 1080p video is watched in about 20 s and listened to in
+  1-2 minutes when there is talk in it; each promo renders in 10-15 s; the fetch is the network's. The same video
+  again (another shape, kind or count) skips all but the rendering.
+- **It does not understand what is said.** It picks by sound, picture, where thoughts start and end, and what viewers
+  replayed. Watch before posting; "Try another" (`--another N`) gives the next best. Use videos you have the right to cut.
+- A link that asks for a login: save the video and give the file, or `--browser chrome` (the app: Advanced) lets the
+  fetcher use that browser's login for the site. That path is untested here.
+
 ### The shape and the music are the user's to set
 
 A project's `settings.json` (written by the app: New project, and **Shape and music** on Brief & plan) holds what the
@@ -234,7 +274,7 @@ user asked for, and the cut follows it whatever the plan says:
 {"frame": "horizontal", "music": {"path": "/Users/me/Music/track.wav", "start": "auto"}}
 ```
 
-- `frame`: `vertical` (1080×1920), `horizontal` (1920×1080), `horizontal-4k` (3840×2160) or `square` (1080×1080).
+- `frame`: `vertical` (1080×1920), `portrait` (1080×1350, 4:5), `horizontal` (1920×1080), `horizontal-4k` (3840×2160) or `square` (1080×1080).
 - `music`: the user's own track with `start` `auto` (the plan's in-point when it is the plan's track, else the start
   that lands the track's lift on the plan's reveal), `beginning`, or `at` with `in_s`; `{"none": true}` for no
   music; left out, the plan's music stands.

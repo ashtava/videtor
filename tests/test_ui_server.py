@@ -329,6 +329,42 @@ class ServerTests(unittest.TestCase):
         finally:
             self.app.window = None
 
+    def test_promos_are_asked_for_listed_and_swapped_through_the_server(self):
+        from unittest import mock
+
+        from videtor.analyze import link
+
+        got = json.loads(self.get("/api/promos")[2])
+        self.assertEqual((got["sets"], [k for k, _ in got["frames"]]), ([], ["vertical", "portrait", "horizontal", "square"]))
+        self.assertIn("Paste the video's link", self.post("/api/promos/make", {"source": " "})[1]["error"])
+        self.assertIn("There is no video at", self.post("/api/promos/make", {"source": "/nowhere/talk.mp4"})[1]["error"])
+        with mock.patch.object(link, "available", return_value=None):
+            self.assertIn("needs yt-dlp", self.post("/api/promos/make", {"source": "https://youtu.be/abc"})[1]["error"])
+        root = self.tmp / "out" / "promos"
+        with mock.patch.object(link, "available", return_value="2026.10.26"):
+            job = self.post("/api/promos/make", {"source": "https://www.youtube.com/watch?v=abc", "frame": "square", "kind": "edit", "count": 2, "length": 15,
+                                                 "browser": "chrome"})[1]["job"]
+        self.assertEqual((job["kind"], job["title"]), ("promos", "Promos · youtube.com"))
+        self.assertEqual(job["args"], ["promos", "https://www.youtube.com/watch?v=abc", "--frame", "square", "--kind", "edit", "--count", "2", "--length", "15",
+                                       "--lead", "auto", "--fit", "fill", "--out", str(root), "--browser", "chrome"])
+        f = self.tmp / "out" / "talk.mp4"
+        f.write_bytes(b"x")
+        job = self.post("/api/promos/make", {"source": str(f), "count": 99, "browser": "netscape"})[1]["job"]
+        self.assertEqual((job["title"], job["args"][2:8], "--browser" in job["args"]), ("Promos · talk.mp4", ["--frame", "vertical", "--kind", "clip", "--count", "6"], False))
+        self.assertIn("not one Videtor knows", self.post("/api/promos/make", {"source": str(f), "frame": "round"})[1]["error"])
+        d = root / "a-talk"
+        d.mkdir(parents=True)
+        row = {"n": 1, "file": str(d / "promo-1.mp4"), "xml": str(d / "promo-1.xml"), "length_s": 28.4, "kind": "clip", "at": "2:10", "reasons": ["ends on a full stop"],
+               "text": "Hello.", "shots": 1, "made_at": "2026-11-16T19:00:00", "score": 2.0}
+        (d / "promos.json").write_text(json.dumps({"name": "a-talk", "made_at": "2026-11-16T19:00:00", "source": {"title": "A talk", "path": "/V/a.mp4", "duration_s": 600.0},
+                                                   "options": {"count": 1, "length": 30.0, "frame": "vertical", "kind": "clip", "lead": "auto", "fit": "fill"},
+                                                   "lead": "speech", "said": 0.8, "notes": [], "promos": [row], "candidates": [{}, {}, {}], "used": [0]}))
+        one = json.loads(self.get("/api/promos")[2])["sets"][0]
+        self.assertEqual((one["title"], one["more"], one["promos"][0]["at"], "score" in one["promos"][0], "candidates" in one), ("A talk", 2, "2:10", False, False))
+        self.assertEqual(self.post("/api/promos/another", {"dir": str(d), "n": 1})[1]["job"]["args"], ["promos", str(d), "--another", "1"])
+        self.assertIn("no promos there", self.post("/api/promos/another", {"dir": str(self.tmp / "out"), "n": 1})[1]["error"])
+        self.assertEqual(self.post("/api/promos/update", {})[1]["job"]["args"], ["promos", "--update"])
+
     def test_scan_counts_the_video_files_under_a_folder(self):
         d = self.tmp / "scan" / "Card 1"
         d.mkdir(parents=True)
