@@ -104,6 +104,13 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    the AD's "Okay silence!". Bytes: "say something nice about me", "top 5 worst creators ever", "Max 4 is him only",
    "Kaju Katli bites are crazy", "We are a PTA meeting", "camera rolling, set and… action!", "let's take a picture" (four
    from C5594). A monitor match-cut run; two `stack` slots stand in for split screen. Then the second look, `report.md`, verdict.
+1i. **clip stringout (11-16)**: the same shoot as the second clip (folder `Paritosh_4/<shoot>/xml/2/clip`, same key
+   `clip::footage`). Brief: "take all the footage where people are talking to themselves and to camera and make a timeline".
+   Horizontal 16:9, no music. All 349 takes transcribed (local Whisper, Hindi, ~40 min), spans kept where the speech band
+   shows a voice (level and swing over the take's floor), then sorted by eye from a still per span. Shot map: 146 byte slots,
+   12.9 min, in three sections in shoot order: to camera (16, 2.0 min: the two testimonials, the C5594 group, laughs to the
+   lens), among themselves (71, 6.7 min: crew and cast chatter, the director briefing), scene takes (59, 4.2 min: the ad
+   being shot, action to cut). 12 portrait spans (cropped in 16:9). Work in `out/clip2/work/`. Waiting on the user's cut.
 1f. **combined-players (11-16)**: the four arrivals' players in one cut (`Paritosh_4/261114AC /pf/xml/combined-players`,
    key `combined-players::footage`, footage in `Paritosh_4/combined players`). Brief: "combined vertical 15-20 sec cut
    with flashes, slo-mo, time remapping, stabilise; players entering, meeting, clicking or posing for photos". Shot map
@@ -278,6 +285,8 @@ Not built; the source is in brackets.
 - **Whisper's language detection on set audio** [11-16, clip second shoot]: auto-detect read Hindi/English chatter as
   Korean, Romanian, Arabic; `language="hi"` fixed it (English lines came out in English). Nothing passes a language yet
   (library, `teach`); about a minute a take while other work shares the machine. Of 26 likely takes, 8 had usable lines.
+  The stringout (1i) ran all 349 takes in ~40 min; Hindi lines come out garbled, so an audio check decided what is speech.
+  No stringout mode: a "timeline of all the talking" is written as byte slots by hand-run scripts (`out/clip2/work/`).
 - **BTS** [11-15, clip]: no `bts` bucket card or keeper (planned as `event`). No timelapse move: a slot ramps a take to
   400-600% instead (no frame blending or interval sampling). No SFX density knob for "lots of SFX".
 - **The timeline** [11-16]: it shows what plays when, not the finish: no effects, flashes, sound effects, steadying, stacked
