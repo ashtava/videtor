@@ -103,6 +103,8 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    validated; the user cuts from the app. Then the second look, `report.md` and the verdict. Bucket `sports-promo`
    (inferred). 27.8 s, 39 slots; BLAGE - Go Down from 109.69 s (second ranked; drop at 114.66 s on a handshake), flash
    0.35, accents, stabilised. No one takes photos in this footage: "posing" is to the lens. Closes on a hand over the lens (C6400).
+   The app then made the project again in `out/data` (same key, overview and settings; no brief there): the same brief and
+   shot map copied in and validated. Cut from `out/data`; the drive copy is the first draft.
 1a. **diwali-test (A1)**: the shot map is written and validated. The user cuts from the app. Then do the second
    look, write `report.md` in the project folder, and record the verdict. The plan:
    - Brief: "fast paced party edit for diwali, under 60 seconds". Bucket `event` (inferred).
