@@ -573,10 +573,10 @@ def preview(picks_path: Path, scale: float = 0.5, ev: Events | None = None) -> P
     from videtor.export import preview as preview_mod
 
     ev = ev or Events()
-    picks = check_picks(json.loads(picks_path.read_text()))
     target = picks_path.parent / "preview.mp4"
-    ev.stage("preview", "", "Making the preview")
     try:
+        picks = check_picks(json.loads(picks_path.read_text()))
+        ev.stage("preview", "", "Making the preview")
         return preview_mod.render(picks, target, scale, log=lambda s: ev.wrote("preview", target, s), progress=lambda k, n: ev.progress(k, n))
     except FileNotFoundError as exc:
         raise PipelineError(str(exc)) from exc
