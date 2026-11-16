@@ -1,0 +1,43 @@
+{
+ "key": "4::footage",
+ "bucket": "event",
+ "fps": 25.0,
+ "width": 1080,
+ "height": 1920,
+ "avoid": [
+  "a person holding a camera",
+  "a tripod and a light stand"
+ ],
+ "picks": "/Volumes/Paritosh_4/4/xml/4/picks.json",
+ "name": "4",
+ "choices": [
+  {
+   "id": "cars-3",
+   "show": [
+    "a blue sports car parked in a hotel driveway"
+   ],
+   "section": "cars",
+   "role": "",
+   "status": "slipped",
+   "visible": {
+    "fid": "2a3799c6e72f",
+    "path": "/Volumes/Paritosh_4/4/drive-download-20261116T115356Z-1-004/C6372.MP4",
+    "name": "C6372.MP4",
+    "in_s": 3.37,
+    "out_s": 3.81,
+    "speed": 0.5
+   },
+   "picked": {
+    "fid": "2a3799c6e72f",
+    "path": "/Volumes/Paritosh_4/4/drive-download-20261116T115356Z-1-004/C6372.MP4",
+    "name": "C6372.MP4",
+    "in_s": 3.69,
+    "out_s": 3.81,
+    "speed": 0.5
+   },
+   "why": "",
+   "by": "you",
+   "at": "2026-11-16T18:20:02"
+  }
+ ]
+}

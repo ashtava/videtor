@@ -8,6 +8,7 @@ lines for the app); it never prints and never exits the process: what it cannot 
     prepare(folder, name)            index, keyframe map, orientation, shot types, overview
     cut(shotmap_path)                takes → picks (fill, levels, moves, effects, SFX) → decisions replayed → XML
     look(picks_path, choices)        second-look swaps, remembered in decisions.json so the next cut keeps them
+    promos(link or file)             a finished video's best half minute, two or three times: mp4s and XMLs (plan/promo.py)
     cut_interview(...) / cut_mv(...) the two other kinds of cut, on the same helpers
 
 What a shot map hands to the picks goes through `carry` (map level) and fill's slot rows (slot level): a setting
@@ -1178,6 +1179,207 @@ def read_pending(out_root: Path = Path("out"), paths: Paths = Paths(), ev: Event
     if read:
         out["learning"] = learn(paths, ev, embed_texts=embed_texts, note="after " + ", ".join(read))
     return out
+
+
+# --- promos: the best half minute of a finished video, from a link or a file ----------------------
+
+PROMOS = "promos.json"
+PROMO_LUFS = -14.0  # where a promo's sound sits (what the platforms play at)
+PROMO_BENCH = 9  # promos kept ready beyond the ones made, for "another one"
+PROMO_KINDS, PROMO_LEADS, PROMO_FITS = ("clip", "edit"), ("auto", "speech", "music"), ("fill", "whole")
+
+
+def promo_sets(out_root: Path = Path("out/promos")) -> list[dict]:
+    """Every video promos were made from, the newest first: what the app's Promos page lists."""
+    rows = []
+    for f in Path(out_root).glob(f"*/{PROMOS}"):
+        try:
+            doc = json.loads(f.read_text())
+        except ValueError:
+            continue
+        rows.append({**doc, "dir": str(f.parent.resolve())})
+    return sorted(rows, key=lambda d: d.get("made_at") or "", reverse=True)
+
+
+def _promo_folder(out_root: Path, name: str, same) -> Path:
+    """out_root/name, or name-2, -3 ... when that folder holds another video's promos."""
+    for n in range(1, 100):
+        d = out_root / (name if n == 1 else f"{name}-{n}")
+        if not d.exists() or same(d):
+            return d
+    raise PipelineError(f"too many promo folders called {name}")
+
+
+def _promo_source(source: str, name: str | None, out_root: Path, browser: str | None, ev: Events, fetch) -> tuple[Path, Path, dict]:
+    """(the promos' folder, the video file, what is known about it) for a link, a file or a folder of promos made before."""
+    from videtor.analyze import link as link_mod
+
+    src = str(source).strip()
+    out_root = Path(out_root)
+    as_dir = Path(src).expanduser()
+    if not link_mod.is_link(src) and as_dir.name == PROMOS:
+        as_dir = as_dir.parent
+    if not link_mod.is_link(src) and as_dir.is_dir():
+        if not (as_dir / PROMOS).exists():
+            raise PipelineError(f"{as_dir} is a folder with no promos in it: give a link or a video file")
+        known = json.loads((as_dir / PROMOS).read_text())["source"]
+        return as_dir, Path(known["path"]), known
+    if link_mod.is_link(src):
+        for f in sorted(out_root.glob("*/source.json")):
+            try:
+                known = json.loads(f.read_text())
+            except ValueError:
+                continue
+            if known.get("url") == src and (f.parent / "source.mp4").exists():
+                ev.info(f"this video was fetched before: {f.parent / 'source.mp4'}")
+                return f.parent, f.parent / "source.mp4", known
+        ev.stage("fetch", f"fetching the video: {src}", "Fetching the video")
+        tmp = out_root / f".fetching-{abs(hash(src)) % 10 ** 8}"
+        try:
+            got = (fetch or link_mod.fetch)(src, tmp, progress=ev.progress, log=ev.info, browser=browser)
+        except link_mod.LinkError as exc:
+            raise PipelineError(str(exc)) from exc
+        info = got["info"]
+        folder = _promo_folder(out_root, (name and slug(name)) or slug(str(info.get("title") or info.get("id") or "video"))[:48].strip("-") or "video",
+                               lambda d: False)
+        folder.mkdir(parents=True, exist_ok=True)
+        for f in sorted(tmp.iterdir()):
+            f.replace(folder / f.name)
+        tmp.rmdir()
+        ev.info(f"  fetched: {info.get('title') or folder.name} ({float(info.get('duration') or 0) / 60:.1f} min) -> {folder / 'source.mp4'}")
+        return folder, folder / "source.mp4", info
+    f = Path(src).expanduser()
+    if not f.is_file():
+        raise PipelineError(f"no video at {f}: give a link (YouTube, Instagram) or a video file")
+    f = f.resolve()
+
+    def same(d: Path) -> bool:
+        try:
+            return json.loads((d / PROMOS).read_text())["source"].get("path") == str(f)
+        except (OSError, ValueError, KeyError):
+            return not any(d.iterdir())
+
+    return _promo_folder(out_root, (name and slug(name)) or slug(f.stem)[:48].strip("-") or "video", same), f, {"title": f.stem}
+
+
+def _make_promo(video, cand: dict, n: int, folder: Path, name: str, width: int, height: int, fit: str, ev: Events) -> dict:
+    """One promo: its picks, its Premiere XML and its finished file."""
+    import subprocess
+
+    from videtor.export import promo as promo_out
+    from videtor.export import xmeml_writer as w
+    from videtor.plan import interview
+    from videtor.plan import promo as promo_mod
+    from videtor.plan.build import build_from_picks
+
+    picks = promo_mod.picks_for(video, cand, f"{name}-promo-{n}", width, height, fit)
+    if not picks["slots"]:
+        raise PipelineError("a promo came out empty: the video is too short for this length")
+    heard = [(cand["bed"]["a"], cand["bed"]["b"])] if cand.get("bed") else [(p["a"], p["b"]) for p in cand["parts"]]
+    levels = [v for v in (interview.segment_lufs(video.path, a, b) for a, b in heard) if v is not None and v > -70] if video.info["audio_channels"] else []
+    gain = round(float(min(12.0, max(-12.0, PROMO_LUFS - sum(levels) / len(levels)))), 1) if levels else 0.0
+    music = None
+    if cand.get("bed"):  # the stretch of sound a music-led edit runs on, as a file of its own for Premiere
+        wav, lead_in = folder / f"promo-{n}-sound.wav", min(1.0, cand["bed"]["a"])
+        run = subprocess.run(["ffmpeg", "-v", "error", "-nostdin", "-y", "-ss", f"{cand['bed']['a'] - lead_in:.3f}", "-t", f"{picks['length_s'] + lead_in + 1.0:.3f}",
+                              "-i", video.path, "-vn", "-ac", "2", "-ar", "48000", str(wav)], capture_output=True, text=True, errors="replace")
+        if run.returncode != 0:
+            raise PipelineError(f"the sound for promo {n} could not be cut out: {run.stderr.strip()[-200:]}")
+        music = {"path": str(wav), "duration_s": round(picks["length_s"] + lead_in + 1.0, 3), "in_s": round(lead_in, 3), "fade_out_s": 0.5}
+        picks["music"] = music
+    else:
+        for s in picks["slots"]:
+            s["pick"]["gain_db"] = gain
+    (folder / "work").mkdir(parents=True, exist_ok=True)
+    (folder / "work" / f"promo-{n}.picks.json").write_text(json.dumps(picks, indent=1) + "\n")
+    xml = w.write_xmeml(build_from_picks(picks, music, alternates=0), folder / f"promo-{n}.xml", fps=picks["fps"], width=width, height=height)
+    try:
+        mp4 = promo_out.render(picks, folder / f"promo-{n}.mp4", music, gain)
+    except (ValueError, FileNotFoundError) as exc:
+        raise PipelineError(str(exc)) from exc
+    first = cand["bed"]["a"] if cand.get("bed") else cand["parts"][0]["a"]
+    row = {"n": n, "file": str(mp4), "xml": str(xml), "length_s": picks["length_s"], "kind": cand["kind"], "lead": cand["lead"],
+           "from_s": [[round(p["a"], 2), round(p["b"], 2)] for p in cand["parts"]], "bed_s": [round(cand["bed"]["a"], 2), round(cand["bed"]["b"], 2)] if cand.get("bed") else None,
+           "at": promo_mod.clock(first), "reasons": cand["reasons"], "text": (cand.get("text") or "")[:400], "score": cand["score"], "shots": len(picks["slots"]),
+           "gain_db": gain, "made_at": time.strftime("%Y-%m-%dT%H:%M:%S")}
+    ev.wrote("promo", mp4, f"  promo {n}: {picks['length_s']:.1f} s from {row['at']} of the video ({'; '.join(cand['reasons'][:3])}) -> {mp4}")
+    return row
+
+
+def promos(source: str, name: str | None = None, count: int = 3, length: float = 30.0, frame: str = "vertical", kind: str = "clip", lead: str = "auto",
+           fit: str = "fill", out_root: Path = Path("out/promos"), browser: str | None = None, another: int | None = None, ev: Events | None = None,
+           detect=None, transcribe=None, track=None, fetch=None) -> dict:
+    """Promos out of one finished video: `count` of its best stretches of about `length` seconds (clips), or its best
+    moments cut together (edits), each as a finished mp4 in the chosen frame and a Premiere XML to finish it from.
+    `source` is a link (fetched to the Mac once), a video file, or the folder of promos made before. `another=k`
+    replaces promo k of such a folder with the next best one."""
+    from videtor.analyze import video as video_mod
+    from videtor.plan import promo as promo_mod
+    from videtor.plan import settings as settings_mod
+
+    ev = ev or Events()
+    if another is None:
+        problems = [f"the shape must be one of {', '.join(settings_mod.FRAMES)}" if frame not in settings_mod.FRAMES else "",
+                    f"the kind must be one of {', '.join(PROMO_KINDS)}" if kind not in PROMO_KINDS else "",
+                    f"what leads must be one of {', '.join(PROMO_LEADS)}" if lead not in PROMO_LEADS else "",
+                    f"the fit must be one of {', '.join(PROMO_FITS)}" if fit not in PROMO_FITS else "",
+                    "between 1 and 6 promos" if not 1 <= int(count) <= 6 else "", "a length between 8 and 90 seconds" if not 8 <= float(length) <= 90 else ""]
+        if any(problems):
+            raise PipelineError("promos: " + "; ".join(p for p in problems if p))
+    folder, path, known = _promo_source(source, name, Path(out_root), browser, ev, fetch)
+    if not path.exists():
+        raise PipelineError(f"the video is not there any more: {path}" + (" (is its drive connected?)" if str(path).startswith("/Volumes/") else ""))
+    doc_p = folder / PROMOS
+    old = json.loads(doc_p.read_text()) if doc_p.exists() else None
+    if another is not None:
+        if not old or not 1 <= int(another) <= len(old["promos"]):
+            raise PipelineError("another one: give the folder of promos made before and the number of the promo to replace")
+        opts = old["options"]
+        frame, kind, lead, fit, length = opts["frame"], opts["kind"], opts["lead"], opts["fit"], opts["length"]
+    try:
+        video = video_mod.read(path, folder / "work", detect=detect, transcribe=transcribe, track=track, listen=lead != "music", ev=ev,
+                               extra={k: known.get(k) for k in ("heatmap", "chapters", "title") if known.get(k)})
+    except ValueError as exc:
+        raise PipelineError(str(exc)) from exc
+    width, height, _ = settings_mod.FRAMES[frame]
+    title = folder.name
+    if another is not None:
+        doc, cands = old, old["candidates"]
+        left = [i for i in range(len(cands)) if i not in doc["used"]]
+        if not left:
+            raise PipelineError("there is no other stretch of this video as good: change the kind or the length and make them again")
+        k = int(another)
+        doc["used"].append(left[0])
+        ev.stage("render", f"promo {k}: the next best ({left[0] + 1} of {len(cands)})", "Making the promo")
+        doc["promos"][k - 1] = {**_make_promo(video, cands[left[0]], k, folder, title, width, height, fit, ev), "cand": left[0]}
+    else:
+        ev.stage("choose", "choosing the promos", "Choosing the best parts")
+        cands, led, notes = promo_mod.candidates(video, kind, lead, round(float(length) * 5 / 6, 1), float(length), n=int(count) + PROMO_BENCH)
+        if not cands:
+            raise PipelineError(f"the video ({video.duration_s:.0f} s) is too short for a promo of {length:.0f} s")
+        said = float(video.a["spoken"].mean())
+        ev.info(f"  what leads: {'the talking' if led == 'speech' else 'the sound and the picture'} (words during {100 * said:.0f}% of the video; "
+                f"{len(video.cuts_s)} cuts) · {len(cands)} candidates" + ("".join(f"\n  {n}" for n in notes)))
+        made = cands[: int(count)]
+        ev.stage("render", f"making {len(made)} promo{'s' if len(made) > 1 else ''} ({width}×{height})", "Making the promos")
+        rows = []
+        for n, cand in enumerate(made, start=1):
+            rows.append({**_make_promo(video, cand, n, folder, title, width, height, fit, ev), "cand": n - 1})
+            ev.progress(n, len(made))
+        for stale in folder.glob("promo-*.*"):  # promos of an earlier, longer run
+            m = re.match(r"promo-(\d+)", stale.name)
+            if m and int(m.group(1)) > len(made):
+                stale.unlink()
+        doc = {"name": title, "source": {**{k: v for k, v in known.items() if k in ("url", "title", "uploader", "channel", "webpage_url", "extractor_key")},
+                                         "path": str(path), "duration_s": round(video.duration_s, 2), "width": video.info["display_w"], "height": video.info["display_h"]},
+               "options": {"count": int(count), "length": float(length), "frame": frame, "kind": kind, "lead": lead, "fit": fit},
+               "lead": led, "said": round(said, 3), "cuts": len(video.cuts_s), "replayed": bool(known.get("heatmap")), "notes": notes,
+               "promos": rows, "candidates": cands, "used": list(range(len(made)))}
+    doc["made_at"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+    doc_p.write_text(json.dumps(doc, indent=1, ensure_ascii=False, default=float) + "\n")
+    ev.wrote("promos", doc_p, f"{len(doc['promos'])} promo{'s' if len(doc['promos']) > 1 else ''} in {folder} (each an .mp4 to post and an .xml to finish in Premiere: "
+                              "File ▸ Import)")
+    return {"dir": folder, "doc": doc, "video": video}
 
 
 def mount_of(folder: Path) -> Path:

@@ -95,6 +95,15 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
    Bytes from local Whisper: the AD's "silence, going for take" and "camera rolling, set and action!", "dog is here,
    bro", "let's take a picture". Timelapse = set-build takes ramped to 600%/400% (gap below). Flash 0.35, accents,
    stabilised, classes b-roll/close-up/wide/talking-head. Every slot names 2-10 candidate takes from the overview.
+1g. **clip, second shoot (11-16)**: a BTS cut of another ad shoot on Paritosh_4 (`Paritosh_4/<shoot>/xml/clip`, footage
+   `M4ROOT/CLIP`, 349 takes, 1080p50). It reuses the name and key `clip::footage`, so `kb/footage/clip.json` now indexes
+   this shoot, not 1e's. Brief: "BTS fast cut 45-60 s: 2-3 s of people meeting, a byte, camera/equipment/workers, 2-3 funny
+   bytes, split screen and match cuts, a few bytes, everyone on set; fun vibe". Horizontal 16:9 (settings.json). Shot map
+   written and validated in the project folder; the user cuts from the app. Bucket `bts` (no card or keeper; planned from
+   the event card and notes). 48.4 s, 62 slots, Ariel Dahan - On up on Winning from 30.743 s, drop at 5.8 s right after
+   the AD's "Okay silence!". Bytes: "say something nice about me", "top 5 worst creators ever", "Max 4 is him only",
+   "Kaju Katli bites are crazy", "We are a PTA meeting", "camera rolling, set and… action!", "let's take a picture" (four
+   from C5594). A monitor match-cut run; two `stack` slots stand in for split screen. Then the second look, `report.md`, verdict.
 1f. **combined-players (11-16)**: the four arrivals' players in one cut (`Paritosh_4/261114AC /pf/xml/combined-players`,
    key `combined-players::footage`, footage in `Paritosh_4/combined players`). Brief: "combined vertical 15-20 sec cut
    with flashes, slo-mo, time remapping, stabilise; players entering, meeting, clicking or posing for photos". Shot map
@@ -262,7 +271,13 @@ footage mapped) and `videtor kb bucket <bucket>`.
 
 Not built; the source is in brackets.
 - **Split screen** [11-16, project 4's brief]: no shot-map option for two or three shots side by side in the frame. Project 4's
-  plan stands a `stack` (smaller shots popping on top) in for it.
+  plan stands a `stack` (smaller shots popping on top) in for it. Asked again by the second clip brief (11-16), same stand-in.
+- **Portrait takes in a horizontal cut** [11-16, clip second shoot]: 70 of 349 takes are portrait (to-camera bits); in 16:9
+  they are cropped hard (fill penalises them), with no pillarbox or blurred-background layout. A split screen of two portrait
+  takes would use them well.
+- **Whisper's language detection on set audio** [11-16, clip second shoot]: auto-detect read Hindi/English chatter as
+  Korean, Romanian, Arabic; `language="hi"` fixed it (English lines came out in English). Nothing passes a language yet
+  (library, `teach`); about a minute a take while other work shares the machine. Of 26 likely takes, 8 had usable lines.
 - **BTS** [11-15, clip]: no `bts` bucket card or keeper (planned as `event`). No timelapse move: a slot ramps a take to
   400-600% instead (no frame blending or interval sampling). No SFX density knob for "lots of SFX".
 - **The timeline** [11-16]: it shows what plays when, not the finish: no effects, flashes, sound effects, steadying, stacked

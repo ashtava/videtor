@@ -3,7 +3,7 @@
 The plan (the shot map) says which shots the cut shows; these are the requirements the user sets themselves in the
 app, and at cut time they win over what the plan says (pipeline.cut calls `apply`):
 
-    {"frame": "vertical" | "horizontal" | "horizontal-4k" | "square",
+    {"frame": "vertical" | "portrait" | "horizontal" | "horizontal-4k" | "square",
      "music": {"path": "<track>", "start": "auto" | "beginning" | "at", "in_s": 12.5}     the user's own track
             | {"none": true}                                                              no music
             | absent                                                                      the plan's music stands
@@ -27,6 +27,7 @@ import numpy as np
 FILE = "settings.json"
 FRAMES = {  # name -> (width, height, what the app calls it)
     "vertical": (1080, 1920, "Vertical 9:16 (reels, shorts)"),
+    "portrait": (1080, 1350, "Portrait 4:5 (Instagram feed)"),
     "horizontal": (1920, 1080, "Horizontal 16:9"),
     "horizontal-4k": (3840, 2160, "Horizontal 16:9, 4K"),
     "square": (1080, 1080, "Square 1:1"),

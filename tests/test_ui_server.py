@@ -235,7 +235,7 @@ class ServerTests(unittest.TestCase):
         self.assertIn("frame must be", self.post("/api/prep", {"folder": str(footage), "out": str(self.tmp / "out"), "name": "odd", "frame": "round"})[1]["error"])
         req = json.loads(self.get(f"/api/project?dir={d}")[2])["requirements"]
         self.assertEqual((req["mine"], req["says"]["frame"], req["plan"]), ({"frame": "horizontal"}, "Horizontal 16:9", None))
-        self.assertEqual([k for k, _ in req["frames"]], ["vertical", "horizontal", "horizontal-4k", "square"])
+        self.assertEqual([k for k, _ in req["frames"]], ["vertical", "portrait", "horizontal", "horizontal-4k", "square"])
         # the user's own track: it has to be there and be audio; a start "at" needs its second
         self.assertIn("not there", self.post("/api/settings", {"project": str(d), "music": {"path": str(self.tmp / "no.wav")}})[1]["error"])
         (self.tmp / "notes.txt").write_text("x")

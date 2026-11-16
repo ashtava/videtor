@@ -819,6 +819,38 @@ def write_xml(
 
 
 @app.command()
+def promos(
+    source: str = typer.Argument("", help="A link (YouTube, Instagram), a video file, or the folder of promos made before."),
+    name: str = typer.Option(None, "--name", help="The promos' folder name (default: from the video's title)."),
+    count: int = typer.Option(3, "--count", help="How many promos (1-6)."),
+    length: float = typer.Option(30.0, "--length", help="Seconds: a promo runs from five sixths of this up to this (30 -> 25-30 s)."),
+    frame: str = typer.Option("vertical", "--frame", help="The shape: vertical, portrait, square, horizontal, horizontal-4k."),
+    kind: str = typer.Option("clip", "--kind", help="clip: the best stretches as they are. edit: the best moments cut together."),
+    lead: str = typer.Option("auto", "--lead", help="What carries the video: auto, speech (the talking) or music (the sound and the picture)."),
+    fit: str = typer.Option("fill", "--fit", help="fill: crop to fill the frame, the faces kept in view. whole: the whole picture, with bars."),
+    out: Path = typer.Option(Path("out/promos"), "--out", help="Where promo folders go."),
+    browser: str = typer.Option(None, "--browser", help="Use this browser's login for the site (chrome, safari, firefox ...): only when a link asks to log in."),
+    another: int = typer.Option(None, "--another", help="Replace promo N of a folder of promos with the next best one."),
+    update: bool = typer.Option(False, "--update", help="Update the link fetcher (yt-dlp): when a link that used to work stops."),
+) -> None:
+    """Promos out of a finished video: its best 25-30 seconds, two or three times over, each as an .mp4 in the shape you
+    choose and a Premiere .xml. From a link (fetched to this Mac) or a file; nothing is sent anywhere."""
+    ev = _events()
+    if update:
+        from videtor.analyze import link
+
+        ok = link.update(log=ev.info)
+        ev.info(f"the link fetcher is {'up to date: yt-dlp ' + str(link.available()) if ok else 'not updated: see above'}")
+        if not source:
+            raise typer.Exit(0 if ok else 1)
+    if not source:
+        ev.emit("error", "give a link, a video file, or a folder of promos")
+        raise typer.Exit(1)
+    _step(pipeline.promos, source, name=name, count=count, length=length, frame=frame, kind=kind, lead=lead, fit=fit, out_root=out, browser=browser,
+          another=another, ev=ev)
+
+
+@app.command()
 def preview(
     picks_path: Path = typer.Argument(..., help="picks.json from `videtor cut`."),
     scale: float = typer.Option(0.5, "--scale", help="Size against the sequence (0.5 = half)."),
