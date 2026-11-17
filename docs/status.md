@@ -293,6 +293,11 @@ Not built; the source is in brackets.
   (library, `teach`); about a minute a take while other work shares the machine. Of 26 likely takes, 8 had usable lines.
   The stringout (1i) ran all 349 takes in ~40 min; Hindi lines come out garbled, so an audio check decided what is speech.
   No stringout mode: a "timeline of all the talking" is written as byte slots by hand-run scripts (`out/clip2/work/`).
+- **Two shoots, one project name** [11-17, third BTS shoot]: the app names a project after the footage folder, and a Sony card's
+  folder is always `M4ROOT/CLIP`, so a new shoot's project became `clip` again. Its prep reused `kb/footage/clip.json` (the
+  11-15 shoot) without reading the new folder: the new project's overview, classes and inventory describe the old shoot. The
+  key, `kb/footage/<name>.json` and `kb/feedback/<name>.json` should not be shared by two folders (prep should refuse, or name
+  the project after the folder above `M4ROOT`, or ask for a name).
 - **BTS** [11-15, clip]: no `bts` bucket card or keeper (planned as `event`). No timelapse move: a slot ramps a take to
   400-600% instead (no frame blending or interval sampling). No SFX density knob for "lots of SFX".
 - **After the audit of 11-17** (`docs/review-2026-11-17.md`, part 4): checks that click through the app must use `scripts/scratch_app.py`
