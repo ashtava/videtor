@@ -75,6 +75,12 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
 
 ## Waiting on the user
 
+00. **Third BTS shoot (11-17)**: plan written, not cut. Its footage was read as `bts-3` (the app's `clip` project had
+   reused the 11-15 shoot's index, see the gap below); the plan in the app's project folder names `bts-3::footage`, and
+   that folder's overview/classes/inventory were replaced by this shoot's (the old ones were byte-identical copies). The
+   user cuts it from the app. Shaped on the user's own finished 11-15 BTS edit, 47 s; the three bytes ("rolling…action",
+   "kaat", "chalo guys") and a laugh were read from Whisper and loudness, not heard. Draft and scripts: `out/bts-3/`.
+
 0. **Promos (11-16)**: try the Promos page on a video of their own (a talk and a music-led one), say whether the parts
    picked are the ones they would pick, and import one `promo-N.xml` in Premiere. Their notes decide the weights
    (`plan/promo.py`), which are hand-set so far.

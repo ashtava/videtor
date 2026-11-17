@@ -52,7 +52,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "d2adb2dff6f5",
@@ -85,7 +98,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "4873765ec691",
@@ -118,7 +144,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "02b328e67e3c",
@@ -151,7 +190,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "bd450afa92c4",
@@ -184,7 +236,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "48dde9963408",
@@ -217,7 +282,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "8d91028c4e9c",
@@ -250,7 +328,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "faces in 1 still turned 90; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 1,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "d1edc78865c7",
@@ -283,7 +374,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "faces in 1 still turned -90; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 1,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "74cb189dd848",
@@ -316,7 +420,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "b5ef3a3fa6ac",
@@ -349,7 +466,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "0c4eb3818222",
@@ -382,7 +512,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "b83a15a51956",
@@ -415,7 +558,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "2fbc32746d25",
@@ -448,7 +604,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "d397c28081d1",
@@ -481,7 +650,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "0a7ba5f3084a",
@@ -514,7 +696,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "0151e4f95523",
@@ -547,7 +742,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "4651167a7284",
@@ -580,7 +788,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "ab85f11ebc9f",
@@ -613,7 +834,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "8126bc62ed91",
@@ -646,7 +880,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "3c98303728dc",
@@ -679,7 +926,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "a072e3b0f389",
@@ -712,7 +972,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "31e661f82674",
@@ -745,7 +1018,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "c04052903e99",
@@ -778,7 +1064,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "ef825d96e9a4",
@@ -811,7 +1110,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "1a524e06f289",
@@ -844,7 +1156,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "6556d606695e",
@@ -877,7 +1202,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "8ce801cb95b9",
@@ -910,7 +1248,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "1a4d81331864",
@@ -943,7 +1294,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "c42ecf6597a4",
@@ -976,7 +1340,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "64b4a7a4cd79",
@@ -1009,7 +1386,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "5c79d4366983",
@@ -1042,7 +1432,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "b5b6d705f99b",
@@ -1075,7 +1478,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "2d9b12add2f2",
@@ -1108,7 +1524,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "faces in 1 still turned 90; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 1,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "e98be180b1f8",
@@ -1141,7 +1570,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "1783a3040b67",
@@ -1174,7 +1616,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "d08ab788b773",
@@ -1207,7 +1662,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "c2e478736bc3",
@@ -1240,7 +1708,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "0baa2eadb4f9",
@@ -1273,7 +1754,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "aba2e771cd6d",
@@ -1306,7 +1800,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "615b48d018d3",
@@ -1339,7 +1846,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "32081077c427",
@@ -1372,7 +1892,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "ae24b12bdf98",
@@ -1405,7 +1938,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "e03d1a6e7f10",
@@ -1438,7 +1984,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "06415b8c7425",
@@ -1471,7 +2030,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "3f2ccc7d4125",
@@ -1504,7 +2076,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "aef1448ead96",
@@ -1537,7 +2122,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "d97d064a3b52",
@@ -1570,7 +2168,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "3035bb75b51e",
@@ -1603,7 +2214,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "26c53e0e6b6b",
@@ -1636,7 +2260,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "633fd0e4d0f9",
@@ -1669,7 +2306,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "ac55c1a61c48",
@@ -1702,7 +2352,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "2eb9ab6c27e0",
@@ -1735,7 +2398,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "7073aa983a31",
@@ -1768,7 +2444,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "bf3c71745468",
@@ -1801,7 +2490,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "1cc0b0c20ceb",
@@ -1834,7 +2536,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "6f46f0e44754",
@@ -1867,7 +2582,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "9ce01cf145c7",
@@ -1900,7 +2628,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "5edde30d4074",
@@ -1933,7 +2674,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "0ae2d9f6bacf",
@@ -1966,7 +2720,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "f0af815b11ec",
@@ -1999,7 +2766,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "36c53a77d338",
@@ -2032,7 +2812,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "fe269b73c7ad",
@@ -2065,7 +2858,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "c3be1f819a62",
@@ -2098,7 +2904,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "c65fa6826a37",
@@ -2131,7 +2950,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "c5f813d9dda6",
@@ -2164,7 +2996,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "ed817078f01f",
@@ -2197,7 +3042,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "a85acf702ed0",
@@ -2230,7 +3088,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "dfe9e461d513",
@@ -2263,7 +3134,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "9966fa5c251f",
@@ -2296,7 +3180,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "98e5d75cc6cc",
@@ -2329,7 +3226,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "e54423980b63",
@@ -2362,7 +3272,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "45d65c58c1bb",
@@ -2395,7 +3318,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "e83d8c2072e2",
@@ -2428,7 +3364,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "913923a81e55",
@@ -2461,7 +3410,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "552f2884f9a9",
@@ -2494,7 +3456,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "e7c6b0f288b3",
@@ -2527,7 +3502,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "d0647145413a",
@@ -2560,7 +3548,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "affabaf258d8",
@@ -2593,7 +3594,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "ca8c26ce68b7",
@@ -2626,7 +3640,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "55839fd0745c",
@@ -2659,7 +3686,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "aa9183f70f55",
@@ -2692,7 +3732,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "78d0bbc2972e",
@@ -2725,7 +3778,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "5492b5516802",
@@ -2758,7 +3824,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "9d2b6317b2a0",
@@ -2791,7 +3870,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "18424a82b035",
@@ -2824,7 +3916,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "166bb242b1c2",
@@ -2857,7 +3962,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "59c9dc625ced",
@@ -2890,7 +4008,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "9ced50e72e5b",
@@ -2923,7 +4054,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "ddace9dd6e17",
@@ -2956,7 +4100,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "6218eccb99ac",
@@ -2989,7 +4146,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "a3f753359e85",
@@ -3022,7 +4192,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "bdda878a7f23",
@@ -3055,7 +4238,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "a43c18efbfb9",
@@ -3088,7 +4284,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "2885c83b875e",
@@ -3121,7 +4330,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "7fb84b5e148f",
@@ -3154,7 +4376,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "d93d3d0938b2",
@@ -3187,7 +4422,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "e4a460321f17",
@@ -3220,7 +4468,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "3862656194b7",
@@ -3253,7 +4514,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "7c4c68908ac4",
@@ -3286,7 +4560,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "9f9db70d90ac",
@@ -3319,7 +4606,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "bc0a3c4a410d",
@@ -3352,7 +4652,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "8b3aa76c7858",
@@ -3385,7 +4698,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "a73624626a8f",
@@ -3418,7 +4744,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "c7ff7efe6c8e",
@@ -3451,7 +4790,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "d3ccf05fb7d4",
@@ -3484,7 +4836,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "f07fd6bc598f",
@@ -3517,7 +4882,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "f284afad7a5d",
@@ -3550,7 +4928,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "fa73525c7d61",
@@ -3583,7 +4974,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "2900014f115e",
@@ -3616,7 +5020,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "0c4de333310a",
@@ -3649,7 +5066,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "3fd41861459e",
@@ -3682,7 +5112,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "99f3a31ad09a",
@@ -3715,7 +5158,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "989d7299021e",
@@ -3748,7 +5204,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 1,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "6199b1660649",
@@ -3781,7 +5250,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "7064d9b9ce61",
@@ -3814,7 +5296,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "b851a1b43ec8",
@@ -3847,7 +5342,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "dc1da30c8010",
@@ -3880,7 +5388,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "1677c3734e8a",
@@ -3913,7 +5434,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "43aa88607e03",
@@ -3946,7 +5480,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "183af1d6fc9a",
@@ -3979,7 +5526,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "7e0bfb02d90b",
@@ -4012,7 +5572,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 1,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "bc279c592805",
@@ -4045,7 +5618,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "3b0a45659e51",
@@ -4078,7 +5664,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "e5e629001b80",
@@ -4111,7 +5710,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "faces in 1 still turned -90; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 1,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "bb7b16af2c03",
@@ -4144,7 +5756,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "6365a6c52486",
@@ -4177,7 +5802,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "a058541c79d7",
@@ -4210,7 +5848,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "917f23b3753a",
@@ -4243,7 +5894,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "b918f9f624ca",
@@ -4276,7 +5940,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "47b07cd79db7",
@@ -4309,7 +5986,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "67b33a7d929f",
@@ -4342,7 +6032,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "1888d47de9e1",
@@ -4375,7 +6078,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "d24b282ef861",
@@ -4408,7 +6124,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "8807e3accd57",
@@ -4441,7 +6170,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "0da0cbd00053",
@@ -4474,7 +6216,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "bc9bb2da15eb",
@@ -4507,7 +6262,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "212e1f8b4dda",
@@ -4540,7 +6308,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "11444c791844",
@@ -4573,7 +6354,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "173cf0a2c52c",
@@ -4606,7 +6400,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "4c51b415cddd",
@@ -4639,7 +6446,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "41f8f3fd7b12",
@@ -4672,7 +6492,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "81b34b0fe995",
@@ -4705,7 +6538,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "65d4639b64ab",
@@ -4738,7 +6584,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "8bfbe5b4ff99",
@@ -4771,7 +6630,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "2c488c987820",
@@ -4804,7 +6676,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "e726f06d1aa6",
@@ -4837,7 +6722,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "7115d5285519",
@@ -4870,7 +6768,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "3b9a77ac6df9",
@@ -4903,7 +6814,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "97ec24b2aedc",
@@ -4936,7 +6860,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "2b23f242987d",
@@ -4969,7 +6906,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 1,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "81d0dd4a5e67",
@@ -5002,7 +6952,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "0e15a78c8a2c",
@@ -5035,7 +6998,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "6095b616ab92",
@@ -5068,7 +7044,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "f35a3397a760",
@@ -5101,7 +7090,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "ac2fb6d8eab9",
@@ -5134,7 +7136,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "93e4697967b8",
@@ -5167,7 +7182,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "85cea4f7ac02",
@@ -5200,7 +7228,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "e6da1e9a787b",
@@ -5233,7 +7274,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "37abf5d3bdb3",
@@ -5266,7 +7320,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "1fb9ff46f708",
@@ -5299,7 +7366,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "f30c280012da",
@@ -5332,7 +7412,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "b50e9508ffe1",
@@ -5365,7 +7458,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "5221316ff2dd",
@@ -5398,7 +7504,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "8f43be68981d",
@@ -5431,7 +7550,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "85f66c29cd03",
@@ -5464,7 +7596,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "ec459aca2aed",
@@ -5497,7 +7642,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "70f8520b4226",
@@ -5530,7 +7688,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "ab8bb54c0b0d",
@@ -5563,7 +7734,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "eaddd995ad64",
@@ -5596,7 +7780,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "38838e0fb4be",
@@ -5629,7 +7826,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "51895a5c27eb",
@@ -5662,7 +7872,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "e2b53c0bd4c7",
@@ -5695,7 +7918,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 15 of 15 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 portrait dm90"
+   }
   },
   {
    "fid": "138233613324",
@@ -5728,7 +7964,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "9baf232e44b2",
@@ -5761,7 +8010,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "3924ae8fbb69",
@@ -5794,7 +8056,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "bfc11e6ce6c2",
@@ -5827,7 +8102,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "eeb7641fba61",
@@ -5860,7 +8148,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "570e40f103ca",
@@ -5893,7 +8194,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "04834bf30fed",
@@ -5926,7 +8240,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "9a5be724d0b6",
@@ -5959,7 +8286,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "13a538914fb9",
@@ -5992,7 +8332,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "28db156d1d98",
@@ -6025,7 +8378,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "d180b599e89e",
@@ -6058,7 +8424,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "b06e4ad52be0",
@@ -6091,7 +8470,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "35cde4ce384f",
@@ -6124,7 +8516,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "c5c7825c7371",
@@ -6157,7 +8562,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "5e586a7b5683",
@@ -6190,7 +8608,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "9cd5aeb4df50",
@@ -6223,7 +8654,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "fb43451c87b6",
@@ -6256,7 +8700,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "f55e84b0c15b",
@@ -6289,7 +8746,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "a42342b219f7",
@@ -6322,7 +8792,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "4cf0202ff7c0",
@@ -6355,7 +8838,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "3e3eb857de59",
@@ -6388,7 +8884,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "upright faces in 1 still; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 1,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "9c52c09c6f6e",
@@ -6421,7 +8930,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "469878054573",
@@ -6454,7 +8976,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "3840f8afd131",
@@ -6487,7 +9022,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "2fff616ae404",
@@ -6520,7 +9068,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 0,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "51fa330a7730",
@@ -6553,7 +9114,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "camera",
+    "reason": "no clear faces; 61 of 61 takes this camera's faces decided are upright",
+    "votes": {
+     "0": 2,
+     "-90": 1,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "ba1212ec616b",
@@ -6586,7 +9160,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "154f2dcf618f",
@@ -6619,7 +9206,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 2 stills",
+    "votes": {
+     "0": 2,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "96225465b825",
@@ -6652,7 +9252,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "2f36e0b25313",
@@ -6685,7 +9298,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "791a74cc2f1a",
@@ -6718,7 +9344,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   },
   {
    "fid": "28cd67e90c0a",
@@ -6751,7 +9390,20 @@
    },
    "used_by": {},
    "matched_by": null,
-   "duplicate_of": null
+   "duplicate_of": null,
+   "orientation": {
+    "rotation": 0,
+    "source": "faces",
+    "reason": "upright faces in 3 stills",
+    "votes": {
+     "0": 3,
+     "-90": 0,
+     "90": 0,
+     "180": 0
+    },
+    "stills": 3,
+    "camera": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C* h264 1920x1080 landscape dm0"
+   }
   }
  ],
  "project": {
