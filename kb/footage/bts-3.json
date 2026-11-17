@@ -1,0 +1,6762 @@
+{
+ "mount": "/Volumes/Paritosh_4",
+ "scanned_at": "2026-11-17T20:14:52",
+ "dirs": [
+  "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP"
+ ],
+ "roots": {
+  "bts-3::footage": [
+   "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP"
+  ]
+ },
+ "top_level": [
+  "2",
+  "261114AC ",
+  "3",
+  "4",
+  "5",
+  "Razorpay BTS",
+  "Rustomjee BTS",
+  "combined players",
+  "sounds of training"
+ ],
+ "files": [
+  {
+   "fid": "122cf61d8e14",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4324.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4324.MP4",
+   "kind": "video",
+   "size": 134365799,
+   "inode": 322082,
+   "mtime": 1761858574,
+   "media": {
+    "duration_s": 9.6,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 111971499,
+    "created": "2025-10-30T20:09:23.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d2adb2dff6f5",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4325.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4325.MP4",
+   "kind": "video",
+   "size": 67255271,
+   "inode": 322089,
+   "mtime": 1761858595,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224706,
+    "created": "2025-10-30T20:09:48.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "4873765ec691",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4326.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4326.MP4",
+   "kind": "video",
+   "size": 134366039,
+   "inode": 322087,
+   "mtime": 1761858621,
+   "media": {
+    "duration_s": 10.08,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 106639713,
+    "created": "2025-10-30T20:10:09.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "02b328e67e3c",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4327.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4327.MP4",
+   "kind": "video",
+   "size": 134367943,
+   "inode": 322107,
+   "mtime": 1761858650,
+   "media": {
+    "duration_s": 13.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 77222955,
+    "created": "2025-10-30T20:10:35.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "bd450afa92c4",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4328.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4328.MP4",
+   "kind": "video",
+   "size": 134370323,
+   "inode": 322133,
+   "mtime": 1761858743,
+   "media": {
+    "duration_s": 18.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 57423214,
+    "created": "2025-10-30T20:12:03.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "48dde9963408",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4329.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4329.MP4",
+   "kind": "video",
+   "size": 134366830,
+   "inode": 322372,
+   "mtime": 1761858762,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93310298,
+    "created": "2025-10-30T20:12:30.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "8d91028c4e9c",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4330.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4330.MP4",
+   "kind": "video",
+   "size": 134366751,
+   "inode": 322627,
+   "mtime": 1761858813,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93310243,
+    "created": "2025-10-30T20:13:20.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d1edc78865c7",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4331.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4331.MP4",
+   "kind": "video",
+   "size": 134367306,
+   "inode": 322708,
+   "mtime": 1761858835,
+   "media": {
+    "duration_s": 12.48,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86132888,
+    "created": "2025-10-30T20:13:41.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "74cb189dd848",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4332.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4332.MP4",
+   "kind": "video",
+   "size": 67255747,
+   "inode": 322779,
+   "mtime": 1761858925,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74728607,
+    "created": "2025-10-30T20:15:17.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "b5ef3a3fa6ac",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4337.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4337.MP4",
+   "kind": "video",
+   "size": 67255271,
+   "inode": 323168,
+   "mtime": 1761860941,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224706,
+    "created": "2025-10-30T20:48:53.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "0c4eb3818222",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4338.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4338.MP4",
+   "kind": "video",
+   "size": 134369371,
+   "inode": 323150,
+   "mtime": 1761860977,
+   "media": {
+    "duration_s": 16.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 63985414,
+    "created": "2025-10-30T20:49:19.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "b83a15a51956",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4340.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4340.MP4",
+   "kind": "video",
+   "size": 134367227,
+   "inode": 323138,
+   "mtime": 1761861305,
+   "media": {
+    "duration_s": 12.48,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86132837,
+    "created": "2025-10-30T20:54:52.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "2fbc32746d25",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4341.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4341.MP4",
+   "kind": "video",
+   "size": 67256062,
+   "inode": 323190,
+   "mtime": 1761861340,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 70058397,
+    "created": "2025-10-30T20:55:32.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d397c28081d1",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4343.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4343.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 323209,
+   "mtime": 1761862624,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-30T21:16:58.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "0a7ba5f3084a",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4344.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4344.MP4",
+   "kind": "video",
+   "size": 67254795,
+   "inode": 323436,
+   "mtime": 1761862695,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901204,
+    "created": "2025-10-30T21:18:09.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "0151e4f95523",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4345.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4345.MP4",
+   "kind": "video",
+   "size": 134366275,
+   "inode": 323447,
+   "mtime": 1761862741,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101792632,
+    "created": "2025-10-30T21:18:50.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "4651167a7284",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4346.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4346.MP4",
+   "kind": "video",
+   "size": 134368258,
+   "inode": 323576,
+   "mtime": 1761863315,
+   "media": {
+    "duration_s": 14.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74649032,
+    "created": "2025-10-30T21:28:19.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ab85f11ebc9f",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4347.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4347.MP4",
+   "kind": "video",
+   "size": 134365799,
+   "inode": 323792,
+   "mtime": 1761863348,
+   "media": {
+    "duration_s": 9.6,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 111971499,
+    "created": "2025-10-30T21:28:57.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "8126bc62ed91",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4348.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4348.MP4",
+   "kind": "video",
+   "size": 134365799,
+   "inode": 323784,
+   "mtime": 1761863369,
+   "media": {
+    "duration_s": 9.6,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 111971499,
+    "created": "2025-10-30T21:29:18.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3c98303728dc",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4349.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4349.MP4",
+   "kind": "video",
+   "size": 134369131,
+   "inode": 323783,
+   "mtime": 1761863402,
+   "media": {
+    "duration_s": 16.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65867221,
+    "created": "2025-10-30T21:29:44.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "a072e3b0f389",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4350.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4350.MP4",
+   "kind": "video",
+   "size": 67256579,
+   "inode": 324076,
+   "mtime": 1761863439,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62274610,
+    "created": "2025-10-30T21:30:30.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "31e661f82674",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4351.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4351.MP4",
+   "kind": "video",
+   "size": 67254795,
+   "inode": 324178,
+   "mtime": 1761863459,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901204,
+    "created": "2025-10-30T21:30:52.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "c04052903e99",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4352.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4352.MP4",
+   "kind": "video",
+   "size": 67255031,
+   "inode": 324388,
+   "mtime": 1761863509,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93409765,
+    "created": "2025-10-30T21:31:42.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ef825d96e9a4",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4354.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4354.MP4",
+   "kind": "video",
+   "size": 134367546,
+   "inode": 324395,
+   "mtime": 1761863574,
+   "media": {
+    "duration_s": 12.96,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 82942929,
+    "created": "2025-10-30T21:32:40.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "1a524e06f289",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4355.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4355.MP4",
+   "kind": "video",
+   "size": 67255747,
+   "inode": 324567,
+   "mtime": 1761863673,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74728607,
+    "created": "2025-10-30T21:34:25.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "6556d606695e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4356.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4356.MP4",
+   "kind": "video",
+   "size": 67253682,
+   "inode": 324579,
+   "mtime": 1761863699,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815783,
+    "created": "2025-10-30T21:34:55.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "8ce801cb95b9",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4357.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4357.MP4",
+   "kind": "video",
+   "size": 67255350,
+   "inode": 324590,
+   "mtime": 1761863729,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224807,
+    "created": "2025-10-30T21:35:22.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "1a4d81331864",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4358.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4358.MP4",
+   "kind": "video",
+   "size": 67255350,
+   "inode": 324625,
+   "mtime": 1761863763,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224807,
+    "created": "2025-10-30T21:35:55.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "c42ecf6597a4",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4359.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4359.MP4",
+   "kind": "video",
+   "size": 67254079,
+   "inode": 324779,
+   "mtime": 1761863770,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112664,
+    "created": "2025-10-30T21:36:05.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "64b4a7a4cd79",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4360.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4360.MP4",
+   "kind": "video",
+   "size": 67255983,
+   "inode": 324804,
+   "mtime": 1761863832,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 70058315,
+    "created": "2025-10-30T21:37:03.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "5c79d4366983",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4361.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4361.MP4",
+   "kind": "video",
+   "size": 134367703,
+   "inode": 324968,
+   "mtime": 1761863888,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 79980775,
+    "created": "2025-10-30T21:37:53.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "b5b6d705f99b",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4362.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4362.MP4",
+   "kind": "video",
+   "size": 67253367,
+   "inode": 325035,
+   "mtime": 1761863902,
+   "media": {
+    "duration_s": 2.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 224177890,
+    "created": "2025-10-30T21:38:19.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "2d9b12add2f2",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4363.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4363.MP4",
+   "kind": "video",
+   "size": 134366515,
+   "inode": 325547,
+   "mtime": 1761863917,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 97367039,
+    "created": "2025-10-30T21:38:25.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e98be180b1f8",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4364.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4364.MP4",
+   "kind": "video",
+   "size": 67256223,
+   "inode": 326607,
+   "mtime": 1761863942,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65937473,
+    "created": "2025-10-30T21:38:53.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "1783a3040b67",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4365.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4365.MP4",
+   "kind": "video",
+   "size": 268595905,
+   "inode": 326710,
+   "mtime": 1761863989,
+   "media": {
+    "duration_s": 34.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62174978,
+    "created": "2025-10-30T21:39:14.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d08ab788b773",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4366.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4366.MP4",
+   "kind": "video",
+   "size": 67253446,
+   "inode": 326844,
+   "mtime": 1761864039,
+   "media": {
+    "duration_s": 2.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 224178153,
+    "created": "2025-10-30T21:40:35.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "c2e478736bc3",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4367.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4367.MP4",
+   "kind": "video",
+   "size": 67256459,
+   "inode": 327077,
+   "mtime": 1761864064,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62274499,
+    "created": "2025-10-30T21:40:54.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "0baa2eadb4f9",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4368.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4368.MP4",
+   "kind": "video",
+   "size": 67254079,
+   "inode": 327092,
+   "mtime": 1761864096,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112664,
+    "created": "2025-10-30T21:41:31.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "aba2e771cd6d",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4369.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4369.MP4",
+   "kind": "video",
+   "size": 67256459,
+   "inode": 327107,
+   "mtime": 1761864192,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62274499,
+    "created": "2025-10-30T21:43:03.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "615b48d018d3",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4371.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4371.MP4",
+   "kind": "video",
+   "size": 67254874,
+   "inode": 327382,
+   "mtime": 1761864229,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901324,
+    "created": "2025-10-30T21:43:42.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "32081077c427",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4372.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4372.MP4",
+   "kind": "video",
+   "size": 67255271,
+   "inode": 327422,
+   "mtime": 1761864278,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224706,
+    "created": "2025-10-30T21:44:31.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ae24b12bdf98",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4373.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4373.MP4",
+   "kind": "video",
+   "size": 67254319,
+   "inode": 327473,
+   "mtime": 1761864309,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 124545035,
+    "created": "2025-10-30T21:45:03.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e03d1a6e7f10",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4376.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4376.MP4",
+   "kind": "video",
+   "size": 67256302,
+   "inode": 327575,
+   "mtime": 1761864371,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65937550,
+    "created": "2025-10-30T21:46:02.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "06415b8c7425",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4377.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4377.MP4",
+   "kind": "video",
+   "size": 67254634,
+   "inode": 327656,
+   "mtime": 1761864511,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112091056,
+    "created": "2025-10-30T21:48:25.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3f2ccc7d4125",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4378.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4378.MP4",
+   "kind": "video",
+   "size": 134369015,
+   "inode": 327747,
+   "mtime": 1761864616,
+   "media": {
+    "duration_s": 15.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 67863138,
+    "created": "2025-10-30T21:49:59.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "aef1448ead96",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4379.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4379.MP4",
+   "kind": "video",
+   "size": 67254874,
+   "inode": 327770,
+   "mtime": 1761864690,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901324,
+    "created": "2025-10-30T21:51:24.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d97d064a3b52",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4380.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4380.MP4",
+   "kind": "video",
+   "size": 67254158,
+   "inode": 327864,
+   "mtime": 1761864741,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112829,
+    "created": "2025-10-30T21:52:16.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3035bb75b51e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4381.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4381.MP4",
+   "kind": "video",
+   "size": 67253603,
+   "inode": 327993,
+   "mtime": 1761864761,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815563,
+    "created": "2025-10-30T21:52:37.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "26c53e0e6b6b",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4382.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4382.MP4",
+   "kind": "video",
+   "size": 67253922,
+   "inode": 328006,
+   "mtime": 1761864772,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 160128385,
+    "created": "2025-10-30T21:52:48.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "633fd0e4d0f9",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4383.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4383.MP4",
+   "kind": "video",
+   "size": 67254634,
+   "inode": 328012,
+   "mtime": 1761864801,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112091056,
+    "created": "2025-10-30T21:53:15.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ac55c1a61c48",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4384.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4384.MP4",
+   "kind": "video",
+   "size": 67254634,
+   "inode": 328300,
+   "mtime": 1761864820,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112091056,
+    "created": "2025-10-30T21:53:34.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "2eb9ab6c27e0",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4385.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4385.MP4",
+   "kind": "video",
+   "size": 67254874,
+   "inode": 328285,
+   "mtime": 1761864831,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901324,
+    "created": "2025-10-30T21:53:45.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "7073aa983a31",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4386.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4386.MP4",
+   "kind": "video",
+   "size": 67253682,
+   "inode": 328275,
+   "mtime": 1761864839,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815783,
+    "created": "2025-10-30T21:53:55.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "bf3c71745468",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4387.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4387.MP4",
+   "kind": "video",
+   "size": 134366871,
+   "inode": 328272,
+   "mtime": 1761865320,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93310327,
+    "created": "2025-10-30T22:01:47.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "1cc0b0c20ceb",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4388.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4388.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 328462,
+   "mtime": 1761865823,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-30T22:10:17.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "6f46f0e44754",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4389.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4389.MP4",
+   "kind": "video",
+   "size": 67253603,
+   "inode": 328471,
+   "mtime": 1761866074,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815563,
+    "created": "2025-10-30T22:14:30.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "9ce01cf145c7",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4390.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4390.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 328732,
+   "mtime": 1761866093,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-30T22:14:47.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "5edde30d4074",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4391.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4391.MP4",
+   "kind": "video",
+   "size": 67253843,
+   "inode": 328721,
+   "mtime": 1761866114,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 160128197,
+    "created": "2025-10-30T22:15:10.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "0ae2d9f6bacf",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4392.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4392.MP4",
+   "kind": "video",
+   "size": 134366515,
+   "inode": 328712,
+   "mtime": 1761866246,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 97367039,
+    "created": "2025-10-30T22:17:13.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "f0af815b11ec",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4393.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4393.MP4",
+   "kind": "video",
+   "size": 67255507,
+   "inode": 328893,
+   "mtime": 1761866299,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066079,
+    "created": "2025-10-30T22:18:11.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "36c53a77d338",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4394.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4394.MP4",
+   "kind": "video",
+   "size": 67253843,
+   "inode": 329015,
+   "mtime": 1761866306,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 160128197,
+    "created": "2025-10-30T22:18:21.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "fe269b73c7ad",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4395.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4395.MP4",
+   "kind": "video",
+   "size": 67253843,
+   "inode": 329009,
+   "mtime": 1761866375,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 160128197,
+    "created": "2025-10-30T22:19:31.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "c3be1f819a62",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4396.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4396.MP4",
+   "kind": "video",
+   "size": 67255271,
+   "inode": 329126,
+   "mtime": 1761866404,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224706,
+    "created": "2025-10-30T22:19:57.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "c65fa6826a37",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4397.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4397.MP4",
+   "kind": "video",
+   "size": 67254079,
+   "inode": 329177,
+   "mtime": 1761866435,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112664,
+    "created": "2025-10-30T22:20:30.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "c5f813d9dda6",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4398.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4398.MP4",
+   "kind": "video",
+   "size": 67255507,
+   "inode": 329190,
+   "mtime": 1761866558,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066079,
+    "created": "2025-10-30T22:22:30.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ed817078f01f",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4399.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4399.MP4",
+   "kind": "video",
+   "size": 67254874,
+   "inode": 329416,
+   "mtime": 1761866626,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901324,
+    "created": "2025-10-30T22:23:40.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "a85acf702ed0",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4400.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4400.MP4",
+   "kind": "video",
+   "size": 67256538,
+   "inode": 329429,
+   "mtime": 1761866642,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62274572,
+    "created": "2025-10-30T22:23:53.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "dfe9e461d513",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4403.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4403.MP4",
+   "kind": "video",
+   "size": 67255350,
+   "inode": 329469,
+   "mtime": 1761866688,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224807,
+    "created": "2025-10-30T22:24:40.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "9966fa5c251f",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4405.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4405.MP4",
+   "kind": "video",
+   "size": 67254319,
+   "inode": 329452,
+   "mtime": 1761866727,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 124545035,
+    "created": "2025-10-30T22:25:22.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "98e5d75cc6cc",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4407.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4407.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 329665,
+   "mtime": 1761866751,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-30T22:25:45.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e54423980b63",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4408.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4408.MP4",
+   "kind": "video",
+   "size": 67254795,
+   "inode": 329733,
+   "mtime": 1761866809,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901204,
+    "created": "2025-10-30T22:26:42.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "45d65c58c1bb",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4409.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4409.MP4",
+   "kind": "video",
+   "size": 67255507,
+   "inode": 329760,
+   "mtime": 1761866821,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066079,
+    "created": "2025-10-30T22:26:54.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e83d8c2072e2",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4411.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4411.MP4",
+   "kind": "video",
+   "size": 67254319,
+   "inode": 329790,
+   "mtime": 1761866888,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 124545035,
+    "created": "2025-10-30T22:28:02.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "913923a81e55",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4412.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4412.MP4",
+   "kind": "video",
+   "size": 67254158,
+   "inode": 329784,
+   "mtime": 1761866914,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112829,
+    "created": "2025-10-30T22:28:29.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "552f2884f9a9",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4413.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4413.MP4",
+   "kind": "video",
+   "size": 67253843,
+   "inode": 329988,
+   "mtime": 1761866951,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 160128197,
+    "created": "2025-10-30T22:29:06.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e7c6b0f288b3",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4414.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4414.MP4",
+   "kind": "video",
+   "size": 67255747,
+   "inode": 330013,
+   "mtime": 1761867189,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74728607,
+    "created": "2025-10-30T22:33:01.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d0647145413a",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4415.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4415.MP4",
+   "kind": "video",
+   "size": 67254795,
+   "inode": 330086,
+   "mtime": 1761867203,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901204,
+    "created": "2025-10-30T22:33:16.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "affabaf258d8",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4416.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4416.MP4",
+   "kind": "video",
+   "size": 67253125,
+   "inode": 330076,
+   "mtime": 1761867261,
+   "media": {
+    "duration_s": 1.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 280221354,
+    "created": "2025-10-30T22:34:18.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ca8c26ce68b7",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4417.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4417.MP4",
+   "kind": "video",
+   "size": 67256223,
+   "inode": 330208,
+   "mtime": 1761867278,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65937473,
+    "created": "2025-10-30T22:34:29.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "55839fd0745c",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4418.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4418.MP4",
+   "kind": "video",
+   "size": 67255586,
+   "inode": 330244,
+   "mtime": 1761867332,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066173,
+    "created": "2025-10-30T22:35:24.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "aa9183f70f55",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4419.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4419.MP4",
+   "kind": "video",
+   "size": 134366751,
+   "inode": 330373,
+   "mtime": 1761867420,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93310243,
+    "created": "2025-10-30T22:36:48.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "78d0bbc2972e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4420.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4420.MP4",
+   "kind": "video",
+   "size": 134366515,
+   "inode": 330371,
+   "mtime": 1761867439,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 97367039,
+    "created": "2025-10-30T22:37:07.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "5492b5516802",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4421.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4421.MP4",
+   "kind": "video",
+   "size": 67256223,
+   "inode": 330554,
+   "mtime": 1761867475,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65937473,
+    "created": "2025-10-30T22:37:45.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "9d2b6317b2a0",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4423.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4423.MP4",
+   "kind": "video",
+   "size": 67255747,
+   "inode": 330587,
+   "mtime": 1761867518,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74728607,
+    "created": "2025-10-30T22:38:29.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "18424a82b035",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4424.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4424.MP4",
+   "kind": "video",
+   "size": 67255507,
+   "inode": 330576,
+   "mtime": 1761867585,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066079,
+    "created": "2025-10-30T22:39:37.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "166bb242b1c2",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4425.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4425.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 330977,
+   "mtime": 1761867597,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-30T22:39:51.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "59c9dc625ced",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4427.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4427.MP4",
+   "kind": "video",
+   "size": 67254874,
+   "inode": 330943,
+   "mtime": 1761868262,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901324,
+    "created": "2025-10-30T22:50:56.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "9ced50e72e5b",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4429.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4429.MP4",
+   "kind": "video",
+   "size": 67256302,
+   "inode": 330920,
+   "mtime": 1761868359,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65937550,
+    "created": "2025-10-30T22:52:30.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ddace9dd6e17",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4430.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4430.MP4",
+   "kind": "video",
+   "size": 67254795,
+   "inode": 330908,
+   "mtime": 1761868718,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901204,
+    "created": "2025-10-30T22:58:31.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "6218eccb99ac",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4431.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4431.MP4",
+   "kind": "video",
+   "size": 67254079,
+   "inode": 331151,
+   "mtime": 1761868944,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112664,
+    "created": "2025-10-30T23:02:19.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "a3f753359e85",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4432.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4432.MP4",
+   "kind": "video",
+   "size": 67253446,
+   "inode": 331180,
+   "mtime": 1761868951,
+   "media": {
+    "duration_s": 2.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 224178153,
+    "created": "2025-10-30T23:02:27.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "bdda878a7f23",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4433.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4433.MP4",
+   "kind": "video",
+   "size": 67253603,
+   "inode": 331197,
+   "mtime": 1761869823,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815563,
+    "created": "2025-10-30T23:16:58.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "a43c18efbfb9",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4434.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4434.MP4",
+   "kind": "video",
+   "size": 67253125,
+   "inode": 331384,
+   "mtime": 1761869829,
+   "media": {
+    "duration_s": 1.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 280221354,
+    "created": "2025-10-30T23:17:06.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "2885c83b875e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4435.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4435.MP4",
+   "kind": "video",
+   "size": 67256223,
+   "inode": 331390,
+   "mtime": 1761869898,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65937473,
+    "created": "2025-10-30T23:18:09.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "7fb84b5e148f",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4437.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4437.MP4",
+   "kind": "video",
+   "size": 67255747,
+   "inode": 331414,
+   "mtime": 1761870163,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74728607,
+    "created": "2025-10-30T23:22:35.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d93d3d0938b2",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4438.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4438.MP4",
+   "kind": "video",
+   "size": 67255507,
+   "inode": 331506,
+   "mtime": 1761870177,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066079,
+    "created": "2025-10-30T23:22:49.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e4a460321f17",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4439.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4439.MP4",
+   "kind": "video",
+   "size": 134368419,
+   "inode": 331563,
+   "mtime": 1761870666,
+   "media": {
+    "duration_s": 14.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 72241085,
+    "created": "2025-10-30T23:30:50.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3862656194b7",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4440.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4440.MP4",
+   "kind": "video",
+   "size": 201481329,
+   "inode": 331566,
+   "mtime": 1761870813,
+   "media": {
+    "duration_s": 23.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 69958794,
+    "created": "2025-10-30T23:33:09.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "7c4c68908ac4",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4441.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4441.MP4",
+   "kind": "video",
+   "size": 67254319,
+   "inode": 331731,
+   "mtime": 1761871423,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 124545035,
+    "created": "2025-10-30T23:43:37.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "9f9db70d90ac",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4442.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4442.MP4",
+   "kind": "video",
+   "size": 67255627,
+   "inode": 331747,
+   "mtime": 1761871441,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066222,
+    "created": "2025-10-30T23:43:53.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "bc0a3c4a410d",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4445.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4445.MP4",
+   "kind": "video",
+   "size": 134367467,
+   "inode": 331779,
+   "mtime": 1761871677,
+   "media": {
+    "duration_s": 12.96,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 82942880,
+    "created": "2025-10-30T23:47:43.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "8b3aa76c7858",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4446.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4446.MP4",
+   "kind": "video",
+   "size": 134367467,
+   "inode": 331953,
+   "mtime": 1761871705,
+   "media": {
+    "duration_s": 12.96,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 82942880,
+    "created": "2025-10-30T23:48:10.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "a73624626a8f",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4447.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4447.MP4",
+   "kind": "video",
+   "size": 134366275,
+   "inode": 331920,
+   "mtime": 1761871777,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101792632,
+    "created": "2025-10-30T23:49:25.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "c7ff7efe6c8e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4448.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4448.MP4",
+   "kind": "video",
+   "size": 134369450,
+   "inode": 332316,
+   "mtime": 1761872836,
+   "media": {
+    "duration_s": 16.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 63985452,
+    "created": "2025-10-31T00:06:58.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d3ccf05fb7d4",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4449.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4449.MP4",
+   "kind": "video",
+   "size": 67255271,
+   "inode": 332310,
+   "mtime": 1761872848,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224706,
+    "created": "2025-10-31T00:07:21.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "f07fd6bc598f",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4450.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4450.MP4",
+   "kind": "video",
+   "size": 67254874,
+   "inode": 332307,
+   "mtime": 1761872906,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901324,
+    "created": "2025-10-31T00:08:19.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "f284afad7a5d",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4451.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4451.MP4",
+   "kind": "video",
+   "size": 134367306,
+   "inode": 332576,
+   "mtime": 1761873329,
+   "media": {
+    "duration_s": 12.48,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86132888,
+    "created": "2025-10-31T00:15:15.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "fa73525c7d61",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4452.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4452.MP4",
+   "kind": "video",
+   "size": 134368498,
+   "inode": 332766,
+   "mtime": 1761873458,
+   "media": {
+    "duration_s": 14.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 72241127,
+    "created": "2025-10-31T00:17:22.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "2900014f115e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4454.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4454.MP4",
+   "kind": "video",
+   "size": 134366991,
+   "inode": 332773,
+   "mtime": 1761874211,
+   "media": {
+    "duration_s": 12.0,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 89577994,
+    "created": "2025-10-31T00:29:58.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "0c4de333310a",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4455.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4455.MP4",
+   "kind": "video",
+   "size": 67255586,
+   "inode": 332998,
+   "mtime": 1761874279,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066173,
+    "created": "2025-10-31T00:31:11.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3fd41861459e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4456.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4456.MP4",
+   "kind": "video",
+   "size": 134365799,
+   "inode": 333378,
+   "mtime": 1761874302,
+   "media": {
+    "duration_s": 9.6,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 111971499,
+    "created": "2025-10-31T00:31:30.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "99f3a31ad09a",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4457.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4457.MP4",
+   "kind": "video",
+   "size": 134366594,
+   "inode": 333345,
+   "mtime": 1761874364,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 97367097,
+    "created": "2025-10-31T00:32:32.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "989d7299021e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4459.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4459.MP4",
+   "kind": "video",
+   "size": 134370083,
+   "inode": 333308,
+   "mtime": 1761874449,
+   "media": {
+    "duration_s": 18.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 58934246,
+    "created": "2025-10-31T00:33:50.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "6199b1660649",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4460.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4460.MP4",
+   "kind": "video",
+   "size": 67254158,
+   "inode": 333277,
+   "mtime": 1761874594,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112829,
+    "created": "2025-10-31T00:36:29.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "7064d9b9ce61",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4461.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4461.MP4",
+   "kind": "video",
+   "size": 134367782,
+   "inode": 333511,
+   "mtime": 1761874822,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 79980822,
+    "created": "2025-10-31T00:40:08.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "b851a1b43ec8",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4463.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4463.MP4",
+   "kind": "video",
+   "size": 134368895,
+   "inode": 333468,
+   "mtime": 1761874992,
+   "media": {
+    "duration_s": 15.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 67863078,
+    "created": "2025-10-31T00:42:55.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "dc1da30c8010",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4464.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4464.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 333831,
+   "mtime": 1761875025,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-31T00:43:39.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "1677c3734e8a",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4465.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4465.MP4",
+   "kind": "video",
+   "size": 67253843,
+   "inode": 333824,
+   "mtime": 1761875032,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 160128197,
+    "created": "2025-10-31T00:43:47.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "43aa88607e03",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4466.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4466.MP4",
+   "kind": "video",
+   "size": 134367782,
+   "inode": 333812,
+   "mtime": 1761875464,
+   "media": {
+    "duration_s": 13.44,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 79980822,
+    "created": "2025-10-31T00:50:50.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "183af1d6fc9a",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4468.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4468.MP4",
+   "kind": "video",
+   "size": 67255031,
+   "inode": 334387,
+   "mtime": 1761875527,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93409765,
+    "created": "2025-10-31T00:52:00.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "7e0bfb02d90b",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4469.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4469.MP4",
+   "kind": "video",
+   "size": 67255110,
+   "inode": 334450,
+   "mtime": 1761875536,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93409875,
+    "created": "2025-10-31T00:52:09.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "bc279c592805",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4470.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4470.MP4",
+   "kind": "video",
+   "size": 67254398,
+   "inode": 334435,
+   "mtime": 1761875572,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 124545181,
+    "created": "2025-10-31T00:52:46.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3b0a45659e51",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4471.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4471.MP4",
+   "kind": "video",
+   "size": 134366039,
+   "inode": 334690,
+   "mtime": 1761875738,
+   "media": {
+    "duration_s": 10.08,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 106639713,
+    "created": "2025-10-31T00:55:27.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e5e629001b80",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4472.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4472.MP4",
+   "kind": "video",
+   "size": 67255586,
+   "inode": 334672,
+   "mtime": 1761875755,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066173,
+    "created": "2025-10-31T00:55:48.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "bb7b16af2c03",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4473.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4473.MP4",
+   "kind": "video",
+   "size": 134370162,
+   "inode": 334667,
+   "mtime": 1761875834,
+   "media": {
+    "duration_s": 18.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 58934281,
+    "created": "2025-10-31T00:56:54.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "6365a6c52486",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4474.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4474.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 334885,
+   "mtime": 1761875871,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-31T00:57:45.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "a058541c79d7",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4476.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4476.MP4",
+   "kind": "video",
+   "size": 67253603,
+   "inode": 335009,
+   "mtime": 1761875882,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815563,
+    "created": "2025-10-31T00:57:58.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "917f23b3753a",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4477.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4477.MP4",
+   "kind": "video",
+   "size": 67255983,
+   "inode": 335407,
+   "mtime": 1761876053,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 70058315,
+    "created": "2025-10-31T01:00:44.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "b918f9f624ca",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4478.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4478.MP4",
+   "kind": "video",
+   "size": 67256459,
+   "inode": 335435,
+   "mtime": 1761876456,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62274499,
+    "created": "2025-10-31T01:07:26.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "47b07cd79db7",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4480.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4480.MP4",
+   "kind": "video",
+   "size": 67254079,
+   "inode": 335609,
+   "mtime": 1761876639,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112664,
+    "created": "2025-10-31T01:10:34.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "67b33a7d929f",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4481.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4481.MP4",
+   "kind": "video",
+   "size": 67253603,
+   "inode": 335610,
+   "mtime": 1761876739,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815563,
+    "created": "2025-10-31T01:12:15.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "1888d47de9e1",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4482.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4482.MP4",
+   "kind": "video",
+   "size": 67253843,
+   "inode": 335629,
+   "mtime": 1761876754,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 160128197,
+    "created": "2025-10-31T01:12:29.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d24b282ef861",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4484.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4484.MP4",
+   "kind": "video",
+   "size": 67255031,
+   "inode": 335650,
+   "mtime": 1761876788,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93409765,
+    "created": "2025-10-31T01:13:01.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "8807e3accd57",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4485.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4485.MP4",
+   "kind": "video",
+   "size": 67255271,
+   "inode": 335778,
+   "mtime": 1761876800,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224706,
+    "created": "2025-10-31T01:13:13.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "0da0cbd00053",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4486.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4486.MP4",
+   "kind": "video",
+   "size": 67255747,
+   "inode": 335860,
+   "mtime": 1761876814,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74728607,
+    "created": "2025-10-31T01:13:26.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "bc9bb2da15eb",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4487.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4487.MP4",
+   "kind": "video",
+   "size": 67255350,
+   "inode": 336104,
+   "mtime": 1761876916,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224807,
+    "created": "2025-10-31T01:15:09.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "212e1f8b4dda",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4489.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4489.MP4",
+   "kind": "video",
+   "size": 67256302,
+   "inode": 336066,
+   "mtime": 1761877096,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65937550,
+    "created": "2025-10-31T01:18:07.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "11444c791844",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4490.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4490.MP4",
+   "kind": "video",
+   "size": 67254158,
+   "inode": 336025,
+   "mtime": 1761877354,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112829,
+    "created": "2025-10-31T01:22:29.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "173cf0a2c52c",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4492.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4492.MP4",
+   "kind": "video",
+   "size": 67255350,
+   "inode": 335999,
+   "mtime": 1761877477,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224807,
+    "created": "2025-10-31T01:24:30.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "4c51b415cddd",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4494.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4494.MP4",
+   "kind": "video",
+   "size": 134368419,
+   "inode": 336406,
+   "mtime": 1761877607,
+   "media": {
+    "duration_s": 14.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 72241085,
+    "created": "2025-10-31T01:26:31.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "41f8f3fd7b12",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4495.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4495.MP4",
+   "kind": "video",
+   "size": 134367943,
+   "inode": 336358,
+   "mtime": 1761877823,
+   "media": {
+    "duration_s": 13.92,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 77222955,
+    "created": "2025-10-31T01:30:08.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "81b34b0fe995",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4496.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4496.MP4",
+   "kind": "video",
+   "size": 67255271,
+   "inode": 336325,
+   "mtime": 1761878336,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224706,
+    "created": "2025-10-31T01:38:48.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "65d4639b64ab",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4497.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4497.MP4",
+   "kind": "video",
+   "size": 67255031,
+   "inode": 336292,
+   "mtime": 1761878347,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93409765,
+    "created": "2025-10-31T01:39:00.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "8bfbe5b4ff99",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4498.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4498.MP4",
+   "kind": "video",
+   "size": 67255031,
+   "inode": 336627,
+   "mtime": 1761878356,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93409765,
+    "created": "2025-10-31T01:39:09.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "2c488c987820",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4499.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4499.MP4",
+   "kind": "video",
+   "size": 67253603,
+   "inode": 336683,
+   "mtime": 1761878368,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815563,
+    "created": "2025-10-31T01:39:23.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e726f06d1aa6",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4500.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4500.MP4",
+   "kind": "video",
+   "size": 67256302,
+   "inode": 336689,
+   "mtime": 1761879108,
+   "media": {
+    "duration_s": 8.16,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65937550,
+    "created": "2025-10-31T01:51:39.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "7115d5285519",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4502.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4502.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 336705,
+   "mtime": 1761879531,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-31T01:58:45.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3b9a77ac6df9",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4503.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4503.MP4",
+   "kind": "video",
+   "size": 201479423,
+   "inode": 336956,
+   "mtime": 1761879622,
+   "media": {
+    "duration_s": 19.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 83949759,
+    "created": "2025-10-31T02:00:01.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "97ec24b2aedc",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4504.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4504.MP4",
+   "kind": "video",
+   "size": 67253603,
+   "inode": 337013,
+   "mtime": 1761879637,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815563,
+    "created": "2025-10-31T02:00:33.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "2b23f242987d",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4505.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4505.MP4",
+   "kind": "video",
+   "size": 201481408,
+   "inode": 336982,
+   "mtime": 1761879665,
+   "media": {
+    "duration_s": 23.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 69958822,
+    "created": "2025-10-31T02:00:40.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "81d0dd4a5e67",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4506.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4506.MP4",
+   "kind": "video",
+   "size": 134366871,
+   "inode": 336958,
+   "mtime": 1761879820,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93310327,
+    "created": "2025-10-31T02:03:27.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "0e15a78c8a2c",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4507.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4507.MP4",
+   "kind": "video",
+   "size": 134366515,
+   "inode": 337230,
+   "mtime": 1761880970,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 97367039,
+    "created": "2025-10-31T02:22:38.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "6095b616ab92",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4508.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4508.MP4",
+   "kind": "video",
+   "size": 134366751,
+   "inode": 337567,
+   "mtime": 1761882174,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93310243,
+    "created": "2025-10-31T02:42:41.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "f35a3397a760",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4510.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4510.MP4",
+   "kind": "video",
+   "size": 134366275,
+   "inode": 337564,
+   "mtime": 1761882368,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101792632,
+    "created": "2025-10-31T02:45:56.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ac2fb6d8eab9",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4511.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4511.MP4",
+   "kind": "video",
+   "size": 201481172,
+   "inode": 337610,
+   "mtime": 1761882728,
+   "media": {
+    "duration_s": 22.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 71447224,
+    "created": "2025-10-31T02:51:44.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "93e4697967b8",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4513.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4513.MP4",
+   "kind": "video",
+   "size": 201483557,
+   "inode": 337811,
+   "mtime": 1761883387,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 146002577,
+    "created": "2025-10-31T02:57:22.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 100.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "85cea4f7ac02",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4514.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4514.MP4",
+   "kind": "video",
+   "size": 134366635,
+   "inode": 337809,
+   "mtime": 1761886116,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 97367126,
+    "created": "2025-10-31T03:48:24.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e6da1e9a787b",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4515.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4515.MP4",
+   "kind": "video",
+   "size": 67255826,
+   "inode": 338000,
+   "mtime": 1761886142,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74728695,
+    "created": "2025-10-31T03:48:53.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "37abf5d3bdb3",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4516.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4516.MP4",
+   "kind": "video",
+   "size": 134367347,
+   "inode": 338121,
+   "mtime": 1761886206,
+   "media": {
+    "duration_s": 12.48,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86132914,
+    "created": "2025-10-31T03:49:52.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "1fb9ff46f708",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4517.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4517.MP4",
+   "kind": "video",
+   "size": 67253922,
+   "inode": 338369,
+   "mtime": 1761886304,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 160128385,
+    "created": "2025-10-31T03:51:40.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "f30c280012da",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4518.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4518.MP4",
+   "kind": "video",
+   "size": 67254874,
+   "inode": 338347,
+   "mtime": 1761886314,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901324,
+    "created": "2025-10-31T03:51:47.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "b50e9508ffe1",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4519.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4519.MP4",
+   "kind": "video",
+   "size": 67255983,
+   "inode": 338574,
+   "mtime": 1761886340,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 70058315,
+    "created": "2025-10-31T03:52:11.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "5221316ff2dd",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4520.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4520.MP4",
+   "kind": "video",
+   "size": 134366515,
+   "inode": 338573,
+   "mtime": 1761886476,
+   "media": {
+    "duration_s": 11.04,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 97367039,
+    "created": "2025-10-31T03:54:23.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "8f43be68981d",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4521.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4521.MP4",
+   "kind": "video",
+   "size": 67253603,
+   "inode": 338763,
+   "mtime": 1761886613,
+   "media": {
+    "duration_s": 2.88,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 186815563,
+    "created": "2025-10-31T03:56:49.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "85f66c29cd03",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4523.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4523.MP4",
+   "kind": "video",
+   "size": 67255031,
+   "inode": 338743,
+   "mtime": 1761886650,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93409765,
+    "created": "2025-10-31T03:57:23.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ec459aca2aed",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4524.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4524.MP4",
+   "kind": "video",
+   "size": 67253367,
+   "inode": 339124,
+   "mtime": 1761886655,
+   "media": {
+    "duration_s": 2.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 224177890,
+    "created": "2025-10-31T03:57:31.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "70f8520b4226",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4525.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4525.MP4",
+   "kind": "video",
+   "size": 67254795,
+   "inode": 339064,
+   "mtime": 1761886663,
+   "media": {
+    "duration_s": 5.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101901204,
+    "created": "2025-10-31T03:57:36.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ab8bb54c0b0d",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4526.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4526.MP4",
+   "kind": "video",
+   "size": 201480853,
+   "inode": 339037,
+   "mtime": 1761886774,
+   "media": {
+    "duration_s": 22.08,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 73000309,
+    "created": "2025-10-31T03:59:11.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "eaddd995ad64",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4527.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4527.MP4",
+   "kind": "video",
+   "size": 134366751,
+   "inode": 339306,
+   "mtime": 1761886828,
+   "media": {
+    "duration_s": 11.52,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93310243,
+    "created": "2025-10-31T04:00:15.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "38838e0fb4be",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4528.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4528.MP4",
+   "kind": "video",
+   "size": 67256579,
+   "inode": 339296,
+   "mtime": 1761886939,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62274610,
+    "created": "2025-10-31T04:02:09.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "51895a5c27eb",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4529.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4529.MP4",
+   "kind": "video",
+   "size": 67257567,
+   "inode": 339295,
+   "mtime": 1761888103,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 124551050,
+    "created": "2025-10-31T04:19:27.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 100.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "e2b53c0bd4c7",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4531.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4531.MP4",
+   "kind": "video",
+   "size": 134370559,
+   "inode": 339523,
+   "mtime": 1761889210,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 139969332,
+    "created": "2025-10-31T04:36:07.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 100.0,
+     "pix_fmt": "yuv420p",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "138233613324",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4533.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4533.MP4",
+   "kind": "video",
+   "size": 67253843,
+   "inode": 339832,
+   "mtime": 1761890438,
+   "media": {
+    "duration_s": 3.36,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 160128197,
+    "created": "2025-10-31T05:00:33.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "9baf232e44b2",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4536.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4536.MP4",
+   "kind": "video",
+   "size": 67255110,
+   "inode": 339816,
+   "mtime": 1761890509,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93409875,
+    "created": "2025-10-31T05:01:42.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3924ae8fbb69",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4538.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4538.MP4",
+   "kind": "video",
+   "size": 134366354,
+   "inode": 339802,
+   "mtime": 1761890594,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101792692,
+    "created": "2025-10-31T05:03:02.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "bfc11e6ce6c2",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4539.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4539.MP4",
+   "kind": "video",
+   "size": 67256778,
+   "inode": 339800,
+   "mtime": 1761890630,
+   "media": {
+    "duration_s": 9.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 58997173,
+    "created": "2025-10-31T05:03:40.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "eeb7641fba61",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4540.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4540.MP4",
+   "kind": "video",
+   "size": 67255507,
+   "inode": 340021,
+   "mtime": 1761890985,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066079,
+    "created": "2025-10-31T05:09:37.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "570e40f103ca",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4541.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4541.MP4",
+   "kind": "video",
+   "size": 134370323,
+   "inode": 340086,
+   "mtime": 1761891014,
+   "media": {
+    "duration_s": 18.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 57423214,
+    "created": "2025-10-31T05:09:54.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "04834bf30fed",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4544.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4544.MP4",
+   "kind": "video",
+   "size": 67255507,
+   "inode": 340291,
+   "mtime": 1761891597,
+   "media": {
+    "duration_s": 6.72,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 80066079,
+    "created": "2025-10-31T05:19:50.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "9a5be724d0b6",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4546.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4546.MP4",
+   "kind": "video",
+   "size": 67255271,
+   "inode": 340424,
+   "mtime": 1761892066,
+   "media": {
+    "duration_s": 6.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 86224706,
+    "created": "2025-10-31T05:27:39.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "13a538914fb9",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4549.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4549.MP4",
+   "kind": "video",
+   "size": 67254398,
+   "inode": 340359,
+   "mtime": 1761892251,
+   "media": {
+    "duration_s": 4.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 124545181,
+    "created": "2025-10-31T05:30:46.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "28db156d1d98",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4550.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4550.MP4",
+   "kind": "video",
+   "size": 67256538,
+   "inode": 340736,
+   "mtime": 1761892269,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62274572,
+    "created": "2025-10-31T05:31:00.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "d180b599e89e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4551.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4551.MP4",
+   "kind": "video",
+   "size": 134369727,
+   "inode": 340699,
+   "mtime": 1761892493,
+   "media": {
+    "duration_s": 17.28,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62208206,
+    "created": "2025-10-31T05:34:35.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "b06e4ad52be0",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4552.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4552.MP4",
+   "kind": "video",
+   "size": 67255983,
+   "inode": 340639,
+   "mtime": 1761892556,
+   "media": {
+    "duration_s": 7.68,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 70058315,
+    "created": "2025-10-31T05:35:48.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "35cde4ce384f",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4553.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4553.MP4",
+   "kind": "video",
+   "size": 134369251,
+   "inode": 340630,
+   "mtime": 1761892648,
+   "media": {
+    "duration_s": 16.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65867279,
+    "created": "2025-10-31T05:37:11.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "c5c7825c7371",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4554.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4554.MP4",
+   "kind": "video",
+   "size": 67255747,
+   "inode": 340822,
+   "mtime": 1761892693,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74728607,
+    "created": "2025-10-31T05:38:04.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "5e586a7b5683",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4555.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4555.MP4",
+   "kind": "video",
+   "size": 134366354,
+   "inode": 340972,
+   "mtime": 1761892729,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101792692,
+    "created": "2025-10-31T05:38:38.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "9cd5aeb4df50",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4557.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4557.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 340925,
+   "mtime": 1761892805,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-31T05:39:59.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "fb43451c87b6",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4559.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4559.MP4",
+   "kind": "video",
+   "size": 67254079,
+   "inode": 340911,
+   "mtime": 1761892880,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112664,
+    "created": "2025-10-31T05:41:15.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "f55e84b0c15b",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4561.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4561.MP4",
+   "kind": "video",
+   "size": 67254555,
+   "inode": 341232,
+   "mtime": 1761893452,
+   "media": {
+    "duration_s": 4.8,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 112090925,
+    "created": "2025-10-31T05:50:46.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "a42342b219f7",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4562.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4562.MP4",
+   "kind": "video",
+   "size": 134366354,
+   "inode": 341279,
+   "mtime": 1761893516,
+   "media": {
+    "duration_s": 10.56,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 101792692,
+    "created": "2025-10-31T05:51:45.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "4cf0202ff7c0",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4564.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4564.MP4",
+   "kind": "video",
+   "size": 134365799,
+   "inode": 341478,
+   "mtime": 1761894661,
+   "media": {
+    "duration_s": 9.6,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 111971499,
+    "created": "2025-10-31T06:10:49.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3e3eb857de59",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4565.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4565.MP4",
+   "kind": "video",
+   "size": 67255031,
+   "inode": 341464,
+   "mtime": 1761894816,
+   "media": {
+    "duration_s": 5.76,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 93409765,
+    "created": "2025-10-31T06:13:29.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "9c52c09c6f6e",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4567.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4567.MP4",
+   "kind": "video",
+   "size": 67256459,
+   "inode": 341684,
+   "mtime": 1761897062,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62274499,
+    "created": "2025-10-31T06:50:52.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "469878054573",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4568.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4568.MP4",
+   "kind": "video",
+   "size": 67255826,
+   "inode": 341675,
+   "mtime": 1761897408,
+   "media": {
+    "duration_s": 7.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 74728695,
+    "created": "2025-10-31T06:56:40.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "3840f8afd131",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4569.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4569.MP4",
+   "kind": "video",
+   "size": 67256699,
+   "inode": 341665,
+   "mtime": 1761898237,
+   "media": {
+    "duration_s": 9.12,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 58997104,
+    "created": "2025-10-31T07:10:27.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "2fff616ae404",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4570.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4570.MP4",
+   "kind": "video",
+   "size": 67256459,
+   "inode": 341958,
+   "mtime": 1761900554,
+   "media": {
+    "duration_s": 8.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62274499,
+    "created": "2025-10-31T07:49:05.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "51fa330a7730",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4572.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4572.MP4",
+   "kind": "video",
+   "size": 268593765,
+   "inode": 341915,
+   "mtime": 1761900788,
+   "media": {
+    "duration_s": 30.24,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 71056551,
+    "created": "2025-10-31T07:52:36.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "ba1212ec616b",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4573.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4573.MP4",
+   "kind": "video",
+   "size": 201483076,
+   "inode": 341889,
+   "mtime": 1761900931,
+   "media": {
+    "duration_s": 26.4,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 61055477,
+    "created": "2025-10-31T07:55:04.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "154f2dcf618f",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4574.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4574.MP4",
+   "kind": "video",
+   "size": 67254079,
+   "inode": 342206,
+   "mtime": 1761901028,
+   "media": {
+    "duration_s": 3.84,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 140112664,
+    "created": "2025-10-31T07:57:03.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "96225465b825",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4575.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4575.MP4",
+   "kind": "video",
+   "size": 134366039,
+   "inode": 342154,
+   "mtime": 1761901039,
+   "media": {
+    "duration_s": 10.08,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 106639713,
+    "created": "2025-10-31T07:57:07.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "2f36e0b25313",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4576.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4576.MP4",
+   "kind": "video",
+   "size": 335709132,
+   "inode": 342151,
+   "mtime": 1761901090,
+   "media": {
+    "duration_s": 43.2,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 62168357,
+    "created": "2025-10-31T07:57:26.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "791a74cc2f1a",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4577.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4577.MP4",
+   "kind": "video",
+   "size": 268595032,
+   "inode": 342448,
+   "mtime": 1761901124,
+   "media": {
+    "duration_s": 32.64,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65832115,
+    "created": "2025-10-31T07:58:10.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  },
+  {
+   "fid": "28cd67e90c0a",
+   "path": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP/C4578.MP4",
+   "dir": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+   "basename": "C4578.MP4",
+   "kind": "video",
+   "size": 134369210,
+   "inode": 342445,
+   "mtime": 1761901144,
+   "media": {
+    "duration_s": 16.32,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "bitrate": 65867259,
+    "created": "2025-10-31T07:58:46.000000Z",
+    "video": {
+     "codec": "h264",
+     "width": 1920,
+     "height": 1080,
+     "fps": 50.0,
+     "pix_fmt": "yuv422p10le",
+     "color_transfer": "bt709",
+     "color_primaries": "bt709"
+    },
+    "audio": {
+     "codec": "pcm_s16be",
+     "channels": 2,
+     "sample_rate": 48000
+    }
+   },
+   "used_by": {},
+   "matched_by": null,
+   "duplicate_of": null
+  }
+ ],
+ "project": {
+  "name": "bts-3",
+  "folder": "/Volumes/Paritosh_4/Rustomjee BTS/PRIVATE/M4ROOT/CLIP",
+  "key": "bts-3::footage"
+ }
+}
