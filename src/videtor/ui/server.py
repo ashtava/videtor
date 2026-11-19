@@ -270,16 +270,57 @@ class App:
             args += ["--workers", str(int(body["workers"]))]
         if not (ok := project_mod.can(project_mod.read(out_root / name, str(folder), name), "prep", self._live(str(out_root / name))))[0]:
             return {"error": ok[1]}
+        ref = str(body.get("reference") or "").strip()
+        if ref and (why := self._reference_problem(ref)):
+            return {"error": why}
         project = self.add_project(name, str(folder), str(out_root / name))
-        if body.get("frame"):  # the shape the user chose for this job: kept with the project, used by every cut of it
+        if body.get("frame") or ref:  # the shape and the reference video the user chose for this job: kept with the project
             from videtor.plan import settings
 
             try:
-                settings.save(Path(project["dir"]), {**settings.load(Path(project["dir"])), "frame": body["frame"]})
+                settings.save(Path(project["dir"]), {**settings.load(Path(project["dir"])), **({"frame": body["frame"]} if body.get("frame") else {}),
+                                                     **({"reference": self._reference_path(ref)} if ref else {})})
             except ValueError as exc:
                 return {"error": str(exc)}
         job = self.jobs.submit("prep", f"Read the footage · {name}", args, project=project["dir"])
         return {"job": job.to_dict(), "project": project}
+
+    @staticmethod
+    def _reference_path(ref: str) -> str:
+        from videtor.analyze import link
+
+        return ref if link.is_link(ref) else str(Path(ref).expanduser())
+
+    @staticmethod
+    def _reference_problem(ref: str) -> str | None:
+        """Why this cannot be a reference video (a sentence), or None."""
+        from videtor.analyze import link
+
+        if link.is_link(ref):
+            return None if link.available() else link.missing()
+        path = Path(ref).expanduser()
+        if not path.is_file():
+            return f"That video is not there: {path}"
+        if path.suffix.lower() not in VIDEO_EXT:
+            return "Choose a video file (mp4, mov), or paste a link to one."
+        return None
+
+    def api_reference(self, body: dict) -> dict:
+        """Write the project's plan from a reference video (a file or a link): `videtor reference`, as a job."""
+        from videtor.plan import settings
+
+        p = self._project(body.get("project", ""))
+        if not p:
+            return {"error": "unknown project"}
+        ok, why = project_mod.can(self._read(p), "reference", self._live(p["dir"]))
+        if not ok:
+            return {"error": why}
+        ref = str(body.get("video") or settings.load(Path(p["dir"])).get("reference") or "").strip()
+        if not ref:
+            return {"error": "Choose the video to cut like first: a finished video, or a link to one."}
+        if why := self._reference_problem(ref):
+            return {"error": why}
+        return self._submit("plan", f"Plan from the reference video · {p['name']}", ["reference", p["dir"], self._reference_path(ref), "--key", p["key"]], p["dir"], writes=True)
 
     def api_reprep(self, body: dict) -> dict:
         """Read a project's footage again, with the folder and name it was made with (after a failure or a drive swap)."""
@@ -696,6 +737,7 @@ class App:
             mu = m.get("music")
             one = mu if isinstance(mu, dict) else None
             out["plan"] = {"frame": settings.frame_of(m), "width": m.get("width", 1080), "height": m.get("height", 1920), "length_s": m.get("length_s"),
+                           "reference": (m.get("reference") or {}).get("file") if isinstance(m.get("reference"), dict) else None,
                            "music": Path(one["path"]).name if one and one.get("path") else "a medley" if isinstance(mu, list) else None,
                            "music_path": one.get("path") if one else None, "in_s": one.get("in_s") if one else None}
             track = (mine.get("music") or {}).get("path")
@@ -723,6 +765,8 @@ class App:
         mine = settings.load(d)
         if "frame" in body:
             mine["frame"] = body["frame"] or None
+        if "reference" in body:  # only forgetting it is done here: a new one is given with the plan it writes (api_reference)
+            mine["reference"] = str(body["reference"] or "").strip() or None
         if "music" in body:
             mu = body["music"]
             if isinstance(mu, dict) and mu.get("path"):
@@ -1129,7 +1173,7 @@ class Handler(BaseHTTPRequestHandler):
                   "/api/music/ranked": self.app.api_music_ranked, "/api/edit": self.app.api_edit, "/api/note": self.app.api_note,
                   "/api/proxies": self.app.api_proxies, "/api/options": self.app.api_options, "/api/write-xml": self.app.api_write_xml,
                   "/api/promos/make": self.app.api_promos_make, "/api/promos/another": self.app.api_promos_another,
-                  "/api/promos/update": self.app.api_promos_update}
+                  "/api/promos/update": self.app.api_promos_update, "/api/reference": self.app.api_reference}
         if path in routes:
             try:
                 return self._json(routes[path](body))

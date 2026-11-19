@@ -22,10 +22,10 @@ from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
-ACTIONS = ("prep", "cut", "edit", "look", "write_xml", "readback")
+ACTIONS = ("prep", "cut", "edit", "look", "write_xml", "readback", "reference")
 VERBS = {"prep": "Reading the footage", "cut": "Cutting", "look": "Updating the cut", "search": "Searching", "music": "Ranking music",
          "library": "Sorting the footage", "learn": "Learning your sorting", "teach": "Learning from your work", "preview": "Making the preview",
-         "promos": "Making the promos"}
+         "promos": "Making the promos", "plan": "Writing the plan"}
 FILES = ("overview.md", "brief.md", "shotmap.json", "picks.json", "mv.json", "aroll.json")
 
 
@@ -208,7 +208,7 @@ def steps(p: Project, job: dict | None = None, needs: dict | None = None) -> tup
         nxt = {"text": (f"{plug}, then read the footage again." if not p.drive["connected"] else "The footage has not been read yet."),
                "tab": "overview", "action": "reprep" if p.drive["connected"] and p.folder else None}
     elif st is Stage.BRIEF:
-        nxt = {"text": "Paste the client's brief.", "tab": "brief"}
+        nxt = {"text": "Paste the client's brief, or choose a reference video to cut like.", "tab": "brief"}
     else:
         nxt = {"text": "Get the plan written from the brief: copy the request on Brief & plan into Claude Code.", "tab": "brief"}
     return out, nxt
@@ -236,8 +236,12 @@ def can(p: Project, action: str, live: Iterable[dict] = (), needs: dict | None =
         raise ValueError(f"unknown action: {action}")
     if not p.exists:
         return False, f"This project's folder is not there: {p.dir}"
-    if action in ("cut", "edit", "look", "write_xml") and writer:
+    if action in ("cut", "edit", "look", "write_xml", "reference") and writer:
         return False, busy_why(writer)
+    if action == "reference":  # the plan from a reference video: any project that is not a music video or an interview
+        if p.kind is not Kind.CUT:
+            return False, f"A {p.kind.value.replace('_', ' ')} has its own plan: a reference video shapes a cut from a brief."
+        return True, ""
     if action == "cut":
         if p.kind is Kind.MUSIC_VIDEO:
             return True, ""

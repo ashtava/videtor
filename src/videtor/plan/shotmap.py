@@ -45,6 +45,9 @@ effects for every cut and shot at the rates your rendered reels of that bucket s
 shot) replaces the draw for that slot, and [] leaves it plain.
 `"cut_on": "accents"` moves each cut onto the music's nearest strong onset within a third of a beat (your sports
 reels cut on the hits more than on the grid).
+`"cut_on": "seconds"` keeps every cut where the slots' `length_s` put it, music or not (a plan shaped on a reference
+video, plan/reference.py: the cuts are the reference's, and so is the sound). Such a map names its `reference`
+({file, work}) and a slot the reference shot(s) it is shaped on (`like`): the fill then also compares pictures.
 `"order": "shoot"` leans the cut on the order of the day: a slot early in the piece prefers takes from early in the
 shoot (by file name), worth fill.ORDER_W across the whole shoot; slots that name their `takes` are left alone.
 `"second_look": false` switches off the automatic second look (plan/autolook.py).
@@ -68,10 +71,10 @@ FX = ("flash", "static", "whip", "spin", "blur", "push-in", "pull-out", "punch",
 # every key the cut reads or a writer leaves for the reader; anything else is reported by `warnings`, not ignored in silence
 MAP_KEYS = {"version", "name", "key", "bucket", "type", "length_s", "fps", "width", "height", "beat_lead_s", "music", "avoid", "skip", "sfx_skip",
             "sfx_note", "flash", "beds", "stabilize", "voice_lufs", "under_db", "keeper_w", "repeat_take", "classes", "effects", "cut_on",
-            "second_look", "order", "notes", "drafted_from", "brief", "sections"}
+            "second_look", "order", "notes", "drafted_from", "brief", "reference", "sections"}
 SECTION_KEYS = {"name", "match", "slots", "note", "over", "region"}
 SLOT_KEYS = {"id", "beats", "length_s", "show", "shows", "scale", "face", "hands", "camera", "speed", "role", "takes", "ramp", "flicker", "stack",
-             "black", "byte", "stabilize", "clicks", "effects", "class", "note"}
+             "black", "byte", "stabilize", "clicks", "effects", "class", "note", "like"}
 
 
 def slots(m: dict) -> list[dict]:
@@ -170,7 +173,7 @@ def timing(m: dict, beats_rel: list[float] | None, fps: float, accents_rel: list
     total = float(m["length_s"])
     ss = slots(m)
     cuts: list[float] = []
-    if beats_rel:
+    if beats_rel and m.get("cut_on") != "seconds":
         grid = sorted(b for b in beats_rel if b >= -0.05)
         period = float(np.median(np.diff(grid))) if len(grid) > 1 else 0.5
 

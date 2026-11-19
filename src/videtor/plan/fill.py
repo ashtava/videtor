@@ -52,6 +52,7 @@ ORDER_W = 1.2  # `"order": "shoot"`: what a take from the other end of the shoot
 REPEAT_W, ALIKE_W, LIGHT_W = 1.5, 0.5, 0.8
 ALIKE, LIGHT_JUMP = 0.87, 70.0  # as plan/evaluate.py counts them
 NEIGHBOUR_K = 10  # how many of a slot's best takes are tried in place of one that sits badly with its neighbours
+LIKE_W = 0.8  # a slot shaped on a reference shot (plan/reference.py): the share of its match that is the picture's, the rest its words'
 FLICKER_MARGIN = 1.5  # a flicker's sub-shots are takes within this many sd of its pick; fewer sub-shots when there are fewer
 
 
@@ -584,8 +585,11 @@ def _settle_neighbours(chosen: Assignment, takes: list[Take], slots: list[dict],
 
 
 def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_texts, habits: dict | None = None, taste: dict | None = None,
-         frames_dir: Path | None = None, keeper: dict[str, np.ndarray] | None = None) -> dict:
+         frames_dir: Path | None = None, keeper: dict[str, np.ndarray] | None = None, like: dict[str, np.ndarray] | None = None) -> dict:
     """picks.json for shot map `m`: every slot's pick and runners-up, each with in/out, speed, framing, reasons.
+
+    `like` (slot id -> CLIP pictures of a reference shot, plan/reference.likes): such a slot is matched on how much
+    the footage looks like them (LIKE_W) besides what its words ask for.
 
     `taste` ({"weights": {term: w}} from kb/taste.json) adds what your fixes taught on top of the hand weights.
     `frames_dir` holds the footage map's stills, which a match-cut section compares at its cuts.
@@ -610,6 +614,9 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
         qs = sm.queries(slot)
         q_emb = q_embs[j] = embed_texts(qs)
         match = pool.similarity(q_emb)
+        if like and slot["id"] in like:
+            seen = pool.similarity(np.asarray(like[slot["id"]], np.float32))
+            match = [(1 - LIKE_W) * a + LIKE_W * b for a, b in zip(match, seen)]
         per_query = [pool.similarity(q_emb[k : k + 1]) for k in range(len(qs))] if len(qs) > 1 else None
         length = times[j][1]
         allowed = slot.get("takes")

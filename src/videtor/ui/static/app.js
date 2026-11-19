@@ -312,14 +312,14 @@ $("prep-out").addEventListener("input", updateDest);
 $("prep-folder").addEventListener("change", () => afterPick("prep-folder"));
 $("prep-run").onclick = async () => {
   const body = { folder: $("prep-folder").value.trim(), out: $("prep-out").value.trim(), name: $("prep-name").value.trim(), dense: $("prep-dense").checked, workers: $("prep-workers").value || null,
-    frame: $("prep-frame").value };
+    frame: $("prep-frame").value, reference: $("prep-ref").value.trim() };
   if (!body.folder) { $("prep-msg").innerHTML = `<span class="bad">Choose the footage folder first.</span>`; return; }
   $("prep-run").disabled = true;
   const r = await api("/api/prep", body);
   $("prep-run").disabled = false;
   if (r.error) { $("prep-msg").innerHTML = `<span class="bad">${esc(r.error)}</span>`; return; }
   $("prep-msg").textContent = "";
-  $("prep-folder").value = ""; $("prep-name").value = ""; $("prep-folder-info").textContent = FOLDER_HINT; updateDest();
+  $("prep-folder").value = ""; $("prep-name").value = ""; $("prep-ref").value = ""; $("prep-folder-info").textContent = FOLDER_HINT; updateDest();
   currentDir = r.project.dir;
   store.set("videtor.project", currentDir);
   if (r.job) runPanel("prep", r.job.id, PANELS.prep(r.project.dir));
@@ -418,8 +418,9 @@ function claudeRequest(p) {
   const frame = says.frame ? ` The cut is ${says.frame}: write the plan for ${says.size[0]}x${says.size[1]}.` : "";
   const music = !mu ? "" : mu.none ? " No music: give every shot a length in seconds." :
     ` Use my music: ${mu.path} (${mu.start === "at" ? `starting at ${mu.in_s} s` : mu.start === "beginning" ? "from its beginning" : "choose the in-point so its lift lands on the reveal"}); count the plan on its beats.`;
+  const ref = mine.reference ? ` I gave a reference video to cut like: run .venv/bin/videtor reference "${p.dir}" (it writes a first plan and reference.md from that video), then revise that plan against the brief instead of starting from nothing.` : "";
   return `/cut-from-brief The footage of this project is already read. Project folder: ${p.dir} (shot-map key "${p.key}"). ` +
-    `The brief is in ${p.dir}/brief.md.${frame}${music} Read the overview there, write ${p.dir}/shotmap.json from the brief (name the shot types it draws on in "classes"), ` +
+    `The brief is in ${p.dir}/brief.md.${frame}${music}${ref} Read the overview there, write ${p.dir}/shotmap.json from the brief (name the shot types it draws on in "classes"), ` +
     `check it with the validator, and stop before cutting: I cut from the Videtor app.`;
 }
 /* ---- shape and music: what the user asks for; the cut follows it whatever the plan says ---- */
@@ -428,7 +429,14 @@ function renderRequirements(p) {
   $("req-card").hidden = p.kind !== "cut";
   $("req-other").hidden = p.kind === "cut";
   $("req-other").textContent = p.kind === "cut" ? "" : `A ${p.kind} sets its frame and its music in its own plan.`;
+  $("ref-block").hidden = p.kind !== "cut";
   if (p.kind !== "cut") { $("cut-as").innerHTML = ""; $("music-chosen").innerHTML = ""; return; }
+  if (document.activeElement !== $("ref-video")) $("ref-video").value = mine.reference || "";
+  const fromRef = plan && plan.reference, hasPlan = !!(p.shotmap || "").trim();
+  $("ref-note").textContent = fromRef ? `The plan below was written from ${plan.reference}: as many shots, each as long as the video's. With your own track above, the shots are counted on its beat.`
+    : hasPlan ? "Writing the plan from a video replaces the plan below (the one there now is kept aside in the project's work folder)."
+    : "Videtor copies the video's rhythm from your footage: as many shots, each as long, the same kind of shot in each place. What it cannot copy: words on screen, the voice, the grade.";
+  $("ref-run").textContent = fromRef ? "Write the plan again" : "Write the plan from this video";
   const sel = $("req-frame");
   sel.innerHTML = (r.frames || []).map(([k, label]) => `<option value="${esc(k)}">${esc(label)}</option>`).join("");
   sel.value = mine.frame || (plan && plan.frame) || "vertical";
@@ -465,6 +473,15 @@ async function saveRequirements(body, btn, errEl) {
   return true;
 }
 $("req-frame").onchange = () => saveRequirements({ frame: $("req-frame").value });
+$("ref-run").onclick = async () => {
+  if (!current) return;
+  const dir = current.dir, video = $("ref-video").value.trim();
+  if (!video) { refuseRun("reference", "Choose the video to cut like first: a finished video, or a link to one.", dir); return; }
+  const r = await api("/api/reference", { project: dir, video });
+  if (r.error) { refuseRun("reference", r.error, dir); return; }
+  runPanel("reference", r.job.id, { project: dir, what: "Watching the video and writing the plan (about a minute)", failed: "The plan was not written.",
+    done: "The plan is written from the video: check the shot list below, then go to Cut.", onEnd: () => loadProject() });
+};
 document.querySelectorAll('input[name="req-music"]').forEach((x) => x.addEventListener("change", () => {
   $("req-mine").hidden = x.value !== "mine";
   if (x.value === "none") saveRequirements({ music: { none: true } });

@@ -45,7 +45,7 @@ class ProjectTests(unittest.TestCase):
             seen.append((p.stage, p.stage.step, project.status(p)["text"], project.steps(p)[1]["text"]))
         self.assertEqual(seen, [
             (Stage.FOOTAGE, "footage", "Footage not read", "The footage has not been read yet."),
-            (Stage.BRIEF, "brief", "Needs the brief", "Paste the client's brief."),
+            (Stage.BRIEF, "brief", "Needs the brief", "Paste the client's brief, or choose a reference video to cut like."),
             (Stage.PLAN, "plan", "Needs the plan", "Get the plan written from the brief: copy the request on Brief & plan into Claude Code."),
             (Stage.PROBLEMS, "plan", "The plan has problems", "Fix the plan: 2 problem(s), listed under Edit the plan."),
             (Stage.READY, "cut", "Ready to cut", "Cut it."),

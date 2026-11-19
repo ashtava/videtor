@@ -229,6 +229,25 @@ uv run videtor write-xml out/<name>/picks.json          # the Premiere XML from 
 - Effects, sound effects, steadying and stacked layers are in the XML, not in the timeline's picture.
 - Notes on a shot or on the whole cut go to `review.json`, for whoever revises the plan.
 
+### A plan from a reference video
+
+Give a project a finished video you want its cut to be like (a file, or an Instagram or YouTube link): in the app
+on **New project** ("A video to cut like") or on **Brief & plan** ("Write the plan from this video"), or:
+
+```sh
+uv run videtor reference out/<name> ~/Movies/their-reel.mp4    # writes out/<name>/shotmap.json and reference.md
+uv run videtor reference out/<name>                            # again, from the reference kept with the project
+uv run videtor cut out/<name>/shotmap.json
+```
+
+- The plan has a shot for every shot of the reference, as long as that shot; a burst of 1-3 frame shots is one flicker.
+- Each shot asks for footage that looks like the reference's shot (pictures are compared), and says in words what
+  kind of shot that is, so the plan reads and edits like any other.
+- Music: with none chosen, the reference's own sound plays and the cuts fall where the reference has them. With your
+  own track (Brief & plan), the shots are counted on its beat, to the half beat. With "no music" the cuts stay.
+- Not copied: words on screen, the voice, the grade, speed ramps; flashes and whips only with `--effects`. Cuts
+  inside one take (jump cuts) are not seen: such a stretch comes out as one long shot.
+
 ### Promos out of a finished video (a link or a file)
 
 `videtor promos` takes one finished video, as a YouTube or Instagram link (fetched to this Mac once) or as a file,

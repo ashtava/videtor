@@ -510,6 +510,22 @@ def fx_test(
     console.print("tell Videtor which ones look wrong; three black-and-white variants are at the end (only one may work)")
 
 
+@app.command("reference")
+def reference_cmd(
+    project: Path = typer.Argument(..., help="The project: its folder, or its name under out/."),
+    video: str = typer.Argument(None, help="The finished video to shape the cut on: a file or a link (YouTube, Instagram). Kept as the project's reference; without it the kept one is used."),
+    bucket: str = typer.Option(None, "--bucket", help="The kind of work (event, bts, sports-promo, ...): the cut then leans on what your edits of it keep."),
+    effects: bool = typer.Option(False, "--effects", help="Also put the flashes, whips and black and white seen in the reference on the same cuts."),
+    key: str = typer.Option(None, "--key", help="The footage key (default <name>::footage after videtor prep)."),
+    browser: str = typer.Option(None, "--cookies-from", help="For a link that asks for a login: the browser you are signed in with."),
+    kb_dir: Path = KB_OPTION,
+) -> None:
+    """Write a project's plan from a reference video: the same cuts, the same pace, the same kind of shot in each
+    place, from your footage. Then videtor cut. Your music and frame (the app's Brief & plan) still decide."""
+    d = project if project.is_dir() or project.parent != Path(".") else Path("out") / project
+    _step(pipeline.reference, d, video, key=key, bucket=bucket, effects=effects, paths=pipeline.Paths(kb=kb_dir), ev=_events(), browser=browser)
+
+
 @app.command("draft")
 def draft_cmd(
     name: str = typer.Argument(..., help="The project name (out/<name>/shotmap.json)."),

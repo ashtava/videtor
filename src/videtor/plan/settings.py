@@ -7,6 +7,7 @@ app, and at cut time they win over what the plan says (pipeline.cut calls `apply
      "music": {"path": "<track>", "start": "auto" | "beginning" | "at", "in_s": 12.5}     the user's own track
             | {"none": true}                                                              no music
             | absent                                                                      the plan's music stands
+     "reference": "<a finished video, or a link to one>"                                  the cut is shaped on it (plan/reference.py)
     }
 
 A plan is counted in beats of its music, so another track keeps the plan's rhythm (every slot its beats, cuts on
@@ -47,6 +48,8 @@ def validate(s: dict) -> list[str]:
     out = []
     if s.get("frame") is not None and s["frame"] not in FRAMES:
         out.append(f"frame must be one of {', '.join(FRAMES)}")
+    if s.get("reference") is not None and not isinstance(s["reference"], str):
+        out.append("reference is a video file's path, or a link to a video")
     mu = s.get("music")
     if mu is not None:
         if not isinstance(mu, dict) or not (mu.get("none") or mu.get("path")):
@@ -61,7 +64,7 @@ def validate(s: dict) -> list[str]:
 
 def save(project_dir: Path, s: dict) -> dict:
     """Keep the user's choices (only the keys this file knows); raises ValueError naming what is wrong."""
-    s = {k: v for k, v in s.items() if k in ("frame", "music") and v is not None}
+    s = {k: v for k, v in s.items() if k in ("frame", "music", "reference") and v is not None and (k != "reference" or str(v).strip())}
     problems = validate(s)
     if problems:
         raise ValueError("; ".join(problems))
@@ -144,8 +147,16 @@ def with_track(m: dict, mu: dict, beats_dir: Path = Path("cache/beats")) -> tupl
     old_one = old if isinstance(old, dict) else None
     same = bool(old_one and old_one.get("path") and Path(old_one["path"]).expanduser() == Path(path))
     slots = _slots(m)
-    counted = bool(slots) and all(s.get("beats") for s in slots if not s.get("length_s"))
     period = _grid(data, 0.0)[1]
+    recount = m.get("cut_on") == "seconds" and not same and bool(slots) and all(s.get("length_s") for s in slots)
+    if recount:  # a plan that cuts on the seconds of a reference video, now on the user's own track: counted in its beats
+        from videtor.plan import reference
+
+        for s, b in zip(slots, reference.on_beats([float(s["length_s"]) for s in slots], period)):
+            s["beats"] = b
+        m.pop("cut_on")
+        m["beat_lead_s"] = 0.04
+    counted = bool(slots) and all(s.get("beats") for s in slots if recount or not s.get("length_s"))
     beats_total = sum(float(s["beats"]) if s.get("beats") else float(s.get("length_s") or 0) / period for s in slots)
     before_reveal = 0.0
     for s in slots:
@@ -174,7 +185,7 @@ def with_track(m: dict, mu: dict, beats_dir: Path = Path("cache/beats")) -> tupl
         grid, period_in = _grid(data, in_s)
         tail = 0.0  # what the plan held past its last beat on its own track, kept
         old_data = _track((old_one or {}).get("path"), beats_dir, must_exist=False)
-        if old_data is not None:
+        if old_data is not None and not recount:
             g0, p0 = _grid(old_data, float(old_one.get("in_s") or 0.0))
             tail = float(np.clip(old_length - _beat(g0, p0, beats_total), -p0, 4.0))
         m["length_s"] = round(max(0.5, _beat(grid, period_in, beats_total) + tail), 2)
@@ -182,6 +193,8 @@ def with_track(m: dict, mu: dict, beats_dir: Path = Path("cache/beats")) -> tupl
     if isinstance(old, list):
         notes.append("the plan's medley is replaced by your one track")
     line = f"your music: {name} {how} ({in_s:.2f} s)"
+    if recount:
+        line += "; the reference's shots are counted in its beats, to the half beat"
     if not same and old_one and old_one.get("path"):
         line += f"; the plan was counted on {Path(old_one['path']).stem}"
     if abs(float(m["length_s"]) - old_length) >= 0.05:

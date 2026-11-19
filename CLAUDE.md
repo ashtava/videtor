@@ -54,7 +54,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 445 tests, about 60 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 456 tests, about 60 s, no drive needed
 .venv/bin/videtor eval                                           # the past projects re-cut from the cache and measured (about 1 min)
 ```
 
@@ -82,6 +82,14 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   `links`: yt-dlp, yt-dlp-ejs, Deno, curl-cffi); `videtor promos --update` when a link stops working. The choice is by measures
   (sound, picture, where thoughts start and end, YouTube's most-replayed), not by understanding the words: say so, and don't
   promise more. A video's title or link never goes into a tracked file (`out/` only).
+- **A reference video** (2026-11-19): `videtor reference <project> <video or link>`, the New project form and Brief & plan's
+  **Write the plan from this video** write the shot map from a finished reel the user wants the cut to be like (`plan/reference.py`,
+  `pipeline.reference`): a slot per shot of the reference, as long as that shot, asking for footage that looks like it (the slot's
+  `like`; the fill compares pictures, `fill.LIKE_W`). The plan cuts on the reference's seconds with its sound (`"cut_on": "seconds"`);
+  the user's own track counts the shots on its beats instead. The kept reference is `settings.json`'s `reference`; its reading is in
+  `out/<name>/work/reference/`, in words in `reference.md`. Not copied: words on screen, voice, grade, effects (said in the plan's
+  `notes`; `--effects` copies flashes and whips), and cuts inside one take (jump cuts are not seen). A reference's file name or link
+  stays in `out/`.
 - **Styles from renders** (2026-11-11): `videtor kb renders <folder> --bucket <b>` learns a bucket from finished
   reels alone and `videtor kb train <b>` a cutting policy from them (`plan/gym.py`); `videtor draft` drafts a shot
   map from it; a shot map's `"effects": "<b>"` adds the learnt effects (`plan/fx.py`) and `"cut_on": "accents"`

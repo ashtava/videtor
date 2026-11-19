@@ -28,6 +28,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import threading
 import time
 from dataclasses import dataclass
@@ -314,12 +315,13 @@ def place_sfx(picks: dict, paths: Paths) -> list[dict] | None:
 
 
 def cut_picks(m: dict, takes: list, paths: Paths = Paths(), ev: Events | None = None, sfx: bool = True, embed_texts=None,
-              taste=True, second_look: bool = True, keeper_dir: Path | None = None) -> tuple[dict, dict | None]:
+              taste=True, second_look: bool = True, keeper_dir: Path | None = None, like: dict | None = None) -> tuple[dict, dict | None]:
     """The picks for shot map `m` from `takes`, with everything a cut adds to them (levels, moves, effects, music,
     SFX), and the music for the build. Nothing is written: the evaluation calls this as the cut does.
     `taste`: True loads the learnt corrections for the map's bucket, a dict uses those, a function is asked for
     the bucket's (a candidate being tried), None or False uses none. `keeper_dir`: where the keeper models are
-    read from (a candidate's folder). `second_look`: the automatic second look (plan/autolook.py) after the fill."""
+    read from (a candidate's folder). `second_look`: the automatic second look (plan/autolook.py) after the fill.
+    `like`: the pictures of the reference shots the slots are shaped on (plan/reference.likes)."""
     from videtor.plan import benchmark, fill, shotmap
 
     ev = ev or Events()
@@ -353,7 +355,7 @@ def cut_picks(m: dict, takes: list, paths: Paths = Paths(), ev: Events | None = 
             ev.info(f"keeper: what your {m['bucket']} edits keep (cv AUC {model['cv_auc']}, from {len(model['edits'])} edit(s))")
         else:
             ev.info(f"keeper: no model for bucket {m['bucket']!r} yet (videtor kb keeper {m['bucket']})")
-    picks = fill.fill(m, takes, times, embed_texts, habits, taste=learnt, frames_dir=paths.footmap / "frames", keeper=keep)
+    picks = fill.fill(m, takes, times, embed_texts, habits, taste=learnt, frames_dir=paths.footmap / "frames", keeper=keep, like=like)
     carry(m, picks)
     if AUTOLOOK and second_look and m.get("second_look", True) is not False:
         from videtor.plan import autolook
@@ -691,7 +693,14 @@ def cut(shotmap_path: Path, out: Path | None = None, mount: Path | None = None, 
     if not takes:
         raise PipelineError(f"No footage map for {m['key']!r} ({n} takes in the pool). Connect the drive and cut again.")
     ev.stage("fill", f"choosing a shot for each of {len(shotmap.slots(m))} slots from {len(takes)} takes", "Choosing the shots")
-    picks, music = cut_picks(m, takes, paths, ev, sfx=sfx, embed_texts=embed_texts)
+    like = None
+    if m.get("reference"):
+        from videtor.plan import reference as reference_mod
+
+        like = reference_mod.likes(m, shotmap_path.parent)
+        ev.info(f"shaped on the reference video: {len(like)} of the slots also ask for footage that looks like its shots" if like else
+                "the reference's reading is not in this folder: the slots are filled from their words alone")
+    picks, music = cut_picks(m, takes, paths, ev, sfx=sfx, embed_texts=embed_texts, like=like)
     (out / "work").mkdir(parents=True, exist_ok=True)
     _write(out / "work" / "picks.cut.json", json.dumps(picks) + "\n")  # the cut as made: what the user's changes are measured against
     decisions = load_decisions(out) if not fresh else {"swaps": {}}
@@ -1529,6 +1538,95 @@ def promos(source: str, name: str | None = None, count: int = 3, length: float =
     return {"dir": folder, "home": home, "doc": doc, "video": video}
 
 
+# --- a plan shaped on a reference video (plan/reference.py) -----------------------------------------------------
+
+
+def reference(project_dir: Path, video: str | None = None, key: str | None = None, bucket: str | None = None, effects: bool = False,
+              paths: Paths = Paths(), ev: Events | None = None, fetch=None, read=None, browser: str | None = None) -> dict:
+    """Write the project's plan from its reference video: a finished reel (a file, or a link fetched to the project's
+    work folder) whose cuts, pace and kinds of shot the plan copies. `video` is kept as the project's reference
+    (settings.json); without it the one kept is used. A plan already there is kept aside in work/. Writes
+    shotmap.json, reference.md and the reference's sound; the frame is the user's (else the reference's own shape)."""
+    from videtor.analyze import link as link_mod
+    from videtor.plan import reference as ref_mod, settings as settings_mod, shotmap as shotmap_mod
+
+    ev = ev or Events()
+    d = Path(project_dir)
+    mine = settings_mod.load(d)
+    src = str(video or mine.get("reference") or "").strip()
+    if not src:
+        raise PipelineError("No reference video for this project yet: choose a finished video (or paste a link) to shape the cut on.")
+    work = d / ref_mod.WORK
+    if link_mod.is_link(src):
+        known = _known_source(work)
+        path = work / "source.mp4"
+        if not (path.exists() and known.get("url") and link_mod.key(known["url"]) == link_mod.key(src)):
+            ev.stage("fetch", f"fetching the reference video: {src}", "Fetching the reference video")
+            try:
+                path = Path((fetch or link_mod.fetch)(src, work, progress=ev.progress, log=ev.info, browser=browser)["path"])
+            except link_mod.LinkError as exc:
+                raise PipelineError(str(exc)) from exc
+    else:
+        path = Path(src).expanduser()
+        if not path.is_file():
+            raise PipelineError(f"The reference video is not there: {path}")
+    try:
+        ref = (read or ref_mod.read)(path, work, ev=ev)
+    except (ValueError, FileNotFoundError, subprocess.CalledProcessError) as exc:
+        raise PipelineError(f"The reference video could not be read: {exc}") from exc
+    d.mkdir(parents=True, exist_ok=True)
+    if video:
+        settings_mod.save(d, {**mine, "reference": src})
+    plan_p = d / "shotmap.json"
+    old = None
+    if plan_p.exists():
+        try:
+            old = json.loads(plan_p.read_text())
+        except ValueError:
+            old = {}
+        if not old.get("reference"):  # a plan written by hand or by Claude: kept, so the reference can be tried without losing it
+            _write(d / "work" / "shotmap.before-reference.json", plan_p.read_text())
+            ev.info(f"the plan that was there is kept: {d / 'work' / 'shotmap.before-reference.json'}")
+    frame = mine.get("frame")
+    if frame not in settings_mod.FRAMES:
+        w, h = int(ref["width"]), int(ref["height"])
+        frame = "vertical" if h > w * 1.5 else "portrait" if h > w * 1.1 else "square" if h > w * 0.9 else "horizontal"
+    width, height = settings_mod.FRAMES[frame][:2]
+    name = (old or {}).get("name") or slug(d.name)
+    key = key or (old or {}).get("key") or f"{name}::footage"
+    snd = ref_mod.sound(path, d)
+    m = ref_mod.plan(ref, name, key, fps=float((old or {}).get("fps") or 25.0), width=width, height=height, sound=snd, bucket=bucket or (old or {}).get("bucket"),
+                     effects=effects)
+    problems = shotmap_mod.validate(m)
+    if problems:
+        raise PipelineError("The plan from the reference has problems: " + "; ".join(problems))
+    _write(plan_p, json.dumps(m, indent=1, ensure_ascii=False) + "\n")
+    _write(d / "reference.md", ref_mod.markdown(ref, m))
+    n = len(shotmap_mod.slots(m))
+    ev.wrote("plan", plan_p, f"plan from the reference: {plan_p} ({n} shots, {m['length_s']:.1f} s; {ref_mod.describe(ref)})")
+    for line in m["notes"][1:]:
+        ev.info(f"  {line}")
+    how = settings_mod.describe(mine).get("music")
+    ev.info(f"  music: {how} (your choice): the shots will be counted on its beat" if how and how != "no music" else
+            "  no music, as you chose: the cuts stay where the reference has them" if how else
+            "  music: the reference's own sound, cuts where the reference cuts; choose your own track on Brief & plan to change it" if snd else
+            "  the reference has no sound: the cuts stay where it has them")
+    return {"plan": plan_p, "slots": n, "length_s": m["length_s"], "reference": str(path), "shots": len(ref["shots"])}
+
+
+def _plan_from_reference(out: Path, key: str, paths: Paths, ev: Events) -> None:
+    """After the footage is read: the plan from the project's reference video, when it has one and no plan yet. A
+    reference that cannot be read is said, and the footage's reading stands."""
+    from videtor.plan import settings as settings_mod
+
+    if not settings_mod.load(out).get("reference") or (out / "shotmap.json").exists():
+        return
+    try:
+        reference(out, key=key, paths=paths, ev=ev)
+    except PipelineError as exc:
+        ev.warn(f"the plan was not written from the reference video: {exc}")
+
+
 def mount_of(folder: Path) -> Path:
     """The drive a folder sits on (/Volumes/<name>), or its parent folder on the internal disk."""
     parts = folder.parts
@@ -1612,6 +1710,7 @@ def prepare(folder: Path, name: str, workers: int | None = None, sparse: bool = 
         ev.wrote("overview", md, f"      overview: {md}  ·  {len(sheets)} contact sheet(s)" + (f"  ·  inventory: {inv}" if inv else ""))
         ev.info(f"Shot-map key: {key!r}. Next: videtor draft {name} (a first plan from what the shoot holds) or write {out / 'shotmap.json'} from "
                 f"the brief, then videtor cut it with {mount} connected: the cut decodes in full only the takes the map can use.")
+        _plan_from_reference(out, key, paths, ev)
         return {"key": key, "index": index_path, "overview": md, "takes": len(pool)}
     ev.stage("map", "[4/5] footage map: 2 samples a second of every take", "Mapping every second (slow)")
     result = footmap.build_pool(index, key, workers=workers, cache_dir=paths.footmap, log=ev.line("      "), progress=lambda k, n: ev.progress(k, n))
@@ -1622,6 +1721,7 @@ def prepare(folder: Path, name: str, workers: int | None = None, sparse: bool = 
     md, sheets = overview.write(takes, fill.Pool(takes), paths.footmap / "frames", out, name)
     ev.wrote("overview", md, f"      overview: {md}  ·  {len(sheets)} contact sheet(s)")
     ev.info(f"Shot-map key: {key!r}. Next: write {out / 'shotmap.json'} from the brief, then videtor cut it.")
+    _plan_from_reference(out, key, paths, ev)
     return {"key": key, "index": index_path, "overview": md, "takes": len(pool)}
 
 

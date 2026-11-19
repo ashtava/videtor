@@ -445,11 +445,31 @@ class OneWriterTests(unittest.TestCase):
     def test_the_project_says_its_stage_and_what_may_be_done(self):
         p = self.project()
         self.assertEqual(p["stage"], "cut")
-        self.assertEqual(set(p["can"]), {"prep", "cut", "edit", "look", "write_xml", "readback"})
+        self.assertEqual(set(p["can"]), {"prep", "cut", "edit", "look", "write_xml", "readback", "reference"})
         self.assertEqual(p["can"]["cut"], {"ok": True, "why": ""})
         self.assertEqual(p["can"]["edit"], {"ok": False, "why": "There is no cut yet: cut it first."})
         self.assertEqual(self.post("/api/write-xml", {"project": str(self.d)})[1], {"error": "There is no cut yet: cut it first."})  # the endpoint says the same
         self.assertTrue(self.app.state_file.with_name("ui-jobs.json").exists())  # the running jobs are noted beside the app's state
+
+    def test_a_plan_from_a_reference_video_is_a_job_that_writes_the_project(self):
+        self.assertEqual(self.post("/api/reference", {"project": str(self.d)})[1], {"error": "Choose the video to cut like first: a finished video, or a link to one."})
+        self.assertIn("is not there", self.post("/api/reference", {"project": str(self.d), "video": str(self.tmp / "no.mp4")})[1]["error"])
+        (self.tmp / "notes.txt").write_text("x")
+        self.assertIn("Choose a video file", self.post("/api/reference", {"project": str(self.d), "video": str(self.tmp / "notes.txt")})[1]["error"])
+        video = self.tmp / "their reel.mp4"
+        video.write_bytes(b"x")
+        _, r = self.post("/api/reference", {"project": str(self.d), "video": str(video)})
+        job = r["job"]
+        self.assertEqual((job["kind"], job["writes"], job["args"][:3]), ("plan", True, ["reference", str(self.d), str(video)]))
+        self.assertEqual(self.project()["status"], {"text": "Writing the plan", "tone": "busy"})
+        busy = f"“{job['title']}” is still working on this project: wait for it to finish, or stop it, first."
+        self.assertEqual(self.post("/api/cut", {"project": str(self.d)})[1], {"error": busy})  # no cut from a plan being rewritten
+        # the reference given with a new project is kept with it; forgetting it is a setting
+        _, r = self.post("/api/prep", {"folder": str(self.tmp), "name": "two", "frame": "square", "reference": str(video)})
+        two = Path(r["project"]["dir"])
+        self.assertEqual(json.loads((two / "settings.json").read_text()), {"frame": "square", "reference": str(video)})
+        self.assertEqual(self.post("/api/settings", {"project": str(two), "reference": ""})[1]["requirements"]["mine"], {"frame": "square"})
+        self.assertIn("is not there", self.post("/api/prep", {"folder": str(self.tmp), "name": "three", "reference": "/nowhere/x.mp4"})[1]["error"])
 
     def test_a_second_cut_and_an_edit_are_refused_in_words_while_a_cut_runs(self):
         _, r = self.post("/api/cut", {"project": str(self.d)})
