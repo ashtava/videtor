@@ -4,7 +4,9 @@ The policy knows how the user's reels of a bucket are paced (the opening hold, s
 bursts, the closing hold), what they show where (the opener, each third, the closer) and their effects; the draft
 turns that into sections and slots on the music's beats, with `show` phrasings per kind of shot (SHOW). It is a
 starting point: Claude (or the user) reads it against the brief and the footage overview, and edits it before
-`videtor cut`. Text cards, graphics and the logo end card are not drafted: `notes` lists them.
+`videtor cut`. Text cards, graphics and the logo end card are not drafted: `notes` lists them. The pace is the
+policy's, with one rule over it: after six seconds of quick shots the next one is a hold of 1.5-2.6 s (plan/shotmap.py's
+HOLD_S and RUN_MAX_S: a cut is runs and holds, not one length throughout).
 
 With the shoot's inventory (plan/inventory.py: what the footage holds, by kind of shot) the draft asks only for what
 exists: the reels' studio portraits and drone shots are left out of a practice day that has neither, and what the
@@ -122,13 +124,23 @@ def draft(name: str, bucket: str, length_s: float, key: str, music: dict | None 
     lengths.append((first, 0))
     t += first * period
     close = max(1.0, round(p["close_s"] / period * 2) / 2)
+    from videtor.plan import shotmap as sm
+
+    run_s = 0.0 if first * period >= sm.HOLD_S else first * period  # quick shots since the last hold
     while t < length_s - close * period - period / 2:
         L = p["held_s"] * p["pace"][min(4, int(t / length_s * 5))] * math.exp(rng.normal(0, min(p["spread"], 0.5)))
         if rng.random() < p["flicker_per_min"] * L / 60:
             b = max(1.0, round(p["flicker_shots"] * 2 / fps / period * 2) / 2)
             lengths.append((b, 2))
+        elif run_s > sm.RUN_MAX_S * 0.75 and L < sm.HOLD_S and t + 2.6 + period < length_s - close * period:
+            # a run of quick shots has gone on: a hold, as an editor gives the eye a rest
+            lengths.append((math.ceil(rng.uniform(sm.HOLD_S, 2.6) / period * 2) / 2, 0))
         else:
             lengths.append((max(0.5, round(L / period * 2) / 2), 0))
+        room = max(0.5, round((length_s - close * period - t) / period * 2) / 2)  # never past the closing shot's start
+        if lengths[-1][0] > room:
+            lengths[-1] = (room, lengths[-1][1])
+        run_s = 0.0 if lengths[-1][0] * period >= sm.HOLD_S and not lengths[-1][1] else run_s + lengths[-1][0] * period
         t += lengths[-1][0] * period
     lengths.append((max(1.0, round(beats_total - sum(b for b, _ in lengths))), 0))
     n = len(lengths)

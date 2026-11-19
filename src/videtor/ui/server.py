@@ -894,8 +894,10 @@ class App:
             classes = json.loads((d / "classes.json").read_text())
             out["classes"] = dict(Counter(c["class"] for c in classes.values()))
         proj = self._read(p)
+        out["advice"] = []
         if out["shotmap"]:
             out["errors"] = list(proj.errors)
+            out["advice"] = self._advice(out["shotmap"]) if not proj.errors else []
         picks_p = d / "picks.json"
         if picks_p.exists():
             out["picks"] = self._picks_view(json.loads(picks_p.read_text()))
@@ -919,6 +921,22 @@ class App:
         out["stage"] = proj.stage.step
         out["can"] = project_mod.can_all(proj, live, out["cut_needs"], out["feedback"]["final"])
         return out
+
+    def _advice(self, shotmap_text: str) -> list[str]:
+        """What is worth a second look in the plan's rhythm and story (plan/shotmap.advice), on the beat of its music
+        when that track has been read."""
+        from videtor.plan import settings, shotmap as shotmap_mod
+
+        try:
+            m = json.loads(shotmap_text)
+            mu = m.get("music") if isinstance(m.get("music"), dict) else None
+            period = 0.5
+            if mu and mu.get("path") and settings.analysed(mu["path"], self.root / "cache" / "beats"):
+                data = settings._track(mu["path"], self.root / "cache" / "beats", must_exist=False)
+                period = settings._grid(data, float(mu.get("in_s") or 0.0))[1] if data else 0.5
+            return shotmap_mod.advice(m, period=period)
+        except (ValueError, KeyError, TypeError, OSError):
+            return []
 
     @staticmethod
     def _finishing(d: Path) -> list[str]:

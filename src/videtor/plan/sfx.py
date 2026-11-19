@@ -422,20 +422,24 @@ def _shutters(kb, key, slots, footmap_dir, reveal, cap, total) -> list[dict]:
 
 
 CLICK_GAP_S = 0.11  # your clicks in a burst sit 0.12-0.2 s apart (Diwali card flicker, photo stack)
+CLICK_MAX = 3  # clicks a burst (one flicker, one stack): its first cut and the two spread furthest through it
+BURST_GAP_S = 2.0  # a burst that starts sooner than this after the last click of another stays silent: clicks are an accent, not a bed
 
 
 def _clicks(kb, key, slots, total) -> list[dict]:
-    """A click on the cuts of every flicker (its first cut and its sub-cuts, at least CLICK_GAP_S apart) and on every
-    layer of a stack popping in, from your own most used click."""
+    """Clicks on a flicker's cuts and on a stack's layers popping in, from your own most used click: at most CLICK_MAX
+    a burst (its first cut, then the ones spread furthest through it, at least CLICK_GAP_S apart), and none on a burst
+    that starts within BURST_GAP_S of another's last click (a flicker next to a stack was eight clicks in two seconds)."""
     cands = [c for kind in ("other", "shutter") for c in choices(kb, kind, key) if "click" in c["file"].lower()]
     if not cands:
         return []
     s = max(cands, key=lambda c: (c.get("uses", 1), -len(c["file"])))
-    moments = []
+    bursts = []
     for sl in slots:
         p, t = sl.get("pick") or {}, float(sl["start_s"])
         if sl.get("clicks") is False:
             continue
+        moments = []
         if p.get("pieces"):
             moments.append((t, sl["id"], "the flicker's first cut"))
             for piece in p["pieces"][:-1]:
@@ -443,15 +447,25 @@ def _clicks(kb, key, slots, total) -> list[dict]:
                 moments.append((t, sl["id"], "a sub-cut of the flicker"))
         for layer in sl.get("layers") or []:
             moments.append((float(sl["start_s"]) + float(layer["offset_s"]), sl["id"], "a layer of the stack popping in"))
-    out, last = [], -1.0
-    for t, sid, what in sorted(moments):
-        if t - last < CLICK_GAP_S:
+        if moments:
+            bursts.append(sorted(moments))
+    out, last = [], -1e9
+    for moments in sorted(bursts):
+        if moments[0][0] - last < BURST_GAP_S:
             continue
-        why = f"click on {what} ({sid}) at {t:.2f} s, starting on the cut as yours do; {_whose(s)} at {float(s.get('level_db') or 0):+.1f} dB"
-        c = _clip("click", s, t, float(s["in_s"]), float(s["out_s"]), total, why, t, t)
-        if c:
-            out.append(c)
-            last = t
+        spaced = []
+        for mo in moments:
+            if not spaced or mo[0] - spaced[-1][0] >= CLICK_GAP_S:
+                spaced.append(mo)
+        if len(spaced) > CLICK_MAX:  # the first, the last and what lies evenly between
+            idx = sorted({round(i * (len(spaced) - 1) / (CLICK_MAX - 1)) for i in range(CLICK_MAX)})
+            spaced = [spaced[i] for i in idx]
+        for t, sid, what in spaced:
+            why = f"click on {what} ({sid}) at {t:.2f} s, starting on the cut as yours do; {_whose(s)} at {float(s.get('level_db') or 0):+.1f} dB"
+            c = _clip("click", s, t, float(s["in_s"]), float(s["out_s"]), total, why, t, t)
+            if c:
+                out.append(c)
+                last = t
     return out
 
 

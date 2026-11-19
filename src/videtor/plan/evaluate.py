@@ -9,6 +9,11 @@ and the user's own edit of the same footage where there is one). `run` cuts each
   on its own          filled (slots with a shot), match (how well the picks show what their slots ask, in sd over
                       the pool), sharp, repeats (the same take on both sides of a cut), lookalikes (two takes of
                       one setup side by side), light_jumps (day to night inside a section), keeper
+  as a sequence       hold_share (the share of the cut's time in shots of 1.5 s or more) and longest_run (the longest
+                      stretch of quick shots with no hold, seconds): the plan's doing, not the fill's; in_order (of
+                      the cuts inside a section between two takes of one camera, the share that go forward through
+                      the day: about a half when nothing asks for an order). Shown, not guarded: none of them is
+                      "better" by itself (the user's own BTS edit: hold_share 0.45, in_order 0.48)
 
 `compare` sets a run against the numbers kept in `kb/eval/baseline.json`; a guarded measure that got worse by
 more than its tolerance fails the run, which is what lets a new scoring rule or a newly learnt model be tried
@@ -32,7 +37,8 @@ LIGHT_JUMP = 70.0  # a change in mean brightness (0-255) across a cut inside a s
 # (`match` has room: a keeper or a taste trades a little of it for what you keep; a large drop means the picks stopped showing what was asked)
 GUARDS = {"right_take": (+1, 0.03), "right_second": (+1, 0.03), "in_top3": (+1, 0.05), "filled": (+1, 0.0), "match": (+1, 0.4),
           "repeats": (-1, 0.0), "lookalikes": (-1, 1.0), "light_jumps": (-1, 0.0)}
-MEASURES = ("filled", "match", "sharp", "repeats", "lookalikes", "light_jumps", "keeper", "right_take", "right_second", "in_top3")
+MEASURES = ("filled", "match", "sharp", "repeats", "lookalikes", "light_jumps", "keeper", "right_take", "right_second", "in_top3", "in_order", "hold_share",
+            "longest_run")
 
 
 def set_path(kb_dir: Path) -> Path:
@@ -101,6 +107,22 @@ def neighbours(picks: dict, by_fid: dict) -> dict:
             "light_jumps": sum(r["light_jump"] for r in rows), "rows": rows}
 
 
+def sequence(picks: dict) -> dict:
+    """The cut as a sequence: whether it moves forward through the day inside its sections, and how it is paced."""
+    from videtor.plan import fill, shotmap
+    from videtor.plan import slots as slots_mod
+
+    pairs = []
+    plain = [s for s in picks["slots"] if slots_mod.plain(s)]
+    for a, b in zip(plain, plain[1:]):
+        pa, pb = a["pick"], b["pick"]
+        if a.get("section") != b.get("section") or pa["fid"] == pb["fid"] or fill.camera_of(pa["name"]) != fill.camera_of(pb["name"]):
+            continue
+        pairs.append(pa["name"].lower() < pb["name"].lower())
+    p = shotmap.pace([float(s["length_s"]) for s in picks["slots"] if float(s.get("length_s") or 0) > 0])
+    return {"in_order": round(sum(pairs) / len(pairs), 3) if len(pairs) >= 4 else None, "hold_share": p["hold_share"], "longest_run": p["longest_run_s"]}
+
+
 def against_edit(picks: dict, used: dict[str, list[tuple[float, float]]]) -> dict:
     """The picks against the ranges your edit used, by file name (`keeper.used_ranges`, copies folded)."""
     from videtor.plan.keeper import _base
@@ -149,6 +171,7 @@ def measure(picks: dict, takes: list, embed_texts, used: dict | None = None, kee
            "keeper": round(float(np.mean(keep)), 3) if keep else None}
     nb = neighbours(picks, by_fid)
     out.update({k: nb[k] for k in ("repeats", "lookalikes", "light_jumps")})
+    out.update(sequence(picks))
     if used:
         out.update(against_edit(picks, used))
     return out

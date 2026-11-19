@@ -52,6 +52,7 @@ ORDER_W = 1.2  # `"order": "shoot"`: what a take from the other end of the shoot
 REPEAT_W, ALIKE_W, LIGHT_W = 1.5, 0.5, 0.8
 ALIKE, LIGHT_JUMP = 0.87, 70.0  # as plan/evaluate.py counts them
 NEIGHBOUR_K = 10  # how many of a slot's best takes are tried in place of one that sits badly with its neighbours
+SECTION_ORDER_W = 1.5  # `"order": "sections"`: inside a section, what a take from the other end of the shoot costs the slot whose turn in the day it is not (sd)
 LIKE_W = 0.8  # a slot shaped on a reference shot (plan/reference.py): the share of its match that is the picture's, the rest its words'
 FLICKER_MARGIN = 1.5  # a flicker's sub-shots are takes within this many sd of its pick; fewer sub-shots when there are fewer
 
@@ -520,6 +521,27 @@ class Assignment:
         return self.chosen.values()
 
 
+def camera_of(name: str) -> str:
+    """The part of a take's file name that names its camera (C0012.MP4 -> "c", DJI_0034.MP4 -> "dji_"): file names
+    count up through a shoot on one camera, and say nothing across two."""
+    stem = name.rsplit(".", 1)[0].lower()
+    return stem.rstrip("0123456789")
+
+
+def day_position(takes: list[Take]) -> np.ndarray:
+    """Where in the shoot each take was filmed, 0 (first) to 1 (last): its place among the takes of its own camera
+    by file name. Two cameras that filmed the same day both run 0 to 1, so their takes can be set side by side."""
+    by_cam: dict[str, list[int]] = {}
+    for k, t in enumerate(takes):
+        by_cam.setdefault(camera_of(t.name), []).append(k)
+    out = np.full(len(takes), 0.5, np.float32)
+    for ks in by_cam.values():
+        ks = sorted(ks, key=lambda k: takes[k].name.lower())
+        for r, k in enumerate(ks):
+            out[k] = r / (len(ks) - 1) if len(ks) > 1 else 0.5
+    return out
+
+
 def _settle_neighbours(chosen: Assignment, takes: list[Take], slots: list[dict], times: list, fixed: set[int]) -> int:
     """Where two shots sit badly at a cut (the same take twice, two takes of one setup, day cut to night inside a
     section), give one of the two slots another of its good takes, when that loses less than the cut costs.
@@ -658,12 +680,36 @@ def fill(m: dict, takes: list[Take], times: list[tuple[float, float]], embed_tex
                     S[j, k] -= ORDER_W * abs(rank[k] - at)
     # every take to at most one slot (a second copy of each take only when the pool is smaller than the map)
     copies = 1 if (m.get("repeat_take") is False and n_t >= n_s) else 2
-    big = np.tile(S, (1, copies)) - np.repeat(np.arange(copies) * 0.5, n_t)[None, :]
-    rows, cols = linear_sum_assignment(-big)
+
+    def assign() -> list[tuple[int, int]]:
+        big = np.tile(S, (1, copies)) - np.repeat(np.arange(copies) * 0.5, n_t)[None, :]
+        rows, cols = linear_sum_assignment(-big)
+        return [(int(j), int(c % n_t)) for j, c in zip(rows, cols) if big[j, c] > -1e5]
+
+    given = assign()
+    in_sections = [sec for sec in m.get("sections") or [] if not sec.get("match")
+                   and (sec.get("order") == "shoot" or (m.get("order") == "sections" and sec.get("order") != "none"))]
+    if in_sections and n_t > 1:
+        # forward through the day inside a section that asks for it: the takes its slots would take anyway say which
+        # part of the day it draws on; each slot then leans to its turn in that part, and the takes are dealt again
+        when = day_position(takes)
+        first = dict(given)
+        leaned = False
+        for sec in in_sections:
+            js = [j for j, s in enumerate(slots) if s["section"] == sec["name"] and j in first
+                  and not (s.get("takes") or s.get("black") or s.get("byte"))]
+            if len(js) < 3:
+                continue
+            turns = sorted(when[first[j]] for j in js)
+            for j, turn in zip(js, turns):
+                ok = S[j] > -1e5
+                S[j, ok] -= SECTION_ORDER_W * np.abs(when - turn)[ok]
+            leaned = True
+        if leaned:
+            given = assign()
     chosen = Assignment(S, detail, [s["id"] for s in slots], [t.name for t in takes])
-    for j, c in zip(rows, cols):
-        if big[j, c] > -1e5:
-            chosen.give(int(j), int(c % n_t), "assignment")
+    for j, k in given:
+        chosen.give(j, k, "assignment")
     # a slot whose takes the plan names gets one of them even when two slots already play that take: seven
     # moments of one long take are seven slots, and the plan asked for each of them
     for j, slot in enumerate(slots):

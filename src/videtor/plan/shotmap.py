@@ -50,6 +50,15 @@ video, plan/reference.py: the cuts are the reference's, and so is the sound). Su
 ({file, work}) and a slot the reference shot(s) it is shaped on (`like`): the fill then also compares pictures.
 `"order": "shoot"` leans the cut on the order of the day: a slot early in the piece prefers takes from early in the
 shoot (by file name), worth fill.ORDER_W across the whole shoot; slots that name their `takes` are left alone.
+`"order": "sections"` (or `"order": "shoot"` on one section) asks less: inside a section the cut moves forward through
+the day (the takes its slots would take anyway say which part of the day it draws on; each slot leans to its turn in
+that part, fill.SECTION_ORDER_W), while the sections themselves may draw on any part. It is not the default: the
+user's own BTS edit of 11-15 does not run in the order of the day (30 of its 62 cuts go forward), so the order is for
+a section that tells something in time (an arrival, a build), said by the plan.
+A section says its `story` in a line: what happens in it, in order ("they arrive, greet the crew, sit down for
+make-up"). The slots are then written to tell that, in that order; `advice` asks for it when it is missing.
+Pace: a cut is runs of quick shots and holds, not one length throughout. `pace` measures a plan (the share of its
+time in holds of HOLD_S or more, its longest stretch without one) and `advice` says where a hold is due.
 `"second_look": false` switches off the automatic second look (plan/autolook.py).
 `classes` (on the map) and a slot's `class` name the library's shot types the cut may draw on
 (`videtor library`: wide, close-up, talking-head, interview-bite, b-roll). After a sparse `prep`
@@ -72,7 +81,7 @@ FX = ("flash", "static", "whip", "spin", "blur", "push-in", "pull-out", "punch",
 MAP_KEYS = {"version", "name", "key", "bucket", "type", "length_s", "fps", "width", "height", "beat_lead_s", "music", "avoid", "skip", "sfx_skip",
             "sfx_note", "flash", "beds", "stabilize", "voice_lufs", "under_db", "keeper_w", "repeat_take", "classes", "effects", "cut_on",
             "second_look", "order", "notes", "drafted_from", "brief", "reference", "sections"}
-SECTION_KEYS = {"name", "match", "slots", "note", "over", "region"}
+SECTION_KEYS = {"name", "match", "slots", "note", "over", "region", "story", "order"}
 SLOT_KEYS = {"id", "beats", "length_s", "show", "shows", "scale", "face", "hands", "camera", "speed", "role", "takes", "ramp", "flicker", "stack",
              "black", "byte", "stabilize", "clicks", "effects", "class", "note", "like"}
 
@@ -96,6 +105,11 @@ def validate(m: dict) -> list[str]:
         out.append("length_s is missing")
     if not slots(m):
         out.append("no slots")
+    if m.get("order") not in (None, "shoot", "sections", "none"):
+        out.append("order must be shoot, sections or none")
+    for sec in m.get("sections") or []:
+        if sec.get("order") not in (None, "shoot", "none"):
+            out.append(f"section {sec.get('name')!r}: order must be shoot or none")
     if set(m.get("classes") or []) - LIBRARY_CLASSES:
         out.append(f"classes must be among {sorted(LIBRARY_CLASSES)}")
     e = m.get("effects")
@@ -148,6 +162,77 @@ def warnings(m: dict) -> list[str]:
         out += unknown(sec, SECTION_KEYS, f"section {sec.get('name')!r}")
         for s in sec.get("slots") or []:
             out += unknown(s, SLOT_KEYS, str(s.get("id")))
+    return out
+
+
+HOLD_S = 1.5  # a shot this long is a hold: the viewer is given time to look
+RUN_MAX_S = 8.0  # the longest a plan runs on quick shots before a hold is due
+HOLD_SHARE = 0.25  # of a cut's time, at least this much in holds (the user's own BTS edit of 11-15: 0.45; Videtor's plan for it: 0.09)
+
+
+def lengths(m: dict, period: float = 0.5) -> list[float]:
+    """Every slot's length in seconds as near as the map alone says: its `length_s`, else its beats at `period`."""
+    return [float(s["length_s"]) if s.get("length_s") and not s.get("beats") else float(s.get("beats") or 1) * period for s in slots(m)]
+
+
+def pace(ls: list[float]) -> dict:
+    """A cut's rhythm in numbers, from its shots' lengths: {shots, median_s, holds (how many shots of HOLD_S or more),
+    hold_share (their share of the time), longest_run_s (the longest stretch with no hold), runs (stretches of quick
+    shots between holds: how many shots each)}."""
+    total = sum(ls) or 1.0
+    held = [x for x in ls if x >= HOLD_S]
+    runs, cur, cur_s, longest = [], 0, 0.0, 0.0
+    for x in ls:
+        if x >= HOLD_S:
+            if cur:
+                runs.append(cur)
+            cur, cur_s = 0, 0.0
+        else:
+            cur += 1
+            cur_s += x
+            longest = max(longest, cur_s)
+    if cur:
+        runs.append(cur)
+    return {"shots": len(ls), "median_s": round(float(np.median(ls)), 3) if ls else None, "holds": len(held), "hold_share": round(sum(held) / total, 3),
+            "longest_run_s": round(longest, 2), "runs": runs}
+
+
+def advice(m: dict, ls: list[float] | None = None, period: float = 0.5) -> list[str]:
+    """What a second pair of eyes would say about the plan's rhythm and story, in sentences; nothing here stops a
+    cut. `ls`: the slots' lengths when they are known to the frame (after a cut), else worked out from the map."""
+    ss = slots(m)
+    ls = list(ls) if ls is not None else lengths(m, period)
+    if not ss or len(ls) != len(ss) or m.get("reference"):  # a plan shaped on a reference video has that video's rhythm, on purpose
+        return []
+    out = []
+    p = pace(ls)
+    total = sum(ls)
+    if total >= 12 and p["hold_share"] < HOLD_SHARE:
+        out.append(f"pace: {round(100 * p['hold_share'])}% of the cut is held shots ({p['holds']} of {p['shots']} last {HOLD_S:g} s or more; half are under "
+                   f"{p['median_s']:.2f} s). A cut reads as runs of quick shots and holds: give the story beats 1.5-3 s")
+    t, start, run_s = 0.0, None, 0.0
+    spans = []
+    for s, x in zip(ss, ls):
+        if x >= HOLD_S or s.get("byte"):
+            if start is not None and run_s > RUN_MAX_S:
+                spans.append((start, prev, run_s))
+            start, run_s = None, 0.0
+        else:
+            start = s["id"] if start is None else start
+            run_s += x
+        prev = s["id"]
+        t += x
+    if start is not None and run_s > RUN_MAX_S:
+        spans.append((start, prev, run_s))
+    for a, b, secs in spans:
+        out.append(f"pace: {secs:.0f} s of quick shots with no hold, from {a} to {b}: after a run of 4-8 quick shots, hold one for 1.5-3 s")
+    quiet = [sec["name"] for sec in m.get("sections") or [] if len(sec.get("slots") or []) >= 3 and not sec.get("match") and not str(sec.get("story") or "").strip()]
+    if quiet:
+        out.append("story: no `story` line for " + ", ".join(quiet) + ": say in a line what happens in the section, in order, and write its shots to tell that")
+    bursts = [(s["id"], sum(ls[:i]), sum(ls[:i + 1])) for i, s in enumerate(ss) if (s.get("flicker") or s.get("stack")) and s.get("clicks") is not False]
+    close = [(a[0], b[0]) for a, b in zip(bursts, bursts[1:]) if b[1] - a[2] < 2.0]
+    if close:
+        out.append("sound: " + ", ".join(f"{a} and {b}" for a, b in close) + " are bursts within two seconds of each other: only the first of each pair clicks")
     return out
 
 

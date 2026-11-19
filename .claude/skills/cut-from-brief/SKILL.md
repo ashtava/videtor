@@ -112,7 +112,7 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    slot's `"stabilize": false` opts out); the cut prints how many and the reasons say by how much.
 6. **Write `out/<name>/shotmap.json`** (schema: `src/videtor/plan/shotmap.py`; example:
    `out/guru-25s-brief/shotmap.json`). Sections in the brief's order; per slot 2-3 `show`
-   phrasings, `beats` (fast cut: 1-2, holds: 4), soft filters (`scale`, `face`, `hands`,
+   phrasings, `beats` (quick shots: 0.5-1, holds: enough beats for 1.5-3 s), soft filters (`scale`, `face`, `hands`,
    `camera`: steady|moving), `speed: 0.5` where slow motion suits (honoured on 50/100 fps
    takes). Put what the brief rules out in `avoid` (crew, phones, light stands; words like
    "people" or "photographer" there also cost every frame with two faces, so leave them out of a
@@ -126,6 +126,18 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
      for a shot you have seen and want (a sign, an arrival before a photographer walks in).
    - `skip` leaves out takes by path pattern (a second camera's folder, `"*/drive-download-*/*"`);
      `sfx_skip` leaves out SFX kinds (`["shutter"]` when the flashes are party lights, not cameras).
+   **Rhythm and story** (the `[all]` rules of 11-19 in `kb/notes.md`; the user called cuts of nothing but 0.5-1 s shots
+   "no proper flow or storyline"):
+   - Give every section a `story` line: what happens in it, in order. Write its slots to tell that (a wide to place
+     it, the action, a face, a detail, the hold), not as a list of the topic's shots.
+   - Phrase the pace: a run of 4-8 quick shots, then a hold of 1.5-3 s on a story beat; never about 8 s of quick
+     shots without a hold. Aim for a quarter to a half of the cut's time in holds unless the bucket's card says
+     the user cuts this kind of work otherwise. Choose what is held by what happens in the take (look at several
+     stills of it, not one): a face to camera, a move that completes, an arrival, a laugh.
+   - To stay with a moment, give two or three slots moments of one take (`takes` with `@in-out`).
+   - A section that tells something in time may say `"order": "shoot"`; keep a flicker and a stack two seconds apart.
+   - After the cut, read its `pace:` line and every `plan:` line (the app shows them on Brief & plan as "Worth a
+     second look") and fix what they name before the second look.
 7. **Cut.** `videtor cut out/<name>/shotmap.json` (drive connected after a keyframe prep: it first decodes
    in full the takes the map's classes allow and says how many) writes `picks.json`, the second-look sheets and
    `<name>.xml`: picks on V1, two alternates per slot on V2-V3 switched off, music on A1 with a

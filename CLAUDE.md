@@ -54,7 +54,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 456 tests, about 60 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 464 tests, about 65 s, no drive needed
 .venv/bin/videtor eval                                           # the past projects re-cut from the cache and measured (about 1 min)
 ```
 
@@ -90,6 +90,13 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   `out/<name>/work/reference/`, in words in `reference.md`. Not copied: words on screen, voice, grade, effects (said in the plan's
   `notes`; `--effects` copies flashes and whips), and cuts inside one take (jump cuts are not seen). A reference's file name or link
   stays in `out/`.
+- **Pace and flow** (2026-11-19, branch `pace-and-flow`, for an A/B against `main`): a plan is runs of quick shots and holds, with a
+  `story` line a section. `plan/shotmap.py` measures it (`pace`: the share of time in holds of `HOLD_S`, the longest run) and says
+  where a hold is due (`advice`: after a cut as `plan:` lines, in the app as "Worth a second look"); `videtor draft` holds a shot
+  after a long run; a flicker or a stack clicks three times at most and not within two seconds of another (`plan/sfx.py`);
+  `videtor eval` shows `hold_share`, `longest_run` and `in_order` (not guarded). The day's order inside a section is something a
+  plan asks for (`"order": "sections"`, or `"order": "shoot"` on a section), not the default: the user's own BTS edit does not run
+  in the order of the day. Nothing here changes a cut of a plan written before (the nine evaluation projects' picks are identical).
 - **Styles from renders** (2026-11-11): `videtor kb renders <folder> --bucket <b>` learns a bucket from finished
   reels alone and `videtor kb train <b>` a cutting policy from them (`plan/gym.py`); `videtor draft` drafts a shot
   map from it; a shot map's `"effects": "<b>"` adds the learnt effects (`plan/fx.py`) and `"cut_on": "accents"`

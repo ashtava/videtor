@@ -103,14 +103,17 @@ class ClickBedTests(unittest.TestCase):
             picks = {"type": "event", "key": "K", "slots": [
                 {"id": "cards", "section": "a", "start_s": 0.0, "length_s": 0.48, "pick": {"name": "C", "pieces": pieces}},
                 {"id": "wall", "section": "b", "start_s": 0.48, "length_s": 1.0, "pick": {"name": "W"}, "layers": [{"offset_s": 0.2}, {"offset_s": 0.4}]},
-                {"id": "party", "section": "b", "start_s": 1.48, "length_s": 3.0, "pick": {"name": "P"}}],
+                {"id": "party", "section": "b", "start_s": 1.48, "length_s": 3.0, "pick": {"name": "P"}},
+                {"id": "later", "section": "b", "start_s": 4.48, "length_s": 1.0, "pick": {"name": "L"}, "layers": [{"offset_s": 0.2}, {"offset_s": 0.4}]}],
                 "beds": [{"path": str(Path(d) / "crowd.wav"), "in_s": 2.0, "from": "wall", "to": None, "gain_db": -6.0}]}
             out = plan_sfx.place(picks, kb, None, Path(d))
         clicks = [round(c["start_s"], 2) for c in out if c["kind"] == "click"]
-        self.assertEqual(clicks, [0.0, 0.12, 0.24, 0.36, 0.68, 0.88])
+        # a burst clicks three times at most (its first cut, its last, one between); the stack right after it stays
+        # silent (within two seconds of the last click); the one four seconds on clicks again
+        self.assertEqual(clicks, [0.0, 0.24, 0.36, 4.68, 4.88])
         bed = next(c for c in out if c["kind"] == "bed")
         self.assertEqual((bed["start_s"], bed["in_s"], bed["gain_db"]), (0.48, 2.0, -6.0))
-        self.assertAlmostEqual(bed["end_s"], 4.48, places=2)
+        self.assertAlmostEqual(bed["end_s"], 5.48, places=2)
 
 
 class MedleyTests(unittest.TestCase):

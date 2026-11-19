@@ -503,6 +503,10 @@ function renderBrief(p) {
   if (document.activeElement !== $("brief")) $("brief").value = p.brief || "";
   if (document.activeElement !== $("shotmap")) $("shotmap").value = p.shotmap || "";
   showErrors(p.errors || [], !!(p.shotmap || "").trim());
+  const adv = p.advice || [];
+  $("plan-advice").hidden = !adv.length;
+  $("plan-advice").innerHTML = adv.length ? `<b>Worth a second look before cutting</b><ul>${adv.map((a) => `<li>${esc(a.charAt(0).toUpperCase() + a.slice(1))}.</li>`).join("")}</ul>
+    <div class="muted">The cut works as it is; these are about rhythm and story. To change them, ask Claude in the chat that wrote the plan.</div>` : "";
   renderPlan(p);
 }
 function renderPlan(p) {

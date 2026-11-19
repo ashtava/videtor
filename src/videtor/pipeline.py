@@ -714,6 +714,12 @@ def cut(shotmap_path: Path, out: Path | None = None, mount: Path | None = None, 
             picks["sfx"] = place_sfx(picks, paths)
     ev.stage("write", "writing the Premiere XML", "Writing the Premiere XML")
     path = write_cut(picks, out, music, paths, ev)
+    ls = [float(s["length_s"]) for s in picks["slots"]]
+    p = shotmap.pace(ls)
+    ev.info(f"pace: {p['shots']} shots, half under {p['median_s']:.2f} s; {p['holds']} held for {shotmap.HOLD_S:g} s or more ({round(100 * p['hold_share'])}% of the "
+            f"time); the longest stretch of quick shots is {p['longest_run_s']:.0f} s")
+    for line in shotmap.advice(m, ls):
+        ev.warn(f"plan: {line}")
     filled = sum(1 for s in picks["slots"] if s["pick"])
     ev.info(f"{filled} of {len(picks['slots'])} slots filled from {len(takes)} mapped takes ({n} in the pool), {sum(s['length_s'] for s in picks['slots']):.2f} s")
     sheet_paths = []
