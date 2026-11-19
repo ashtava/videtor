@@ -27,6 +27,11 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    numbers (pace, ramps, music, layers, sound), what they keep and leave, and the user's rules. A bucket
    with no card yet: plan from `kb/notes.md` and the nearest bucket, and say so. Put `"bucket"` in the
    shot map: the cut then adds the bucket's keeper score (what the user's edits of it keep) to every slot.
+   **A reference video** (the project's `settings.json` has `reference`, or the user names a finished video to cut
+   like): `videtor reference out/<name> [<video or link>]` writes a first `shotmap.json` and `reference.md` from it
+   (a slot per shot of the reference, as long as that shot, each asking for footage that looks like it). Read
+   `reference.md`, then revise that plan against the brief (bytes, what must be in or out, the bucket) instead of
+   starting from nothing; keep each slot's `like` when you keep the slot.
 2. **Prepare the footage.**
    - New folder: `videtor prep "<folder>" --name <name>` (drive connected; minutes: it reads every take
      from its keyframes on every core). It indexes, detects sideways cameras, sorts the takes into the

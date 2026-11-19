@@ -77,6 +77,13 @@ Rounds 1-3 (10-28/29) used the rule-based planner (`videtor plan`) on past proje
 
 ## Waiting on the user
 
+000. **A/B/C on the third BTS shoot (11-19)**: three XMLs in `out/ab-bts-3/` (see its `report.md`): **A** `a/bts3-A.xml`, `main`, the plan
+   as written (82 shots, 16% of the time held, a 30 s run of quick shots, 8 clicks in two seconds); **B** `b/bts3-B.xml`, the branch
+   `pace-and-flow`, the same brief phrased as runs and holds with a story line a section (63 shots, 46% held, longest run 6 s, clicks
+   capped); **C** `bts3-C/bts3-c.xml`, `main`'s reference feature, the plan written from the user's own 11-15 BTS reel. The user
+   imports them with the drive connected and says which reads better. **The branch is merged only on their word** (their rule, 11-19:
+   changes to how cuts are made go on a branch and are A/B tested first). The branch lives in the worktree
+   `.claude/worktrees/pace-and-flow`; the app runs `main`.
 00. **Third BTS shoot (11-17)**: plan written, not cut. Its footage was read as `bts-3` (the app's `clip` project had
    reused the 11-15 shoot's index, see the gap below); the plan in the app's project folder names `bts-3::footage`, and
    that folder's overview/classes/inventory were replaced by this shoot's (the old ones were byte-identical copies). The
