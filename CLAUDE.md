@@ -12,6 +12,7 @@ the cloud), and says what to read and how to reply.
 ## Read before working
 
 0. `docs/handoff.md` when the session is new.
+0b. `docs/vision.md` when the question is what to build next or why.
 1. `docs/status.md`: where every project stands, what the user owes us and what we owe them, the working
    agreements, the backlog. **Update it after every delivery, verdict or build.**
 2. `docs/architecture.md`: the modules, files and formats, and the verified Premiere and footage facts. Don't
@@ -54,7 +55,7 @@ the cloud), and says what to read and how to reply.
 ```sh
 cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
 .venv/bin/videtor --help                                         # Python 3.11 venv, installed editable
-.venv/bin/python -m unittest discover -s tests                   # 456 tests, about 60 s, no drive needed
+.venv/bin/python -m unittest discover -s tests                   # 457 tests, about 60 s, no drive needed
 .venv/bin/videtor eval                                           # the past projects re-cut from the cache and measured (about 1 min)
 ```
 
@@ -90,6 +91,11 @@ cd ~/workspace/videtor && export PATH=/opt/homebrew/bin:$PATH   # ffmpeg, uv
   `out/<name>/work/reference/`, in words in `reference.md`. Not copied: words on screen, voice, grade, effects (said in the plan's
   `notes`; `--effects` copies flashes and whips), and cuts inside one take (jump cuts are not seen). A reference's file name or link
   stays in `out/`.
+  **It is the route to start from** (the user's verdict, 2026-11-20: of three cuts of one shoot, the one planned from their own
+  finished reel was the best): `videtor references` and the app's chooser list the finished videos already known (edits read
+  back, with their bucket, which a plan from one then carries); the skill looks for one before planning from rules.
+- **Where this is going:** `docs/vision.md` (2026-11-20): a composer for serious editors, Claude deciding with skills, the engine
+  executing, edits by prompt or by hand. A plan to revisit, not a backlog.
 - **Styles from renders** (2026-11-11): `videtor kb renders <folder> --bucket <b>` learns a bucket from finished
   reels alone and `videtor kb train <b>` a cutting policy from them (`plan/gym.py`); `videtor draft` drafts a shot
   map from it; a shot map's `"effects": "<b>"` adds the learnt effects (`plan/fx.py`) and `"cut_on": "accents"`

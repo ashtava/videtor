@@ -245,6 +245,8 @@ uv run videtor cut out/<name>/shotmap.json
   kind of shot that is, so the plan reads and edits like any other.
 - Music: with none chosen, the reference's own sound plays and the cuts fall where the reference has them. With your
   own track (Brief & plan), the shots are counted on its beat, to the half beat. With "no music" the cuts stay.
+- `uv run videtor references` lists the finished videos Videtor already knows (your edits it has read back, other
+  projects' references); the app offers the same list under the field. One of your own edits brings its kind of work.
 - Not copied: words on screen, the voice, the grade, speed ramps; flashes and whips only with `--effects`. Cuts
   inside one take (jump cuts) are not seen: such a stretch comes out as one long shot.
 
