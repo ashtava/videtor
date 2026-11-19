@@ -526,6 +526,17 @@ def reference_cmd(
     _step(pipeline.reference, d, video, key=key, bucket=bucket, effects=effects, paths=pipeline.Paths(kb=kb_dir), ev=_events(), browser=browser)
 
 
+@app.command("references")
+def references_cmd(out: Path = typer.Option(Path("out"), "--out"), kb_dir: Path = KB_OPTION) -> None:
+    """The finished videos a plan can be shaped on without looking for a file: your own edits that were read back, and
+    the references given to projects."""
+    rows = pipeline.references([d for d in sorted(out.glob("*")) if d.is_dir()], pipeline.Paths(kb=kb_dir))
+    for r in rows:
+        console.print(f"{r['path']}  ({r['of']}" + (f", {r['bucket']}" if r.get("bucket") else "") + ")", markup=False)
+    if not rows:
+        console.print("none yet: read a finished video back (videtor readback), or give a project a reference (videtor reference)")
+
+
 @app.command("draft")
 def draft_cmd(
     name: str = typer.Argument(..., help="The project name (out/<name>/shotmap.json)."),

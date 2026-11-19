@@ -468,6 +468,8 @@ class OneWriterTests(unittest.TestCase):
         _, r = self.post("/api/prep", {"folder": str(self.tmp), "name": "two", "frame": "square", "reference": str(video)})
         two = Path(r["project"]["dir"])
         self.assertEqual(json.loads((two / "settings.json").read_text()), {"frame": "square", "reference": str(video)})
+        with urllib.request.urlopen(f"{self.base}/api/references") as resp:  # a project's reference can be chosen again for another
+            self.assertEqual([(x["name"], x["of"]) for x in json.loads(resp.read())["references"]], [("their reel.mp4", "the reference of two")])
         self.assertEqual(self.post("/api/settings", {"project": str(two), "reference": ""})[1]["requirements"]["mine"], {"frame": "square"})
         self.assertIn("is not there", self.post("/api/prep", {"folder": str(self.tmp), "name": "three", "reference": "/nowhere/x.mp4"})[1]["error"])
 

@@ -305,6 +305,12 @@ class App:
             return "Choose a video file (mp4, mov), or paste a link to one."
         return None
 
+    def api_references(self) -> dict:
+        """The finished videos a project can be shaped on at a click (pipeline.references)."""
+        from videtor import pipeline
+
+        return {"references": pipeline.references([Path(p["dir"]) for p in self.state["projects"]], pipeline.Paths(kb=self.root / "kb"))}
+
     def api_reference(self, body: dict) -> dict:
         """Write the project's plan from a reference video (a file or a link): `videtor reference`, as a job."""
         from videtor.plan import settings
@@ -1140,6 +1146,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(self.app.api_library(q.get("dir", "")))
         if path == "/api/teach":
             return self._json(self.app.api_teach())
+        if path == "/api/references":
+            return self._json(self.app.api_references())
         if path == "/api/promos":
             return self._json(self.app.api_promos())
         if path == "/api/timeline":

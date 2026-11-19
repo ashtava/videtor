@@ -1,0 +1,16 @@
+{
+ "key": "bts-3::footage",
+ "bucket": "bts",
+ "fps": 25.0,
+ "width": 1920,
+ "height": 1080,
+ "avoid": [],
+ "picks": "out/ab-bts-3/bts3-C/picks.json",
+ "name": "bts3-c",
+ "verdict": {
+  "good": true,
+  "note": "The best of three cuts of the same shoot (A: the plan as written; B: the same plan phrased with holds; C: the plan written from my own BTS reel as reference): relatively better, not yet good in itself.",
+  "by": "you",
+  "at": "2026-11-20T00:29:41"
+ }
+}

@@ -430,6 +430,7 @@ function renderRequirements(p) {
   $("req-other").hidden = p.kind === "cut";
   $("req-other").textContent = p.kind === "cut" ? "" : `A ${p.kind} sets its frame and its music in its own plan.`;
   $("ref-block").hidden = p.kind !== "cut";
+  loadRefs();
   if (p.kind !== "cut") { $("cut-as").innerHTML = ""; $("music-chosen").innerHTML = ""; return; }
   if (document.activeElement !== $("ref-video")) $("ref-video").value = mine.reference || "";
   const fromRef = plan && plan.reference, hasPlan = !!(p.shotmap || "").trim();
@@ -473,6 +474,26 @@ async function saveRequirements(body, btn, errEl) {
   return true;
 }
 $("req-frame").onchange = () => saveRequirements({ frame: $("req-frame").value });
+/* the finished videos Videtor already knows (your edits it has read back, other projects' references): one click instead of a file dialog */
+let refsAt = 0;
+async function loadRefs(force) {
+  if (!force && Date.now() - refsAt < 30000) return;
+  refsAt = Date.now();
+  const r = await api("/api/references");
+  const rows = (r && r.references) || [];
+  document.querySelectorAll("select.refs").forEach((sel) => {
+    sel.hidden = !rows.length;
+    sel.innerHTML = `<option value="">or one of your finished videos…</option>` + rows.map((x) => `<option value="${esc(x.path)}">${esc(x.name)} · ${esc(x.of)}</option>`).join("");
+  });
+}
+document.querySelectorAll("select.refs").forEach((sel) => sel.addEventListener("change", () => {
+  if (!sel.value) return;
+  const input = $(sel.dataset.refs);
+  input.value = sel.value;
+  input.dispatchEvent(new Event("change"));
+  sel.value = "";
+}));
+loadRefs(true);
 $("ref-run").onclick = async () => {
   if (!current) return;
   const dir = current.dir, video = $("ref-video").value.trim();

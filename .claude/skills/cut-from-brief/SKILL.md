@@ -32,6 +32,11 @@ key of an indexed project (e.g. `"Guru.xml::Sequence 01"`).
    (a slot per shot of the reference, as long as that shot, each asking for footage that looks like it). Read
    `reference.md`, then revise that plan against the brief (bytes, what must be in or out, the bucket) instead of
    starting from nothing; keep each slot's `like` when you keep the slot.
+   **With no reference given, look for one first** (the user's verdict of 2026-11-20: of three cuts of one shoot, the
+   one planned from their own finished reel was the best; the two planned from rules were not): `videtor references`
+   lists the user's finished edits Videtor has read back, with their bucket. When one is of this bucket, say so and
+   start from it (`videtor reference out/<name> "<that video>"`), then fit it to the brief (the length, the bytes,
+   what must be in). Plan from the bucket's card and `kb/notes.md` alone only when there is none.
 2. **Prepare the footage.**
    - New folder: `videtor prep "<folder>" --name <name>` (drive connected; minutes: it reads every take
      from its keyframes on every core). It indexes, detects sideways cameras, sorts the takes into the

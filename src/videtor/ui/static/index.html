@@ -69,7 +69,7 @@
             <summary>How this works</summary>
             <ol>
               <li><b>Shape and music:</b> choose the frame (vertical, horizontal, square) and the music: your own track and where it starts, no music, or leave it to the plan. The cut always follows what you choose here.</li>
-              <li><b>Reference video</b> (optional): a finished video you want this cut to be like. <b>Write the plan from this video</b> copies its rhythm from your footage: as many shots, each as long, the same kind of shot in each place. No brief is needed then.</li>
+              <li><b>Reference video</b> (optional, and what has worked best so far): a finished video you want this cut to be like, one of your own edits or someone else's. <b>Write the plan from this video</b> copies its rhythm from your footage: as many shots, each as long, the same kind of shot in each place. No brief is needed then.</li>
               <li><b>Brief:</b> paste it as the client wrote it (length, format, feel, what must be in and stay out) and save.</li>
               <li><b>The plan</b> is the list of shots the cut fills: section by section, what each shot must show and how long it lasts. Claude writes it from the brief and the overview: copy the request below into Claude Code. When it is done, the plan shows here as a shot list.</li>
               <li>Check the shot list. To change it, ask Claude in the same chat, or edit it under <b>Edit the plan</b>. Then go to <b>Cut</b>.</li>
@@ -97,6 +97,7 @@
             <div class="card">
               <div class="row"><input type="text" id="ref-video" placeholder="A finished video, or a link to one (Instagram, YouTube)" style="min-width:380px"><button class="btn" data-pick="ref-video" data-kind="video">Choose…</button>
                 <button class="btn primary" id="ref-run" data-run-btn="reference">Write the plan from this video</button></div>
+              <div class="row"><select class="refs" data-refs="ref-video" hidden></select></div>
               <div class="muted" id="ref-note"></div>
               <div class="runmsg" data-run="reference"></div>
             </div>
@@ -307,6 +308,7 @@
         <div class="field">
           <label for="prep-ref">A video to cut like <span class="muted">(optional)</span></label>
           <div class="pick"><input type="text" id="prep-ref" placeholder="A finished video, or a link to one (Instagram, YouTube)"><button class="btn" data-pick="prep-ref" data-kind="video">Choose…</button></div>
+          <select class="refs" data-refs="prep-ref" hidden></select>
           <div class="hint">A reference: Videtor copies its rhythm from your footage (as many shots, each as long, the same kind of shot in each place) and writes the plan itself once the footage is read.</div>
         </div>
         <div class="field">

@@ -1587,6 +1587,10 @@ def reference(project_dir: Path, video: str | None = None, key: str | None = Non
         if not old.get("reference"):  # a plan written by hand or by Claude: kept, so the reference can be tried without losing it
             _write(d / "work" / "shotmap.before-reference.json", plan_p.read_text())
             ev.info(f"the plan that was there is kept: {d / 'work' / 'shotmap.before-reference.json'}")
+    if not bucket and not (old or {}).get("bucket"):  # one of the user's own edits, read back before: the kind of work it is comes with it
+        bucket = next((r["bucket"] for r in references(paths=paths) if r["path"] == str(path) and r.get("bucket")), None)
+        if bucket:
+            ev.info(f"the reference is one of your {bucket} edits: the cut leans on what your {bucket} edits keep, where that is learnt")
     frame = mine.get("frame")
     if frame not in settings_mod.FRAMES:
         w, h = int(ref["width"]), int(ref["height"])
@@ -1612,6 +1616,29 @@ def reference(project_dir: Path, video: str | None = None, key: str | None = Non
             "  music: the reference's own sound, cuts where the reference cuts; choose your own track on Brief & plan to change it" if snd else
             "  the reference has no sound: the cuts stay where it has them")
     return {"plan": plan_p, "slots": n, "length_s": m["length_s"], "reference": str(path), "shots": len(ref["shots"])}
+
+
+def references(project_dirs: list[Path] | None = None, paths: Paths = Paths()) -> list[dict]:
+    """The finished videos Videtor already knows and can still open, newest first: the ones read back against a cut
+    (kb/feedback: the user's own edits, with the kind of work they are) and the ones given to a project as its
+    reference. What a new project can be shaped on without looking for a file: {path, name, of, bucket}."""
+    from videtor.analyze import link as link_mod
+    from videtor.plan import settings as settings_mod
+
+    found: dict[str, dict] = {}
+    for f in sorted((paths.kb / "feedback").glob("*.json")):
+        try:
+            doc = json.loads(f.read_text())
+        except ValueError:
+            continue
+        video = (doc.get("render") or {}).get("video") if isinstance(doc.get("render"), dict) else None
+        if video and Path(video).is_file():
+            found[str(video)] = {"path": str(video), "name": Path(video).name, "of": f"your edit, read back for {doc.get('name') or f.stem}", "bucket": doc.get("bucket")}
+    for d in project_dirs or []:
+        ref = str(settings_mod.load(Path(d)).get("reference") or "")
+        if ref and not link_mod.is_link(ref) and Path(ref).is_file() and ref not in found:
+            found[ref] = {"path": ref, "name": Path(ref).name, "of": f"the reference of {Path(d).name}", "bucket": None}
+    return sorted(found.values(), key=lambda r: -Path(r["path"]).stat().st_mtime)
 
 
 def _plan_from_reference(out: Path, key: str, paths: Paths, ev: Events) -> None:

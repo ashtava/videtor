@@ -208,6 +208,25 @@ class StepTests(unittest.TestCase):
         pipeline._plan_from_reference(d, "proj::footage", pipeline.Paths(), events.Events(seen.append))  # a plan is there: left alone
         self.assertEqual((d / "shotmap.json").read_text(), "{}")
 
+    def test_known_finished_videos_are_listed_and_one_of_your_edits_brings_its_kind_of_work(self):
+        root = self.root / "d"
+        kb, d, other = root / "kb", root / "out" / "new", root / "out" / "other"
+        (kb / "feedback").mkdir(parents=True)
+        (kb / "feedback" / "old-job.json").write_text(json.dumps({"name": "old-job", "bucket": "bts", "render": {"video": str(self.video)}}))
+        (kb / "feedback" / "gone.json").write_text(json.dumps({"name": "gone", "bucket": "event", "render": {"video": str(root / "deleted.mp4")}}))
+        (kb / "feedback" / "a-verdict.json").write_text(json.dumps({"name": "x", "verdict": {"good": True}}))
+        theirs = self.root / "theirs.mp4"
+        shutil.copy(self.video, theirs)
+        settings.save(other, {"reference": str(theirs)})
+        paths = pipeline.Paths(kb=kb)
+        rows = pipeline.references([d, other], paths)
+        self.assertEqual({(r["name"], r["bucket"]) for r in rows}, {("Their Reel.mp4", "bts"), ("theirs.mp4", None)})
+        self.assertIn("read back for old-job", next(r["of"] for r in rows if r["bucket"]))
+        pipeline.reference(d, str(self.video), paths=paths, read=self.read)
+        self.assertEqual(shotmap.load(d / "shotmap.json")["bucket"], "bts")
+        pipeline.reference(other, paths=paths, read=self.read)
+        self.assertNotIn("bucket", shotmap.load(other / "shotmap.json"))
+
     def test_what_cannot_be_done_is_said(self):
         d = self.root / "c"
         with self.assertRaisesRegex(pipeline.PipelineError, "No reference video"):
